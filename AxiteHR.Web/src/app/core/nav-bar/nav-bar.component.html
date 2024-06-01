@@ -5,15 +5,15 @@
         <span class="text-white font-medium text-lg">Axite HR</span>
       </div>
       <div class="hidden lg:flex space-x-12 lg:space-x-6 xl:space-x-12">
-        <a href="#" class="href-nav-option">Opcja 1</a>
-        <a href="#" class="href-nav-option">Opcja 2</a>
-        <a href="#" class="href-nav-option">Opcja 3</a>
-        <a href="#" class="href-nav-option">Opcja 4</a>
-        <a href="#" class="href-nav-option">Opcja 5</a>
+        <a class="href-nav-option">Opcja 1</a>
+        <a class="href-nav-option">Opcja 2</a>
+        <a class="href-nav-option">Opcja 3</a>
+        <a class="href-nav-option">Opcja 4</a>
+        <a class="href-nav-option">Opcja 5</a>
       </div>
       <div class="hidden lg:flex space-x-4">
-        <button class="button-nav-option">Logowanie</button>
-        <button class="button-nav-option">Rejestracja</button>
+        <button class="button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">Logowanie</button>
+        <button class="button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">Rejestracja</button>
       </div>
       <div class="lg:hidden flex items-center">
         <button class="text-white" (click)="toggleMenu()">
@@ -25,13 +25,13 @@
     </div>
     <div [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
       <div class="flex flex-col items-center">
-        <a href="#" class="block href-nav-option py-2">Opcja 1</a>
-        <a href="#" class="block href-nav-option py-2">Opcja 2</a>
-        <a href="#" class="block href-nav-option py-2">Opcja 3</a>
-        <a href="#" class="block href-nav-option py-2">Opcja 4</a>
-        <a href="#" class="block href-nav-option py-2">Opcja 5</a>
-        <button class="w-full mt-2 button-nav-option">Logowanie</button>
-        <button class="w-full button-nav-option mt-2 button-nav-option">Rejestracja</button>
+        <a class="block href-nav-option py-2">Opcja 1</a>
+        <a class="block href-nav-option py-2">Opcja 2</a>
+        <a class="block href-nav-option py-2">Opcja 3</a>
+        <a class="block href-nav-option py-2">Opcja 4</a>
+        <a class="block href-nav-option py-2">Opcja 5</a>
+        <button class="w-full mt-2 button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">Logowanie</button>
+        <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">Rejestracja</button>
       </div>
     </div>
   </nav>

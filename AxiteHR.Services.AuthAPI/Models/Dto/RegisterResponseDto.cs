@@ -3,6 +3,6 @@
 	public class RegisterResponseDto
 	{
 		public bool IsRegisteredSuccessful { get; set; }
-		public IList<string> ErrorMessage { get; set; } = new List<string>();
+		public string ErrorMessage { get; set; } = string.Empty;
 	}
 }

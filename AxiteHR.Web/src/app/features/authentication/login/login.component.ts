@@ -2,15 +2,18 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LoginRequest } from '../../../models/authentication/LoginRequest';
-import { LoginResponse } from '../../../models/authentication/LoginResponse';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse, HttpEvent, HttpEventType, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { LoginResponse } from '../../../models/authentication/LoginResponse';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -33,8 +36,17 @@ export class LoginComponent {
   }
 
   login(loginModel: LoginRequest) {
-    this.authService.Login(loginModel).subscribe((loginReponse: LoginResponse) => {
-      localStorage.setItem('authToken', loginReponse.Token);
+    this.authService.Login(loginModel).subscribe({
+      next: (response: LoginResponse) => {
+        if (response.IsLoggedSuccessful && response.Token) {
+          localStorage.setItem('authToken', response.Token); 
+        } else if (!response.IsLoggedSuccessful) {
+          console.log(response.ErrorMessage);
+        }
+      },
+      error: (response: HttpErrorResponse) => {
+        //ToDo
+      }
     });
   }
 

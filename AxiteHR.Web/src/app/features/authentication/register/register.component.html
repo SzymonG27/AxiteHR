@@ -7,6 +7,9 @@
                         <h3 class="text-3xl font-extrabold">Sign up</h3>
                         <p class="text-sm mt-4">Have got an account <a [routerLink]="['/Login']" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login here</a></p>
                     </div>
+                    <div class="mb-4 text-red-600" *ngIf="errorMessage">
+                        *{{ errorMessage }}
+                    </div>
                     <div>
                         <label class="text-sm block mb-2">E-mail*</label>
                         <div class="relative flex items-center">
@@ -101,17 +104,8 @@
                             <div *ngIf="registerForm.controls['UserPassword'].errors?.['minlength']">
                                 *Password must be at least 8 characters long
                             </div>
-                            <div *ngIf="!registerForm.controls['UserPassword'].value?.match('^(?=.*[A-Z])')">
-                                *Password must have at least 1 uppercase letter
-                            </div>
-                            <div *ngIf="!registerForm.controls['UserPassword'].value?.match('(?=.*[a-z])')">
-                                *Password must have at least 1 lowercase letter
-                            </div>
-                            <div *ngIf="!registerForm.controls['UserPassword'].value?.match('(.*[0-9].*)')">
-                                *Password must have at least 1 digit
-                            </div>
-                            <div *ngIf="!registerForm.controls['UserPassword'].value?.match('(?=.*[!@#$%^&*])')">
-                                *Password must have at least 1 special character
+                            <div *ngIf="registerForm.controls['UserPassword'].errors?.['pattern']">
+                                *Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character (!&#64;#$%^&*)
                             </div>
                         </div>
                     </div>
@@ -122,12 +116,12 @@
                         </div>
                         <div class="text-red-600 relative items-center" *ngIf="registerForm.controls['UserPasswordRepeated'].invalid && (registerForm.controls['UserPasswordRepeated'].touched || registerForm.controls['UserPasswordRepeated'].dirty)">
                             <div *ngIf="registerForm.controls['UserPasswordRepeated'].errors?.['mustMatch']">
-                                *Confirmed password must be the same as password
+                                *Confirm password must be the same as password
                             </div>
                         </div>
                     </div>
                     <div class="mt-12">
-                        <button type="button" [disabled]="registerForm.invalid" (click)="register(registerModel)" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
+                        <button type="submit" [disabled]="registerForm.invalid" (click)="register()" class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
                             Sign up
                         </button>
                     </div>

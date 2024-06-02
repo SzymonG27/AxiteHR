@@ -93,6 +93,14 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var result = await _userManager.CreateAsync(user, registerRequest.UserPassword);
 				if (!result.Succeeded)
 				{
+					if (result.Errors.Any(x => x.Code == "DuplicateUserName"))
+					{
+						return new RegisterResponseDto
+						{
+							IsRegisteredSuccessful = false,
+							ErrorMessage = result.Errors.First(x => x.Code == "DuplicateUserName").Description
+						};
+					}
 					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false,

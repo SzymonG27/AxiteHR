@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RegisterRequest } from '../models/authentication/RegisterRequest';
@@ -14,8 +14,8 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  public Register(register: RegisterRequest) : Observable<string> {
-    return this.http.post<string>(
+  public Register(register: RegisterRequest) : Observable<HttpEvent<any>> {
+    return this.http.post<HttpEvent<any>>(
       `${Environment.authApiBaseUrl}${ApiPaths.Register}`,
       register
     );

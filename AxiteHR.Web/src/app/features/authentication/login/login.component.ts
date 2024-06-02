@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LoginRequest } from '../../../models/authentication/LoginRequest';
 import { LoginResponse } from '../../../models/authentication/LoginResponse';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -15,9 +19,18 @@ export class LoginComponent {
   focusEmail: boolean = false;
   focusPassword: boolean = false;
   showPassword: boolean = false;
+  registrationMessage: string | null = null;
   loginModel: LoginRequest = new LoginRequest();
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route?.queryParams?.subscribe((params: { [x: string]: string; }) => {
+      if (params['registered'] === 'true') {
+        this.registrationMessage = 'Registration successful! Please log in.';
+      }
+    });
+  }
 
   login(loginModel: LoginRequest) {
     this.authService.Login(loginModel).subscribe((loginReponse: LoginResponse) => {

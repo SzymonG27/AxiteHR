@@ -19,7 +19,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			var response = await _authService.Register(registerRequest);
 			if (!response.IsRegisteredSuccessful)
 			{
-				return BadRequest(response.ErrorMessage);
+				return BadRequest(new BadRequestObjectResult(response));
 			}
 			return Ok();
 		}

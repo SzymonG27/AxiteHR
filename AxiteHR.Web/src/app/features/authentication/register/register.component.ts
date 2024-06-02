@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { RegisterRequest } from '../../../models/authentication/RegisterRequest';
-import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
+import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -24,14 +25,15 @@ export class RegisterComponent {
   focusUserName: boolean = false;
   focusFirstName: boolean = false;
   focusLastName: boolean = false;
+  errorMessage: string | null = null;
 
   showPassword: boolean = false;
   registerForm: FormGroup;
   registerModel: RegisterRequest = new RegisterRequest();
 
-  private strongPassRegex: RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
+  private strongPassRegex: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private router: Router) {
     this.registerForm = new FormGroup({
       Email: new FormControl(this.registerModel.Email, {
         validators: [Validators.required, Validators.email]
@@ -54,10 +56,24 @@ export class RegisterComponent {
     });
   }
 
-  register(registerModel: RegisterRequest) {
-    this.authService.Register(registerModel).subscribe((response: string) => {
-      console.log(response);
-    });
+  register() {
+    if (this.registerForm.valid) {
+      this.registerModel = this.registerForm.value;
+      this.authService.Register(this.registerModel).subscribe({
+        next: (response: HttpEvent<any>) => {
+          console.log(response);
+          this.router.navigate(['/Login'], { queryParams: { registered: 'true' } });
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Error occurred:', error);
+          if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
+            this.errorMessage = error.error.value.errorMessage;
+          } else {
+            this.errorMessage = 'An unexpected error occurred. Please try again.';
+          }
+        }
+      });
+    }
   }
 
   onFocus(field: string) {

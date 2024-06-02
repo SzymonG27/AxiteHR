@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { RegisterRequest } from '../models/authentication/RegisterRequest';
 import { Environment } from '../core/environment/Environment';
 import { ApiPaths } from '../core/environment/ApiPaths';
@@ -22,9 +22,11 @@ export class AuthenticationService {
   }
 
   public Login(login: LoginRequest) : Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
+    return this.http.post<{ value: LoginResponse }>(
       `${Environment.authApiBaseUrl}${ApiPaths.Login}`,
       login
+    ).pipe(
+      map(response => response.value)
     );
   }
 }

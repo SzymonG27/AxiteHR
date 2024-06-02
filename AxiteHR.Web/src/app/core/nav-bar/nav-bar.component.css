@@ -6,8 +6,9 @@
     color: rgb(255 255 255 / var(--tw-text-opacity));
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+    transition-duration: 200ms;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 
 .href-nav-option:hover {
@@ -51,7 +52,7 @@
     
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+    transition-duration: 200ms;
 }
 
 .button-nav-option:hover {

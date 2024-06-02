@@ -70,9 +70,9 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 			{
 				var response = new RegisterResponseDto
 				{
-					IsRegisteredSuccessful = false
+					IsRegisteredSuccessful = false,
+					ErrorMessage = "User with passed e-mail already exists in appliaction"
 				};
-				response.ErrorMessage.Add("User with passed e-mail already exists in appliaction");
 				return response;
 			}
 
@@ -96,7 +96,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false,
-						ErrorMessage = result.Errors.Select(x => x.Description).ToList()
+						ErrorMessage = "An error occurred during user registration. Please try again later."
 					};
 				}
 
@@ -107,7 +107,6 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 					{
 						IsRegisteredSuccessful = false
 					};
-					response.ErrorMessage.Add("An error occurred during user registration. Please try again later.");
 					return response;
 				}
 
@@ -124,9 +123,9 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				transaction.Rollback();
 				var response = new RegisterResponseDto
 				{
-					IsRegisteredSuccessful = false
+					IsRegisteredSuccessful = false,
+					ErrorMessage = "An error occurred during user registration. Please try again later."
 				};
-				response.ErrorMessage.Add("An error occurred during user registration. Please try again later.");
 				return response;
 			}
 			throw new NotImplementedException();

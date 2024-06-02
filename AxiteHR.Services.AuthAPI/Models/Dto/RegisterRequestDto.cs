@@ -28,7 +28,6 @@ namespace AxiteHR.Services.AuthAPI.Models.Dto
 		[Compare(nameof(UserPassword))]
 		public string UserPasswordRepeated { get; set; } = string.Empty;
 
-		[Required]
 		public string PhoneNumber { get; set; } = string.Empty;
 	}
 }

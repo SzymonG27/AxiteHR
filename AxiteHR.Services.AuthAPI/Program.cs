@@ -26,6 +26,13 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins", 
+	policy =>
+	{
+		policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+	})
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +41,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 
@@ -48,12 +57,10 @@ app.Run();
 
 void ApplyMigration()
 {
-	using (var scope = app.Services.CreateScope())
+	using var scope = app.Services.CreateScope();
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	if (db.Database.GetPendingMigrations().Any())
 	{
-		var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-		if (db.Database.GetPendingMigrations().Any())
-		{
-			db.Database.Migrate();
-		}
+		db.Database.Migrate();
 	}
 }

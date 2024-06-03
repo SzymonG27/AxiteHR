@@ -1,11 +1,11 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { RegisterRequest } from '../models/authentication/RegisterRequest';
-import { Environment } from '../core/environment/Environment';
-import { ApiPaths } from '../core/environment/ApiPaths';
-import { LoginRequest } from '../models/authentication/LoginRequest';
-import { LoginResponse } from '../models/authentication/LoginResponse';
+import { RegisterRequest } from '../../models/authentication/RegisterRequest';
+import { Environment } from '../../core/environment/Environment';
+import { ApiPaths } from '../../core/environment/ApiPaths';
+import { LoginRequest } from '../../models/authentication/LoginRequest';
+import { LoginResponse } from '../../models/authentication/LoginResponse';
 
 @Injectable({
 	providedIn: 'root'

@@ -5,10 +5,17 @@ import { BehaviorSubject } from 'rxjs';
 	providedIn: 'root'
 })
 export class DataBehaviourService {
+	constructor () {}
+
 	private registeredSource = new BehaviorSubject<boolean>(false);
 	currentRegistered = this.registeredSource.asObservable();
-
 	setRegistered(value: boolean) {
 		this.registeredSource.next(value);
+	}
+
+	private isTokenExpiredSource = new BehaviorSubject<boolean>(false);
+	isTokenExpired = this.isTokenExpiredSource.asObservable();
+	setIsTokenExpired(value: boolean) {
+		this.isTokenExpiredSource.next(value);
 	}
 }

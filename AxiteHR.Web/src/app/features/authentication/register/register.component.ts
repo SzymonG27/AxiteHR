@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { RegisterRequest } from '../../../models/authentication/RegisterRequest';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
-import { DataBehaviourService } from '../../../services/data-behaviour.service';
+import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-register',
@@ -76,44 +76,39 @@ export class RegisterComponent {
 		}
 	}
 
-	onFocus(field: string) {
-		switch (field) {
-			case 'email':
-				this.focusEmail = true;
-				return;
-			case 'password':
-				this.focusPassword = true;
-				return;
-			case 'userName':
-				this.focusUserName = true;
-				return;
-			case 'firstName':
-				this.focusFirstName = true;
-				return;
-			case 'lastName':
-				this.focusLastName = true;
-				return;
-		}
+	onFocusEmail() {
+		this.focusEmail = true;
+	}
+	onBlurEmail() {
+		this.focusEmail = false;
 	}
 
-	onBlur(field: string) {
-		switch (field) {
-			case 'email':
-				this.focusEmail = false;
-				return;
-			case 'password':
-				this.focusPassword = false;
-				return;
-			case 'userName':
-				this.focusUserName = false;
-				return;
-			case 'firstName':
-				this.focusFirstName = false;
-				return;
-			case 'lastName':
-				this.focusLastName = false;
-				return;
-		}
+	onFocusPassword() {
+		this.focusPassword = true;
+	}
+	onBlurPassword() {
+		this.focusPassword = false;
+	}
+
+	onFocusUserName() {
+		this.focusUserName = true;
+	}
+	onBlurUserName() {
+		this.focusUserName = false;
+	}
+
+	onFocusFirstName() {
+		this.focusFirstName = true;
+	}
+	onBlurFirstName() {
+		this.focusFirstName = false;
+	}
+
+	onFocusLastName() {
+		this.focusLastName = true;
+	}
+	onBlurLastName() {
+		this.focusLastName = false;
 	}
 
 	togglePasswordVisibility() {

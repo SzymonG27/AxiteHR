@@ -1,5 +1,5 @@
 export class LoginResponse {
-	IsLoggedSuccessful: boolean = false;
-	ErrorMessage: string = '';
-	Token: string = '';
+	isLoggedSuccessful: boolean = false;
+	errorMessage: string = '';
+	token: string = '';
 }

@@ -16,7 +16,7 @@
 					<div>
 						<label class="text-sm block mb-2">E-mail*</label>
 						<div class="relative flex items-center">
-							<input name="email" #email (focus)="onFocus(email.name)" (blur)="onBlur(email.name)"
+							<input name="email" #email (focus)="onFocusEmail()" (blur)="onBlurEmail()"
 								formControlName="Email" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
 								placeholder="Enter email" />
@@ -50,8 +50,8 @@
 					<div class="mt-8">
 						<label class="text-sm block mb-2">Username*</label>
 						<div class="relative flex items-center">
-							<input name="userName" #userName (focus)="onFocus(userName.name)"
-								(blur)="onBlur(userName.name)" formControlName="UserName" type="text" required
+							<input name="userName" #userName (focus)="onFocusUserName()"
+								(blur)="onBlurUserName()" formControlName="UserName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
 								placeholder="Enter user name" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusUserName" fill="#bbb"
@@ -73,8 +73,8 @@
 					<div class="mt-8">
 						<label class="text-sm block mb-2">Firstname*</label>
 						<div class="relative flex items-center">
-							<input name="firstName" #firstName (focus)="onFocus(firstName.name)"
-								(blur)="onBlur(firstName.name)" formControlName="FirstName" type="text" required
+							<input name="firstName" #firstName (focus)="onFocusFirstName()"
+								(blur)="onBlurFirstName()" formControlName="FirstName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
 								placeholder="Enter user name" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusFirstName" fill="#bbb"
@@ -97,8 +97,8 @@
 					<div class="mt-8">
 						<label class="text-sm block mb-2">Lastname*</label>
 						<div class="relative flex items-center">
-							<input name="lastName" #lastName (focus)="onFocus(lastName.name)"
-								(blur)="onBlur(lastName.name)" formControlName="LastName" type="text" required
+							<input name="lastName" #lastName (focus)="onFocusLastName()"
+								(blur)="onBlurLastName()" formControlName="LastName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
 								placeholder="Enter user name" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusLastName" fill="#bbb"
@@ -122,8 +122,8 @@
 					<div class="mt-8">
 						<label class="text-sm block mb-2">Password*</label>
 						<div class="relative flex items-center">
-							<input name="password" #password (focus)="onFocus(password.name)"
-								(blur)="onBlur(password.name)" formControlName="UserPassword"
+							<input name="password" #password (focus)="onFocusPassword()"
+								(blur)="onBlurPassword()" formControlName="UserPassword"
 								[type]="showPassword ? 'text' : 'password'" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
 								placeholder="Enter password" />

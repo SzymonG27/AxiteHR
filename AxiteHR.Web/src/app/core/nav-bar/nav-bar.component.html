@@ -17,9 +17,11 @@
         </div>
         <div class="lg:hidden flex items-center">
             <button class="text-white" (click)="toggleMenu()">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-              </svg>
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
             </button>
         </div>
     </div>
@@ -31,7 +33,8 @@
             <a class="block href-nav-option py-2">Opcja 4</a>
             <a class="block href-nav-option py-2">Opcja 5</a>
             <button class="w-full mt-2 button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">Sign in</button>
-            <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">Sign up</button>
+            <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage"
+                [routerLink]="['Register']">Sign up</button>
         </div>
     </div>
 </nav>

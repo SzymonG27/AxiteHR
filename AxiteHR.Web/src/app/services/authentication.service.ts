@@ -8,25 +8,24 @@ import { LoginRequest } from '../models/authentication/LoginRequest';
 import { LoginResponse } from '../models/authentication/LoginResponse';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthenticationService {
+	constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) { }
+	public Register(register: RegisterRequest): Observable<HttpEvent<any>> {
+		return this.http.post<HttpEvent<any>>(
+			`${Environment.authApiBaseUrl}${ApiPaths.Register}`,
+			register
+		);
+	}
 
-  public Register(register: RegisterRequest) : Observable<HttpEvent<any>> {
-    return this.http.post<HttpEvent<any>>(
-      `${Environment.authApiBaseUrl}${ApiPaths.Register}`,
-      register
-    );
-  }
-
-  public Login(login: LoginRequest) : Observable<LoginResponse> {
-    return this.http.post<{ value: LoginResponse }>(
-      `${Environment.authApiBaseUrl}${ApiPaths.Login}`,
-      login
-    ).pipe(
-      map(response => response.value)
-    );
-  }
+	public Login(login: LoginRequest): Observable<LoginResponse> {
+		return this.http.post<{ value: LoginResponse }>(
+			`${Environment.authApiBaseUrl}${ApiPaths.Login}`,
+			login
+		).pipe(
+			map(response => response.value)
+		);
+	}
 }

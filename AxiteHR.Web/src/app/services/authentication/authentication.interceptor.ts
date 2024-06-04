@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { JwtPayloadClient } from "../../models/authentication/JwtPayloadClient";
 import { Router } from "@angular/router";
 import { DataBehaviourService } from "../data/data-behaviour.service";
+import { AuthDictionary } from "../../core/environment/dictionary/AuthDictionary";
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -13,7 +14,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		let router = inject(Router);
 
-		const token = localStorage.getItem('authToken');
+		const token = localStorage.getItem(AuthDictionary.Token);
 
 		if (token) {
 			let decodedToken: JwtPayloadClient = jwtDecode<JwtPayloadClient>(token);
@@ -22,13 +23,13 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 				: false;
 
 			if (isExpired) {
-				localStorage.removeItem('authToken');
+				localStorage.removeItem(AuthDictionary.Token);
 				this.dataService.setIsTokenExpired(true);
 				router.navigate(['/Login']);
 			}
 
 			req = req.clone({
-				setHeaders: { Authorization: `Bearer ${token}` }
+				setHeaders: { Authorization: `${AuthDictionary.Bearer} ${token}` }
 			});
 		}
 

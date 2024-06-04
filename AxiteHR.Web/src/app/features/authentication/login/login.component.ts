@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { LoginRequest } from '../../../models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginResponse } from '../../../models/authentication/LoginResponse';
 import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
+import { AuthDictionary } from '../../../core/environment/dictionary/AuthDictionary';
+import { AuthStateService } from '../../../services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-login',
@@ -27,7 +29,11 @@ export class LoginComponent {
 	errorMessage: string | null = null;
 	loginModel: LoginRequest = new LoginRequest();
 
-	constructor(private authService: AuthenticationService, private route: ActivatedRoute, private dataService: DataBehaviourService) { }
+	constructor(
+		private authService: AuthenticationService,
+		private dataService: DataBehaviourService,
+		private router: Router,
+		private authState: AuthStateService) { }
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.subscribe((value: boolean) => {
@@ -46,8 +52,11 @@ export class LoginComponent {
 		this.authService.Login(loginModel).subscribe({
 			next: (response: LoginResponse) => {
 				if (response.isLoggedSuccessful && response.token) {
-					localStorage.setItem('authToken', response.token);
+					localStorage.setItem(AuthDictionary.Token, response.token);
+					this.authState.setLoggedIn(true);
+					this.router.navigate(['']);
 				} else if (!response.isLoggedSuccessful) {
+					this.authState.setLoggedIn(false);
 					this.errorMessage = response.errorMessage;
 				}
 			},
@@ -73,6 +82,7 @@ export class LoginComponent {
 				} else {
 					this.errorMessage = '*An unexpected error occurred. Please try again.';
 				}
+				this.authState.setLoggedIn(false);
 			}
 		});
 	}

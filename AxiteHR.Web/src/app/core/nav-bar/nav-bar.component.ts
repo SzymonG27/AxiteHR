@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-nav-bar',
@@ -32,14 +34,17 @@ import { filter } from 'rxjs';
 })
 export class NavBarComponent {
 	isMenuOpen: boolean = false;
-
+	isLoggedIn: boolean = false;
 	currentUrl: string = "";
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
 
-	constructor(private router: Router) { }
+	constructor(private router: Router, private authService: AuthenticationService, private authState: AuthStateService) { }
 
 	ngOnInit() {
+		this.authState.isLoggedIn.subscribe((status: boolean) => {
+			this.isLoggedIn = status;
+		});
 		this.router.events
 			.pipe(
 				filter(event => event instanceof NavigationEnd)
@@ -58,5 +63,9 @@ export class NavBarComponent {
 	checkUrl() {
 		this.isLoginPage = this.currentUrl.includes('Login');
 		this.isRegisterPage = this.currentUrl.includes('Register');
+	}
+
+	logOut() {
+		this.authService.LogOut();
 	}
 }

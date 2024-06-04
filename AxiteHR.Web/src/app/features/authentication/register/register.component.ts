@@ -52,7 +52,7 @@ export class RegisterComponent {
 				validators: [Validators.required, Validators.minLength(8), Validators.pattern(this.strongPassRegex)]
 			}),
 			UserPasswordRepeated: new FormControl(this.registerModel.UserPasswordRepeated, {
-				validators: [Validators.required, Validators.minLength(8), Validators.pattern(this.strongPassRegex), mustMatch('UserPassword', 'UserPasswordRepeated')]
+				validators: [Validators.required, Validators.minLength(8), Validators.pattern(this.strongPassRegex), mustMatch('UserPassword')]
 			})
 		});
 	}

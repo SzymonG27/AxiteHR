@@ -19,7 +19,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			var response = await _authService.Register(registerRequest);
 			if (!response.IsRegisteredSuccessful)
 			{
-				return BadRequest(response.ErrorMessage);
+				return BadRequest(new BadRequestObjectResult(response));
 			}
 			return Ok();
 		}
@@ -30,9 +30,9 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			var response = await _authService.Login(loginRequest);
 			if (!response.IsLoggedSuccessful)
 			{
-				return BadRequest(response);
+				return BadRequest(new BadRequestObjectResult(response));
 			}
-			return Ok(response);
+			return Ok(new OkObjectResult(response));
 		}
 	}
 }

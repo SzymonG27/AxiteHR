@@ -47,26 +47,18 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 			}
 
 			var token = _jwtTokenGenerator.GenerateToken(user);
-			var userDto = new UserDto
-			{
-				Email = user.Email,
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				Id = user.Id
-			};
 
 			return new LoginResponseDto
 			{
 				IsLoggedSuccessful = true,
-				User = userDto,
 				Token = token
 			};
 		}
 
 		public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest)
 		{
-			var isUserInDb = _dbContext.AppUserList.FirstOrDefault(x => x.Email.ToLower() == registerRequest.Email.ToLower());
-			if (isUserInDb != null)
+			var isUserMailInDb = _dbContext.AppUserList.FirstOrDefault(x => x.Email.ToLower() == registerRequest.Email.ToLower());
+			if (isUserMailInDb != null)
 			{
 				var response = new RegisterResponseDto
 				{
@@ -76,7 +68,18 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				return response;
 			}
 
-			AppUser user = new AppUser
+			var isUserNameInDb = _dbContext.AppUserList.FirstOrDefault(x => x.UserName!.ToLower() == registerRequest.UserName.ToLower());
+			if (isUserNameInDb != null)
+			{
+				var response = new RegisterResponseDto
+				{
+					IsRegisteredSuccessful = false,
+					ErrorMessage = "User with passed Username already exists in appliaction"
+				};
+				return response;
+			}
+
+			var user = new AppUser
 			{
 				Email = registerRequest.Email,
 				NormalizedEmail = registerRequest.Email.ToUpper(),

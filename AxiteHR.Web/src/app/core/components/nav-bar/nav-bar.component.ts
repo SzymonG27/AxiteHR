@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { AuthStateService } from '../../../services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-nav-bar',

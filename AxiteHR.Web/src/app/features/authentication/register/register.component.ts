@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
-import { RegisterRequest } from '../../../models/authentication/RegisterRequest';
+import { RegisterRequest } from '../../../core/models/authentication/RegisterRequest';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
 import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
+import { BlockUIService } from '../../../services/block-ui.service';
 
 @Component({
 	selector: 'app-register',
@@ -34,7 +35,11 @@ export class RegisterComponent {
 
 	private strongPassRegex: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
-	constructor(private authService: AuthenticationService, private router: Router, private dataService: DataBehaviourService) {
+	constructor(
+		private authService: AuthenticationService,
+		private router: Router,
+		private dataService: DataBehaviourService,
+		private blockUI: BlockUIService) {
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.Email, {
 				validators: [Validators.required, Validators.email]
@@ -59,10 +64,12 @@ export class RegisterComponent {
 
 	register() {
 		if (this.registerForm.valid) {
+			this.blockUI.start();
 			this.registerModel = this.registerForm.value;
 			this.authService.Register(this.registerModel).subscribe({
 				next: (_response: HttpEvent<any>) => {
 					this.dataService.setRegistered(true);
+					this.blockUI.stop();
 					this.router.navigate(['/Login']);
 				},
 				error: (error: HttpErrorResponse) => {
@@ -71,6 +78,7 @@ export class RegisterComponent {
 					} else {
 						this.errorMessage = 'An unexpected error occurred. Please try again.';
 					}
+					this.blockUI.stop();
 				}
 			});
 		}

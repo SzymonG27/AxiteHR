@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AuthDictionary } from '../../core/environment/dictionary/AuthDictionary';
+import { AuthDictionary } from '../../shared/dictionary/AuthDictionary';
 
 @Injectable({
   providedIn: 'root'

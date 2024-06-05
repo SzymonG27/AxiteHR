@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
-import { LoginRequest } from '../../../models/authentication/LoginRequest';
+import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { LoginResponse } from '../../../models/authentication/LoginResponse';
+import { LoginResponse } from '../../../core/models/authentication/LoginResponse';
 import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
-import { AuthDictionary } from '../../../core/environment/dictionary/AuthDictionary';
+import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { AuthStateService } from '../../../services/authentication/auth-state.service';
+import { BlockUIService } from '../../../services/block-ui.service';
 
 @Component({
 	selector: 'app-login',
@@ -33,7 +34,8 @@ export class LoginComponent {
 		private authService: AuthenticationService,
 		private dataService: DataBehaviourService,
 		private router: Router,
-		private authState: AuthStateService) { }
+		private authState: AuthStateService,
+		private blockUIService: BlockUIService) { }
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.subscribe((value: boolean) => {
@@ -49,16 +51,19 @@ export class LoginComponent {
 	}
 
 	login(loginModel: LoginRequest) {
+		this.blockUIService.start();
 		this.authService.Login(loginModel).subscribe({
 			next: (response: LoginResponse) => {
 				if (response.isLoggedSuccessful && response.token) {
 					localStorage.setItem(AuthDictionary.Token, response.token);
 					this.authState.setLoggedIn(true);
+					this.blockUIService.stop();
 					this.router.navigate(['']);
 				} else if (!response.isLoggedSuccessful) {
 					this.authState.setLoggedIn(false);
 					this.errorMessage = response.errorMessage;
 				}
+				this.blockUIService.stop();
 			},
 			error: (error: HttpErrorResponse) => {
 				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
@@ -83,6 +88,7 @@ export class LoginComponent {
 					this.errorMessage = '*An unexpected error occurred. Please try again.';
 				}
 				this.authState.setLoggedIn(false);
+				this.blockUIService.stop();
 			}
 		});
 	}

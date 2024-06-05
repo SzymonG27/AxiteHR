@@ -13,11 +13,14 @@
         </div>
         <div class="hidden lg:flex space-x-4">
             @if (isLoggedIn) {
-                <button class="button-nav-option" *ngIf="!isLoginPage" (click)="logOut()">Log out</button>
+            <button class="button-nav-option" *ngIf="!isLoginPage" (click)="logOut()">{{ 'Authentication_NavBar_Signout'
+                | translate }}</button>
             }
             @else {
-                <button class="button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">Sign in</button>
-                <button class="button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">Sign up</button>
+            <button class="button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">{{
+                'Authentication_NavBar_Login' | translate }}</button>
+            <button class="button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">{{
+                'Authentication_NavBar_Register' | translate }}</button>
             }
         </div>
         <div class="lg:hidden flex items-center">
@@ -38,14 +41,16 @@
             <a class="block href-nav-option py-2">Opcja 4</a>
             <a class="block href-nav-option py-2">Opcja 5</a>
             @if (isLoggedIn) {
-                <button class="w-full mt-2 button-nav-option" (click)="logOut()">Log out</button>
+            <button class="w-full mt-2 button-nav-option" (click)="logOut()">{{ 'Authentication_NavBar_Signout' |
+                translate }}</button>
             }
             @else {
-                <button class="w-full mt-2 button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">Sign in</button>
-                <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage"
-                    [routerLink]="['Register']">Sign up</button>
+            <button class="w-full mt-2 button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">{{
+                'Authentication_NavBar_Login' | translate }}</button>
+            <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage"
+                [routerLink]="['Register']">{{ 'Authentication_NavBar_Register' | translate }}</button>
             }
-            
+
         </div>
     </div>
 </nav>

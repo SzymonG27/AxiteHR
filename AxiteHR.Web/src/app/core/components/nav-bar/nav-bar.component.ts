@@ -5,13 +5,15 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { AuthStateService } from '../../../services/authentication/auth-state.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-nav-bar',
 	standalone: true,
 	imports: [
 		CommonModule,
-		RouterModule
+		RouterModule,
+		TranslateModule
 	],
 	templateUrl: './nav-bar.component.html',
 	styleUrl: './nav-bar.component.css',
@@ -39,7 +41,11 @@ export class NavBarComponent {
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
 
-	constructor(private router: Router, private authService: AuthenticationService, private authState: AuthStateService) { }
+	constructor(
+		private router: Router,
+		private authService: AuthenticationService,
+		private authState: AuthStateService,
+		private translate: TranslateService) { }
 
 	ngOnInit() {
 		this.authState.isLoggedIn.subscribe((status: boolean) => {
@@ -67,5 +73,10 @@ export class NavBarComponent {
 
 	logOut() {
 		this.authService.LogOut();
+	}
+
+	switchLanguage(language: string) {
+		this.translate.use(language);
+		localStorage.setItem('language', language);
 	}
 }

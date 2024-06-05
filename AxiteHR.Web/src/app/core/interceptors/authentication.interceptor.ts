@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/c
 import { Injectable, inject } from "@angular/core";
 import { Observable } from "rxjs";
 import { jwtDecode } from "jwt-decode";
-import { JwtPayloadClient } from "../models/authentication/JwtPayloadClient";
+import { JwtPayloadClient } from "../../core/models/authentication/JwtPayloadClient";
 import { Router } from "@angular/router";
 import { DataBehaviourService } from "../../services/data/data-behaviour.service";
 import { AuthDictionary } from "../../shared/dictionary/AuthDictionary";

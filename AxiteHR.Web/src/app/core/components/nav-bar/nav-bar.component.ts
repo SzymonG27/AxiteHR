@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
-import { AuthStateService } from '../../../services/authentication/auth-state.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-nav-bar',
@@ -41,11 +41,21 @@ export class NavBarComponent {
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
 
+	languages = [
+		{ code: 'en', label: 'English', flag: 'assets/flags/us.webp' },
+		{ code: 'pl', label: 'Polski', flag: 'assets/flags/pl.webp' }
+	];
+	currentLanguage = 'en';
+	isLanguageMenuOpen = false;
+
 	constructor(
 		private router: Router,
 		private authService: AuthenticationService,
 		private authState: AuthStateService,
-		private translate: TranslateService) { }
+		private translate: TranslateService)
+	{
+		this.currentLanguage = this.translate.currentLang || 'en';
+	}
 
 	ngOnInit() {
 		this.authState.isLoggedIn.subscribe((status: boolean) => {
@@ -78,5 +88,16 @@ export class NavBarComponent {
 	switchLanguage(language: string) {
 		this.translate.use(language);
 		localStorage.setItem('language', language);
+		this.currentLanguage = language;
+		this.isLanguageMenuOpen = false;
+	}
+	
+	toggleLanguageMenu() {
+		this.isLanguageMenuOpen = !this.isLanguageMenuOpen;
+	}
+	
+	getCurrentLanguageFlag() {
+		const currentLang = this.languages.find(lang => lang.code === this.currentLanguage);
+		return currentLang ? currentLang.flag : this.languages[0].flag;
 	}
 }

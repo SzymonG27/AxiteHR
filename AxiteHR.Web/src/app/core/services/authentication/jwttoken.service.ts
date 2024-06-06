@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { JwtPayloadClient } from '../../core/models/authentication/JwtPayloadClient';
+import { JwtPayloadClient } from '../../../core/models/authentication/JwtPayloadClient';
 import { jwtDecode } from 'jwt-decode';
-import { AuthDictionary } from '../../shared/dictionary/AuthDictionary';
+import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 
 @Injectable({
 	providedIn: 'root'

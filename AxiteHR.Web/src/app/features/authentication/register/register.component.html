@@ -5,21 +5,22 @@
 			<div class="md:max-w-md w-full sm:px-6 py-4">
 				<form [formGroup]="registerForm">
 					<div class="mb-12">
-						<h3 class="text-3xl font-extrabold">Sign up</h3>
-						<p class="text-sm mt-4">Have got an account <a [routerLink]="['/Login']"
-								class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login
-								here</a></p>
+						<h3 class="text-3xl font-extrabold">{{ 'Authentication_Register' | translate }}</h3>
+						<p class="text-sm mt-4">{{ 'Authentication_LoginHerePrevMessage' | translate }} <a
+								[routerLink]="['/Login']"
+								class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">{{
+								'Authentication_LoginHere' | translate }}</a></p>
 					</div>
 					<div class="mb-4 text-red-600" *ngIf="errorMessage">
 						*{{ errorMessage }}
 					</div>
 					<div>
-						<label class="text-sm block mb-2">E-mail*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</label>
 						<div class="relative flex items-center">
 							<input name="email" #email (focus)="onFocusEmail()" (blur)="onBlurEmail()"
 								formControlName="Email" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter email" />
+								placeholder="{{ 'Authentication_EnterEmail' | translate }}" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusEmail" fill="#bbb"
 								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 682.667 682.667">
 								<defs>
@@ -40,20 +41,20 @@
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['Email'].invalid && (registerForm.controls['Email'].touched || registerForm.controls['Email'].dirty)">
 							<div *ngIf="registerForm.controls['Email'].errors?.['required']">
-								*E-mail is a required field
+								*{{ 'Authentication_Email_RequiredError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['Email'].errors?.['email']">
-								*Field e-mail must be an actual email
+								*{{ 'Authentication_Email_EmailError' | translate }}
 							</div>
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">Username*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</label>
 						<div class="relative flex items-center">
-							<input name="userName" #userName (focus)="onFocusUserName()"
-								(blur)="onBlurUserName()" formControlName="UserName" type="text" required
+							<input name="userName" #userName (focus)="onFocusUserName()" (blur)="onBlurUserName()"
+								formControlName="UserName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter user name" />
+								placeholder="{{ 'Authentication_EnterUserName' | translate }}" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusUserName" fill="#bbb"
 								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
 								<path
@@ -63,20 +64,20 @@
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['UserName'].invalid && (registerForm.controls['UserName'].touched || registerForm.controls['UserName'].dirty)">
 							<div *ngIf="registerForm.controls['UserName'].errors?.['required']">
-								*Username is a required field
+								*{{ 'Authentication_UserName_RequiredError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['UserName'].errors?.['minlength']">
-								*Username must be at least 5 characters long
+								*{{ 'Authentication_UserName_MinLengthError' | translate }}
 							</div>
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">Firstname*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</label>
 						<div class="relative flex items-center">
-							<input name="firstName" #firstName (focus)="onFocusFirstName()"
-								(blur)="onBlurFirstName()" formControlName="FirstName" type="text" required
+							<input name="firstName" #firstName (focus)="onFocusFirstName()" (blur)="onBlurFirstName()"
+								formControlName="FirstName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter user name" />
+								placeholder="{{ 'Authentication_EnterFirstName' | translate }}" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusFirstName" fill="#bbb"
 								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
 								<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
@@ -87,20 +88,20 @@
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['FirstName'].invalid && (registerForm.controls['FirstName'].touched || registerForm.controls['FirstName'].dirty)">
 							<div *ngIf="registerForm.controls['FirstName'].errors?.['required']">
-								*Firstname is a required field
+								*{{ 'Authentication_FirstName_RequiredError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['FirstName'].errors?.['minlength']">
-								*Firstname must be at least 2 characters long
+								*{{ 'Authentication_FirstName_MinLengthError' | translate }}
 							</div>
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">Lastname*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</label>
 						<div class="relative flex items-center">
-							<input name="lastName" #lastName (focus)="onFocusLastName()"
-								(blur)="onBlurLastName()" formControlName="LastName" type="text" required
+							<input name="lastName" #lastName (focus)="onFocusLastName()" (blur)="onBlurLastName()"
+								formControlName="LastName" type="text" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter user name" />
+								placeholder="{{ 'Authentication_EnterLastName' | translate }}" />
 							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusLastName" fill="#bbb"
 								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
 								<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
@@ -111,22 +112,21 @@
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['LastName'].invalid && (registerForm.controls['LastName'].touched || registerForm.controls['LastName'].dirty)">
 							<div *ngIf="registerForm.controls['LastName'].errors?.['required']">
-								*Lastname is a required field
+								*{{ 'Authentication_LastName_RequiredError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['LastName'].errors?.['minlength']">
-								*Lastname must be at least 2 characters long
+								*{{ 'Authentication_LastName_MinLengthError' | translate }}
 							</div>
 						</div>
 					</div>
 					<!--TODO Phone number-->
 					<div class="mt-8">
-						<label class="text-sm block mb-2">Password*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_Password' | translate }}*</label>
 						<div class="relative flex items-center">
-							<input name="password" #password (focus)="onFocusPassword()"
-								(blur)="onBlurPassword()" formControlName="UserPassword"
-								[type]="showPassword ? 'text' : 'password'" required
+							<input name="password" #password (focus)="onFocusPassword()" (blur)="onBlurPassword()"
+								formControlName="UserPassword" [type]="showPassword ? 'text' : 'password'" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter password" />
+								placeholder="{{ 'Authentication_EnterPassword' | translate }}" />
 							<svg xmlns="http://www.w3.org/2000/svg" (click)="togglePasswordVisibility()"
 								[class.focus-color]="focusPassword" fill="#bbb" stroke="#bbb"
 								class="w-[18px] h-[18px] absolute right-2 cursor-pointer" viewBox="0 0 128 128">
@@ -138,42 +138,42 @@
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['UserPassword'].invalid && (registerForm.controls['UserPassword'].touched || registerForm.controls['UserPassword'].dirty)">
 							<div *ngIf="registerForm.controls['UserPassword'].errors?.['required']">
-								*Password is a required field
+								*{{ 'Authentication_Password_RequiredError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['UserPassword'].errors?.['minlength']">
-								*Password must be at least 8 characters long
+								*{{ 'Authentication_Password_MinLengthError' | translate }}
 							</div>
 							<div *ngIf="registerForm.controls['UserPassword'].errors?.['pattern']">
-								*Password must contain at least one uppercase letter, one lowercase letter, one digit,
-								and one special character (!&#64;#$%^&*)
+								*{{ 'Authentication_Password_PatternError' | translate }}
 							</div>
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">Confirm password*</label>
+						<label class="text-sm block mb-2">{{ 'Authentication_ConfirmPassword' | translate }}*</label>
 						<div class="relative flex items-center">
 							<input name="confirmPassword" #confirmPassword formControlName="UserPasswordRepeated"
 								type="password" required
 								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-								placeholder="Enter password" />
+								placeholder="{{ 'Authentication_EnterPassword' | translate }}" />
 						</div>
 						<div class="text-red-600 relative items-center"
 							*ngIf="registerForm.controls['UserPasswordRepeated'].invalid && (registerForm.controls['UserPasswordRepeated'].touched || registerForm.controls['UserPasswordRepeated'].dirty)">
 							<div *ngIf="registerForm.controls['UserPasswordRepeated'].errors?.['mustMatch']">
-								*Confirm password must be the same as password
+								*{{ 'Authentication_ConfirmPassword_MustMatchError' | translate }}
 							</div>
 						</div>
 					</div>
 					<div class="mt-12">
 						<button type="submit" [disabled]="registerForm.invalid" (click)="register()"
 							class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
-							Sign up
+							{{ 'Authentication_Register' | translate }}
 						</button>
 					</div>
 				</form>
 			</div>
 			<div class="md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8">
-				<img src="../../../../assets/auth/register.webp" class="w-full h-full object-contain" alt="register-image" />
+				<img src="../../../../assets/auth/register.webp" class="w-full h-full object-contain"
+					alt="register-image" />
 			</div>
 		</div>
 	</div>

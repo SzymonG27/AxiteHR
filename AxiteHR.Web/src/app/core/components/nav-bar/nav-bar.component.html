@@ -11,46 +11,62 @@
             <a class="href-nav-option">Opcja 4</a>
             <a class="href-nav-option">Opcja 5</a>
         </div>
-        <div class="hidden lg:flex space-x-4">
-            @if (isLoggedIn) {
-            <button class="button-nav-option" *ngIf="!isLoginPage" (click)="logOut()">{{ 'Authentication_NavBar_Signout'
-                | translate }}</button>
-            }
-            @else {
-            <button class="button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">{{
-                'Authentication_NavBar_Login' | translate }}</button>
-            <button class="button-nav-option" *ngIf="!isRegisterPage" [routerLink]="['Register']">{{
-                'Authentication_NavBar_Register' | translate }}</button>
-            }
+        <div class="hidden lg:flex items-center space-x-4">
+            <ng-container *ngIf="isLoggedIn">
+                <button (click)="logOut()" class="button-nav-option">{{ 'Authentication_Signout' | translate }}</button>
+            </ng-container>
+            <ng-container *ngIf="!isLoggedIn">
+                <button *ngIf="!isLoginPage" [routerLink]="['Login']" class="button-nav-option">{{ 'Authentication_Login' | translate }}</button>
+                <button *ngIf="!isRegisterPage" [routerLink]="['Register']" class="button-nav-option">{{ 'Authentication_Register' | translate }}</button>
+            </ng-container>
+            <div class="relative pl-10">
+                <button class="text-white flex items-center space-x-2" (click)="toggleLanguageMenu()">
+                    <img [src]="getCurrentLanguageFlag()" alt="language" class="h-4 w-6" />
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div *ngIf="isLanguageMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                    <div class="py-1">
+                        <ng-container *ngFor="let lang of languages">
+                            <button (click)="switchLanguage(lang.code)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <img [src]="lang.flag" alt="{{ lang.label }}" class="inline-block h-4 w-6 mr-2" />
+                                {{ lang.label }}
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="lg:hidden flex items-center">
             <button class="text-white" (click)="toggleMenu()">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
-                    </path>
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
     </div>
-    <div *ngIf="isLoggedIn" [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
+    <div *ngIf="isLoggedIn || isMenuOpen" [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
         <div class="flex flex-col items-center">
             <a class="block href-nav-option py-2">Opcja 1</a>
             <a class="block href-nav-option py-2">Opcja 2</a>
             <a class="block href-nav-option py-2">Opcja 3</a>
             <a class="block href-nav-option py-2">Opcja 4</a>
             <a class="block href-nav-option py-2">Opcja 5</a>
-            @if (isLoggedIn) {
-            <button class="w-full mt-2 button-nav-option" (click)="logOut()">{{ 'Authentication_NavBar_Signout' |
-                translate }}</button>
-            }
-            @else {
-            <button class="w-full mt-2 button-nav-option" *ngIf="!isLoginPage" [routerLink]="['Login']">{{
-                'Authentication_NavBar_Login' | translate }}</button>
-            <button class="w-full button-nav-option mt-2 button-nav-option" *ngIf="!isRegisterPage"
-                [routerLink]="['Register']">{{ 'Authentication_NavBar_Register' | translate }}</button>
-            }
-
+            <ng-container *ngIf="isLoggedIn">
+                <button (click)="logOut()" class="w-full mt-2 button-nav-option">{{ 'Authentication_Signout' | translate }}</button>
+            </ng-container>
+            <ng-container *ngIf="!isLoggedIn">
+                <button *ngIf="!isLoginPage" class="w-full mt-2 button-nav-option" [routerLink]="['Login']">{{ 'Authentication_Login' | translate }}</button>
+                <button *ngIf="!isRegisterPage" class="w-full button-nav-option mt-2" [routerLink]="['Register']">{{ 'Authentication_Register' | translate }}</button>
+            </ng-container>
+            <div class="flex space-x-4 mt-4">
+                <ng-container *ngFor="let lang of languages">
+                    <button (click)="switchLanguage(lang.code)" class="flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <img [src]="lang.flag" alt="{{ lang.label }}" class="inline-block h-4 w-6" />
+                    </button>
+                </ng-container>
+            </div>
         </div>
     </div>
 </nav>

@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginResponse } from '../../../core/models/authentication/LoginResponse';
-import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
 import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
-import { AuthStateService } from '../../../services/authentication/auth-state.service';
-import { BlockUIService } from '../../../services/block-ui.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
+import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
+import { BlockUIService } from '../../../core/services/block-ui.service';
 
 @Component({
 	selector: 'app-login',
@@ -17,7 +18,8 @@ import { BlockUIService } from '../../../services/block-ui.service';
 	imports: [
 		CommonModule,
 		RouterModule,
-		FormsModule
+		FormsModule,
+		TranslateModule
 	],
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.css'

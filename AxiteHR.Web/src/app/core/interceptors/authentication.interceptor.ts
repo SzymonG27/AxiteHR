@@ -4,8 +4,8 @@ import { Observable } from "rxjs";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayloadClient } from "../../core/models/authentication/JwtPayloadClient";
 import { Router } from "@angular/router";
-import { DataBehaviourService } from "../../services/data/data-behaviour.service";
 import { AuthDictionary } from "../../shared/dictionary/AuthDictionary";
+import { DataBehaviourService } from "../services/data/data-behaviour.service";
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {

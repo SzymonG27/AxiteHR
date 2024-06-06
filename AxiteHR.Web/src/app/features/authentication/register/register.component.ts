@@ -5,7 +5,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
@@ -41,7 +41,9 @@ export class RegisterComponent {
 		private authService: AuthenticationService,
 		private router: Router,
 		private dataService: DataBehaviourService,
-		private blockUI: BlockUIService) {
+		private blockUI: BlockUIService,
+		private translate: TranslateService)
+	{
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.Email, {
 				validators: [Validators.required, Validators.email]
@@ -78,7 +80,9 @@ export class RegisterComponent {
 					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
 						this.errorMessage = error.error.value.errorMessage;
 					} else {
-						this.errorMessage = 'An unexpected error occurred. Please try again.';
+						this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
+							this.errorMessage = translation;
+						});
 					}
 					this.blockUI.stop();
 				}

@@ -42,5 +42,8 @@
     "Authentication_Password_RequiredError": "Password is a required field",
     "Authentication_Password_MinLengthError": "Password must be at least 8 characters long",
     "Authentication_Password_PatternError": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#$%^&*)",
-    "Authentication_ConfirmPassword_MustMatchError": "Confirm password must be the same as password"
+    "Authentication_ConfirmPassword_MustMatchError": "Confirm password must be the same as password",
+    "Authentication_Login_SessionExpired": "Login session expired. Please log in.",
+    "Authentication_Login_RegistrationSuccessful" : "Registration successful! Please log in.",
+    "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again."
 }

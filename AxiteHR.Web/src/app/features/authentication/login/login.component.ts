@@ -6,7 +6,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LoginResponse } from '../../../core/models/authentication/LoginResponse';
 import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
@@ -37,17 +37,22 @@ export class LoginComponent {
 		private dataService: DataBehaviourService,
 		private router: Router,
 		private authState: AuthStateService,
-		private blockUIService: BlockUIService) { }
+		private blockUIService: BlockUIService,
+		private translate: TranslateService) { }
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.subscribe((value: boolean) => {
 			if (value === true) {
-				this.loginMessage = 'Registration successful! Please log in.';
+				this.translate.get('Authentication_Login_RegistrationSuccessful').subscribe((translation: string) => {
+					this.loginMessage = translation;
+				});
 			}
 		});
 		this.dataService.isTokenExpired.subscribe((value: boolean) => {
 			if (value === true) {
-				this.loginMessage = 'Login session expired. Please log in.';
+				this.translate.get('Authentication_Login_SessionExpired').subscribe((translation: string) => {
+					this.loginMessage = translation;
+				});
 			}
 		});
 	}
@@ -87,7 +92,9 @@ export class LoginComponent {
 						}
 					}
 				} else {
-					this.errorMessage = '*An unexpected error occurred. Please try again.';
+					this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
+						this.errorMessage = '*' + translation;
+					});
 				}
 				this.authState.setLoggedIn(false);
 				this.blockUIService.stop();

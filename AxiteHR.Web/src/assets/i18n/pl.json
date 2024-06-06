@@ -42,5 +42,8 @@
     "Authentication_Password_RequiredError": "Pole Hasło jest wymagane",
     "Authentication_Password_MinLengthError": "Hasło musi mieć co najmniej 8 znaków",
     "Authentication_Password_PatternError": "Hasło musi zawierać co najmniej jedną wielką literę, jedną małą literę, jedną cyfrę i jeden znak specjalny (!@#$%^&*)",
-    "Authentication_ConfirmPassword_MustMatchError": "Pole potwierdź hasło musi zawierać tą samą wartość co pole hasło"
+    "Authentication_ConfirmPassword_MustMatchError": "Pole potwierdź hasło musi zawierać tą samą wartość co pole hasło",
+    "Authentication_Login_SessionExpired": "Sesja logowania wygasła. Proszę się zalogować.",
+    "Authentication_Login_RegistrationSuccessful" : "Pomyślnie zarejestrowano! Proszę się zalogować.",
+    "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
 }

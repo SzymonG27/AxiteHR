@@ -51,7 +51,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				};
 			}
 
-			var token = _jwtTokenGenerator.GenerateToken(user);
+			var roleList = await _userManager.GetRolesAsync(user);
+			var token = _jwtTokenGenerator.GenerateToken(user, roleList);
 
 			return new LoginResponseDto
 			{

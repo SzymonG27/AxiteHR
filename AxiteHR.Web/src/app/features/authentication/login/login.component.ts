@@ -46,6 +46,7 @@ export class LoginComponent {
 				this.translate.get('Authentication_Login_RegistrationSuccessful').subscribe((translation: string) => {
 					this.loginMessage = translation;
 				});
+				this.dataService.setRegistered(false);
 			}
 		});
 		this.dataService.isTokenExpired.subscribe((value: boolean) => {
@@ -53,6 +54,7 @@ export class LoginComponent {
 				this.translate.get('Authentication_Login_SessionExpired').subscribe((translation: string) => {
 					this.loginMessage = translation;
 				});
+				this.dataService.setIsTokenExpired(false);
 			}
 		});
 	}

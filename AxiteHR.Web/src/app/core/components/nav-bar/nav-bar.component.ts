@@ -6,6 +6,8 @@ import { filter } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
+import { UserRole } from '../../models/authentication/UserRole';
 
 @Component({
 	selector: 'app-nav-bar',
@@ -40,6 +42,8 @@ export class NavBarComponent {
 	currentUrl: string = "";
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
+	UserRole = UserRole;
+	userRoles: string[] = [];
 
 	languages = [
 		{ code: 'en', label: 'English', flag: 'assets/flags/us.webp' },
@@ -60,6 +64,7 @@ export class NavBarComponent {
 	ngOnInit() {
 		this.authState.isLoggedIn.subscribe((status: boolean) => {
 			this.isLoggedIn = status;
+			this.mapUserRoles(this.isLoggedIn);
 		});
 		this.router.events
 			.pipe(
@@ -70,6 +75,20 @@ export class NavBarComponent {
 				this.currentUrl = navEndEvent.urlAfterRedirects;
 				this.checkUrl();
 			});
+	}
+
+	private mapUserRoles(isLoggedIn: boolean) {
+		if (isLoggedIn) {
+			this.userRoles = this.authState.getUserRoles(localStorage.getItem(AuthDictionary.Token));
+			return;
+		}
+
+		//Delete user roles when user is not logged in
+		this.userRoles = [];
+	}
+
+	isInRole(role: string) : boolean {
+		return this.userRoles.includes(role);
 	}
 
 	toggleMenu() {

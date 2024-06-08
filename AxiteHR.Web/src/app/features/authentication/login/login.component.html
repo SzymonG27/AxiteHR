@@ -8,22 +8,22 @@
                         {{ loginMessage }}
                     </div>
                     <div class="mb-12">
-                        <h3 class="text-3xl font-extrabold">Sign in</h3>
-                        <p *ngIf="!loginMessage" class="text-sm mt-4">Don't have an account <a
-                                [routerLink]="['/Register']"
-                                class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register
-                                here</a></p>
+                        <h3 class="text-3xl font-extrabold">{{ 'Authentication_Login' | translate }}</h3>
+                        <p *ngIf="!loginMessage" class="text-sm mt-4"> {{'Authentication_RegisterHerePrevMessage' |
+                            translate}} <a [routerLink]="['/Register']"
+                                class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">{{
+                                'Authentication_RegisterHere' | translate }}</a></p>
                     </div>
                     <div class="mb-4 text-red-600" *ngIf="errorMessage">
-						{{ errorMessage }}
-					</div>
+                        {{ errorMessage }}
+                    </div>
                     <div>
-                        <label class="text-sm block mb-2">Email</label>
+                        <label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}</label>
                         <div class="relative flex items-center">
                             <input name="email" [(ngModel)]="loginModel.Email" #email (focus)="onFocusEmail()"
                                 (blur)="onBlurEmail()" type="text" required
                                 class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-                                placeholder="Enter email" />
+                                placeholder="{{ 'Authentication_EnterEmail' | translate }}" />
                             <svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusEmail" fill="#bbb"
                                 stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 682.667 682.667">
                                 <defs>
@@ -43,13 +43,13 @@
                         </div>
                     </div>
                     <div class="mt-8">
-                        <label class="text-sm block mb-2">Password</label>
+                        <label class="text-sm block mb-2">{{ 'Authentication_Password' | translate }}</label>
                         <div class="relative flex items-center">
                             <input name="password" [(ngModel)]="loginModel.Password" #password
                                 (focus)="onFocusPassword()" (blur)="onBlurPassword()"
                                 [type]="showPassword ? 'text' : 'password'" required
                                 class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
-                                placeholder="Enter password" />
+                                placeholder="{{ 'Authentication_EnterPassword' | translate }}" />
                             <svg xmlns="http://www.w3.org/2000/svg" (click)="togglePasswordVisibility()"
                                 [class.focus-color]="focusPassword" fill="#bbb" stroke="#bbb"
                                 class="w-[18px] h-[18px] absolute right-2 cursor-pointer" viewBox="0 0 128 128">
@@ -64,22 +64,23 @@
                             <input id="remember-me" name="remember-me" type="checkbox"
                                 class="h-4 w-4 shrink-0 border-gray-300 rounded" />
                             <label for="remember-me" class="ml-3 block text-sm">
-                                Remember me
+                                {{ 'Authentication_RememberMe' | translate }}
                             </label>
                         </div>
                         <div>
                             <a class="text-blue-600 font-semibold text-sm hover:underline">
-                                Forgot Password?
+                                {{ 'Authentication_ForgotPassword' | translate }}
                             </a>
                         </div>
                     </div>
                     <div class="mt-12">
                         <button type="button" (click)="login(loginModel)"
                             class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
-                            Sign in
+                            {{ 'Authentication_Login' | translate }}
                         </button>
                     </div>
-                    <p class="my-8 text-sm text-gray-400 text-center">or continue with</p>
+                    <p class="my-8 text-sm text-gray-400 text-center">{{ 'Authentication_OrContinueWith' | translate }}
+                    </p>
                     <div class="space-x-8 flex justify-center">
                         <button type="button" class="border-none outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30px" class="inline" viewBox="0 0 512 512">
@@ -107,7 +108,7 @@
                 </form>
             </div>
             <div class="md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8">
-                <img src="../../../../assets/login.webp" class="w-full h-full object-contain" alt="login-image" />
+                <img src="../../../../assets/auth/login.webp" class="w-full h-full object-contain" alt="login-image" />
             </div>
         </div>
     </div>

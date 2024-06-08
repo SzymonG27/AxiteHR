@@ -7,16 +7,16 @@ export const routes: Routes = [
 	{
 		path: '',
 		component: HomeComponent,
-		title: 'Home page'
+		data: { title: 'HOME_PAGE_TITLE' }
 	},
 	{
 		path: 'Login',
 		component: LoginComponent,
-		title: 'Login page'
+		data: { title: 'LOGIN_PAGE_TITLE' }
 	},
 	{
 		path: 'Register',
 		component: RegisterComponent,
-		title: 'Register page'
+		data: { title: 'REGISTER_PAGE_TITLE' }
 	}
 ];

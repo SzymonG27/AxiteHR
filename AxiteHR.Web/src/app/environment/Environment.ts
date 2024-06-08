@@ -1,4 +1,5 @@
 export const Environment = {
     production: false,
-    authApiBaseUrl: "https://localhost:44336/api"
+    authApiUrl: "https://localhost:7001/api",
+    gatewayApiUrl: "https://localhost:7777/api"
 }

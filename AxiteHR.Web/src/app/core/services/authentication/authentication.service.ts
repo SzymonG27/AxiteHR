@@ -17,14 +17,14 @@ export class AuthenticationService {
 
 	public Register(register: RegisterRequest): Observable<HttpEvent<any>> {
 		return this.http.post<HttpEvent<any>>(
-			`${Environment.authApiBaseUrl}${ApiPaths.Register}`,
+			`${Environment.authApiUrl}${ApiPaths.Register}`,
 			register
 		);
 	}
 
 	public Login(login: LoginRequest): Observable<LoginResponse> {
 		return this.http.post<{ value: LoginResponse }>(
-			`${Environment.authApiBaseUrl}${ApiPaths.Login}`,
+			`${Environment.authApiUrl}${ApiPaths.Login}`,
 			login
 		).pipe(
 			map(response => response.value)

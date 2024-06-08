@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+		<EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\SharedResources.en.resx" />
+		<EmbeddedResource Include="Resources\SharedResources.pl.resx" />
+		<EmbeddedResource Include="Resources\AuthResources.en.resx" />
+		<EmbeddedResource Include="Resources\AuthResources.pl.resx" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)GenerateResources.ps1" />
+	</Target>
+
+</Project>

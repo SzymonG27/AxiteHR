@@ -15,12 +15,11 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 			_jwtOptions = jwtOptions.Value;
 		}
 
-		public string GenerateToken(AppUser appUser)
+		public string GenerateToken(AppUser appUser, IList<string> roleList)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var secret = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
-
-			var claims = new List<Claim>
+			var claimList = new List<Claim>
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, appUser.Id),
 				new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
@@ -29,11 +28,13 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				new Claim("PhoneNumber", appUser.PhoneNumber ?? ""),
 			};
 
+			claimList.AddRange(roleList.Select(role => new Claim(ClaimTypes.Role, role)));
+
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Audience = _jwtOptions.Audience,
 				Issuer = _jwtOptions.Issuer,
-				Subject = new ClaimsIdentity(claims),
+				Subject = new ClaimsIdentity(claimList),
 				Expires = DateTime.Now.AddMinutes(_jwtOptions.ExpiresInMins),
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
 			};

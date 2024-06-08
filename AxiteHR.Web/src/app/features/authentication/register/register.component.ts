@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
-import { RegisterRequest } from '../../../models/authentication/RegisterRequest';
+import { RegisterRequest } from '../../../core/models/authentication/RegisterRequest';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
-import { DataBehaviourService } from '../../../services/data/data-behaviour.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
+import { BlockUIService } from '../../../core/services/block-ui.service';
 
 @Component({
 	selector: 'app-register',
@@ -15,7 +17,8 @@ import { DataBehaviourService } from '../../../services/data/data-behaviour.serv
 		CommonModule,
 		RouterModule,
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		TranslateModule
 	],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.css'
@@ -34,7 +37,13 @@ export class RegisterComponent {
 
 	private strongPassRegex: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
-	constructor(private authService: AuthenticationService, private router: Router, private dataService: DataBehaviourService) {
+	constructor(
+		private authService: AuthenticationService,
+		private router: Router,
+		private dataService: DataBehaviourService,
+		private blockUI: BlockUIService,
+		private translate: TranslateService)
+	{
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.Email, {
 				validators: [Validators.required, Validators.email]
@@ -59,18 +68,23 @@ export class RegisterComponent {
 
 	register() {
 		if (this.registerForm.valid) {
+			this.blockUI.start();
 			this.registerModel = this.registerForm.value;
 			this.authService.Register(this.registerModel).subscribe({
 				next: (_response: HttpEvent<any>) => {
 					this.dataService.setRegistered(true);
+					this.blockUI.stop();
 					this.router.navigate(['/Login']);
 				},
 				error: (error: HttpErrorResponse) => {
 					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
 						this.errorMessage = error.error.value.errorMessage;
 					} else {
-						this.errorMessage = 'An unexpected error occurred. Please try again.';
+						this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
+							this.errorMessage = translation;
+						});
 					}
+					this.blockUI.stop();
 				}
 			});
 		}

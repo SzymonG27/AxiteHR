@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthStateService } from '../../core/services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-home',
 	standalone: true,
-	imports: [],
+	imports: [TranslateModule],
 	templateUrl: './home.component.html',
 	styleUrl: './home.component.css'
 })

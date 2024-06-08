@@ -1,8 +1,10 @@
-﻿using AxiteHR.Services.AuthAPI.Data;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Models;
 using AxiteHR.Services.AuthAPI.Models.Const;
 using AxiteHR.Services.AuthAPI.Models.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 
 namespace AxiteHR.Services.AuthAPI.Services.Impl
 {
@@ -12,16 +14,19 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 		private readonly UserManager<AppUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IJwtTokenGenerator _jwtTokenGenerator;
+		private readonly IStringLocalizer<AuthResources> _authLocalizer;
 
 		public AuthService(AppDbContext dbContext,
 			UserManager<AppUser> userManager,
 			RoleManager<IdentityRole> roleManager,
-			IJwtTokenGenerator jwtTokenGenerator)
+			IJwtTokenGenerator jwtTokenGenerator,
+			IStringLocalizer<AuthResources> authLocalizer)
 		{
 			_dbContext = dbContext;
 			_userManager = userManager;
 			_roleManager = roleManager;
 			_jwtTokenGenerator = jwtTokenGenerator;
+			_authLocalizer = authLocalizer;
 		}
 
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
@@ -32,7 +37,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				return new LoginResponseDto
 				{
 					IsLoggedSuccessful = false,
-					ErrorMessage = "Invalid mail or password"
+					ErrorMessage = _authLocalizer[AuthResourcesGenerated.LoginInvalidData]
 				};
 			}
 
@@ -63,7 +68,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = "User with passed e-mail already exists in appliaction"
+					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterEmailExistsInDb]
 				};
 				return response;
 			}
@@ -74,7 +79,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = "User with passed Username already exists in appliaction"
+					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterUserNameExistsInDb]
 				};
 				return response;
 			}
@@ -99,7 +104,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false,
-						ErrorMessage = "An error occurred during user registration. Please try again later."
+						ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterGlobalError]
 					};
 				}
 
@@ -127,7 +132,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = "An error occurred during user registration. Please try again later."
+					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterGlobalError]
 				};
 				return response;
 			}

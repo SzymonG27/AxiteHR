@@ -9,10 +9,9 @@ import { DataBehaviourService } from "../services/data/data-behaviour.service";
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-	constructor(private dataService: DataBehaviourService) {}
+	constructor(private dataService: DataBehaviourService, private router: Router) {}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		let router = inject(Router);
 
 		const token = localStorage.getItem(AuthDictionary.Token);
 
@@ -25,7 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 			if (isExpired) {
 				localStorage.removeItem(AuthDictionary.Token);
 				this.dataService.setIsTokenExpired(true);
-				router.navigate(['/Login']);
+				this.router.navigate(['/Login']);
 			}
 
 			req = req.clone({

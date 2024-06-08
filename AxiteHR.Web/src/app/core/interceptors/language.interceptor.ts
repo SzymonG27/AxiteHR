@@ -8,9 +8,11 @@ export class LanguageInterceptor implements HttpInterceptor {
 	constructor(private translate: TranslateService) { }
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		const currentLang = this.translate.currentLang || 'en';
+
 		const clonedRequest = req.clone({
 			setHeaders: {
-			  'Accept-Language': this.translate.currentLang
+			  'Accept-Language': currentLang
 			}
 		});
 		return next.handle(clonedRequest);

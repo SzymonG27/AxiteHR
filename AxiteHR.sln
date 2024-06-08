@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Globalization", "AxiteHR.Globalization\AxiteHR.Globalization.csproj", "{EE2738EB-ADC7-490B-B6C7-6D397EBF6373}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{5B584489-17C8-46B8-97E8-2037ECD16857}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{68CCE206-2AD3-4E19-A608-30E90D80B33B}"
@@ -21,16 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Services.AuthAPI", 
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AxiteHR.Web", "AxiteHR.Web\AxiteHR.Web.esproj", "{E2D33EFC-5873-4353-9895-6D1ADF560330}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.GlobalizationResources", "AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj", "{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EE2738EB-ADC7-490B-B6C7-6D397EBF6373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE2738EB-ADC7-490B-B6C7-6D397EBF6373}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE2738EB-ADC7-490B-B6C7-6D397EBF6373}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE2738EB-ADC7-490B-B6C7-6D397EBF6373}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20662DEF-891B-41E4-85D7-80B5125A902E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20662DEF-891B-41E4-85D7-80B5125A902E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20662DEF-891B-41E4-85D7-80B5125A902E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,6 +45,10 @@ Global
 		{E2D33EFC-5873-4353-9895-6D1ADF560330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2D33EFC-5873-4353-9895-6D1ADF560330}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2D33EFC-5873-4353-9895-6D1ADF560330}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Resources\CompanyResources.en.resx" />
+		<EmbeddedResource Include="Resources\CompanyResources.pl.resx" />
 		<EmbeddedResource Include="Resources\SharedResources.en.resx" />
 		<EmbeddedResource Include="Resources\SharedResources.pl.resx" />
 		<EmbeddedResource Include="Resources\AuthResources.en.resx" />

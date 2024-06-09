@@ -1,4 +1,4 @@
-using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
 using AxiteHR.Services.AuthAPI.Models;
@@ -34,8 +34,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer, StringLocalizer<SharedResources>>();
-builder.Services.AddSingleton<IStringLocalizer, StringLocalizer<AuthResources>>();
+builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();

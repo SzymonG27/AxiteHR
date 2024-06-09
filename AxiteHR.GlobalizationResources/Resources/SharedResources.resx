@@ -117,16 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginInvalidData" xml:space="preserve">
-    <value>Invalid mail or password.</value>
+  <data name="Global_CompareField" xml:space="preserve">
+    <value>The {0} field must match the {1} field.</value>
   </data>
-  <data name="RegisterEmailExistsInDb" xml:space="preserve">
-    <value>User with passed e-mail already exists in application.</value>
+  <data name="Global_InvalidEmailAddress" xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
   </data>
-  <data name="RegisterGlobalError" xml:space="preserve">
-    <value>An error occurred during user registration. Please try again later.</value>
+  <data name="Global_MinLengthField" xml:space="preserve">
+    <value>The {0} field must be at least {1} characters long.</value>
   </data>
-  <data name="RegisterUserNameExistsInDb" xml:space="preserve">
-    <value>User with passed Username already exists in application.</value>
+  <data name="Global_RequiredField" xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="HelloWorld" xml:space="preserve">
+    <value>Hello world!</value>
   </data>
 </root>

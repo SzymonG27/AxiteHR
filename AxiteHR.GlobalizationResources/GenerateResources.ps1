@@ -6,10 +6,11 @@
         [string]$outputFile
     )
 
-    $generatedClassName = "${resourceFileName}Generated"
+    $generatedClassName = "${resourceFileName}Keys"
     $resourceFiles = Get-ChildItem -Path $resourceFolderPath -Filter "$resourceFileName.*.resx"
 
     $contents = @"
+//File is auto-generated. Do not modify
 namespace $namespace
 {
     public static class $generatedClassName
@@ -49,7 +50,7 @@ function GenerateResourceClasses {
 
     foreach ($group in $resourceGroups) {
         $resourceFileName = $group.Name
-        $outputFile = "$resourceFileName.generated.cs"
+        $outputFile = "${resourceFileName}Keys.cs"
         GenerateResourceClass -resourceFolderPath $resourceFolderPath -resourceFileName $resourceFileName -namespace $namespace -outputFile $outputFile
     }
 }

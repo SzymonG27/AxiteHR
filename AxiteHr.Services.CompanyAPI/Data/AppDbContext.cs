@@ -24,14 +24,14 @@ namespace AxiteHr.Services.CompanyAPI.Data
 				.ValueGeneratedNever();
 			modelBuilder.Entity<CompanyPermission>()
 				.HasData(
-					new CompanyPermission { Id = 1, PermissionName = "Creator" },
-					new CompanyPermission { Id = 2, PermissionName = "Authorized to manage" },
-					new CompanyPermission { Id = 3, PermissionName = "Employee" }
+					new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
+					new CompanyPermission { Id = 2, PermissionName = "Employee" }
 				);
 
 			modelBuilder.Entity<CompanyRole>()
 				.HasData(
-					new CompanyRole { Id = 1, RoleName = "Software department", IsMain = true }
+					new CompanyRole { Id = 1, RoleName = "Company creator", IsMain = false, IsVisible = false },
+					new CompanyRole { Id = 2, RoleName = "Software department", IsMain = true, IsVisible = true }
 				);
 		}
 	}

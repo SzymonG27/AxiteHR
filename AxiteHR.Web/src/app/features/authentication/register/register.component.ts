@@ -79,6 +79,21 @@ export class RegisterComponent {
 				error: (error: HttpErrorResponse) => {
 					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
 						this.errorMessage = error.error.value.errorMessage;
+					} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
+						let firstError: boolean = true;
+	
+						for (let key in error.error.errors) {
+							if (error.error.errors.hasOwnProperty(key)) {
+								error.error.errors[key].forEach((errText: string) => {
+									if (firstError) {
+										this.errorMessage = errText;
+										firstError = false;
+									} else {
+										this.errorMessage += `\n*${errText}`;
+									}
+								});
+							}
+						}
 					} else {
 						this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
 							this.errorMessage = translation;

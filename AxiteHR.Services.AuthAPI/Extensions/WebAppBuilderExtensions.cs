@@ -7,7 +7,7 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 	{
 		public static WebApplicationBuilder AddGlobalization(this WebApplicationBuilder builder)
 		{
-			builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+			builder.Services.AddLocalization();
 			builder.Services.Configure<RequestLocalizationOptions>(options =>
 			{
 				var supportedCultures = GetSupportedCultures();

@@ -120,6 +120,27 @@
   <data name="LoginInvalidData" xml:space="preserve">
     <value>Nieprawidłowy adres e-mail lub hasło.</value>
   </data>
+  <data name="Model_Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="Model_FirstName" xml:space="preserve">
+    <value>Imię</value>
+  </data>
+  <data name="Model_LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="Model_Password" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="Model_PhoneNumber" xml:space="preserve">
+    <value>Numer telefonu</value>
+  </data>
+  <data name="Model_UserName" xml:space="preserve">
+    <value>Nazwa użytkownika</value>
+  </data>
+  <data name="Model_UserPasswordRepeated" xml:space="preserve">
+    <value>Potwierdź hasło</value>
+  </data>
   <data name="RegisterEmailExistsInDb" xml:space="preserve">
     <value>Użytkownik z podanym adresem E-mail istnieje już w aplikacji.</value>
   </data>

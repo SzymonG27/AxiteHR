@@ -1,6 +1,8 @@
+using AutoMapper;
+using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHR.GatewaySol.Extensions;
-using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -15,13 +17,18 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 //Scopes, singletons
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer, StringLocalizer<SharedResources>>();
+builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+builder.Services.AddSingleton<IStringLocalizer<CompanyResources>, StringLocalizer<CompanyResources>>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

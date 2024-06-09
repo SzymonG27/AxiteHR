@@ -14,4 +14,5 @@ export class JwtPayloadClient implements JwtPayload {
 	given_name?: string;
 	family_name?: string;
 	phoneNumber?: string;
+	role?: string | string[];
 }

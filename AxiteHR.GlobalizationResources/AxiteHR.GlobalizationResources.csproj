@@ -8,10 +8,49 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\SharedResources.en.resx" />
-		<EmbeddedResource Include="Resources\SharedResources.pl.resx" />
-		<EmbeddedResource Include="Resources\AuthResources.en.resx" />
-		<EmbeddedResource Include="Resources\AuthResources.pl.resx" />
+		<EmbeddedResource Include="Resources\AuthResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\AuthResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>AuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\CompanyResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\CompanyResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CompanyResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\SharedResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\SharedResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\AuthResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AuthResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\CompanyResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>CompanyResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\SharedResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>SharedResources.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

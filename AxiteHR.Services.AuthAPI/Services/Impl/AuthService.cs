@@ -1,4 +1,5 @@
 ﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Models;
 using AxiteHR.Services.AuthAPI.Models.Const;
@@ -37,7 +38,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				return new LoginResponseDto
 				{
 					IsLoggedSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesGenerated.LoginInvalidData]
+					ErrorMessage = _authLocalizer[AuthResourcesKeys.LoginInvalidData]
 				};
 			}
 
@@ -51,7 +52,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				};
 			}
 
-			var token = _jwtTokenGenerator.GenerateToken(user);
+			var roleList = await _userManager.GetRolesAsync(user);
+			var token = _jwtTokenGenerator.GenerateToken(user, roleList);
 
 			return new LoginResponseDto
 			{
@@ -68,7 +70,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterEmailExistsInDb]
+					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]
 				};
 				return response;
 			}
@@ -79,7 +81,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterUserNameExistsInDb]
+					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]
 				};
 				return response;
 			}
@@ -104,7 +106,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false,
-						ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterGlobalError]
+						ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterGlobalError]
 					};
 				}
 
@@ -132,7 +134,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Impl
 				var response = new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesGenerated.RegisterGlobalError]
+					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterGlobalError]
 				};
 				return response;
 			}

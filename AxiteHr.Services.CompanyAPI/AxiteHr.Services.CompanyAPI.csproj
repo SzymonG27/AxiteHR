@@ -23,8 +23,4 @@
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

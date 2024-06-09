@@ -62,3 +62,13 @@
     --tw-text-opacity: 1;
     color: rgb(134 151 196 / var(--tw-text-opacity));
 }
+
+.rotate-0 {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}

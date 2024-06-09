@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AxiteHr.Services.CompanyAPI.Models.Dto.Request;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AxiteHr.Services.CompanyAPI.Controllers
 {
@@ -6,9 +8,11 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 	[ApiController]
 	public class CompanyManagerController : ControllerBase
 	{
-		public IActionResult Index()
+		[HttpPost("[action]")]
+		[Authorize]
+		public IActionResult CreateNewCompany([FromBody] NewCompanyRequestDto newCompanyRequest)
 		{
-			return Ok();
+			return Ok("Working perfect");
 		}
 	}
 }

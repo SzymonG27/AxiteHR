@@ -1,6 +1,8 @@
 using AutoMapper;
 using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
+using AxiteHr.Services.CompanyAPI.Services;
+using AxiteHr.Services.CompanyAPI.Services.Impl;
 using AxiteHR.GatewaySol.Extensions;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -26,6 +28,9 @@ builder.Services.AddControllers()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 //Scopes, singletons
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 builder.Services.AddSingleton<IStringLocalizer<CompanyResources>, StringLocalizer<CompanyResources>>();

@@ -39,6 +39,7 @@ export class NavBarComponent {
 	currentUrl: string = "";
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
+	mouseCompanySectionOvered: boolean = false;
 	UserRole = UserRole;
 	userRoles: string[] = [];
 

@@ -8,8 +8,10 @@
     "//Section2": "Global messages",
     "Global_HelloWorld": "Witaj świecie",
 
+    "//Section3": "NavBar messages",
+    "Nav_Company": "Firma",
 
-    "//Section3": "Auth messages",
+    "//Section4": "Auth messages",
     "Authentication_Login": "Zaloguj się",
     "Authentication_Register": "Zarejestruj się",
     "Authentication_Signout": "Wyloguj się",

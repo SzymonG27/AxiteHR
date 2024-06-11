@@ -72,3 +72,33 @@
     transform: rotate(180deg);
     transition: transform 0.3s ease;
 }
+
+.company-svg {
+    color: white;
+    transition-duration: 300ms;
+}
+
+.menu-item:hover .href-nav-option {
+    color: #d1d5db; /* Jasnoszary */
+}
+
+.text-and-icon {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.icon-svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.group:hover .submenu {
+    display: block;
+}

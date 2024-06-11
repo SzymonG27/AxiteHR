@@ -36,7 +36,7 @@ namespace AxiteHR.Services.AuthAPI.Models.Dto
 		[Display(Name = AuthResourcesKeys.Model_UserPasswordRepeated, ResourceType = typeof(AuthResources))]
 		public string UserPasswordRepeated { get; set; } = string.Empty;
 
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		//[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		[Display(Name = AuthResourcesKeys.Model_PhoneNumber, ResourceType = typeof(AuthResources))]
 		public string PhoneNumber { get; set; } = string.Empty;
 	}

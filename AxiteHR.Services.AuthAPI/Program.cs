@@ -1,9 +1,9 @@
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
-using AxiteHR.Services.AuthAPI.Models;
-using AxiteHR.Services.AuthAPI.Services;
-using AxiteHR.Services.AuthAPI.Services.Impl;
+using AxiteHR.Services.AuthAPI.Models.Auth;
+using AxiteHR.Services.AuthAPI.Services.Auth;
+using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;

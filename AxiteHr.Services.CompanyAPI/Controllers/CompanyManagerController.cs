@@ -1,4 +1,4 @@
-﻿using AxiteHr.Services.CompanyAPI.Models.Dto.Request;
+﻿using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

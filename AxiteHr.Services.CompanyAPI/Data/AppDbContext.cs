@@ -1,4 +1,4 @@
-﻿using AxiteHr.Services.CompanyAPI.Models;
+﻿using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHr.Services.CompanyAPI.Data
@@ -18,7 +18,7 @@ namespace AxiteHr.Services.CompanyAPI.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			
+
 			modelBuilder.Entity<CompanyPermission>()
 				.Property(x => x.Id)
 				.ValueGeneratedNever();

@@ -1,8 +1,8 @@
 using AutoMapper;
 using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Services;
-using AxiteHr.Services.CompanyAPI.Services.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Company;
+using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.GatewaySol.Extensions;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;

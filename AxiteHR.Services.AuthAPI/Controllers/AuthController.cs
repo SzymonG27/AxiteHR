@@ -1,5 +1,5 @@
-﻿using AxiteHR.Services.AuthAPI.Models.Dto;
-using AxiteHR.Services.AuthAPI.Services;
+﻿using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
+using AxiteHR.Services.AuthAPI.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AxiteHR.Services.AuthAPI.Controllers
@@ -14,7 +14,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			_authService = authService;
 		}
 		[HttpPost("[action]")]
-		public async Task<IActionResult> Register([FromBody]RegisterRequestDto registerRequest)
+		public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
 		{
 			var response = await _authService.Register(registerRequest);
 			if (!response.IsRegisteredSuccessful)
@@ -25,7 +25,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		}
 
 		[HttpPost("[action]")]
-		public async Task<IActionResult> Login([FromBody]LoginRequestDto loginRequest)
+		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
 			var response = await _authService.Login(loginRequest);
 			if (!response.IsLoggedSuccessful)

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.Models;
-using AxiteHr.Services.CompanyAPI.Models.Dto;
+using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 
 namespace AxiteHr.Services.CompanyAPI
 {

@@ -6,6 +6,7 @@ namespace AxiteHR.GlobalizationResources
         public const string Global_CompareField = "Global_CompareField";
         public const string Global_InvalidEmailAddress = "Global_InvalidEmailAddress";
         public const string Global_MinLengthField = "Global_MinLengthField";
+        public const string Global_NotAuthorizedError = "Global_NotAuthorizedError";
         public const string Global_RequiredField = "Global_RequiredField";
         public const string HelloWorld = "HelloWorld";
     }

@@ -3,6 +3,7 @@
     "HOME_PAGE_TITLE": "Strona Główna",
     "LOGIN_PAGE_TITLE": "Strona Logowania",
     "REGISTER_PAGE_TITLE": "Strona Rejestracji",
+    "COMPANY_LIST_TITLE_PAGE": "Lista firm",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
@@ -10,6 +11,7 @@
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Firma",
+    "Nav_Company_List": "Lista firm",
 
     "//Section4": "Auth messages",
     "Authentication_Login": "Zaloguj się",
@@ -47,5 +49,12 @@
     "Authentication_ConfirmPassword_MustMatchError": "Pole potwierdź hasło musi zawierać tą samą wartość co pole hasło",
     "Authentication_Login_SessionExpired": "Sesja logowania wygasła. Proszę się zalogować.",
     "Authentication_Login_RegistrationSuccessful" : "Pomyślnie zarejestrowano! Proszę się zalogować.",
-    "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
+    "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie.",
+
+    "//Section5": "Company messages",
+    "Company_List_CompanyName": "Nazwa firmy",
+    "Company_List_CreatedDate": "Data stworzenia",
+    "Company_List_EmployeeCount": "Ilość pracowników",
+    "Company_List_Action": "Akcja",
+    "Company_List_Manage": "Zarządzaj"
 }

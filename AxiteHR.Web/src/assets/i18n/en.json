@@ -3,6 +3,7 @@
     "HOME_PAGE_TITLE": "Home Page",
     "LOGIN_PAGE_TITLE": "Login Page",
     "REGISTER_PAGE_TITLE": "Register Page",
+    "COMPANY_LIST_TITLE_PAGE": "Company list",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
@@ -10,6 +11,7 @@
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Company",
+    "Nav_Company_List": "List of companies",
 
     "//Section4": "Auth messages",
     "Authentication_Login": "Sign in",
@@ -47,5 +49,12 @@
     "Authentication_ConfirmPassword_MustMatchError": "Confirm password must be the same as password",
     "Authentication_Login_SessionExpired": "Login session expired. Please log in.",
     "Authentication_Login_RegistrationSuccessful" : "Registration successful! Please log in.",
-    "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again."
+    "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again.",
+
+    "//Section5": "Company messages",
+    "Company_List_CompanyName": "Company name",
+    "Company_List_CreatedDate": "Created date",
+    "Company_List_EmployeeCount": "Count of employees",
+    "Company_List_Action": "Action",
+    "Company_List_Manage": "Manage"
 }

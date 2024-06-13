@@ -126,6 +126,9 @@
   <data name="Global_MinLengthField" xml:space="preserve">
     <value>Pole {0} musi mieć co najmniej {1} znaków.</value>
   </data>
+  <data name="Global_NotAuthorizedError" xml:space="preserve">
+    <value>Użytkownik nie został uwierzytelniony</value>
+  </data>
   <data name="Global_RequiredField" xml:space="preserve">
     <value>Pole {0} jest wymagane.</value>
   </data>

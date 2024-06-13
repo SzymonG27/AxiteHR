@@ -1,5 +1,19 @@
 {
-	"Routes": [],
+	"Routes": [
+		//CompanyAPI
+		{
+			"DownstreamPathTemplate": "/api/Company/List/{userId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/Company/List/{userId}",
+			"UpstreamHttpMethod": [ "Get" ]
+		}
+	],
 	"GlobalConfiguration": {
 		"BaseUrl": "https://localhost:7777"
 	}

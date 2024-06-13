@@ -126,6 +126,9 @@
   <data name="Global_MinLengthField" xml:space="preserve">
     <value>The {0} field must be at least {1} characters long.</value>
   </data>
+  <data name="Global_NotAuthorizedError" xml:space="preserve">
+    <value>User not authenticated.</value>
+  </data>
   <data name="Global_RequiredField" xml:space="preserve">
     <value>The {0} field is required.</value>
   </data>

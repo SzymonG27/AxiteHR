@@ -101,6 +101,7 @@ export class NavBarComponent {
 
 	logOut() {
 		this.authService.LogOut();
+		this.router.navigate(['']);
 	}
 
 	switchLanguage(language: string) {

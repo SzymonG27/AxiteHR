@@ -88,6 +88,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User not authenticated..
+        /// </summary>
+        public static string Global_NotAuthorizedError {
+            get {
+                return ResourceManager.GetString("Global_NotAuthorizedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is required..
         /// </summary>
         public static string Global_RequiredField {

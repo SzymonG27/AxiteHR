@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.AddGlobalization();
+builder.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
@@ -38,8 +40,13 @@ builder.Services.AddSingleton<IStringLocalizer<CompanyResources>, StringLocalize
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.AddAuthentication();
-builder.Services.AddAuthorization();
+//Cors
+builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
+	policy =>
+	{
+		policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+	})
+);
 
 var app = builder.Build();
 
@@ -49,6 +56,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 

@@ -11,7 +11,10 @@
 				}
 			],
 			"UpstreamPathTemplate": "/api/Company/List/{userId}",
-			"UpstreamHttpMethod": [ "Get" ]
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
 		}
 	],
 	"GlobalConfiguration": {

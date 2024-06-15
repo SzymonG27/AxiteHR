@@ -1,6 +1,6 @@
 ﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
 {
-	public class CompanyLevelDto
+	public record CompanyLevelDto
 	{
 		public int Id { get; set; }
 

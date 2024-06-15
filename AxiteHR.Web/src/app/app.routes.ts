@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { LoginComponent } from './features/authentication/login/login.component';
 import { RegisterComponent } from './features/authentication/register/register.component';
-import { CompanyListComponent } from './features/company-manager/company-list/company-list.component';
+import { CompanyListComponent } from './features/company/company-list/company-list.component';
 
 export const routes: Routes = [
 	//Home

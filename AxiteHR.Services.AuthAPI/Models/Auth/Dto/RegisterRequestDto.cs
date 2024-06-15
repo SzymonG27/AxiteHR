@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.AuthAPI.Models.Auth.Dto
 {
-	public class RegisterRequestDto
+	public record RegisterRequestDto
 	{
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		[EmailAddress(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_InvalidEmailAddress)]

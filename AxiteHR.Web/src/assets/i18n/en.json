@@ -8,6 +8,7 @@
     
     "//Section2": "Global messages",
     "Global_HelloWorld": "Hello world",
+    "Global_ErrorFetchingData": "An error occurred while fetching data",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Company",
@@ -56,5 +57,7 @@
     "Company_List_CreatedDate": "Created date",
     "Company_List_EmployeeCount": "Count of employees",
     "Company_List_Action": "Action",
-    "Company_List_Manage": "Manage"
+    "Company_List_Manage": "Manage",
+    "Company_List_Empty": "No companies",
+    "Company_List_CreateCompanyBtn": "Create new company"
 }

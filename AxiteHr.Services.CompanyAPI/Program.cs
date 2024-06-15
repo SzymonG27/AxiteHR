@@ -16,10 +16,7 @@ builder.AddGlobalization();
 builder.AddAuthentication();
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-	opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -42,10 +39,7 @@ builder.Services.AddSwaggerGen();
 
 //Cors
 builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
-	policy =>
-	{
-		policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-	})
+	policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader())
 );
 
 var app = builder.Build();

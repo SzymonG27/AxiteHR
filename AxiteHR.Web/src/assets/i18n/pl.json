@@ -8,6 +8,7 @@
 
     "//Section2": "Global messages",
     "Global_HelloWorld": "Witaj świecie",
+    "Global_ErrorFetchingData": "Wystąpił błąd podczas pobierania danych",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Firma",
@@ -56,5 +57,7 @@
     "Company_List_CreatedDate": "Data stworzenia",
     "Company_List_EmployeeCount": "Ilość pracowników",
     "Company_List_Action": "Akcja",
-    "Company_List_Manage": "Zarządzaj"
+    "Company_List_Manage": "Zarządzaj",
+    "Company_List_Empty": "Brak firm",
+    "Company_List_CreateCompanyBtn": "Stwórz nową firmę"
 }

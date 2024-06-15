@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
+﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
 {
-	public class CompanyDto
+	public record CompanyDto
 	{
 		public int Id { get; set; }
 

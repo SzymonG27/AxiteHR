@@ -21,7 +21,7 @@ import { take } from 'rxjs';
 export class CompanyListComponent {
 	isLoadingTableError: boolean = false;
 	errorMessage: string | null = null;
-	tableContent: CompanyListItem[] = [];
+	companyList: CompanyListItem[] = [];
 	constructor(private companyListService: CompanyListService) { }
 
 	ngOnInit() {
@@ -33,7 +33,7 @@ export class CompanyListComponent {
 					this.isLoadingTableError = true;
 					this.errorMessage = response.errorMessage;
 				}
-				this.tableContent = response.companyList;
+				this.companyList = response.companyList;
 			},
 			error: () => {
 				//ToDo message

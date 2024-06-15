@@ -9,20 +9,13 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class CompanyController : ControllerBase
+	public class CompanyController(ICompanyService companyService) : ControllerBase
 	{
-		private readonly ICompanyService _companyService;
-
-		public CompanyController(ICompanyService companyService)
-		{
-			_companyService = companyService;
-		}
-
 		[HttpGet("[action]/{userId}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public IEnumerable<CompanyListDto> List(Guid userId)
 		{
-			return _companyService.GetCompanyList(userId);
+			return companyService.GetCompanyList(userId);
 		}
 	}
 }

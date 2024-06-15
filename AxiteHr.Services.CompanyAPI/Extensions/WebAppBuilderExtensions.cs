@@ -50,7 +50,7 @@ namespace AxiteHR.GatewaySol.Extensions
 
 				options.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(context =>
 				{
-					var lang = context.Request.Headers["Accept-Language"].ToString();
+					var lang = context.Request.Headers.AcceptLanguage.ToString();
 					if (string.IsNullOrEmpty(lang))
 					{
 						lang = "en";
@@ -63,11 +63,11 @@ namespace AxiteHR.GatewaySol.Extensions
 
 			static List<CultureInfo> GetSupportedCultures()
 			{
-				return new List<CultureInfo>
-				{
+				return
+				[
 					new CultureInfo("en"),
 					new CultureInfo("pl")
-				};
+				];
 			}
 		}
 	}

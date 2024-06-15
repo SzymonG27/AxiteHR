@@ -1,9 +1,9 @@
 ﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
 {
-	public class CompanyListDto
+	public record CompanyListDto
 	{
 		public int Id { get; set; }
-		public string CompanyName { get; set; }
-		public string InsDate { get; set; }
+		public string CompanyName { get; set; } = string.Empty;
+		public string InsDate { get; set; } = string.Empty;
 	}
 }

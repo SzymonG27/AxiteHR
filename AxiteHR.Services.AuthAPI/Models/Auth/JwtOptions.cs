@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.AuthAPI.Models.Auth
 {
-	public class JwtOptions
+	public record JwtOptions
 	{
 		public string Secret { get; set; } = string.Empty;
 		public string Issuer { get; set; } = string.Empty;

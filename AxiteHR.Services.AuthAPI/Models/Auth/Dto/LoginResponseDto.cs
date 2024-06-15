@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.AuthAPI.Models.Auth.Dto
 {
-	public class LoginResponseDto
+	public record LoginResponseDto
 	{
 		public bool IsLoggedSuccessful { get; set; }
 		public string ErrorMessage { get; set; } = string.Empty;

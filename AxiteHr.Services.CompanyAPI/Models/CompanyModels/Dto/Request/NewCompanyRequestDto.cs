@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
 {
-	public class NewCompanyRequestDto
+	public record NewCompanyRequestDto
 	{
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public string CompanyName { get; set; } = string.Empty;

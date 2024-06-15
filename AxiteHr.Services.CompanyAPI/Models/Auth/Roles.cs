@@ -6,9 +6,6 @@
 		public const string User = "User";
 		public const string UserFromCompany = "UserFromCompany";
 
-		internal static readonly List<string> ManageCompanyEnable = new()
-		{
-			Admin, User
-		};
+		internal static readonly List<string> ManageCompanyEnable = [Admin, User];
 	}
 }

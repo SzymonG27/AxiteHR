@@ -16,10 +16,7 @@ builder.AddGlobalization();
 
 // Add services to the container.
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-	opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
 	.AddIdentity<AppUser, IdentityRole>()
 	.AddEntityFrameworkStores<AppDbContext>()
@@ -42,11 +39,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Cors
-builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins", 
-	policy =>
-	{
-		policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-	})
+builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
+	policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader())
 );
 
 var app = builder.Build();

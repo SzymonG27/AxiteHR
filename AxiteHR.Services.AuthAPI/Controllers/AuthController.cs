@@ -6,17 +6,12 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AuthController : ControllerBase
+	public class AuthController(IAuthService authService) : ControllerBase
 	{
-		private readonly IAuthService _authService;
-		public AuthController(IAuthService authService)
-		{
-			_authService = authService;
-		}
 		[HttpPost("[action]")]
 		public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
 		{
-			var response = await _authService.Register(registerRequest);
+			var response = await authService.Register(registerRequest);
 			if (!response.IsRegisteredSuccessful)
 			{
 				return BadRequest(new BadRequestObjectResult(response));
@@ -27,7 +22,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		[HttpPost("[action]")]
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
-			var response = await _authService.Login(loginRequest);
+			var response = await authService.Login(loginRequest);
 			if (!response.IsLoggedSuccessful)
 			{
 				return BadRequest(new BadRequestObjectResult(response));

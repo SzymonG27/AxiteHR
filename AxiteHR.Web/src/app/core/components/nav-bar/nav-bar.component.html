@@ -15,7 +15,8 @@
                     </span>
                 </a>
                 <div class="submenu hidden absolute bg-white shadow-md group-hover:block rounded-md py-2 z-10">
-                    <a class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
+                    <a *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)"
+                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
                         {{ 'Nav_Company_List' | translate }}
                     </a>
                     <a href="#" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">Subopcja 2</a>

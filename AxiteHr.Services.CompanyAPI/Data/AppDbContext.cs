@@ -3,10 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHr.Services.CompanyAPI.Data
 {
-	public class AppDbContext : DbContext
+	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 	{
-		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<CompanyLevel> CompanyLevels { get; set; }
 		public DbSet<CompanyUser> CompanyUsers { get; set; }

@@ -7,13 +7,9 @@ using System.Text;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
-	public class JwtTokenGenerator : IJwtTokenGenerator
+	public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions) : IJwtTokenGenerator
 	{
-		private readonly JwtOptions _jwtOptions;
-		public JwtTokenGenerator(IOptions<JwtOptions> jwtOptions)
-		{
-			_jwtOptions = jwtOptions.Value;
-		}
+		private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
 		public string GenerateToken(AppUser appUser, IList<string> roleList)
 		{
@@ -21,11 +17,11 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			var secret = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
 			var claimList = new List<Claim>
 			{
-				new Claim(JwtRegisteredClaimNames.Sub, appUser.Id),
-				new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
-				new Claim(JwtRegisteredClaimNames.GivenName, appUser.FirstName),
-				new Claim(JwtRegisteredClaimNames.FamilyName, appUser.LastName),
-				new Claim("PhoneNumber", appUser.PhoneNumber ?? ""),
+				new(JwtRegisteredClaimNames.Sub, appUser.Id),
+				new(JwtRegisteredClaimNames.Email, appUser.Email),
+				new(JwtRegisteredClaimNames.GivenName, appUser.FirstName),
+				new(JwtRegisteredClaimNames.FamilyName, appUser.LastName),
+				new("PhoneNumber", appUser.PhoneNumber ?? ""),
 			};
 
 			claimList.AddRange(roleList.Select(role => new Claim(ClaimTypes.Role, role)));

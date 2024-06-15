@@ -5,19 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHR.Services.AuthAPI.Data
 {
-	public class AppDbContext : IdentityDbContext<AppUser>
+	public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)
 	{
-		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
 		public DbSet<AppUser> AppUserList { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-			builder.Entity<AppUser>(b =>
-			{
-				b.Property(u => u.Email).IsRequired();
-			});
+			builder.Entity<AppUser>(b => b.Property(u => u.Email).IsRequired());
 
 			builder.Entity<IdentityRole>().HasData(
 				new IdentityRole { Id = "c6b3a381-6ffb-4b88-8aa8-877421f520c7", Name = "Admin", NormalizedName = "ADMIN" },

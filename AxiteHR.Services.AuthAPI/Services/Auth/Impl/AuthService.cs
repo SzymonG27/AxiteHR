@@ -9,40 +9,25 @@ using Microsoft.Extensions.Localization;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
-	public class AuthService : IAuthService
+	public class AuthService(AppDbContext dbContext,
+		UserManager<AppUser> userManager,
+		RoleManager<IdentityRole> roleManager,
+		IJwtTokenGenerator jwtTokenGenerator,
+		IStringLocalizer<AuthResources> authLocalizer) : IAuthService
 	{
-		private readonly AppDbContext _dbContext;
-		private readonly UserManager<AppUser> _userManager;
-		private readonly RoleManager<IdentityRole> _roleManager;
-		private readonly IJwtTokenGenerator _jwtTokenGenerator;
-		private readonly IStringLocalizer<AuthResources> _authLocalizer;
-
-		public AuthService(AppDbContext dbContext,
-			UserManager<AppUser> userManager,
-			RoleManager<IdentityRole> roleManager,
-			IJwtTokenGenerator jwtTokenGenerator,
-			IStringLocalizer<AuthResources> authLocalizer)
-		{
-			_dbContext = dbContext;
-			_userManager = userManager;
-			_roleManager = roleManager;
-			_jwtTokenGenerator = jwtTokenGenerator;
-			_authLocalizer = authLocalizer;
-		}
-
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
 		{
-			var user = _dbContext.AppUserList.FirstOrDefault(x => x.Email.ToLower() == loginRequest.Email.ToLower());
+			var user = dbContext.AppUserList.FirstOrDefault(x => x.Email == loginRequest.Email);
 			if (user == null)
 			{
 				return new LoginResponseDto
 				{
 					IsLoggedSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesKeys.LoginInvalidData]
+					ErrorMessage = authLocalizer[AuthResourcesKeys.LoginInvalidData]
 				};
 			}
 
-			var isValid = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+			var isValid = await userManager.CheckPasswordAsync(user, loginRequest.Password);
 			if (!isValid)
 			{
 				return new LoginResponseDto
@@ -52,8 +37,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				};
 			}
 
-			var roleList = await _userManager.GetRolesAsync(user);
-			var token = _jwtTokenGenerator.GenerateToken(user, roleList);
+			var roleList = await userManager.GetRolesAsync(user);
+			var token = jwtTokenGenerator.GenerateToken(user, roleList);
 
 			return new LoginResponseDto
 			{
@@ -64,26 +49,24 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 		public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest)
 		{
-			var isUserMailInDb = _dbContext.AppUserList.FirstOrDefault(x => x.Email.ToLower() == registerRequest.Email.ToLower());
+			var isUserMailInDb = dbContext.AppUserList.FirstOrDefault(x => x.Email == registerRequest.Email);
 			if (isUserMailInDb != null)
 			{
-				var response = new RegisterResponseDto
+				return new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]
+					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]
 				};
-				return response;
 			}
 
-			var isUserNameInDb = _dbContext.AppUserList.FirstOrDefault(x => x.UserName!.ToLower() == registerRequest.UserName.ToLower());
+			var isUserNameInDb = dbContext.AppUserList.FirstOrDefault(x => x.UserName == registerRequest.UserName);
 			if (isUserNameInDb != null)
 			{
-				var response = new RegisterResponseDto
+				return new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]
+					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]
 				};
-				return response;
 			}
 
 			var user = new AppUser
@@ -97,30 +80,29 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				PhoneNumber = registerRequest.PhoneNumber
 			};
 
-			var transaction = _dbContext.Database.BeginTransaction();
+			var transaction = dbContext.Database.BeginTransaction();
 			try
 			{
-				var result = await _userManager.CreateAsync(user, registerRequest.UserPassword);
+				var result = await userManager.CreateAsync(user, registerRequest.UserPassword);
 				if (!result.Succeeded)
 				{
 					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false,
-						ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterGlobalError]
+						ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterGlobalError]
 					};
 				}
 
 				var isRoleAssigned = await AssignRoleAfterRegistration(user, Roles.User);
 				if (!isRoleAssigned)
 				{
-					var response = new RegisterResponseDto
+					return new RegisterResponseDto
 					{
 						IsRegisteredSuccessful = false
 					};
-					return response;
 				}
 
-				_dbContext.SaveChanges();
+				dbContext.SaveChanges();
 				transaction.Commit();
 				return new RegisterResponseDto
 				{
@@ -131,23 +113,22 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			{
 				//ToDo logger error app insights
 				transaction.Rollback();
-				var response = new RegisterResponseDto
+				return new RegisterResponseDto
 				{
 					IsRegisteredSuccessful = false,
-					ErrorMessage = _authLocalizer[AuthResourcesKeys.RegisterGlobalError]
+					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterGlobalError]
 				};
-				return response;
 			}
 			throw new NotImplementedException();
 
 			async Task<bool> AssignRoleAfterRegistration(AppUser user, string roleName)
 			{
-				var isRoleExists = await _roleManager.RoleExistsAsync(roleName);
+				var isRoleExists = await roleManager.RoleExistsAsync(roleName);
 				if (!isRoleExists)
 				{
 					return false;
 				}
-				await _userManager.AddToRoleAsync(user, roleName);
+				await userManager.AddToRoleAsync(user, roleName);
 				return true;
 			}
 		}

@@ -79,9 +79,9 @@ export class LoginComponent {
 				this.blockUIService.stop();
 			},
 			error: (error: HttpErrorResponse) => {
-				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
+				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
 					//Errors from response
-					this.errorMessage = error.error.value.errorMessage;
+					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
 					let firstError: boolean = true;
 

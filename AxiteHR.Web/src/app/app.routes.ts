@@ -5,6 +5,9 @@ import { RegisterComponent } from './features/authentication/register/register.c
 import { CompanyListComponent } from './features/company/company-list/company-list.component';
 import { IsLoggedInGuard } from './core/guards/auth/is-logged-in-guard.service';
 import { NoAccessComponent } from './core/components/no-access/no-access/no-access.component';
+import { IsInRoleGuard } from './core/guards/auth/is-in-role-guard.service';
+import { UserRole } from './core/models/authentication/UserRole';
+import { IsNotLoggedInGuard } from './core/guards/auth/is-not-logged-in-guard.service';
 
 export const routes: Routes = [
 	//Home
@@ -23,18 +26,20 @@ export const routes: Routes = [
 	{
 		path: 'Login',
 		component: LoginComponent,
+		canActivate: [ IsNotLoggedInGuard ],
 		data: { title: 'LOGIN_PAGE_TITLE' }
 	},
 	{
 		path: 'Register',
 		component: RegisterComponent,
+		canActivate: [ IsNotLoggedInGuard ],
 		data: { title: 'REGISTER_PAGE_TITLE' }
 	},
 	//Company
 	{
 		path: 'Company/List',
 		component: CompanyListComponent,
-		canActivate: [ IsLoggedInGuard ],
-		data: { title: 'COMPANY_LIST_TITLE_PAGE' }
+		canActivate: [ IsLoggedInGuard, IsInRoleGuard ],
+		data: { title: 'COMPANY_LIST_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
 	}
 ];

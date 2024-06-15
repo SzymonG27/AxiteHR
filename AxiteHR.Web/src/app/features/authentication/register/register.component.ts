@@ -77,8 +77,8 @@ export class RegisterComponent {
 					this.router.navigate(['/Login']);
 				},
 				error: (error: HttpErrorResponse) => {
-					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.value) {
-						this.errorMessage = error.error.value.errorMessage;
+					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
+						this.errorMessage = error.error.errorMessage;
 					} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
 						let firstError: boolean = true;
 	

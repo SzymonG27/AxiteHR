@@ -2,7 +2,7 @@ import { inject } from "@angular/core"
 import { CanActivateFn, Router } from "@angular/router"
 import { AuthStateService } from "../../services/authentication/auth-state.service"
 
-export const IsInRoleGuardService: CanActivateFn = (route) => {
+export const IsInRoleGuard: CanActivateFn = (route) => {
 	const authStateService = inject(AuthStateService);
 	const router = inject(Router);
 
@@ -11,8 +11,8 @@ export const IsInRoleGuardService: CanActivateFn = (route) => {
 		return true;
 	}
 
-	const hasRole = requiredRoles.some(role => authStateService.hasRole(role));
-	if (!hasRole) {
+	const hasAnyRole = authStateService.hasAnyRole(requiredRoles);
+	if (!hasAnyRole) {
 		router.navigate(['No-Access']);
 		return false;
 	}

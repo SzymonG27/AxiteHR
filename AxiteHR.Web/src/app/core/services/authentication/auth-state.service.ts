@@ -42,4 +42,8 @@ export class AuthStateService {
 		const userRoles = this.getUserRoles(localStorage.getItem(AuthDictionary.Token))
 		return userRoles.includes(role);
 	}
+
+	hasAnyRole(roles: string[]) {
+		return roles.some(role => this.hasRole(role));
+	}
 }

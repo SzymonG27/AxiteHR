@@ -14,7 +14,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			var response = await authService.Register(registerRequest);
 			if (!response.IsRegisteredSuccessful)
 			{
-				return BadRequest(new BadRequestObjectResult(response));
+				return BadRequest(response);
 			}
 			return Ok();
 		}
@@ -25,9 +25,9 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 			var response = await authService.Login(loginRequest);
 			if (!response.IsLoggedSuccessful)
 			{
-				return BadRequest(new BadRequestObjectResult(response));
+				return BadRequest(response);
 			}
-			return Ok(new OkObjectResult(response));
+			return Ok(response);
 		}
 	}
 }

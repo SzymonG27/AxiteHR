@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
@@ -31,6 +31,7 @@ export class LoginComponent {
 	loginMessage: string | null = null;
 	errorMessage: string | null = null;
 	loginModel: LoginRequest = new LoginRequest();
+	returnUrl: string;
 
 	constructor(
 		private authService: AuthenticationService,
@@ -38,7 +39,10 @@ export class LoginComponent {
 		private router: Router,
 		private authState: AuthStateService,
 		private blockUIService: BlockUIService,
-		private translate: TranslateService) { }
+		private translate: TranslateService,
+		private route: ActivatedRoute) {
+			this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+		}
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.subscribe((value: boolean) => {
@@ -67,7 +71,7 @@ export class LoginComponent {
 					localStorage.setItem(AuthDictionary.Token, response.token);
 					this.authState.setLoggedIn(true);
 					this.blockUIService.stop();
-					this.router.navigate(['']);
+					this.router.navigateByUrl(this.returnUrl);
 				} else if (!response.isLoggedSuccessful) {
 					this.authState.setLoggedIn(false);
 					this.errorMessage = response.errorMessage;

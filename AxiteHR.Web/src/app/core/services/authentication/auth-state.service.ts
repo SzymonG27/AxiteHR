@@ -37,4 +37,9 @@ export class AuthStateService {
 		}
 		return []; // Returns an empty array if no roles are present or token not provided
 	}
+
+	hasRole(role: string) {
+		const userRoles = this.getUserRoles(localStorage.getItem(AuthDictionary.Token))
+		return userRoles.includes(role);
+	}
 }

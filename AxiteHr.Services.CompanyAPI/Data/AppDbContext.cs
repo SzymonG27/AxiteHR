@@ -31,6 +31,15 @@ namespace AxiteHr.Services.CompanyAPI.Data
 					new CompanyRole { Id = 1, RoleName = "Company creator", IsMain = false, IsVisible = false },
 					new CompanyRole { Id = 2, RoleName = "Software department", IsMain = true, IsVisible = true }
 				);
+
+			modelBuilder.Entity<CompanyLevel>()
+				.HasData(
+					new CompanyLevel { Id = 1, MaxNumberOfWorkers = 10 },
+					new CompanyLevel { Id = 2, MaxNumberOfWorkers = 25 },
+					new CompanyLevel { Id = 3, MaxNumberOfWorkers = 50 },
+					new CompanyLevel { Id = 4, MaxNumberOfWorkers = 100 },
+					new CompanyLevel { Id = 5, MaxNumberOfWorkers = int.MaxValue }
+				);
 		}
 	}
 }

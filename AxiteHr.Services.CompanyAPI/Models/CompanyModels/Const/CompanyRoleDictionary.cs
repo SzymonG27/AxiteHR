@@ -1,8 +1,7 @@
 ﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const
 {
-	public enum PermissionDictionary
+	public enum CompanyRoleDictionary
 	{
-		CompanyManager = 1,
-		Employee = 2
+		CompanyCreator = 1
 	}
 }

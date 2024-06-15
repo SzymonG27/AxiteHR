@@ -5,6 +5,6 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 {
 	public interface ICompanyCreatorService
 	{
-		NewCompanyReponseDto NewCompanyCreate(NewCompanyRequestDto newCompanyRequest);
+		Task<NewCompanyReponseDto> NewCompanyCreate(NewCompanyRequestDto newCompanyRequest);
 	}
 }

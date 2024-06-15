@@ -31,7 +31,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 						i.CompanyName,
 						i.InsDate
 					})
-				.Where(x => x.UserId == userId && x.CompanyPermissionId == PermissionDictionary.CompanyManager)
+				.Where(x => x.UserId == userId && x.CompanyPermissionId == (int)PermissionDictionary.CompanyManager)
 				.Select(x => new CompanyListDto
 				{
 					Id = x.CompanyId,

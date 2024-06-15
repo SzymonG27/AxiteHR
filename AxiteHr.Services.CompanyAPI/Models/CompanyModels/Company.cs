@@ -10,9 +10,9 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 
 		public virtual string CompanyName { get; set; } = string.Empty;
 
+		[ForeignKey(nameof(CompanyLevel))]
 		public virtual int CompanyLevelId { get; set; }
 
-		[ForeignKey(nameof(CompanyLevelId))]
 		public virtual CompanyLevel CompanyLevel { get; set; } = new CompanyLevel();
 
 		public virtual Guid InsUserId { get; set; }

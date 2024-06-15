@@ -4,6 +4,7 @@ using AxiteHr.Services.CompanyAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AxiteHr.Services.CompanyAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240615211656_CompanyLevelSeed")]
+    partial class CompanyLevelSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasIndex("CompanyLevelId");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyLevel", b =>
@@ -69,7 +72,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompanyLevels", (string)null);
+                    b.ToTable("CompanyLevels");
 
                     b.HasData(
                         new
@@ -110,7 +113,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompanyPermissions", (string)null);
+                    b.ToTable("CompanyPermissions");
 
                     b.HasData(
                         new
@@ -145,7 +148,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompanyRoles", (string)null);
+                    b.ToTable("CompanyRoles");
 
                     b.HasData(
                         new
@@ -188,7 +191,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("CompanyUsers", (string)null);
+                    b.ToTable("CompanyUsers");
                 });
 
             modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserPermission", b =>
@@ -211,7 +214,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasIndex("CompanyUserId");
 
-                    b.ToTable("CompanyUserPermissions", (string)null);
+                    b.ToTable("CompanyUserPermissions");
                 });
 
             modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserRole", b =>
@@ -240,7 +243,7 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.HasIndex("CompanyUserId");
 
-                    b.ToTable("CompanyUserRoles", (string)null);
+                    b.ToTable("CompanyUserRoles");
                 });
 
             modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company", b =>

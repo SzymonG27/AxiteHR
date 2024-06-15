@@ -8,11 +8,12 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 		[Key]
 		public virtual int Id { get; set; }
 
+		[ForeignKey(nameof(CompanyUser))]
 		public virtual int CompanyUserId { get; set; }
 
-		[ForeignKey(nameof(CompanyUserId))]
 		public virtual CompanyUser CompanyUser { get; set; } = new CompanyUser();
 
+		[ForeignKey(nameof(CompanyPermission))]
 		public virtual int CompanyPermissionId { get; set; }
 
 		public virtual CompanyPermission CompanyPermission { get; set; } = new CompanyPermission();

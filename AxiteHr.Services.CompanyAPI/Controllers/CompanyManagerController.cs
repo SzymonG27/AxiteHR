@@ -10,10 +10,10 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 	public class CompanyManagerController(ICompanyCreatorService companyCreatorService) : ControllerBase
 	{
 		[HttpPost("[action]")]
-		[Authorize]
-		public IActionResult CreateNewCompany([FromBody] NewCompanyRequestDto newCompanyRequest)
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
+		public async Task<IActionResult> CreateNewCompany([FromBody] NewCompanyRequestDto newCompanyRequest)
 		{
-			var response = companyCreatorService.NewCompanyCreate(newCompanyRequest);
+			var response = await companyCreatorService.NewCompanyCreate(newCompanyRequest);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

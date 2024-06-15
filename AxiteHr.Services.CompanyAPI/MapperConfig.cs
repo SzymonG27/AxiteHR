@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 
@@ -8,15 +9,19 @@ namespace AxiteHr.Services.CompanyAPI
 	{
 		public static MapperConfiguration RegisterMaps()
 		{
-			var mappingConfig = new MapperConfiguration(config =>
+			return new MapperConfiguration(config =>
 			{
 				config.CreateMap<Company, CompanyDto>().ReverseMap();
 				config.CreateMap<CompanyLevel, CompanyLevelDto>().ReverseMap();
 				config.CreateMap<CompanyPermission, CompanyPermissionDto>().ReverseMap();
 				config.CreateMap<CompanyRole, CompanyRoleDto>().ReverseMap();
 				config.CreateMap<CompanyUser, CompanyUserDto>().ReverseMap();
+
+				config.CreateMap<NewCompanyRequestDto, Company>()
+					.ForMember(dto => dto.InsUserId, opt => opt.MapFrom(domain => domain.CreatorId))
+					.ForMember(dto => dto.UpdUserId, opt => opt.MapFrom(domain => domain.CreatorId))
+					.ReverseMap();
 			});
-			return mappingConfig;
 		}
 	}
 }

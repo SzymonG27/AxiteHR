@@ -1,6 +1,6 @@
 {
 	"Routes": [
-		//CompanyAPI
+		//CompanyAPI : 7004
 		{
 			"DownstreamPathTemplate": "/api/Company/List/{userId}",
 			"DownstreamScheme": "https",
@@ -12,6 +12,21 @@
 			],
 			"UpstreamPathTemplate": "/api/Company/List/{userId}",
 			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyManager/CreateNewCompany",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyManager/CreateNewCompany",
+			"UpstreamHttpMethod": [ "Post" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}

@@ -11,8 +11,10 @@
                         <label class="text-sm block mb-2">{{ 'Company_Creator_CompanyName' | translate }}</label>
                         <div class="relative flex items-center">
                             <input type="text" formControlName="CompanyName" required
+                            (focus)="toggleCompanyNameState(true)" (blur)="toggleCompanyNameState(false)"
                             class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition" />
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-[20px] h-[20px] absolute right-2" fill="#bbb" stroke="#bbb" viewBox="0 0 100 100">
+                            <svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="companyStateName" class="w-[20px] h-[20px] absolute right-2" 
+                            fill="#bbb" stroke="#bbb" viewBox="0 0 100 100">
                                 <rect x="20" y="40" width="60" height="50" stroke-width="2" fill="none"/>
                                 <path d="M20 40 L50 10 L80 40" stroke-width="2" fill="none"/>
                                 <rect x="35" y="55" width="10" height="10" fill="#bbb"/>
@@ -23,10 +25,12 @@
                         </div>
                     </div>
                     <div class="mt-10 grid grid-cols-2 gap-4">
-                        <button type="button" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 justify-self-start">
+                        <button type="button" [routerLink]="['/Company/List']"
+                        class="w-full justify-self-start shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
                             {{ 'Company_Creator_Cancel' | translate }}
                         </button>
-                        <button type="submit" class="py-2 px-4 bg-green-500 text-white rounded hover:bg-green-700 justify-self-end">
+                        <button type="submit" (click)="createNewCompany()"
+                        class="w-full justify-self-end shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
                             {{ 'Company_Creator_Confirm' | translate }}
                         </button>
                     </div>

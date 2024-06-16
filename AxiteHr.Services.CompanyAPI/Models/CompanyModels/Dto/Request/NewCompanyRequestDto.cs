@@ -10,6 +10,7 @@ namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public string CompanyName { get; set; } = string.Empty;
 
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public Guid CreatorId { get; set; }
 
 		public Guid InsUserId => CreatorId;

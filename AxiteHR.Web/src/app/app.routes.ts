@@ -51,7 +51,7 @@ export const routes: Routes = [
 		path: 'Company/Create',
 		component: CompanyCreatorComponent,
 		canActivate: [ IsLoggedInGuard, IsInRoleGuard ],
-		data: { title: 'COMPANY_LIST_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
+		data: { title: 'COMPANY_CREATE_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
 	},
 
 	{

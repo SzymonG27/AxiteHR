@@ -4,6 +4,7 @@
     "LOGIN_PAGE_TITLE": "Strona Logowania",
     "REGISTER_PAGE_TITLE": "Strona Rejestracji",
     "COMPANY_LIST_TITLE_PAGE": "Lista firm",
+    "COMPANY_CREATE_TITLE_PAGE": "Kreator firmy",
     "NO_ACCESS_TITLE": "Brak dostępu",
     "NOT_FOUND_TITLE": "Nie znaleziono",
     "defaultTitle": "Moja Aplikacja",
@@ -61,5 +62,10 @@
     "Company_List_Action": "Akcja",
     "Company_List_Manage": "Zarządzaj",
     "Company_List_Empty": "Brak firm",
-    "Company_List_CreateCompanyBtn": "Stwórz nową firmę"
+    "Company_List_CreateCompanyBtn": "Stwórz nową firmę",
+    "Company_Creator_New": "Nowa firma",
+    "Company_Creator_NewCreator": "Kreator",
+    "Company_Creator_CompanyName": "Nazwa firmy",
+    "Company_Creator_Cancel": "Anuluj",
+    "Company_Creator_Confirm": "Zatwierdź"
 }

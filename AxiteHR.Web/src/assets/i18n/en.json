@@ -4,6 +4,7 @@
     "LOGIN_PAGE_TITLE": "Login Page",
     "REGISTER_PAGE_TITLE": "Register Page",
     "COMPANY_LIST_TITLE_PAGE": "Company list",
+    "COMPANY_CREATE_TITLE_PAGE": "Company creator",
     "NO_ACCESS_TITLE": "No access",
     "NOT_FOUND_TITLE": "Not found",
     "defaultTitle": "My Application",
@@ -61,5 +62,10 @@
     "Company_List_Action": "Action",
     "Company_List_Manage": "Manage",
     "Company_List_Empty": "No companies",
-    "Company_List_CreateCompanyBtn": "Create new company"
+    "Company_List_CreateCompanyBtn": "Create new company",
+    "Company_Creator_New": "New company",
+    "Company_Creator_NewCreator": "Creator",
+    "Company_Creator_CompanyName": "Company name",
+    "Company_Creator_Cancel": "Cancel",
+    "Company_Creator_Confirm": "Confirm"
 }

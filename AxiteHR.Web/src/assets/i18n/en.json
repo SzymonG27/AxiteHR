@@ -5,6 +5,7 @@
     "REGISTER_PAGE_TITLE": "Register Page",
     "COMPANY_LIST_TITLE_PAGE": "Company list",
     "NO_ACCESS_TITLE": "No access",
+    "NOT_FOUND_TITLE": "Not found",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",

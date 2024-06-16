@@ -8,35 +8,40 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 	{
 		public IEnumerable<CompanyListDto> GetCompanyList(Guid userId)
 		{
+			var companyUsersCount = dbContext.CompanyUsers
+				.GroupBy(cu => cu.CompanyId)
+				.Select(g => new
+				{
+					CompanyId = g.Key,
+					UserCount = g.Count()
+				});
+
 			return [.. dbContext.CompanyUsers
 				.Join(dbContext.CompanyUserPermissions,
-					o => o.Id,
-					i => i.CompanyUserId,
-					(o, i) => new
-					{
-						CompanyUserId = o.Id,
-						o.UserId,
-						o.CompanyId,
-						i.CompanyPermissionId
-					})
+					cu => cu.Id,
+					cup => cup.CompanyUserId,
+					(cu, cup) => new { cu, cup })
+				.Where(x => x.cu.UserId == userId && x.cup.CompanyPermissionId == (int)PermissionDictionary.CompanyManager)
 				.Join(dbContext.Companies,
-					o => o.CompanyId,
-					i => i.Id,
-					(o, i) => new
+					previous => previous.cu.CompanyId,
+					c => c.Id,
+					(previous, c) => new { previous.cu, previous.cup, c })
+				.Join(companyUsersCount,
+					previous => previous.cu.CompanyId,
+					count => count.CompanyId,
+					(previous, count) => new
 					{
-						o.CompanyUserId,
-						o.UserId,
-						o.CompanyId,
-						o.CompanyPermissionId,
-						i.CompanyName,
-						i.InsDate
+						CompanyId = previous.c.Id,
+						previous.c.CompanyName,
+						previous.c.InsDate,
+						count.UserCount
 					})
-				.Where(x => x.UserId == userId && x.CompanyPermissionId == (int)PermissionDictionary.CompanyManager)
 				.Select(x => new CompanyListDto
 				{
 					Id = x.CompanyId,
 					CompanyName = x.CompanyName,
-					InsDate = x.InsDate.ToShortDateString()
+					InsDate = x.InsDate.ToShortDateString(),
+					UserCount = x.UserCount
 				})];
 		}
 	}

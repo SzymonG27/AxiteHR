@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CompanyListService } from '../../../core/services/company/company-list.service';
 import { CompanyListViewModel } from '../../../core/models/company/CompanyListViewModel';
 import { CompanyListItem } from '../../../core/models/company/CompanyListItem';
-import { take } from 'rxjs';
+import { first, take } from 'rxjs';
+import { BlockUIService } from '../../../core/services/block-ui.service';
 
 @Component({
 	selector: 'app-company-list',
@@ -22,9 +23,12 @@ export class CompanyListComponent {
 	isLoadingTableError: boolean = false;
 	errorMessage: string | null = null;
 	companyList: CompanyListItem[] = [];
-	constructor(private companyListService: CompanyListService) { }
+	constructor(private companyListService: CompanyListService,
+		private blockUIService: BlockUIService,
+		private translate: TranslateService) { }
 
 	ngOnInit() {
+		this.blockUIService.start();
 		this.companyListService.getCompanyListView().pipe(
 			take(1)
 		).subscribe({
@@ -34,11 +38,17 @@ export class CompanyListComponent {
 					this.errorMessage = response.errorMessage;
 				}
 				this.companyList = response.companyList;
+				this.blockUIService.stop();
 			},
 			error: () => {
 				//ToDo message
 				this.isLoadingTableError = true;
-				this.errorMessage = "An error occurred while fetching data";
+				this.translate.get('Global_ErrorFetchingData')
+					.pipe(first())
+					.subscribe((translation: string) => {
+						this.errorMessage = translation;
+					});
+				this.blockUIService.stop();
 			}
 		});
 	}

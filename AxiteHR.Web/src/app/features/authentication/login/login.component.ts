@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../../core/services/authentication/aut
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
+import { first } from 'rxjs';
 
 @Component({
 	selector: 'app-login',
@@ -98,9 +99,11 @@ export class LoginComponent {
 						}
 					}
 				} else {
-					this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
-						this.errorMessage = '*' + translation;
-					});
+					this.translate.get('Authentication_Login_UnexpectedError')
+						.pipe(first())
+						.subscribe((translation: string) => {
+							this.errorMessage = '*' + translation;
+						});
 				}
 				this.authState.setLoggedIn(false);
 				this.blockUIService.stop();

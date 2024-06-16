@@ -6,14 +6,14 @@
         </div>
         <div *ngIf="isLoggedIn" class="hidden lg:flex space-x-12 lg:space-x-6 xl:space-x-12">
             <div class="menu-item group m-0" (mouseenter)="mouseCompanySectionOvered = true" (mouseleave)="mouseCompanySectionOvered = false">
-                <a href="#" class="href-nav-option">
+                <div class="href-nav-option">
                     <span class="text-and-icon">{{ 'Nav_Company' | translate }}
                         <svg class="icon-svg ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             [ngClass]="mouseCompanySectionOvered ? 'rotate-180' : 'rotate-0'">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </span>
-                </a>
+                </div>
                 <div class="submenu hidden absolute bg-white shadow-md group-hover:block rounded-md py-2 z-10">
                     <a *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)"
                         class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">

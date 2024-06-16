@@ -1,5 +1,6 @@
 export class CompanyListItem {
-	Id: number = 0;
-	CompanyName: string = '';
-	InsDate: string = '';
+	id: number = 0;
+	companyName: string = '';
+	insDate: string = '';
+	userCount: number = 0;
 }

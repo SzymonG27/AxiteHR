@@ -10,6 +10,8 @@ import { UserRole } from './core/models/authentication/UserRole';
 import { IsNotLoggedInGuard } from './core/guards/auth/is-not-logged-in-guard.service';
 import { CompanyCreatorComponent } from './features/company/company-creator/company-creator.component';
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
+import { CompanyManagerComponent } from './shared/components/company-manager/company-manager.component';
+import { MainComponent } from './features/company-manager/main/main.component';
 
 export const routes: Routes = [
 	//Home
@@ -52,6 +54,17 @@ export const routes: Routes = [
 		component: CompanyCreatorComponent,
 		canActivate: [ IsLoggedInGuard, IsInRoleGuard ],
 		data: { title: 'COMPANY_CREATE_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
+	},
+	{
+		path: 'Manager',
+		component: CompanyManagerComponent,
+		children: [
+			{
+				path: ':id/Main',
+				component: MainComponent,
+				data: { title: 'MANAGER_MAIN_TITLE_PAGE' }
+			}
+		]
 	},
 
 	{

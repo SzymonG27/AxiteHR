@@ -8,7 +8,7 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 import { CompanyService } from '../../../core/services/company/company.service';
 import { CompanyCreatorResponse } from '../../../core/models/company/CompanyCreatorResonse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { first } from 'rxjs';
+import { first, take } from 'rxjs';
 
 @Component({
 	selector: 'app-company-creator',
@@ -46,7 +46,7 @@ export class CompanyCreatorComponent {
 		}
 		this.blockUIService.start();
 		this.companyCreatorModel = this.companyCreatorForm.value;
-		this.companyService.createNewCompany(this.companyCreatorModel).subscribe({
+		this.companyService.createNewCompany(this.companyCreatorModel).pipe(take(1)).subscribe({
 			next: () => {
 				this.router.navigate(['/Company/List']);
 				this.blockUIService.stop();

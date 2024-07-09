@@ -21,7 +21,9 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AxiteHR.Web", "AxiteHR.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.GlobalizationResources", "AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj", "{979C4AE4-BFC0-4F28-BAB2-8E1D4BD57F56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.GatewaySol", "AxiteHR.GatewaySol\AxiteHR.GatewaySol.csproj", "{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.GatewaySol", "AxiteHR.GatewaySol\AxiteHR.GatewaySol.csproj", "{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHr.Services.CompanyAPI", "AxiteHr.Services.CompanyAPI\AxiteHr.Services.CompanyAPI.csproj", "{CC479C49-B258-439A-A7F7-E9C0F2DBEA45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC479C49-B258-439A-A7F7-E9C0F2DBEA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC479C49-B258-439A-A7F7-E9C0F2DBEA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC479C49-B258-439A-A7F7-E9C0F2DBEA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC479C49-B258-439A-A7F7-E9C0F2DBEA45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{5DC762D2-9063-4533-AC0D-611D78C88D88} = {F0523BC7-A44A-41BD-B1D4-ECD75E9F2A50}
 		{E2D33EFC-5873-4353-9895-6D1ADF560330} = {5B584489-17C8-46B8-97E8-2037ECD16857}
 		{4F8DE66A-C4DC-4289-BD45-A1219CAC5F73} = {68CCE206-2AD3-4E19-A608-30E90D80B33B}
+		{CC479C49-B258-439A-A7F7-E9C0F2DBEA45} = {F0523BC7-A44A-41BD-B1D4-ECD75E9F2A50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {339B3C41-1206-4D05-A93F-ECA428BBFD67}

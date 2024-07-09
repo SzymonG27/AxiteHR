@@ -1,0 +1,55 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CompanyListService } from '../../../core/services/company/company-list.service';
+import { CompanyListViewModel } from '../../../core/models/company/CompanyListViewModel';
+import { CompanyListItem } from '../../../core/models/company/CompanyListItem';
+import { first, take } from 'rxjs';
+import { BlockUIService } from '../../../core/services/block-ui.service';
+
+@Component({
+	selector: 'app-company-list',
+	standalone: true,
+	imports: [
+		CommonModule,
+		RouterModule,
+		TranslateModule
+	],
+	templateUrl: './company-list.component.html',
+	styleUrl: './company-list.component.css'
+})
+export class CompanyListComponent {
+	isLoadingTableError: boolean = false;
+	errorMessage: string | null = null;
+	companyList: CompanyListItem[] = [];
+	constructor(private companyListService: CompanyListService,
+		private blockUIService: BlockUIService,
+		private translate: TranslateService) { }
+
+	ngOnInit() {
+		this.blockUIService.start();
+		this.companyListService.getCompanyListView().pipe(
+			take(1)
+		).subscribe({
+			next: (response: CompanyListViewModel) => {
+				if (!response.isSucceed) {
+					this.isLoadingTableError = true;
+					this.errorMessage = response.errorMessage;
+				}
+				this.companyList = response.companyList;
+				this.blockUIService.stop();
+			},
+			error: () => {
+				//ToDo message
+				this.isLoadingTableError = true;
+				this.translate.get('Global_ErrorFetchingData')
+					.pipe(first())
+					.subscribe((translation: string) => {
+						this.errorMessage = translation;
+					});
+				this.blockUIService.stop();
+			}
+		});
+	}
+}

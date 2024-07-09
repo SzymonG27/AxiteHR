@@ -3,13 +3,22 @@
     "HOME_PAGE_TITLE": "Home Page",
     "LOGIN_PAGE_TITLE": "Login Page",
     "REGISTER_PAGE_TITLE": "Register Page",
+    "COMPANY_LIST_TITLE_PAGE": "Company list",
+    "COMPANY_CREATE_TITLE_PAGE": "Company creator",
+    "MANAGER_MAIN_TITLE_PAGE": "Manager main page",
+    "NO_ACCESS_TITLE": "No access",
+    "NOT_FOUND_TITLE": "Not found",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
     "Global_HelloWorld": "Hello world",
+    "Global_ErrorFetchingData": "An error occurred while fetching data",
 
+    "//Section3": "NavBar messages",
+    "Nav_Company": "Company",
+    "Nav_Company_List": "List of companies",
 
-    "//Section3": "Auth messages",
+    "//Section4": "Auth messages",
     "Authentication_Login": "Sign in",
     "Authentication_Register": "Sign up",
     "Authentication_Signout": "Sign out",
@@ -45,5 +54,24 @@
     "Authentication_ConfirmPassword_MustMatchError": "Confirm password must be the same as password",
     "Authentication_Login_SessionExpired": "Login session expired. Please log in.",
     "Authentication_Login_RegistrationSuccessful" : "Registration successful! Please log in.",
-    "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again."
+    "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again.",
+
+    "//Section5": "Company messages",
+    "Company_List_CompanyName": "Company name",
+    "Company_List_CreatedDate": "Created date",
+    "Company_List_EmployeeCount": "Count of employees",
+    "Company_List_Action": "Action",
+    "Company_List_Manage": "Manage",
+    "Company_List_Empty": "No companies",
+    "Company_List_CreateCompanyBtn": "Create new company",
+    "Company_Creator_New": "New company",
+    "Company_Creator_NewCreator": "Creator",
+    "Company_Creator_CompanyName": "Company name",
+    "Company_Creator_Cancel": "Cancel",
+    "Company_Creator_Confirm": "Confirm",
+
+    "//Section6": "Nav manager messages",
+    "Nav_Manager_Menu": "Menu",
+    "Nav_Manager_Dashboard": "Dashboard",
+    "Nav_Manager_Team": "Team"
 }

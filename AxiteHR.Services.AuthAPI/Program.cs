@@ -1,9 +1,9 @@
-using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
-using AxiteHR.Services.AuthAPI.Models;
-using AxiteHR.Services.AuthAPI.Services;
-using AxiteHR.Services.AuthAPI.Services.Impl;
+using AxiteHR.Services.AuthAPI.Models.Auth;
+using AxiteHR.Services.AuthAPI.Services.Auth;
+using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +16,7 @@ builder.AddGlobalization();
 
 // Add services to the container.
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-	opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
 	.AddIdentity<AppUser, IdentityRole>()
 	.AddEntityFrameworkStores<AppDbContext>()
@@ -34,19 +31,16 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer, StringLocalizer<SharedResources>>();
-builder.Services.AddSingleton<IStringLocalizer, StringLocalizer<AuthResources>>();
+builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Cors
-builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins", 
-	policy =>
-	{
-		policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-	})
+builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
+	policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader())
 );
 
 var app = builder.Build();

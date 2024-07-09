@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Global_CompareField" xml:space="preserve">
+    <value>Pole {0} musi mieć tą samą wartość co pole {1}.</value>
+  </data>
+  <data name="Global_InvalidEmailAddress" xml:space="preserve">
+    <value>Pole {0} nie jest prawidłowym adresem e-mail.</value>
+  </data>
+  <data name="Global_MinLengthField" xml:space="preserve">
+    <value>Pole {0} musi mieć co najmniej {1} znaków.</value>
+  </data>
+  <data name="Global_NotAuthorizedError" xml:space="preserve">
+    <value>Użytkownik nie został uwierzytelniony</value>
+  </data>
+  <data name="Global_RequiredField" xml:space="preserve">
+    <value>Pole {0} jest wymagane.</value>
+  </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>Cześć świecie!</value>
   </data>

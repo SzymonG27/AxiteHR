@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -22,17 +22,14 @@ import { UserRole } from '../../models/authentication/UserRole';
 	animations: [
 		trigger('menuAnimation', [
 			state('closed', style({
-				height: '0px'
+			  maxHeight: '0px',
+			  opacity: 0
 			})),
 			state('open', style({
-				height: '*'
+			  maxHeight: '500px',
+			  opacity: 1
 			})),
-			transition('closed => open', [
-				animate('0.5s ease-in-out')
-			]),
-			transition('open => closed', [
-				animate('0.5s ease-in-out')
-			])
+			transition('closed <=> open', animate('300ms ease-in-out'))
 		])
 	]
 })
@@ -42,6 +39,7 @@ export class NavBarComponent {
 	currentUrl: string = "";
 	isLoginPage: boolean = false;
 	isRegisterPage: boolean = false;
+	mouseCompanySectionOvered: boolean = false;
 	UserRole = UserRole;
 	userRoles: string[] = [];
 
@@ -49,8 +47,9 @@ export class NavBarComponent {
 		{ code: 'en', label: 'English', flag: 'assets/flags/us.webp' },
 		{ code: 'pl', label: 'Polski', flag: 'assets/flags/pl.webp' }
 	];
-	currentLanguage = 'en';
-	isLanguageMenuOpen = false;
+	currentLanguage: string = 'en';
+	isLanguageMenuOpen: boolean = false;
+	isLanguageFlagPressed: boolean = false;
 
 	constructor(
 		private router: Router,
@@ -102,6 +101,7 @@ export class NavBarComponent {
 
 	logOut() {
 		this.authService.LogOut();
+		this.router.navigate(['']);
 	}
 
 	switchLanguage(language: string) {
@@ -111,8 +111,20 @@ export class NavBarComponent {
 		this.isLanguageMenuOpen = false;
 	}
 	
-	toggleLanguageMenu() {
+	toggleLanguageMenu(event: MouseEvent) {
+		event.stopPropagation();
 		this.isLanguageMenuOpen = !this.isLanguageMenuOpen;
+		if (!this.isLanguageMenuOpen) {
+			this.isLanguageFlagPressed = false;
+		}
+	}
+
+	@HostListener('document:click', ['$event'])
+	closeLanguageMenuOnClickingOutside(event: MouseEvent) {
+		if (!this.isLanguageMenuOpen) {
+			return;
+		}
+		this.isLanguageMenuOpen = false;
 	}
 	
 	getCurrentLanguageFlag() {

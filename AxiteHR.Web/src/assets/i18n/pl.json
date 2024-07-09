@@ -3,13 +3,22 @@
     "HOME_PAGE_TITLE": "Strona Główna",
     "LOGIN_PAGE_TITLE": "Strona Logowania",
     "REGISTER_PAGE_TITLE": "Strona Rejestracji",
+    "COMPANY_LIST_TITLE_PAGE": "Lista firm",
+    "COMPANY_CREATE_TITLE_PAGE": "Kreator firmy",
+    "MANAGER_MAIN_TITLE_PAGE": "Strona główna zarządzania",
+    "NO_ACCESS_TITLE": "Brak dostępu",
+    "NOT_FOUND_TITLE": "Nie znaleziono",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
     "Global_HelloWorld": "Witaj świecie",
+    "Global_ErrorFetchingData": "Wystąpił błąd podczas pobierania danych",
 
+    "//Section3": "NavBar messages",
+    "Nav_Company": "Firma",
+    "Nav_Company_List": "Lista firm",
 
-    "//Section3": "Auth messages",
+    "//Section4": "Auth messages",
     "Authentication_Login": "Zaloguj się",
     "Authentication_Register": "Zarejestruj się",
     "Authentication_Signout": "Wyloguj się",
@@ -45,5 +54,24 @@
     "Authentication_ConfirmPassword_MustMatchError": "Pole potwierdź hasło musi zawierać tą samą wartość co pole hasło",
     "Authentication_Login_SessionExpired": "Sesja logowania wygasła. Proszę się zalogować.",
     "Authentication_Login_RegistrationSuccessful" : "Pomyślnie zarejestrowano! Proszę się zalogować.",
-    "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
+    "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie.",
+
+    "//Section5": "Company messages",
+    "Company_List_CompanyName": "Nazwa firmy",
+    "Company_List_CreatedDate": "Data stworzenia",
+    "Company_List_EmployeeCount": "Ilość pracowników",
+    "Company_List_Action": "Akcja",
+    "Company_List_Manage": "Zarządzaj",
+    "Company_List_Empty": "Brak firm",
+    "Company_List_CreateCompanyBtn": "Stwórz nową firmę",
+    "Company_Creator_New": "Nowa firma",
+    "Company_Creator_NewCreator": "Kreator",
+    "Company_Creator_CompanyName": "Nazwa firmy",
+    "Company_Creator_Cancel": "Anuluj",
+    "Company_Creator_Confirm": "Zatwierdź",
+
+    "//Section6": "Nav manager messages",
+    "Nav_Manager_Menu": "Menu",
+    "Nav_Manager_Dashboard": "Panel główny",
+    "Nav_Manager_Team": "Zespół"
 }

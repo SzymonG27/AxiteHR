@@ -1,5 +1,9 @@
 export enum ApiPaths {
     //Auth API
     Register = "/Auth/Register",
-    Login = "/Auth/Login"
+    Login = "/Auth/Login",
+
+    //Company API
+    CompanyList = "/Company/List",
+    CompanyCreator = "/CompanyManager/CreateNewCompany"
 }

@@ -37,4 +37,23 @@ export class AuthStateService {
 		}
 		return []; // Returns an empty array if no roles are present or token not provided
 	}
+
+	getLoggedUserId(token: string | null): string {
+		if (token) {
+			const decoded = this.decodeToken(token);
+			if (decoded.sub != null) {
+				return decoded.sub;
+			}
+		}
+		return '';
+	}
+
+	hasRole(role: string) {
+		const userRoles = this.getUserRoles(localStorage.getItem(AuthDictionary.Token))
+		return userRoles.includes(role);
+	}
+
+	hasAnyRole(roles: string[]) {
+		return roles.some(role => this.hasRole(role));
+	}
 }

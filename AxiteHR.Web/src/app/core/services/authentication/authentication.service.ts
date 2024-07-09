@@ -23,11 +23,9 @@ export class AuthenticationService {
 	}
 
 	public Login(login: LoginRequest): Observable<LoginResponse> {
-		return this.http.post<{ value: LoginResponse }>(
+		return this.http.post<LoginResponse>(
 			`${Environment.authApiUrl}${ApiPaths.Login}`,
 			login
-		).pipe(
-			map(response => response.value)
 		);
 	}
 

@@ -7,7 +7,7 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 	{
 		public static WebApplicationBuilder AddGlobalization(this WebApplicationBuilder builder)
 		{
-			builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+			builder.Services.AddLocalization();
 			builder.Services.Configure<RequestLocalizationOptions>(options =>
 			{
 				var supportedCultures = GetSupportedCultures();
@@ -18,7 +18,7 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 
 				options.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(context =>
 				{
-					var lang = context.Request.Headers["Accept-Language"].ToString();
+					var lang = context.Request.Headers.AcceptLanguage.ToString();
 					if (string.IsNullOrEmpty(lang))
 					{
 						lang = "en";
@@ -31,11 +31,11 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 
 			static List<CultureInfo> GetSupportedCultures()
 			{
-				return new List<CultureInfo>
-				{
+				return
+				[
 					new CultureInfo("en"),
 					new CultureInfo("pl")
-				};
+				];
 			}
 		}
 	}

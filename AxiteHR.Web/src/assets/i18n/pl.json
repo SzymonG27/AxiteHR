@@ -68,5 +68,10 @@
     "Company_Creator_NewCreator": "Kreator",
     "Company_Creator_CompanyName": "Nazwa firmy",
     "Company_Creator_Cancel": "Anuluj",
-    "Company_Creator_Confirm": "Zatwierdź"
+    "Company_Creator_Confirm": "Zatwierdź",
+
+    "//Section6": "Nav manager messages",
+    "Nav_Manager_Menu": "Menu",
+    "Nav_Manager_Dashboard": "Panel główny",
+    "Nav_Manager_Team": "Zespół"
 }

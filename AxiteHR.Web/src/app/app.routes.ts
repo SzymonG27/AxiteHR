@@ -56,11 +56,11 @@ export const routes: Routes = [
 		data: { title: 'COMPANY_CREATE_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
 	},
 	{
-		path: 'Manager',
+		path: 'Manager/:id',
 		component: CompanyManagerComponent,
 		children: [
 			{
-				path: ':id/Main',
+				path: 'Dashboard',
 				component: MainComponent,
 				data: { title: 'MANAGER_MAIN_TITLE_PAGE' }
 			}

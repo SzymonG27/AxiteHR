@@ -21,7 +21,7 @@
                         <label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}</label>
                         <div class="relative flex items-center">
                             <input name="email" [(ngModel)]="loginModel.Email" #email (focus)="onFocusEmail()"
-                                (blur)="onBlurEmail()" type="text" required
+                                (blur)="onBlurEmail()" (keydown.enter)="login(loginModel)" type="text" required
                                 class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
                                 placeholder="{{ 'Authentication_EnterEmail' | translate }}" />
                             <svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusEmail" fill="#bbb"
@@ -47,6 +47,7 @@
                         <div class="relative flex items-center">
                             <input name="password" [(ngModel)]="loginModel.Password" #password
                                 (focus)="onFocusPassword()" (blur)="onBlurPassword()"
+                                (keydown.enter)="login(loginModel)"
                                 [type]="showPassword ? 'text' : 'password'" required
                                 class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
                                 placeholder="{{ 'Authentication_EnterPassword' | translate }}" />

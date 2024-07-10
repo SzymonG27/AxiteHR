@@ -1,6 +1,7 @@
 ﻿using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 {
@@ -10,6 +11,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 		{
 			var companyUsersCount = dbContext.CompanyUsers
 				.GroupBy(cu => cu.CompanyId)
+				.AsNoTracking()
 				.Select(g => new
 				{
 					CompanyId = g.Key,
@@ -36,6 +38,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 						previous.c.InsDate,
 						count.UserCount
 					})
+				.AsNoTracking()
 				.Select(x => new CompanyListDto
 				{
 					Id = x.CompanyId,

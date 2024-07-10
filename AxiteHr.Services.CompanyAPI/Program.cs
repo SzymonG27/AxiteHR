@@ -1,6 +1,7 @@
 using AutoMapper;
 using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
+using AxiteHr.Services.CompanyAPI.Helpers;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.GatewaySol.Extensions;
@@ -21,6 +22,11 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Conf
 IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddHttpClient(
+	HttpClientNameHelper.Auth,
+	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AuthAPI"]!)
+);
 
 builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()

@@ -59,5 +59,95 @@ namespace AxiteHR.GlobalizationResources.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company ID.
+        /// </summary>
+        public static string NewEmployeeRequestDto_CompanyId {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_CompanyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-Mail.
+        /// </summary>
+        public static string NewEmployeeRequestDto_Email {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firstname.
+        /// </summary>
+        public static string NewEmployeeRequestDto_FirstName {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lastname.
+        /// </summary>
+        public static string NewEmployeeRequestDto_LastName {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number.
+        /// </summary>
+        public static string NewEmployeeRequestDto_PhoneNumber {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while trying to register the user. Please try again later..
+        /// </summary>
+        public static string NewEmployeeRequestDto_RegisterError {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_RegisterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string NewEmployeeRequestDto_UserName {
+            get {
+                return ResourceManager.GetString("NewEmployeeRequestDto_UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User with passed E-Mail address exists in the application.
+        /// </summary>
+        public static string RegisterEmailExistsInDb {
+            get {
+                return ResourceManager.GetString("RegisterEmailExistsInDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred during user registration. Please try again later..
+        /// </summary>
+        public static string RegisterGlobalError {
+            get {
+                return ResourceManager.GetString("RegisterGlobalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A user with the specified username already exists in the application..
+        /// </summary>
+        public static string RegisterUserNameExistsInDb {
+            get {
+                return ResourceManager.GetString("RegisterUserNameExistsInDb", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-<div class="flex">
+<div class="flex select-none">
     <!-- Sidebar -->
     <div class="w-64 h-[calc(100vh-82px)] bg-gray-50 shadow-md hidden md:block">
         <div class="p-4 flex items-center">
@@ -20,7 +20,7 @@
                     </button>
                     <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Team 1</a>
+                            <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
                         </li>
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">
                             <a href="#">Team 2</a>
@@ -95,7 +95,7 @@
                     </button>
                     <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Team 1</a>
+                            <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
                         </li>
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">
                             <a href="#">Team 2</a>

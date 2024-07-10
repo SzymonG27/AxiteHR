@@ -88,6 +88,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token is missing..
+        /// </summary>
+        public static string Global_MissingToken {
+            get {
+                return ResourceManager.GetString("Global_MissingToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not authenticated..
         /// </summary>
         public static string Global_NotAuthorizedError {

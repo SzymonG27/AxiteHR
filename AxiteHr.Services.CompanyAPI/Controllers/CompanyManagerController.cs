@@ -3,9 +3,12 @@ using AxiteHr.Services.CompanyAPI.Models.Auth;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Employee;
+using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace AxiteHr.Services.CompanyAPI.Controllers
 {
@@ -13,7 +16,8 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 	[ApiController]
 	public class CompanyManagerController(
 		ICompanyCreatorService companyCreatorService,
-		IEmployeeService employeeService) : ControllerBase
+		IEmployeeService employeeService,
+		IStringLocalizer<SharedResources> sharedLocalizer) : ControllerBase
 	{
 		[HttpPost("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
@@ -31,7 +35,13 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> CreateNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
 		{
-			var response = await employeeService.CreateNewEmployee(newEmployeeRequestDto);
+			if (!Request.Headers.TryGetValue("Authorization", out var token))
+			{
+				return Unauthorized(sharedLocalizer[SharedResourcesKeys.Global_MissingToken]);
+			}
+			var bearerToken = token.ToString().Replace("Bearer ", "");
+
+			var response = await employeeService.CreateNewEmployee(newEmployeeRequestDto, bearerToken);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

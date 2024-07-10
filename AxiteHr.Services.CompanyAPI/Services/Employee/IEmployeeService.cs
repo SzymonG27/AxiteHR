@@ -4,6 +4,6 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee
 {
 	public interface IEmployeeService
 	{
-		Task<NewEmployeeResponseDto> CreateNewEmployee(NewEmployeeRequestDto requestDto);
+		Task<NewEmployeeResponseDto> CreateNewEmployee(NewEmployeeRequestDto requestDto, string token);
 	}
 }

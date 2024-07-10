@@ -11,9 +11,11 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<CompanyResources> companyLocalizer) : IEmployeeService
 	{
-		public async Task<NewEmployeeResponseDto> CreateNewEmployee(NewEmployeeRequestDto requestDto)
+		public async Task<NewEmployeeResponseDto> CreateNewEmployee(NewEmployeeRequestDto requestDto, string token)
 		{
 			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Auth);
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
 			var jsonRequestDto = JsonConvert.SerializeObject(requestDto);
 			var stringContent = new StringContent(jsonRequestDto, System.Text.Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(ApiLinkHelper.RegisterNewEmployee, stringContent);

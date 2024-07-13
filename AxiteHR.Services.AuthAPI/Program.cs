@@ -1,4 +1,5 @@
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.MessageBus;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
 using AxiteHR.Services.AuthAPI.Models.Auth;
@@ -29,6 +30,7 @@ builder.Services.AddControllers()
 //Scopes, singletons
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

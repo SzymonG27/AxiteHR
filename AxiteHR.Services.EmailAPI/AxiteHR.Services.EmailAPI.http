@@ -1,0 +1,6 @@
+@AxiteHR.Services.EmailAPI_HostAddress = http://localhost:5243
+
+GET {{AxiteHR.Services.EmailAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

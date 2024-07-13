@@ -1,13 +1,16 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.MessageBus;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
+using AxiteHR.Services.AuthAPI.Helpers.MapHelpers;
 using AxiteHR.Services.AuthAPI.Models.Auth;
 using AxiteHR.Services.AuthAPI.Models.Auth.Const;
 using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Net.Mail;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
@@ -15,7 +18,9 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		UserManager<AppUser> userManager,
 		RoleManager<IdentityRole> roleManager,
 		IJwtTokenGenerator jwtTokenGenerator,
-		IStringLocalizer<AuthResources> authLocalizer) : IAuthService
+		IStringLocalizer<AuthResources> authLocalizer,
+		IMessageBus messageBus,
+		IConfiguration configuration) : IAuthService
 	{
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
 		{
@@ -130,6 +135,14 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				if (!isRoleAssigned)
 				{
 					return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
+				}
+
+				if (isTempPassword)
+				{
+					var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, password);
+					var messageBusConnectionString = configuration.GetValue<string>("MessageBusSettings:ConnectionString")!;
+					var queueName = configuration.GetValue<string>("TopicsAndQueueNames:EmailTempPassword")!;
+					await messageBus.PublishMessage(messageDto, messageBusConnectionString, queueName);
 				}
 
 				await dbContext.SaveChangesAsync();

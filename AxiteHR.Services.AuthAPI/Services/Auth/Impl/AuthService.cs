@@ -1,9 +1,11 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.AuthAPI.Data;
+using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Models.Auth;
 using AxiteHR.Services.AuthAPI.Models.Auth.Const;
 using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
+using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -49,88 +51,121 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 		public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest)
 		{
-			var isUserMailInDb = dbContext.AppUserList.FirstOrDefault(x => x.Email == registerRequest.Email);
-			if (isUserMailInDb != null)
-			{
-				return new RegisterResponseDto
+			return await RegisterUser(registerRequest, registerRequest.UserPassword, Roles.User, false,
+				(user, isSuccess, errorMessage) => new RegisterResponseDto
 				{
-					IsRegisteredSuccessful = false,
-					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]
-				};
+					IsRegisteredSuccessful = isSuccess,
+					ErrorMessage = errorMessage,
+					UserId = user?.Id ?? string.Empty
+				});
+		}
+
+		public async Task<NewEmployeeResponseDto> RegisterNewEmployee(NewEmployeeRequestDto newEmployeeRequestDto)
+		{
+			var tempPassword = TempPasswordHelper.GenerateTempPassword();
+			return await RegisterUser(newEmployeeRequestDto, tempPassword, Roles.UserFromCompany, true,
+				(user, isSuccess, errorMessage) => new NewEmployeeResponseDto
+				{
+					IsSucceeded = isSuccess,
+					ErrorMessage = errorMessage,
+					EmployeeId = user?.Id ?? string.Empty
+				});
+		}
+
+		#region Private Methods
+		private async Task<TResponse> RegisterUser<TRequest, TResponse>(TRequest request, string password, string role, bool isTempPassword, Func<AppUser?, bool, string, TResponse> createResponse)
+		{
+			string email, userName, firstName, lastName, phoneNumber = string.Empty;
+			switch (request)
+			{
+				case RegisterRequestDto regReq:
+					email = regReq.Email;
+					userName = regReq.UserName;
+					firstName = regReq.FirstName;
+					lastName = regReq.LastName;
+					phoneNumber = regReq.PhoneNumber;
+					break;
+				case NewEmployeeRequestDto empReq:
+					email = empReq.Email;
+					userName = empReq.UserName;
+					firstName = empReq.FirstName;
+					lastName = empReq.LastName;
+					break;
+				default:
+					throw new ArgumentException("Invalid request type");
 			}
 
-			var isUserNameInDb = dbContext.AppUserList.FirstOrDefault(x => x.UserName == registerRequest.UserName);
-			if (isUserNameInDb != null)
+			if (!IsUserMailValidateSucceeded(email))
 			{
-				return new RegisterResponseDto
-				{
-					IsRegisteredSuccessful = false,
-					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]
-				};
+				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]);
+			}
+
+			if (!IsUserNameValidateSucceeded(userName))
+			{
+				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]);
 			}
 
 			var user = new AppUser
 			{
-				Email = registerRequest.Email,
-				NormalizedEmail = registerRequest.Email.ToUpper(),
-				UserName = registerRequest.UserName,
-				NormalizedUserName = registerRequest.UserName.ToUpper(),
-				FirstName = registerRequest.FirstName,
-				LastName = registerRequest.LastName,
-				PhoneNumber = registerRequest.PhoneNumber
+				Email = email,
+				NormalizedEmail = email.ToUpper(),
+				UserName = userName,
+				NormalizedUserName = userName.ToUpper(),
+				FirstName = firstName,
+				LastName = lastName,
+				PhoneNumber = phoneNumber,
+				IsTempPassword = isTempPassword
 			};
 
-			var transaction = dbContext.Database.BeginTransaction();
+			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				var result = await userManager.CreateAsync(user, registerRequest.UserPassword);
+				var result = await userManager.CreateAsync(user, password);
 				if (!result.Succeeded)
 				{
-					return new RegisterResponseDto
-					{
-						IsRegisteredSuccessful = false,
-						ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterGlobalError]
-					};
+					return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 				}
 
-				var isRoleAssigned = await AssignRoleAfterRegistration(user, Roles.User);
+				var isRoleAssigned = await AssignRoleAfterRegistration(user, role);
 				if (!isRoleAssigned)
 				{
-					return new RegisterResponseDto
-					{
-						IsRegisteredSuccessful = false
-					};
+					return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 				}
 
-				dbContext.SaveChanges();
-				transaction.Commit();
-				return new RegisterResponseDto
-				{
-					IsRegisteredSuccessful = true
-				};
+				await dbContext.SaveChangesAsync();
+				await transaction.CommitAsync();
+				return createResponse(user, true, string.Empty);
 			}
 			catch (Exception)
 			{
-				//ToDo logger error app insights
-				transaction.Rollback();
-				return new RegisterResponseDto
-				{
-					IsRegisteredSuccessful = false,
-					ErrorMessage = authLocalizer[AuthResourcesKeys.RegisterGlobalError]
-				};
-			}
-			throw new NotImplementedException();
-
-			async Task<bool> AssignRoleAfterRegistration(AppUser user, string roleName)
-			{
-				var isRoleExists = await roleManager.RoleExistsAsync(roleName);
-				if (!isRoleExists)
-				{
-					return false;
-				}
-				await userManager.AddToRoleAsync(user, roleName);
-				return true;
+				// ToDo logger error app insights
+				await transaction.RollbackAsync();
+				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 			}
 		}
+
+		private async Task<bool> AssignRoleAfterRegistration(AppUser user, string roleName)
+		{
+			var isRoleExists = await roleManager.RoleExistsAsync(roleName);
+			if (!isRoleExists)
+			{
+				return false;
+			}
+			await userManager.AddToRoleAsync(user, roleName);
+			return true;
+		}
+
+		private bool IsUserMailValidateSucceeded(string email)
+		{
+			var isUserMailInDb = dbContext.AppUserList.FirstOrDefault(x => x.Email == email);
+			return isUserMailInDb == null;
+		}
+
+		private bool IsUserNameValidateSucceeded(string userName)
+		{
+			var isUserNameInDb = dbContext.AppUserList.FirstOrDefault(x => x.UserName == userName);
+			return isUserNameInDb == null;
+		}
+		#endregion
 	}
 }

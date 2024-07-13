@@ -70,6 +70,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ID Firmy.
+        /// </summary>
+        public static string Model_CompanyId {
+            get {
+                return ResourceManager.GetString("Model_CompanyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E-Mail.
         /// </summary>
         public static string Model_Email {

@@ -1,4 +1,5 @@
 ﻿using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
+using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.AuthAPI.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,16 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 				return BadRequest(response);
 			}
 			return Ok(response);
+		}
+
+		public async Task<IActionResult> RegisterNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
+		{
+			var response = await authService.RegisterNewEmployee(newEmployeeRequestDto);
+            if (!response.IsSucceeded)
+            {
+				return BadRequest(response);
+            }
+            return Ok(response);
 		}
 	}
 }

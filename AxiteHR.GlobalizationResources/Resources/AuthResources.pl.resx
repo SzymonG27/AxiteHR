@@ -120,6 +120,9 @@
   <data name="LoginInvalidData" xml:space="preserve">
     <value>Nieprawidłowy adres e-mail lub hasło.</value>
   </data>
+  <data name="Model_CompanyId" xml:space="preserve">
+    <value>Company ID</value>
+  </data>
   <data name="Model_Email" xml:space="preserve">
     <value>E-Mail</value>
   </data>

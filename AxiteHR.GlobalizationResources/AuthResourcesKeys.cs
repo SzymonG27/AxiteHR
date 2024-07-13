@@ -4,6 +4,7 @@ namespace AxiteHR.GlobalizationResources
     public static class AuthResourcesKeys
     {
         public const string LoginInvalidData = "LoginInvalidData";
+        public const string Model_CompanyId = "Model_CompanyId";
         public const string Model_Email = "Model_Email";
         public const string Model_FirstName = "Model_FirstName";
         public const string Model_LastName = "Model_LastName";

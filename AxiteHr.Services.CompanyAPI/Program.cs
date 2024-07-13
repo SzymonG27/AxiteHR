@@ -4,6 +4,8 @@ using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Helpers;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Employee;
+using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
 using AxiteHR.GatewaySol.Extensions;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -35,6 +37,7 @@ builder.Services.AddControllers()
 //Scopes, singletons
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

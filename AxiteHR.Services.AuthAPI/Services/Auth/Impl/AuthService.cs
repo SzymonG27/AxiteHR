@@ -10,7 +10,7 @@ using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-using System.Net.Mail;
+using Microsoft.Extensions.Logging;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
@@ -20,7 +20,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		IJwtTokenGenerator jwtTokenGenerator,
 		IStringLocalizer<AuthResources> authLocalizer,
 		IMessageBus messageBus,
-		IConfiguration configuration) : IAuthService
+		IConfiguration configuration,
+		ILogger<AuthService> logger) : IAuthService
 	{
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
 		{
@@ -97,6 +98,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 					lastName = empReq.LastName;
 					break;
 				default:
+					logger.LogError("Invalid request type RegisterUser: {RequestType}", request?.GetType().Name);
 					throw new ArgumentException("Invalid request type");
 			}
 
@@ -140,8 +142,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				if (isTempPassword)
 				{
 					var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, password);
-					var messageBusConnectionString = configuration.GetValue<string>("MessageBusSettings:ConnectionString")!;
-					var queueName = configuration.GetValue<string>("TopicsAndQueueNames:EmailTempPassword")!;
+					var messageBusConnectionString = configuration.GetValue<string>(ConfigurationHelper.MessageBusConnectionString)!;
+					var queueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
 					await messageBus.PublishMessage(messageDto, messageBusConnectionString, queueName);
 				}
 
@@ -149,9 +151,9 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				await transaction.CommitAsync();
 				return createResponse(user, true, string.Empty);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				// ToDo logger error app insights
+				logger.LogError(ex, "Regiser failed for user: {UserMail}", user.Email);
 				await transaction.RollbackAsync();
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 			}

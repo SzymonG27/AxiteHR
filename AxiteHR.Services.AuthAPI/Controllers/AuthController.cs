@@ -34,11 +34,11 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		public async Task<IActionResult> RegisterNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
 		{
 			var response = await authService.RegisterNewEmployee(newEmployeeRequestDto);
-            if (!response.IsSucceeded)
-            {
+			if (!response.IsSucceeded)
+			{
 				return BadRequest(response);
-            }
-            return Ok(response);
+			}
+			return Ok(response);
 		}
 	}
 }

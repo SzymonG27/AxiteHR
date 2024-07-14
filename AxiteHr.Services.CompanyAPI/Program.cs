@@ -34,6 +34,11 @@ builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
+//Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 //Scopes, singletons
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();

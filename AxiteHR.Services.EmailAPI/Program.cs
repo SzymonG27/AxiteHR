@@ -1,4 +1,6 @@
 using AxiteHr.Services.EmailAPI.Data;
+using AxiteHR.Services.EmailAPI.Extensions;
+using AxiteHR.Services.EmailAPI.Messaging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+//Scopes, singletons
+builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
 
 var app = builder.Build();
 
@@ -24,5 +34,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseAzureServiceBusConsumer();
 
 app.Run();

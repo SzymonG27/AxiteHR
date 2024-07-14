@@ -27,6 +27,11 @@ builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
+//Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 //Scopes, singletons
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

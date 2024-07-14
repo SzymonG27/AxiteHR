@@ -29,5 +29,9 @@ namespace AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto
 		[MinLength(2, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_MinLengthField)]
 		[Display(Name = CompanyResourcesKeys.NewEmployeeRequestDto_LastName, ResourceType = typeof(CompanyResources))]
 		public string LastName { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		//ToDo Display
+		public string InsUserId { get; set; } = string.Empty;
 	}
 }

@@ -5,15 +5,19 @@ using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 {
 	public class CompanyCreatorService(AppDbContext dbContext,
-		IMapper mapper) : ICompanyCreatorService
+		IMapper mapper,
+		ILogger<CompanyCreatorService> logger) : ICompanyCreatorService
 	{
 		public async Task<NewCompanyReponseDto> NewCompanyCreate(NewCompanyRequestDto newCompanyRequest)
 		{
 			NewCompanyReponseDto response = new();
+
+			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
 				var newCompany = await AddNewCompany();
@@ -22,12 +26,17 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				await AddCreatorPermission(newCompanyUser);
 
 				await dbContext.SaveChangesAsync();
+				await transaction.CommitAsync();
 
 				response.IsSucceeded = true;
 				response.ErrorMessage = string.Empty;
 			}
 			catch (Exception ex)
 			{
+				logger.LogError(ex, "Error while creating new company");
+
+				await transaction.RollbackAsync();
+
 				response.IsSucceeded = false;
 				response.ErrorMessage = ex.Message;
 			}

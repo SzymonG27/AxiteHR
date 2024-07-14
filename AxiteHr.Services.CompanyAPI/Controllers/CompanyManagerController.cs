@@ -41,7 +41,7 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 			}
 			var bearerToken = token.ToString().Replace("Bearer ", "");
 
-			var response = await employeeService.CreateNewEmployee(newEmployeeRequestDto, bearerToken);
+			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

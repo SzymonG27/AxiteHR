@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHr.Services.CompanyAPI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.MessageBus", "AxiteHR.Integration.MessageBus\AxiteHR.Integration.MessageBus.csproj", "{E05FA7F0-3652-4DEB-BD9E-92EFECD9688C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Services.EmailAPI", "AxiteHR.Services.EmailAPI\AxiteHR.Services.EmailAPI.csproj", "{0CBC8E66-9E3F-40A3-AF1F-E17BE7FB86D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Services.EmailAPI", "AxiteHR.Services.EmailAPI\AxiteHR.Services.EmailAPI.csproj", "{0CBC8E66-9E3F-40A3-AF1F-E17BE7FB86D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{39A36EE9-AC4A-40A4-B549-46534481ED4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

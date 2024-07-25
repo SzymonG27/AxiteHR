@@ -10,7 +10,6 @@ using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {

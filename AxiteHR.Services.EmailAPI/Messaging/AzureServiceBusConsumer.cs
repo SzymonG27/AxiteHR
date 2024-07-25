@@ -1,5 +1,6 @@
 ﻿using AxiteHR.Services.EmailAPI.Helpers;
 using AxiteHR.Services.EmailAPI.Models;
+using AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword;
 using Azure.Messaging.ServiceBus;
 using System.Text;
 using System.Text.Json;
@@ -10,13 +11,19 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 	{
 		private readonly ILogger<AzureServiceBusConsumer> _logger;
 		private readonly ServiceBusProcessor _emailTempPasswordProcessor;
+		private readonly IEmployeeTempPasswordService _employeeTempPasswordService;
 
-		public AzureServiceBusConsumer(IConfiguration configuration, ILogger<AzureServiceBusConsumer> logger)
+		public AzureServiceBusConsumer(
+			IConfiguration configuration,
+			ILogger<AzureServiceBusConsumer> logger,
+			IEmployeeTempPasswordService employeeTempPasswordService)
 		{
 			ArgumentNullException.ThrowIfNull(configuration);
 			ArgumentNullException.ThrowIfNull(logger);
+			ArgumentNullException.ThrowIfNull(employeeTempPasswordService);
 
 			_logger = logger;
+			_employeeTempPasswordService = employeeTempPasswordService;
 
 			var serviceBusConnectionString = configuration.GetConnectionString(ConfigurationHelper.ServiceBusConnectionString);
 			var emailTempPasswordQueue = configuration.GetSection(ConfigurationHelper.EmailTempPasswordQueue).Value;
@@ -53,11 +60,19 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 		#region Private Methods
 		private async Task OnEmailTempPasswordRequestReceived(ProcessMessageEventArgs args)
 		{
-			var body = Encoding.UTF8.GetString(args.Message.Body);
-			var userMessageBusDto = JsonSerializer.Deserialize<UserMessageBusDto>(body);
-
 			try
 			{
+				var body = Encoding.UTF8.GetString(args.Message.Body);
+				var userMessageBusDto = JsonSerializer.Deserialize<UserTempPasswordMessageBusDto>(body);
+
+				if (userMessageBusDto == null)
+				{
+					_logger.LogError("Email wasn't send. UserTempPasswordMessageBusDto was null. Identifier: {Identifier}", args.Identifier);
+					return;
+				}
+
+				await _employeeTempPasswordService.EmailTempPasswordCreateAndLog(userMessageBusDto);
+
 				await args.CompleteMessageAsync(args.Message);
 			}
 			catch (Exception ex)

@@ -120,6 +120,9 @@
   <data name="Global_CompareField" xml:space="preserve">
     <value>The {0} field must match the {1} field.</value>
   </data>
+  <data name="Global_InsUserId" xml:space="preserve">
+    <value>Inserting user ID</value>
+  </data>
   <data name="Global_InvalidEmailAddress" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
   </data>

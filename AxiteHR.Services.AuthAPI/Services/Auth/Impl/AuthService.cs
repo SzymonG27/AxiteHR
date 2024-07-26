@@ -24,7 +24,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 	{
 		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
 		{
-			var user = dbContext.AppUserList.FirstOrDefault(x => x.Email == loginRequest.Email);
+			var user = await userManager.FindByEmailAsync(loginRequest.Email);
 			if (user == null)
 			{
 				return new LoginResponseDto
@@ -40,7 +40,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				return new LoginResponseDto
 				{
 					IsLoggedSuccessful = false,
-					ErrorMessage = "Invalid mail or password"
+					ErrorMessage = authLocalizer[AuthResourcesKeys.InvalidMailOrPassword]
 				};
 			}
 
@@ -77,6 +77,37 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				});
 		}
 
+		public async Task<TempPasswordChangeResponseDto> TempPasswordChange(TempPasswordChangeRequestDto newPasswordChangeRequest)
+		{
+			var user = await userManager.FindByIdAsync(newPasswordChangeRequest.UserId.ToString());
+			if (user?.IsTempPassword != true)
+			{
+				return new TempPasswordChangeResponseDto
+				{
+					IsSucceeded = false,
+					ErrorMessage = authLocalizer[AuthResourcesKeys.PasswordChangeGlobalError]
+				};
+			}
+
+			var token = await userManager.GeneratePasswordResetTokenAsync(user);
+			var result = await userManager.ResetPasswordAsync(user, token, newPasswordChangeRequest.Password);
+
+			if (!result.Succeeded)
+			{
+				return new TempPasswordChangeResponseDto
+				{
+					IsSucceeded = false,
+					ErrorMessage = authLocalizer[AuthResourcesKeys.PasswordChangeGlobalError]
+				};
+			}
+
+			return new TempPasswordChangeResponseDto
+			{
+				IsSucceeded = true,
+				UserId = user.Id
+			};
+		}
+
 		#region Private Methods
 		private async Task<TResponse> RegisterUser<TRequest, TResponse>(TRequest request, string password, string role, bool isTempPassword, Func<AppUser?, bool, string, TResponse> createResponse)
 		{
@@ -101,12 +132,12 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 					throw new ArgumentException("Invalid request type");
 			}
 
-			if (!IsUserMailValidateSucceeded(email))
+			if (!await IsUserMailValidateSucceeded(email))
 			{
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]);
 			}
 
-			if (!IsUserNameValidateSucceeded(userName))
+			if (!await IsUserNameValidateSucceeded(userName))
 			{
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]);
 			}
@@ -169,15 +200,15 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			return true;
 		}
 
-		private bool IsUserMailValidateSucceeded(string email)
+		private async Task<bool> IsUserMailValidateSucceeded(string email)
 		{
-			var isUserMailInDb = dbContext.AppUserList.FirstOrDefault(x => x.Email == email);
+			var isUserMailInDb = await userManager.FindByEmailAsync(email);
 			return isUserMailInDb == null;
 		}
 
-		private bool IsUserNameValidateSucceeded(string userName)
+		private async Task<bool> IsUserNameValidateSucceeded(string userName)
 		{
-			var isUserNameInDb = dbContext.AppUserList.FirstOrDefault(x => x.UserName == userName);
+			var isUserNameInDb = await userManager.FindByNameAsync(userName);
 			return isUserNameInDb == null;
 		}
 		#endregion

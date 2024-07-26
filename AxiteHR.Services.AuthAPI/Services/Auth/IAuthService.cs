@@ -6,8 +6,11 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth
 	public interface IAuthService
 	{
 		Task<LoginResponseDto> Login(LoginRequestDto loginRequest);
+
 		Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest);
 
 		Task<NewEmployeeResponseDto> RegisterNewEmployee(NewEmployeeRequestDto newEmployeeRequestDto);
+
+		Task<TempPasswordChangeResponseDto> TempPasswordChange(TempPasswordChangeRequestDto newPasswordChangeRequest);
 	}
 }

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidMailOrPassword" xml:space="preserve">
+    <value>Invalid e-mail address or password.</value>
+  </data>
   <data name="LoginInvalidData" xml:space="preserve">
     <value>Invalid E-Mail address or Password</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Model_UserPasswordRepeated" xml:space="preserve">
     <value>Confirm password</value>
+  </data>
+  <data name="PasswordChangeGlobalError" xml:space="preserve">
+    <value>An error occurred during password change. Please try again later.</value>
   </data>
   <data name="RegisterEmailExistsInDb" xml:space="preserve">
     <value>User with passed E-Mail address exists in the application</value>

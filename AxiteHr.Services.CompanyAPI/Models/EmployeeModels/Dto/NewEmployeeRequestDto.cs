@@ -31,7 +31,7 @@ namespace AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto
 		public string LastName { get; set; } = string.Empty;
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
-		//ToDo Display
+		[Display(Name = SharedResourcesKeys.Global_InsUserId, ResourceType = typeof(SharedResources))]
 		public string InsUserId { get; set; } = string.Empty;
 	}
 }

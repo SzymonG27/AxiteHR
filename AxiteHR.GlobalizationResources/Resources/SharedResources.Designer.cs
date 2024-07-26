@@ -70,6 +70,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inserting user ID.
+        /// </summary>
+        public static string Global_InsUserId {
+            get {
+                return ResourceManager.GetString("Global_InsUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is not a valid e-mail address..
         /// </summary>
         public static string Global_InvalidEmailAddress {

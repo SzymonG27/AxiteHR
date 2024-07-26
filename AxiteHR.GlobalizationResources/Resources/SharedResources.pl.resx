@@ -120,6 +120,9 @@
   <data name="Global_CompareField" xml:space="preserve">
     <value>Pole {0} musi mieć tą samą wartość co pole {1}.</value>
   </data>
+  <data name="Global_InsUserId" xml:space="preserve">
+    <value>ID użytkownika insertującego</value>
+  </data>
   <data name="Global_InvalidEmailAddress" xml:space="preserve">
     <value>Pole {0} nie jest prawidłowym adresem e-mail.</value>
   </data>

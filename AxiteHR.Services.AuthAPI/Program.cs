@@ -5,6 +5,8 @@ using AxiteHR.Services.AuthAPI.Extensions;
 using AxiteHR.Services.AuthAPI.Models.Auth;
 using AxiteHR.Services.AuthAPI.Services.Auth;
 using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
+using AxiteHR.Services.AuthAPI.Services.Data;
+using AxiteHR.Services.AuthAPI.Services.Data.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,7 @@ builder.Logging.AddDebug();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
+builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

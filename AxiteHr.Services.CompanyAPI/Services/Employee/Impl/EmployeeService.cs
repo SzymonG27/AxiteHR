@@ -76,7 +76,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		{
 			var company = await dbContext.Companies.SingleAsync(x => x.Id == requestDto.CompanyId);
 			var companyUser = await CreateCompanyUserForEmployeeAsync();
-			await AddEmployeeRolePermission();
+			await AddEmployeePermission();
 
 			async Task<CompanyUser> CreateCompanyUserForEmployeeAsync()
 			{
@@ -91,7 +91,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 				return newCompanyUser;
 			}
 
-			async Task AddEmployeeRolePermission()
+			async Task AddEmployeePermission()
 			{
 				var companyEmployeePermission = await dbContext.CompanyPermissions.SingleAsync(x => x.Id == (int)PermissionDictionary.Employee);
 				CompanyUserPermission newCompanyUserPermission = new()

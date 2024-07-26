@@ -15,7 +15,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		[HttpPost("[action]")]
 		public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
 		{
-			var response = await authService.Register(registerRequest);
+			var response = await authService.RegisterAsync(registerRequest);
 			if (!response.IsRegisteredSuccessful)
 			{
 				return BadRequest(response);
@@ -26,7 +26,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		[HttpPost("[action]")]
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
-			var response = await authService.Login(loginRequest);
+			var response = await authService.LoginAsync(loginRequest);
 			if (!response.IsLoggedSuccessful)
 			{
 				return BadRequest(response);
@@ -38,7 +38,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> RegisterNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
 		{
-			var response = await authService.RegisterNewEmployee(newEmployeeRequestDto);
+			var response = await authService.RegisterNewEmployeeAsync(newEmployeeRequestDto);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);
@@ -50,7 +50,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> TempPasswordChange([FromBody] TempPasswordChangeRequestDto tempPasswordChangeDto)
 		{
-			var response = await authService.TempPasswordChange(tempPasswordChangeDto);
+			var response = await authService.TempPasswordChangeAsync(tempPasswordChangeDto);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

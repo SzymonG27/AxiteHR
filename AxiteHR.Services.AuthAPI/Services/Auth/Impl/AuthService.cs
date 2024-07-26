@@ -22,7 +22,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		IConfiguration configuration,
 		ILogger<AuthService> logger) : IAuthService
 	{
-		public async Task<LoginResponseDto> Login(LoginRequestDto loginRequest)
+		public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest)
 		{
 			var user = await userManager.FindByEmailAsync(loginRequest.Email);
 			if (user == null)
@@ -54,7 +54,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			};
 		}
 
-		public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest)
+		public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto registerRequest)
 		{
 			return await RegisterUser(registerRequest, registerRequest.UserPassword, Roles.User, false,
 				(user, isSuccess, errorMessage) => new RegisterResponseDto
@@ -65,7 +65,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				});
 		}
 
-		public async Task<NewEmployeeResponseDto> RegisterNewEmployee(NewEmployeeRequestDto newEmployeeRequestDto)
+		public async Task<NewEmployeeResponseDto> RegisterNewEmployeeAsync(NewEmployeeRequestDto newEmployeeRequestDto)
 		{
 			var tempPassword = TempPasswordHelper.GenerateTempPassword();
 			return await RegisterUser(newEmployeeRequestDto, tempPassword, Roles.UserFromCompany, true,
@@ -77,7 +77,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				});
 		}
 
-		public async Task<TempPasswordChangeResponseDto> TempPasswordChange(TempPasswordChangeRequestDto newPasswordChangeRequest)
+		public async Task<TempPasswordChangeResponseDto> TempPasswordChangeAsync(TempPasswordChangeRequestDto newPasswordChangeRequest)
 		{
 			var user = await userManager.FindByIdAsync(newPasswordChangeRequest.UserId.ToString());
 			if (user?.IsTempPassword != true)
@@ -132,12 +132,12 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 					throw new ArgumentException("Invalid request type");
 			}
 
-			if (!await IsUserMailValidateSucceeded(email))
+			if (!await IsUserMailValidateSucceededAsync(email))
 			{
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterEmailExistsInDb]);
 			}
 
-			if (!await IsUserNameValidateSucceeded(userName))
+			if (!await IsUserNameValidateSucceededAsync(userName))
 			{
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterUserNameExistsInDb]);
 			}
@@ -163,7 +163,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 					return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 				}
 
-				var isRoleAssigned = await AssignRoleAfterRegistration(user, role);
+				var isRoleAssigned = await AssignRoleAfterRegistrationAsync(user, role);
 				if (!isRoleAssigned)
 				{
 					return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
@@ -189,7 +189,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			}
 		}
 
-		private async Task<bool> AssignRoleAfterRegistration(AppUser user, string roleName)
+		private async Task<bool> AssignRoleAfterRegistrationAsync(AppUser user, string roleName)
 		{
 			var isRoleExists = await roleManager.RoleExistsAsync(roleName);
 			if (!isRoleExists)
@@ -200,13 +200,13 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			return true;
 		}
 
-		private async Task<bool> IsUserMailValidateSucceeded(string email)
+		private async Task<bool> IsUserMailValidateSucceededAsync(string email)
 		{
 			var isUserMailInDb = await userManager.FindByEmailAsync(email);
 			return isUserMailInDb == null;
 		}
 
-		private async Task<bool> IsUserNameValidateSucceeded(string userName)
+		private async Task<bool> IsUserNameValidateSucceededAsync(string userName)
 		{
 			var isUserNameInDb = await userManager.FindByNameAsync(userName);
 			return isUserNameInDb == null;

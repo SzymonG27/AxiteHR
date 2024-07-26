@@ -126,4 +126,7 @@
   <data name="Email_Welcome" xml:space="preserve">
     <value>Witaj</value>
   </data>
+  <data name="Subject_TempPassword" xml:space="preserve">
+    <value>AxiteHR tymczasowe hasło</value>
+  </data>
 </root>

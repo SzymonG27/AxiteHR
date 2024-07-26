@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.AuthAPI.Models.Auth.Dto
 {
-	public class UserMessageBusDto
+	public record UserMessageBusDto
 	{
 		public string UserId { get; set; } = string.Empty;
 		public string UserName { get; set; } = string.Empty;

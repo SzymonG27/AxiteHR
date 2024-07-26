@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.AuthAPI.Models.Auth.Dto
 {
-	public class TempPasswordChangeRequestDto
+	public record TempPasswordChangeRequestDto
 	{
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public Guid UserId { get; set; }

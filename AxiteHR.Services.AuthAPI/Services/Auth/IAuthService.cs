@@ -5,12 +5,12 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth
 {
 	public interface IAuthService
 	{
-		Task<LoginResponseDto> Login(LoginRequestDto loginRequest);
+		Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest);
 
-		Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest);
+		Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto registerRequest);
 
-		Task<NewEmployeeResponseDto> RegisterNewEmployee(NewEmployeeRequestDto newEmployeeRequestDto);
+		Task<NewEmployeeResponseDto> RegisterNewEmployeeAsync(NewEmployeeRequestDto newEmployeeRequestDto);
 
-		Task<TempPasswordChangeResponseDto> TempPasswordChange(TempPasswordChangeRequestDto newPasswordChangeRequest);
+		Task<TempPasswordChangeResponseDto> TempPasswordChangeAsync(TempPasswordChangeRequestDto newPasswordChangeRequest);
 	}
 }

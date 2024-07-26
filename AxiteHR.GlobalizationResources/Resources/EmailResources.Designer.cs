@@ -86,5 +86,14 @@ namespace AxiteHR.GlobalizationResources.Resources {
                 return ResourceManager.GetString("Email_Welcome", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AxiteHR Temporary password.
+        /// </summary>
+        public static string Subject_TempPassword {
+            get {
+                return ResourceManager.GetString("Subject_TempPassword", resourceCulture);
+            }
+        }
     }
 }

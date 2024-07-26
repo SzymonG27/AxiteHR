@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.AuthAPI.Models.Auth.Dto
 {
-	public class TempPasswordChangeResponseDto
+	public record TempPasswordChangeResponseDto
 	{
 		public bool IsSucceeded { get; set; }
 		public string ErrorMessage { get; set; } = string.Empty;

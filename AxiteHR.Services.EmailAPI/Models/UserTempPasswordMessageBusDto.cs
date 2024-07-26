@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.EmailAPI.Models
 {
-	public class UserTempPasswordMessageBusDto
+	public record UserTempPasswordMessageBusDto
 	{
 		public string UserId { get; set; } = string.Empty;
 		public string UserName { get; set; } = string.Empty;

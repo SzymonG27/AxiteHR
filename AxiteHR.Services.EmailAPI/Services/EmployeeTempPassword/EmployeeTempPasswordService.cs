@@ -2,6 +2,7 @@
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.EmailAPI.Models;
+using AxiteHR.Services.EmailAPI.Services.EmailSender;
 using Microsoft.Extensions.Localization;
 using System.Text;
 
@@ -10,7 +11,8 @@ namespace AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword
 	public class EmployeeTempPasswordService(
 		IServiceScopeFactory serviceScopeFactory,
 		IStringLocalizer<EmailResources> emailLocalizer,
-		ILogger<EmployeeTempPasswordService> logger) : IEmployeeTempPasswordService
+		ILogger<EmployeeTempPasswordService> logger,
+		IEmailSender emailSender) : IEmployeeTempPasswordService
 	{
 		public async Task EmailTempPasswordCreateAndLog(UserTempPasswordMessageBusDto messageBusDto)
 		{
@@ -26,10 +28,13 @@ namespace AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword
 			message.Append(emailLocalizer[EmailResourcesKeys.Email_TempPasswordBeforeMessage]);
 			message.Append(" " + messageBusDto.TempPassword);
 
-			await LogEmail(message.ToString(), messageBusDto.Email);
+			var messageString = message.ToString();
+
+			await emailSender.SendHtmlEmailAsync(messageBusDto.Email, emailLocalizer[EmailResourcesKeys.Subject_TempPassword], messageString);
+			await LogEmail(messageString, messageBusDto.Email);
 		}
 
-		private async Task<bool> LogEmail(string message, string email)
+		private async Task LogEmail(string message, string email)
 		{
 			try
 			{
@@ -43,12 +48,10 @@ namespace AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword
 				};
 				await dbContext.AddAsync(emailLog);
 				await dbContext.SaveChangesAsync();
-				return true;
 			}
 			catch (Exception ex)
 			{
 				logger.LogError(ex, "Error when creating logs from mail to db");
-				return false;
 			}
 		}
 	}

@@ -63,7 +63,7 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 			try
 			{
 				var body = Encoding.UTF8.GetString(args.Message.Body);
-				var userMessageBusDto = JsonSerializer.Deserialize<UserTempPasswordMessageBusDto>(body);
+				var userMessageBusDto = JsonSerializer.Deserialize<UserTempPasswordMessageBusDto>(body, JsonOptionsHelper.DefaultJsonSerializerOptions);
 
 				if (userMessageBusDto == null)
 				{

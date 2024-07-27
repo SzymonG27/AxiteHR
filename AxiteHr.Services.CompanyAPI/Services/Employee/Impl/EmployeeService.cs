@@ -69,7 +69,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 
 			var responseBody = await response.Content.ReadAsStringAsync();
 
-			return JsonSerializer.Deserialize<NewEmployeeResponseDto>(responseBody);
+			return JsonSerializer.Deserialize<NewEmployeeResponseDto>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions);
 		}
 
 		private async Task AssignEmployeeToCompanyAsync(string employeeId, NewEmployeeRequestDto requestDto)

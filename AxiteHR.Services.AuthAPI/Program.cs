@@ -17,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddGlobalization();
 
+builder.AddAuthentication();
+builder.Services.AddAuthorization();
+
 // Add services to the container.
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -66,8 +69,8 @@ app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
+app.UseAuthentication();
 
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(locOptions);

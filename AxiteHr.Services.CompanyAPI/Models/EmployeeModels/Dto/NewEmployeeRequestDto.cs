@@ -1,5 +1,5 @@
-﻿using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.GlobalizationResources;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto

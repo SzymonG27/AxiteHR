@@ -6,8 +6,8 @@
 
 namespace AxiteHr.Services.CompanyAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class CompanyLevelSeed : Migration
+	/// <inheritdoc />
+	public partial class CompanyLevelSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -84,7 +84,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 
 			var responseBody = await response.Content.ReadAsStringAsync();
 
-			return JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody) ?? [];
+			return JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions) ?? [];
 		}
 		#endregion
 	}

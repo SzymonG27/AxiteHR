@@ -5,8 +5,10 @@ import { EmployeeListItem } from '../../../core/models/company-manager/employee-
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { first, take } from 'rxjs';
+import { first, switchMap, take } from 'rxjs';
 import { EmployeeListViewModel } from '../../../core/models/company-manager/employee-list/EmployeeListViewModel';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Pagination } from '../../../shared/models/Pagination';
 
 @Component({
 	selector: 'app-employee-list',
@@ -14,7 +16,8 @@ import { EmployeeListViewModel } from '../../../core/models/company-manager/empl
 	imports: [
 		CommonModule,
 		RouterModule,
-		TranslateModule
+		TranslateModule,
+		NgxPaginationModule
 	],
 	templateUrl: './employee-list.component.html',
 	styleUrl: './employee-list.component.css'
@@ -23,6 +26,10 @@ export class EmployeeListComponent {
 	isLoadingTableError: boolean = false;
 	errorMessage: string | null = null;
 	employeeList: EmployeeListItem[] = [];
+	companyId: number | null = null;
+
+	//Pagination
+	pagination: Pagination = new Pagination();
 
 	constructor(
 		private companyManagerListService: CompanyManagerListService,
@@ -32,38 +39,54 @@ export class EmployeeListComponent {
 	) { }
 
 	ngOnInit() {
-		let companyId: number | null = null;
 		this.blockUIService.start();
-
-		this.route.params.pipe(first()).subscribe(params => {
-			companyId = params['id'];
-		});
-
-		if (companyId == null) {
-			this.errorMessage = "Error while getting parameters from url"; //ToDo Error
-			return;
-		}
-		
-		this.companyManagerListService.getEmployeeListView(companyId).pipe(
-			take(1)
-		).subscribe({
-			next: (response: EmployeeListViewModel) => {
-				if (!response.isSucceed) {
-					this.isLoadingTableError = true;
-					this.errorMessage = response.errorMessage;
-				}
-				this.employeeList = response.employeeList;
-				this.blockUIService.stop();
-			},
-			error: () => {
-				this.isLoadingTableError = true;
-				this.translate.get('Global_ErrorFetchingData')
-					.pipe(first())
-					.subscribe((translation: string) => {
-						this.errorMessage = translation;
-					});
-				this.blockUIService.stop();
+	
+		this.route.params.pipe(
+		  first(),
+		  switchMap(params => {
+			this.companyId = params['id'];
+			if (this.companyId == null) {
+			  this.errorMessage = 'Error while getting parameters from URL';
+			  this.blockUIService.stop();
+			  throw new Error(this.errorMessage); // ToDo: Proper error handling
 			}
+			return this.getEmployeeListViewPage(this.companyId, this.pagination.pageNumber - 1, this.pagination.pageSize);
+		  })
+		).subscribe({
+		  next: () => this.blockUIService.stop(),
+		  error: (err) => {
+			this.errorMessage = err.message || 'Unknown error';
+			this.blockUIService.stop();
+		  }
 		});
-	}
+	  }
+	
+	  pageChanged(event: number) {
+		this.pagination.pageNumber = event;
+		this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize)
+		  .subscribe({
+			next: () => {},
+			error: (err) => {
+			  this.errorMessage = err.message || 'Unknown error';
+			  this.blockUIService.stop();
+			}
+		  });
+	  }
+	
+	  getEmployeeListViewPage(passedCompanyId: number, currentPage: number, pageSize: number) {
+		return this.companyManagerListService.getEmployeeListView(passedCompanyId, currentPage, pageSize).pipe(
+		  take(1),
+		  switchMap(response => {
+			if (!response.isSucceed) {
+			  this.isLoadingTableError = true;
+			  this.errorMessage = response.errorMessage;
+			  this.blockUIService.stop();
+			  throw new Error(this.errorMessage); // ToDo: Proper error handling
+			}
+			this.employeeList = response.employeeList;
+			this.blockUIService.stop();
+			return [];
+		  })
+		);
+	  }
 }

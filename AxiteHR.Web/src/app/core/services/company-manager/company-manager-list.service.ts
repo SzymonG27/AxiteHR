@@ -14,7 +14,7 @@ export class CompanyManagerListService {
 
   constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
 
-  getEmployeeListView(companyId: number): Observable<EmployeeListViewModel> {
+  getEmployeeListView(companyId: number, page: number, itemsPerPage: number): Observable<EmployeeListViewModel> {
 		var employeeListViewModel = new EmployeeListViewModel();
 		var decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {
@@ -24,7 +24,7 @@ export class CompanyManagerListService {
 		}
 
 		return this.http.get<EmployeeListItem[]>(
-			`${Environment.gatewayApiUrl}${ApiPaths.EmployeeList}/${companyId}/${decodedToken.sub}`
+			`${Environment.gatewayApiUrl}${ApiPaths.EmployeeList}/${companyId}/${decodedToken.sub}?Page=${page}&ItemsPerPage=${itemsPerPage}`
 		).pipe(
 			map(data => {
 				employeeListViewModel.isSucceed = true;

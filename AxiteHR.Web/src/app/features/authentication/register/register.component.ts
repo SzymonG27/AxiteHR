@@ -9,7 +9,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { first } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-register',
@@ -77,7 +77,7 @@ export class RegisterComponent {
 					this.blockUI.stop();
 					this.router.navigate(['/Login']);
 				},
-				error: (error: HttpErrorResponse) => {
+				error: async (error: HttpErrorResponse) => {
 					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
 						this.errorMessage = error.error.errorMessage;
 					} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
@@ -96,9 +96,7 @@ export class RegisterComponent {
 							}
 						}
 					} else {
-						this.translate.get('Authentication_Login_UnexpectedError').subscribe((translation: string) => {
-							this.errorMessage = translation;
-						});
+						this.errorMessage = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					}
 					this.blockUI.stop();
 				}

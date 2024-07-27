@@ -9,11 +9,13 @@
     "MANAGER_EMPLOYEES_TITLE_PAGE": "Employee list",
     "NO_ACCESS_TITLE": "No access",
     "NOT_FOUND_TITLE": "Not found",
+    "INTERNAL_ERROR_TITLE": "Internal error",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
     "Global_HelloWorld": "Hello world",
     "Global_ErrorFetchingData": "An error occurred while fetching data",
+    "Global_UnknownError": "Unknown error",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Company",
@@ -70,10 +72,18 @@
     "Company_Creator_CompanyName": "Company name",
     "Company_Creator_Cancel": "Cancel",
     "Company_Creator_Confirm": "Confirm",
+    "Company_EmployeeList_CreateEmployeeBtn": "Create new employee",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",
     "Nav_Manager_Dashboard": "Dashboard",
     "Nav_Manager_Team": "Team",
-    "Nav_Manager_Team_Employees": "Employees"
+    "Nav_Manager_Team_Employees": "Employees",
+
+    "//Section7": "Pagination",
+    "Pagination_Previous": " Previous ",
+    "Pagination_Next": " Next ",
+    "Pagination_Label": "Pagination",
+    "Pagination_PageLabel": "Page",
+    "Pagination_CurrentPageLabel": "Current Page"
 }

@@ -9,11 +9,13 @@
     "MANAGER_EMPLOYEES_TITLE_PAGE": "Lista pracowników",
     "NO_ACCESS_TITLE": "Brak dostępu",
     "NOT_FOUND_TITLE": "Nie znaleziono",
+    "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
     "Global_HelloWorld": "Witaj świecie",
     "Global_ErrorFetchingData": "Wystąpił błąd podczas pobierania danych",
+    "Global_UnknownError": "Nieznany bład",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Firma",
@@ -70,10 +72,18 @@
     "Company_Creator_CompanyName": "Nazwa firmy",
     "Company_Creator_Cancel": "Anuluj",
     "Company_Creator_Confirm": "Zatwierdź",
+    "Company_EmployeeList_CreateEmployeeBtn": "Stwórz nowego pracownika",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",
     "Nav_Manager_Dashboard": "Panel główny",
     "Nav_Manager_Team": "Zespół",
-    "Nav_Manager_Team_Employees": "Pracownicy"
+    "Nav_Manager_Team_Employees": "Pracownicy",
+
+    "//Section7": "Pagination",
+    "Pagination_Previous": " Poprzednia ",
+    "Pagination_Next": " Następna ",
+    "Pagination_Label": "Paginacja",
+    "Pagination_PageLabel": "Strona",
+    "Pagination_CurrentPageLabel": "Aktualna strona"
 }

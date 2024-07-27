@@ -8,13 +8,13 @@ import { EmployeeListItem } from '../../models/company-manager/employee-list/Emp
 import { Environment } from '../../../environment/Environment';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class CompanyManagerListService {
 
-  constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
+	constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
 
-  getEmployeeListView(companyId: number, page: number, itemsPerPage: number): Observable<EmployeeListViewModel> {
+	getEmployeeListView(companyId: number, page: number, itemsPerPage: number): Observable<EmployeeListViewModel> {
 		var employeeListViewModel = new EmployeeListViewModel();
 		var decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {

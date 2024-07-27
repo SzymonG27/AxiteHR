@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './core/components/page-not-found/page-not
 import { CompanyManagerComponent } from './shared/components/company-manager/company-manager.component';
 import { MainComponent } from './features/company-manager/main/main.component';
 import { EmployeeListComponent } from './features/company-manager/employee-list/employee-list.component';
+import { InternalErrorComponent } from './core/components/internal-error/internal-error.component';
 
 export const routes: Routes = [
 	//Home
@@ -27,6 +28,11 @@ export const routes: Routes = [
 		path: 'No-Access',
 		component: NoAccessComponent,
 		data: { title: 'NO_ACCESS_TITLE' }
+	},
+	{
+		path: 'Internal-Error',
+		component: InternalErrorComponent,
+		data: { title: 'INTERNAL_ERROR_TITLE' }
 	},
 	
 	//Auth
@@ -59,6 +65,8 @@ export const routes: Routes = [
 	{
 		path: 'Manager/:id',
 		component: CompanyManagerComponent,
+		canActivate: [ IsLoggedInGuard, IsInRoleGuard ],
+		data: { requiredRoles: [UserRole.Admin, UserRole.User] },
 		children: [
 			{
 				path: 'Dashboard',

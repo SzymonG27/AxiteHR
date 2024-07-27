@@ -20,9 +20,9 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 			return companyService.GetCompanyList(userId);
 		}
 
-		[HttpGet("[action]/{companyId}&{excludedUserId}")]
+		[HttpGet("[action]/{companyId}/{excludedUserId}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public async Task<IEnumerable<CompanyUserViewDto>> CompanyUserList(int companyId, Guid excludedUserId, [FromQuery]Pagination paginationInfo)
+		public async Task<IEnumerable<CompanyUserViewDto>> CompanyUserList(int companyId, Guid excludedUserId, [FromQuery] Pagination paginationInfo)
 		{
 			if (!Request.Headers.TryGetValue("Authorization", out var token))
 			{

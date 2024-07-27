@@ -62,7 +62,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 
 			var companyUserIds = await dbContext.CompanyUsers
 				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
-				.Skip((paginationInfo.Page - 1) * paginationInfo.ItemsPerPage)
+				.Skip(paginationInfo.Page * paginationInfo.ItemsPerPage)
 				.Take(paginationInfo.ItemsPerPage)
 				.AsNoTracking()
 				.Select(x => x.UserId)

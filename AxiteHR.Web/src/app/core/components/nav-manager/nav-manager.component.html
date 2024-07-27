@@ -19,7 +19,7 @@
                         <span class="ml-auto material-icons" [ngClass]="isTeamsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
                     </button>
                     <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['EmployeeList']">
                             <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
                         </li>
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">
@@ -94,7 +94,7 @@
                         <span class="ml-auto material-icons" [ngClass]="isTeamsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
                     </button>
                     <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['EmployeeList']">
                             <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
                         </li>
                         <li class="p-2 hover:bg-gray-300 cursor-pointer">

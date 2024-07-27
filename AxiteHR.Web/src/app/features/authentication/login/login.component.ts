@@ -66,7 +66,7 @@ export class LoginComponent {
 
 	login(loginModel: LoginRequest) {
 		this.blockUIService.start();
-		this.authService.Login(loginModel).subscribe({
+		this.authService.Login(loginModel).pipe(first()).subscribe({
 			next: (response: LoginResponse) => {
 				if (response.isLoggedSuccessful && response.token) {
 					localStorage.setItem(AuthDictionary.Token, response.token);

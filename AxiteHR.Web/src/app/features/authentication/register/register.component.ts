@@ -9,6 +9,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
+import { first } from 'rxjs';
 
 @Component({
 	selector: 'app-register',
@@ -70,7 +71,7 @@ export class RegisterComponent {
 		if (this.registerForm.valid) {
 			this.blockUI.start();
 			this.registerModel = this.registerForm.value;
-			this.authService.Register(this.registerModel).subscribe({
+			this.authService.Register(this.registerModel).pipe(first()).subscribe({
 				next: (_response: HttpEvent<any>) => {
 					this.dataService.setRegistered(true);
 					this.blockUI.stop();

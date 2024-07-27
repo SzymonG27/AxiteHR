@@ -12,6 +12,7 @@ import { CompanyCreatorComponent } from './features/company/company-creator/comp
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { CompanyManagerComponent } from './shared/components/company-manager/company-manager.component';
 import { MainComponent } from './features/company-manager/main/main.component';
+import { EmployeeListComponent } from './features/company-manager/employee-list/employee-list.component';
 
 export const routes: Routes = [
 	//Home
@@ -63,6 +64,11 @@ export const routes: Routes = [
 				path: 'Dashboard',
 				component: MainComponent,
 				data: { title: 'MANAGER_MAIN_TITLE_PAGE' }
+			},
+			{
+				path: 'EmployeeList',
+				component: EmployeeListComponent,
+				data: { title: 'MANAGER_EMPLOYEES_TITLE_PAGE' }
 			}
 		]
 	},

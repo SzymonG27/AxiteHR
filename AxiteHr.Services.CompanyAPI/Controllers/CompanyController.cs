@@ -32,5 +32,12 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 
 			return await companyService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken);
 		}
+
+		[HttpGet("[action]/{companyId}/{excludedUserId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
+		public async Task<int> CompanyUsersCount(int companyId, Guid excludedUserId)
+		{
+			return await companyService.GetCompanyUsersCountAsync(companyId, excludedUserId);
+		}
 	}
 }

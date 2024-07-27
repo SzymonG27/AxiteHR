@@ -48,6 +48,7 @@ export class EmployeeListComponent {
 			this.router.navigate(['Internal-Error']);
 		}
 
+		this.getEmployeeListCount(this.companyId!);
 		this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize);
 
 		this.blockUIService.stop();
@@ -69,11 +70,24 @@ export class EmployeeListComponent {
 				if (!response.isSucceed) {
 					this.isLoadingTableError = true;
 					this.errorMessage = response.errorMessage;
-					this.blockUIService.stop();
 					throw new Error(this.errorMessage); // ToDo: Proper error handling
 				}
 				this.employeeList = response.employeeList;
-				this.blockUIService.stop();
+				return [];
+			})
+		).subscribe({
+			next: () => { },
+			error: async (err) => {
+				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
+			}
+		});
+	}
+
+	private getEmployeeListCount(passedCompanyId: number) {
+		this.companyManagerListService.getEmployeeListCount(passedCompanyId).pipe(
+			take(1),
+			switchMap(response => {
+				this.pagination.totalItems = response;
 				return [];
 			})
 		).subscribe({

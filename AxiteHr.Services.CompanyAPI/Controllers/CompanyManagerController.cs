@@ -23,7 +23,7 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> CreateNewCompany([FromBody] NewCompanyRequestDto newCompanyRequest)
 		{
-			var response = await companyCreatorService.NewCompanyCreate(newCompanyRequest);
+			var response = await companyCreatorService.NewCompanyCreateAsync(newCompanyRequest);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

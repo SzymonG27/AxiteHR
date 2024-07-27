@@ -71,6 +71,14 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			return await CompanyUserViewDtoListApiRequest(companyUserIds, bearerToken);
 		}
 
+		public async Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId)
+		{
+			return await dbContext.CompanyUsers
+				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
+				.AsNoTracking()
+				.CountAsync();
+		}
+
 		#region Private Methods
 		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<Guid> userIds, string bearerToken)
 		{

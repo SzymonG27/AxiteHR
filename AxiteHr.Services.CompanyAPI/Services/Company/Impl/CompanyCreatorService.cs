@@ -12,7 +12,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 		IMapper mapper,
 		ILogger<CompanyCreatorService> logger) : ICompanyCreatorService
 	{
-		public async Task<NewCompanyReponseDto> NewCompanyCreate(NewCompanyRequestDto newCompanyRequest)
+		public async Task<NewCompanyReponseDto> NewCompanyCreateAsync(NewCompanyRequestDto newCompanyRequest)
 		{
 			NewCompanyReponseDto response = new();
 

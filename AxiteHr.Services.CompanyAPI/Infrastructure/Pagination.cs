@@ -2,7 +2,7 @@
 {
 	public record Pagination
 	{
-		private readonly int _maxItemsPerPage = 10;
+		private readonly int _maxItemsPerPage = 100;
 		private int _itemsPerPage;
 
 		public int Page { get; set; } = 1;

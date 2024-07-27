@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CompanyCreatorRequest } from '../../models/company/CompanyCreatorRequest';
+import { CompanyCreatorRequest } from '../../models/company/company-creator/CompanyCreatorRequest';
 import { Observable, take } from 'rxjs';
-import { CompanyCreatorResponse } from '../../models/company/CompanyCreatorResonse';
+import { CompanyCreatorResponse } from '../../models/company/company-creator/CompanyCreatorResonse';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
 import { AuthStateService } from '../authentication/auth-state.service';

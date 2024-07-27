@@ -5,5 +5,6 @@ export enum ApiPaths {
 
     //Company API
     CompanyList = "/Company/List",
+    EmployeeList = "/Company/CompanyUserList",
     CompanyCreator = "/CompanyManager/CreateNewCompany"
 }

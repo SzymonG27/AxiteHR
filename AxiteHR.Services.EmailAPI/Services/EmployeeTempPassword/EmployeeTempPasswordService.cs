@@ -22,7 +22,8 @@ namespace AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword
 			message.Append(emailLocalizer[EmailResourcesKeys.Email_Welcome]);
 			message.Append(" " + messageBusDto.FirstName + ",");
 
-			message.AppendLine(emailLocalizer[EmailResourcesKeys.Email_ThanksForChoosingAxiteHr]);
+			message.AppendLine("<br/>");
+			message.Append(emailLocalizer[EmailResourcesKeys.Email_ThanksForChoosingAxiteHr]);
 
 			message.AppendLine("<br/>");
 			message.Append(emailLocalizer[EmailResourcesKeys.Email_TempPasswordBeforeMessage]);

@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CompanyListService } from '../../../core/services/company/company-list.service';
-import { CompanyListViewModel } from '../../../core/models/company/CompanyListViewModel';
-import { CompanyListItem } from '../../../core/models/company/CompanyListItem';
+import { CompanyListViewModel } from '../../../core/models/company/company-list/CompanyListViewModel';
+import { CompanyListItem } from '../../../core/models/company/company-list/CompanyListItem';
 import { first, take } from 'rxjs';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 

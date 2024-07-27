@@ -6,10 +6,10 @@ namespace AxiteHR.Services.AuthAPI.Services.Data.Impl
 {
 	public class DataService(AppDbContext dbContext) : IDataService
 	{
-		public IEnumerable<UserDataListViewDto> GetUserDataListViewDtoList(IList<Guid> userIds)
+		public IEnumerable<UserDataListViewDto> GetUserDataListViewDtoList(IList<string> userIds)
 		{
 			return dbContext.Users
-				.Where(x => x.Id.Equals(userIds))
+				.Where(x => userIds.Contains(x.Id))
 				.AsNoTracking()
 				.Select(x => new UserDataListViewDto
 				{

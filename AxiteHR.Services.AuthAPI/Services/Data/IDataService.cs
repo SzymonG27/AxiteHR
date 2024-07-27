@@ -8,6 +8,6 @@ namespace AxiteHR.Services.AuthAPI.Services.Data
 		/// This method is used to populate the company's employee list view data
 		/// </summary>
 		/// <returns>List of company's employee list view data</returns>
-		IEnumerable<UserDataListViewDto> GetUserDataListViewDtoList(IList<Guid> userIds);
+		IEnumerable<UserDataListViewDto> GetUserDataListViewDtoList(IList<string> userIds);
 	}
 }

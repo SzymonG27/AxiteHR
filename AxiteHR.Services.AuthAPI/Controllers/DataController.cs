@@ -19,7 +19,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		/// <returns>List of company's employee list view data</returns>
 		[HttpPost("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public IEnumerable<UserDataListViewDto> GetUserDataListViews([FromBody]IList<Guid> userIds)
+		public IEnumerable<UserDataListViewDto> GetUserDataListViews([FromBody]IList<string> userIds)
 		{
 			return dataService.GetUserDataListViewDtoList(userIds);
 		}

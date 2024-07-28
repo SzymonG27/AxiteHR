@@ -1,50 +1,50 @@
 <div class="w-11/12 mx-auto">
-    <button class="button-company ml-1 mt-10" [routerLink]="['/Company/Create']">
-        {{ 'Company_List_CreateCompanyBtn' | translate }}
-    </button>
+	<button class="button-company ml-1 mt-10" [routerLink]="['/Company/Create']">
+		{{ 'Company_List_CreateCompanyBtn' | translate }}
+	</button>
 </div>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg flex flex-col justify-center w-11/12 mx-auto mt-10">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    {{'Company_List_CompanyName' | translate}}
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    {{ 'Company_List_CreatedDate' | translate }}
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    {{ 'Company_List_EmployeeCount' | translate }}
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    {{ 'Company_List_Action' | translate }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let company of companyList"
-                class="odd:bg-white even:bg-[#f2f4f9]">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {{ company.companyName }}
-                </th>
-                <td class="px-6 py-4">
-                    {{ company.insDate }}
-                </td>
-                <td class="px-6 py-4">
-                    {{ company.userCount }}
-                </td>
-                <td class="px-6 py-4">
-                    <a [routerLink]="['/Manager', company.id, 'Dashboard']" class="font-medium text-blue-600 hover:underline"> {{
-                        'Company_List_Manage' | translate }} </a>
-                </td>
-            </tr>
-            <tr *ngIf="companyList.length === 0"
-                class="odd:bg-white even:bg-[#f2f4f9]">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {{ 'Company_List_Empty' | translate }}
-                </th>
-            </tr>
-        </tbody>
-    </table>
+	<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+		<thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
+			<tr>
+				<th scope="col" class="px-6 py-3">
+					{{'Company_List_CompanyName' | translate}}
+				</th>
+				<th scope="col" class="px-6 py-3">
+					{{ 'Company_List_CreatedDate' | translate }}
+				</th>
+				<th scope="col" class="px-6 py-3">
+					{{ 'Company_List_EmployeeCount' | translate }}
+				</th>
+				<th scope="col" class="px-6 py-3">
+					{{ 'Company_List_Action' | translate }}
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let company of companyList" class="odd:bg-white even:bg-[#f2f4f9]">
+				<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+					{{ company.companyName }}
+				</th>
+				<td class="px-6 py-4">
+					{{ company.insDate }}
+				</td>
+				<td class="px-6 py-4">
+					{{ company.userCount }}
+				</td>
+				<td class="px-6 py-4">
+					<a [routerLink]="['/Manager', company.id, 'Dashboard']"
+						class="font-medium text-blue-600 hover:underline">
+						{{ 'Company_List_Manage' | translate }}
+					</a>
+				</td>
+			</tr>
+			<tr *ngIf="companyList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
+				<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+					{{ 'Company_List_Empty' | translate }}
+				</th>
+			</tr>
+		</tbody>
+	</table>
 </div>

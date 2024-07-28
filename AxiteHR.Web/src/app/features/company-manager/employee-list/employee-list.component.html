@@ -1,60 +1,59 @@
 <div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex justify-start">
-    <div class="w-11/12 mx-auto">
-        <div class="mt-10">
-            <button class="button-employee ml-1" [routerLink]="['../EmployeeCreator']">
-                {{ 'Company_EmployeeList_CreateEmployeeBtn' | translate }}
-            </button>
-        </div>
+	<div class="w-11/12 mx-auto">
+		<div class="mt-10">
+			<button class="button-employee ml-1" [routerLink]="['../EmployeeCreator']">
+				{{ 'Company_EmployeeList_CreateEmployeeBtn' | translate }}
+			</button>
+		</div>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            {{ 'Authentication_FirstName' | translate }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ 'Authentication_LastName' | translate }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ 'Authentication_Email' | translate }}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {{ 'Company_List_Action' | translate }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let employee of employeeList | paginate: { id: 'employee-list-pagination', itemsPerPage: pagination.pageSize, currentPage: pagination.pageNumber }"
-                        class="odd:bg-white even:bg-[#f2f4f9]">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ employee.firstName }}
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ employee.lastName }}
-                        </td>
-                        <td class="px-6 py-4 font-medium">
-                            {{ employee.userEmail }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <!-- Action buttons can be placed here -->
-                        </td>
-                    </tr>
-                    <tr *ngIf="employeeList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
-                        <td colspan="4" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
-                            {{ 'Company_EmployeeList_Empty' | translate }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+				<thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
+					<tr>
+						<th scope="col" class="px-6 py-3">
+							{{ 'Authentication_FirstName' | translate }}
+						</th>
+						<th scope="col" class="px-6 py-3">
+							{{ 'Authentication_LastName' | translate }}
+						</th>
+						<th scope="col" class="px-6 py-3">
+							{{ 'Authentication_Email' | translate }}
+						</th>
+						<th scope="col" class="px-6 py-3">
+							{{ 'Company_List_Action' | translate }}
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let employee of employeeList | paginate: { id: 'employee-list-pagination', itemsPerPage: pagination.pageSize, currentPage: pagination.pageNumber }"
+						class="odd:bg-white even:bg-[#f2f4f9]">
+						<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+							{{ employee.firstName }}
+						</td>
+						<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+							{{ employee.lastName }}
+						</td>
+						<td class="px-6 py-4 font-medium">
+							{{ employee.userEmail }}
+						</td>
+						<td class="px-6 py-4">
+							<!-- Action buttons can be placed here -->
+						</td>
+					</tr>
+					<tr *ngIf="employeeList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
+						<td colspan="4" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+							{{ 'Company_EmployeeList_Empty' | translate }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-        <pagination-controls class="mt-5 block" id="employee-list-pagination" (pageChange)="pageChanged($event)"
-            previousLabel="{{ 'Pagination_Previous' | translate }}" 
-            nextLabel="{{ 'Pagination_Next' | translate }}"
-            screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
-            screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
-            screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}">
-        </pagination-controls>
-    </div>
+		<pagination-controls class="mt-5 block" id="employee-list-pagination" (pageChange)="pageChanged($event)"
+			previousLabel="{{ 'Pagination_Previous' | translate }}" nextLabel="{{ 'Pagination_Next' | translate }}"
+			screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
+			screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
+			screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}">
+		</pagination-controls>
+	</div>
 </div>

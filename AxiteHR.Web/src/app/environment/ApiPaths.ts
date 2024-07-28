@@ -7,5 +7,6 @@ export enum ApiPaths {
     CompanyList = "/Company/List",
     EmployeeList = "/Company/CompanyUserList",
     EmployeeListCount = "/Company/CompanyUsersCount",
-    CompanyCreator = "/CompanyManager/CreateNewCompany"
+    CompanyCreator = "/CompanyManager/CreateNewCompany",
+    EmployeeCreator = "/CompanyManager/CreateNewEmployee"
 }

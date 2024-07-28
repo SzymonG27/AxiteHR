@@ -78,7 +78,7 @@ export class NavBarComponent {
 
 	private mapUserRoles(isLoggedIn: boolean) {
 		if (isLoggedIn) {
-			this.userRoles = this.authState.getUserRoles(localStorage.getItem(AuthDictionary.Token));
+			this.userRoles = this.authState.getUserRoles();
 			return;
 		}
 

@@ -17,6 +17,8 @@
     "Global_HelloWorld": "Hello world",
     "Global_ErrorFetchingData": "An error occurred while fetching data",
     "Global_UnknownError": "Unknown error",
+    "Global_Loading": "Loading...",
+    "Global_UserNotLogged": "User is not logged",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Company",

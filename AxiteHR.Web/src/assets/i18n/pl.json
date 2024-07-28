@@ -17,6 +17,8 @@
     "Global_HelloWorld": "Witaj świecie",
     "Global_ErrorFetchingData": "Wystąpił błąd podczas pobierania danych",
     "Global_UnknownError": "Nieznany bład",
+    "Global_Loading": "Ładowanie...",
+    "Global_UserNotLogged": "Użytkownik nie jest zalogowany",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Firma",

@@ -138,6 +138,9 @@
   <data name="Global_RequiredField" xml:space="preserve">
     <value>Pole {0} jest wymagane.</value>
   </data>
+  <data name="Global_UserWithoutPermission" xml:space="preserve">
+    <value>Zalogowany użytkownik nie ma uprawnień do wykonania tej operacji.</value>
+  </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>Cześć świecie!</value>
   </data>

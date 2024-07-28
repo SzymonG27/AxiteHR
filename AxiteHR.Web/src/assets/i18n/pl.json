@@ -10,6 +10,7 @@
     "NO_ACCESS_TITLE": "Brak dostępu",
     "NOT_FOUND_TITLE": "Nie znaleziono",
     "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
+    "EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
@@ -73,6 +74,7 @@
     "Company_Creator_Cancel": "Anuluj",
     "Company_Creator_Confirm": "Zatwierdź",
     "Company_EmployeeList_CreateEmployeeBtn": "Stwórz nowego pracownika",
+    "Company_EmployeeList_Empty": "Brak pracowników",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",

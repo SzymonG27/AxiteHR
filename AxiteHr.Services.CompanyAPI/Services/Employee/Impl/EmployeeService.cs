@@ -14,11 +14,21 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 	public class EmployeeService(
 		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<CompanyResources> companyLocalizer,
+		IStringLocalizer<SharedResources> sharedLocalizer,
 		ILogger<EmployeeService> logger,
 		AppDbContext dbContext) : IEmployeeService
 	{
 		public async Task<NewEmployeeResponseDto> CreateNewEmployeeAsync(NewEmployeeRequestDto requestDto, string token)
 		{
+			if (!await IsUserHasManagerPermissionAsync(requestDto.CompanyId, requestDto.InsUserId))
+			{
+				return new NewEmployeeResponseDto
+				{
+					IsSucceeded = false,
+					ErrorMessage = sharedLocalizer[SharedResourcesKeys.Global_UserWithoutPermission]
+				};
+			}
+
 			NewEmployeeResponseDto? newEmployeeResponseDto;
 
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
@@ -101,6 +111,22 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 				};
 				await dbContext.CompanyUserPermissions.AddAsync(newCompanyUserPermission);
 			}
+		}
+
+		private async Task<bool> IsUserHasManagerPermissionAsync(int companyId, string insUserId)
+		{
+			return await dbContext.CompanyUsers
+				.Join(
+					dbContext.CompanyUserPermissions,
+					cu => cu.Id,
+					cup => cup.CompanyUserId,
+					(cu, cup) => new { cu, cup }
+				)
+				.Where(x => x.cu.CompanyId == companyId &&
+					x.cu.UserId == Guid.Parse(insUserId) &&
+					CompanyPermissionsHelper.ManagerPermissions.Contains(x.cup.CompanyPermissionId)
+				)
+				.AnyAsync();
 		}
 		#endregion
 	}

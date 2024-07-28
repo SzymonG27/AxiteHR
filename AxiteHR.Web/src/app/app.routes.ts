@@ -14,6 +14,7 @@ import { CompanyManagerComponent } from './shared/components/company-manager/com
 import { MainComponent } from './features/company-manager/main/main.component';
 import { EmployeeListComponent } from './features/company-manager/employee-list/employee-list.component';
 import { InternalErrorComponent } from './core/components/internal-error/internal-error.component';
+import { EmployeeCreatorComponent } from './features/company-manager/employee-creator/employee-creator.component';
 
 export const routes: Routes = [
 	//Home
@@ -77,6 +78,11 @@ export const routes: Routes = [
 				path: 'EmployeeList',
 				component: EmployeeListComponent,
 				data: { title: 'MANAGER_EMPLOYEES_TITLE_PAGE' }
+			},
+			{
+				path: 'EmployeeCreator',
+				component: EmployeeCreatorComponent,
+				data: { title: 'EMPLOYEE_CREATE_TITLE_PAGE' }
 			}
 		]
 	},

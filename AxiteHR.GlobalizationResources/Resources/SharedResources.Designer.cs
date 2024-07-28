@@ -124,6 +124,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logged user don&apos;t have permission to do this operation..
+        /// </summary>
+        public static string Global_UserWithoutPermission {
+            get {
+                return ResourceManager.GetString("Global_UserWithoutPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello world!.
         /// </summary>
         public static string HelloWorld {

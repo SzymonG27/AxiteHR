@@ -10,6 +10,7 @@ namespace AxiteHR.GlobalizationResources
         public const string Global_MissingToken = "Global_MissingToken";
         public const string Global_NotAuthorizedError = "Global_NotAuthorizedError";
         public const string Global_RequiredField = "Global_RequiredField";
+        public const string Global_UserWithoutPermission = "Global_UserWithoutPermission";
         public const string HelloWorld = "HelloWorld";
     }
 }

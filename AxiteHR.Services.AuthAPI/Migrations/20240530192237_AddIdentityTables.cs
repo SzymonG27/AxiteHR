@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace AxiteHR.Services.AuthAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class AddIdentityTables : Migration
+	/// <inheritdoc />
+	public partial class AddIdentityTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

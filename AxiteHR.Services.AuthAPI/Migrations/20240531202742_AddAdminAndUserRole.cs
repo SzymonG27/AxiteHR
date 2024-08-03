@@ -6,8 +6,8 @@
 
 namespace AxiteHR.Services.AuthAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class AddAdminAndUserRole : Migration
+	/// <inheritdoc />
+	public partial class AddAdminAndUserRole : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -17,12 +17,12 @@ namespace AxiteHR.Services.AuthAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AxiteHR.Services.AuthAPI.Models.AppUser", b =>
+            modelBuilder.Entity("AxiteHR.Services.AuthAPI.Models.Auth.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -45,6 +45,9 @@ namespace AxiteHR.Services.AuthAPI.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsTempPassword")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -134,6 +137,12 @@ namespace AxiteHR.Services.AuthAPI.Migrations
                             Id = "775da6ba-b138-4551-aa18-fb161e8ffbc9",
                             Name = "User",
                             NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "87ec7457-f89e-4c4b-940d-31ec35e51e3f",
+                            Name = "UserFromCompany",
+                            NormalizedName = "USERFROMCOMPANY"
                         });
                 });
 
@@ -254,7 +263,7 @@ namespace AxiteHR.Services.AuthAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AxiteHR.Services.AuthAPI.Models.AppUser", null)
+                    b.HasOne("AxiteHR.Services.AuthAPI.Models.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -263,7 +272,7 @@ namespace AxiteHR.Services.AuthAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AxiteHR.Services.AuthAPI.Models.AppUser", null)
+                    b.HasOne("AxiteHR.Services.AuthAPI.Models.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -278,7 +287,7 @@ namespace AxiteHR.Services.AuthAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AxiteHR.Services.AuthAPI.Models.AppUser", null)
+                    b.HasOne("AxiteHR.Services.AuthAPI.Models.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -287,7 +296,7 @@ namespace AxiteHR.Services.AuthAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AxiteHR.Services.AuthAPI.Models.AppUser", null)
+                    b.HasOne("AxiteHR.Services.AuthAPI.Models.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+		<EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\AuthResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\AuthResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>AuthResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\CompanyResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\CompanyResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CompanyResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\EmailResources.pl.resx" />
+		<EmbeddedResource Include="Resources\EmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EmailResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\SharedResources.pl.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\SharedResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="8.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\AuthResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AuthResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\CompanyResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>CompanyResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\EmailResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>EmailResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\SharedResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>SharedResources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)GenerateResources.ps1" />
+	</Target>
+
+</Project>

@@ -1,0 +1,9 @@
+.h-company-creator {
+    min-height: 70vh;
+}
+
+.focus-color {
+    fill: #8697C4;
+    stroke: #8697C4;
+    transition: fill 150ms ease-in-out, stroke 150ms ease-in-out;
+}

@@ -8,6 +8,7 @@ import { BlockUIModule } from 'ng-block-ui';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageInterceptor } from './core/interceptors/language.interceptor';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // Factory function for TranslateHttpLoader
 export function HttpLoaderFactory(http: HttpClient) {
@@ -28,7 +29,8 @@ export const appConfig: ApplicationConfig = {
 				  useFactory: HttpLoaderFactory,
 				  deps: [HttpClient]
 				}
-			})
+			}),
+			NgxPaginationModule
 		),
 		{
 			provide: HTTP_INTERCEPTORS,

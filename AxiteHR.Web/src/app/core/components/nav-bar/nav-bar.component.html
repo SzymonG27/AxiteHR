@@ -81,13 +81,18 @@
     </div>
     <div [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
         <div class="flex flex-col items-center">
-            <div class="relative group">
-                <a class="href-nav-option py-2 inline-flex items-center">Opcja 1 <svg class="ml-2 w-4 h-4" fill="none"
+            <div class="relative group" *ngIf="isLoggedIn">
+                <a class="href-nav-option py-2 inline-flex items-center">{{ 'Nav_Company' | translate }}
+                    <svg class="ml-auto mr-auto w-4 h-4" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg></a>
-                <div class="absolute left-0 hidden bg-white shadow-md group-hover:block">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Subopcja 1</a>
+                        <path stroke-linecap="round" class="inline-block" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </a>
+                <div class="absolute left-0 hidden bg-white shadow-md group-hover:block z-10">
+                    <a *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)"
+                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
+                        {{ 'Nav_Company_List' | translate }}
+                    </a>
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Subopcja 2</a>
                 </div>
             </div>

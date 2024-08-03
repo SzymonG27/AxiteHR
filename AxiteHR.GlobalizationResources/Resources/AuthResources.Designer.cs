@@ -61,11 +61,29 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid e-mail address or password..
+        /// </summary>
+        public static string InvalidMailOrPassword {
+            get {
+                return ResourceManager.GetString("InvalidMailOrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid E-Mail address or Password.
         /// </summary>
         public static string LoginInvalidData {
             get {
                 return ResourceManager.GetString("LoginInvalidData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID Firmy.
+        /// </summary>
+        public static string Model_CompanyId {
+            get {
+                return ResourceManager.GetString("Model_CompanyId", resourceCulture);
             }
         }
         
@@ -129,6 +147,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         public static string Model_UserPasswordRepeated {
             get {
                 return ResourceManager.GetString("Model_UserPasswordRepeated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred during password change. Please try again later..
+        /// </summary>
+        public static string PasswordChangeGlobalError {
+            get {
+                return ResourceManager.GetString("PasswordChangeGlobalError", resourceCulture);
             }
         }
         

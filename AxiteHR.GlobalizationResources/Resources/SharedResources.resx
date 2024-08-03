@@ -120,17 +120,26 @@
   <data name="Global_CompareField" xml:space="preserve">
     <value>The {0} field must match the {1} field.</value>
   </data>
+  <data name="Global_InsUserId" xml:space="preserve">
+    <value>Inserting user ID</value>
+  </data>
   <data name="Global_InvalidEmailAddress" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
   </data>
   <data name="Global_MinLengthField" xml:space="preserve">
     <value>The {0} field must be at least {1} characters long.</value>
   </data>
+  <data name="Global_MissingToken" xml:space="preserve">
+    <value>Token is missing.</value>
+  </data>
   <data name="Global_NotAuthorizedError" xml:space="preserve">
     <value>User not authenticated.</value>
   </data>
   <data name="Global_RequiredField" xml:space="preserve">
     <value>The {0} field is required.</value>
+  </data>
+  <data name="Global_UserWithoutPermission" xml:space="preserve">
+    <value>Logged user don't have permission to do this operation.</value>
   </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>Hello world!</value>

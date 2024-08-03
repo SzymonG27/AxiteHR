@@ -1,5 +1,4 @@
-﻿using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHR.GlobalizationResources;
+﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using System.ComponentModel.DataAnnotations;
 

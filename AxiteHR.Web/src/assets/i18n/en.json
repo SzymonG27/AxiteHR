@@ -6,13 +6,19 @@
     "COMPANY_LIST_TITLE_PAGE": "Company list",
     "COMPANY_CREATE_TITLE_PAGE": "Company creator",
     "MANAGER_MAIN_TITLE_PAGE": "Manager main page",
+    "MANAGER_EMPLOYEES_TITLE_PAGE": "Employee list",
     "NO_ACCESS_TITLE": "No access",
     "NOT_FOUND_TITLE": "Not found",
+    "INTERNAL_ERROR_TITLE": "Internal error",
+    "EMPLOYEE_CREATE_TITLE_PAGE": "Employee creator",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
     "Global_HelloWorld": "Hello world",
     "Global_ErrorFetchingData": "An error occurred while fetching data",
+    "Global_UnknownError": "Unknown error",
+    "Global_Loading": "Loading...",
+    "Global_UserNotLogged": "User is not logged",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Company",
@@ -69,9 +75,20 @@
     "Company_Creator_CompanyName": "Company name",
     "Company_Creator_Cancel": "Cancel",
     "Company_Creator_Confirm": "Confirm",
+    "Company_EmployeeList_CreateEmployeeBtn": "Create new employee",
+    "Company_EmployeeList_Empty": "No employees",
+    "Company_EmployeeList_EmployeeCreated": "The employee was successfully created.",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",
     "Nav_Manager_Dashboard": "Dashboard",
-    "Nav_Manager_Team": "Team"
+    "Nav_Manager_Team": "Team",
+    "Nav_Manager_Team_Employees": "Employees",
+
+    "//Section7": "Pagination",
+    "Pagination_Previous": " Previous ",
+    "Pagination_Next": " Next ",
+    "Pagination_Label": "Pagination",
+    "Pagination_PageLabel": "Page",
+    "Pagination_CurrentPageLabel": "Current Page"
 }

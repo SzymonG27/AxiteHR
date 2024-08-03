@@ -4,8 +4,8 @@
 
 namespace AxiteHR.Services.AuthAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class NewUserRoleForUserFromCompany : Migration
+	/// <inheritdoc />
+	public partial class NewUserRoleForUserFromCompany : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

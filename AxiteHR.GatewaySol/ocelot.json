@@ -17,6 +17,36 @@
 			}
 		},
 		{
+			"DownstreamPathTemplate": "/api/Company/CompanyUserList/{companyId}/{excludedUserId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/Company/CompanyUserList/{companyId}/{excludedUserId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/Company/CompanyUsersCount/{companyId}/{excludedUserId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/Company/CompanyUsersCount/{companyId}/{excludedUserId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
 			"DownstreamPathTemplate": "/api/CompanyManager/CreateNewCompany",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -26,6 +56,21 @@
 				}
 			],
 			"UpstreamPathTemplate": "/api/CompanyManager/CreateNewCompany",
+			"UpstreamHttpMethod": [ "Post" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyManager/CreateNewEmployee",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyManager/CreateNewEmployee",
 			"UpstreamHttpMethod": [ "Post" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"

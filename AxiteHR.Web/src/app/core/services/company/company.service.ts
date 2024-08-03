@@ -1,22 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CompanyCreatorRequest } from '../../models/company/CompanyCreatorRequest';
-import { Observable, take } from 'rxjs';
-import { CompanyCreatorResponse } from '../../models/company/CompanyCreatorResonse';
+import { CompanyCreatorRequest } from '../../models/company/company-creator/CompanyCreatorRequest';
+import { first, map, Observable, of, take } from 'rxjs';
+import { CompanyCreatorResponse } from '../../models/company/company-creator/CompanyCreatorResonse';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
 import { AuthStateService } from '../authentication/auth-state.service';
-import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CompanyService {
 
-	constructor(private http: HttpClient, private authStateService: AuthStateService) { }
+	constructor(private http: HttpClient,
+		private authStateService: AuthStateService,
+		private translate: TranslateService) { }
 
 	public createNewCompany(newCompany: CompanyCreatorRequest) : Observable<CompanyCreatorResponse> {
-		newCompany.creatorId = this.authStateService.getLoggedUserId(localStorage.getItem(AuthDictionary.Token));
+		newCompany.creatorId = this.authStateService.getLoggedUserId();
+		if (newCompany.creatorId.length === 0) {
+			let responseError = new CompanyCreatorResponse();
+
+			responseError.isSucceeded = false;
+			this.translate.get('Global_UserNotLogged').pipe(
+				first(),
+				map((translation: string) => translation)
+			)
+			.subscribe(message => responseError.errorMessage = message);
+
+			return of(responseError);
+		}
 		
 		return this.http.post<CompanyCreatorResponse>(
 			`${Environment.gatewayApiUrl}${ApiPaths.CompanyCreator}`,

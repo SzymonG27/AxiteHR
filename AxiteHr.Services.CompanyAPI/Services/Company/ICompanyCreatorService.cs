@@ -5,6 +5,11 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 {
 	public interface ICompanyCreatorService
 	{
-		Task<NewCompanyReponseDto> NewCompanyCreate(NewCompanyRequestDto newCompanyRequest);
+		/// <summary>
+		/// Create new company request
+		/// </summary>
+		/// <param name="newCompanyRequest">DTO of new company data</param>
+		/// <returns>NewCompanyReponseDto</returns>
+		Task<NewCompanyReponseDto> NewCompanyCreateAsync(NewCompanyRequestDto newCompanyRequest);
 	}
 }

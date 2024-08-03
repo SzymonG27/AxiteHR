@@ -22,6 +22,11 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>CompanyResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\EmailResources.pl.resx" />
+		<EmbeddedResource Include="Resources\EmailResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>EmailResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\SharedResources.pl.resx">
 		  <Generator></Generator>
 		</EmbeddedResource>
@@ -45,6 +50,11 @@
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>CompanyResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\EmailResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>EmailResources.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\SharedResources.Designer.cs">
 	    <DesignTime>True</DesignTime>

@@ -4,8 +4,8 @@ import { JWTTokenService } from '../authentication/jwttoken.service';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
-import { CompanyListItem } from '../../models/company/CompanyListItem';
-import { CompanyListViewModel } from '../../models/company/CompanyListViewModel';
+import { CompanyListItem } from '../../models/company/company-list/CompanyListItem';
+import { CompanyListViewModel } from '../../models/company/company-list/CompanyListViewModel';
 
 @Injectable({
 	providedIn: 'root'

@@ -4,8 +4,8 @@
 
 namespace AxiteHR.Services.AuthAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class EmailToNotNullable : Migration
+	/// <inheritdoc />
+	public partial class EmailToNotNullable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

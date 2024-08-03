@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+	  <ProjectReference Include="..\AxiteHR.Integration.MessageBus\AxiteHR.Integration.MessageBus.csproj" />
 	</ItemGroup>
 
 </Project>

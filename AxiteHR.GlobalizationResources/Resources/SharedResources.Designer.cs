@@ -70,6 +70,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inserting user ID.
+        /// </summary>
+        public static string Global_InsUserId {
+            get {
+                return ResourceManager.GetString("Global_InsUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is not a valid e-mail address..
         /// </summary>
         public static string Global_InvalidEmailAddress {
@@ -88,6 +97,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token is missing..
+        /// </summary>
+        public static string Global_MissingToken {
+            get {
+                return ResourceManager.GetString("Global_MissingToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not authenticated..
         /// </summary>
         public static string Global_NotAuthorizedError {
@@ -102,6 +120,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         public static string Global_RequiredField {
             get {
                 return ResourceManager.GetString("Global_RequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged user don&apos;t have permission to do this operation..
+        /// </summary>
+        public static string Global_UserWithoutPermission {
+            get {
+                return ResourceManager.GetString("Global_UserWithoutPermission", resourceCulture);
             }
         }
         

@@ -11,7 +11,7 @@ import { AuthenticationService } from '../../../core/services/authentication/aut
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { first } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-login',
@@ -46,19 +46,15 @@ export class LoginComponent {
 		}
 
 	ngOnInit(): void {
-		this.dataService.currentRegistered.subscribe((value: boolean) => {
+		this.dataService.currentRegistered.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.translate.get('Authentication_Login_RegistrationSuccessful').subscribe((translation: string) => {
-					this.loginMessage = translation;
-				});
+				this.loginMessage = await firstValueFrom(this.translate.get('Authentication_Login_RegistrationSuccessful'));
 				this.dataService.setRegistered(false);
 			}
 		});
-		this.dataService.isTokenExpired.subscribe((value: boolean) => {
+		this.dataService.isTokenExpired.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.translate.get('Authentication_Login_SessionExpired').subscribe((translation: string) => {
-					this.loginMessage = translation;
-				});
+				this.loginMessage = await firstValueFrom(this.translate.get('Authentication_Login_SessionExpired'))
 				this.dataService.setIsTokenExpired(false);
 			}
 		});
@@ -66,10 +62,10 @@ export class LoginComponent {
 
 	login(loginModel: LoginRequest) {
 		this.blockUIService.start();
-		this.authService.Login(loginModel).subscribe({
+		this.authService.Login(loginModel).pipe(first()).subscribe({
 			next: (response: LoginResponse) => {
 				if (response.isLoggedSuccessful && response.token) {
-					localStorage.setItem(AuthDictionary.Token, response.token);
+					localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
 					this.authState.setLoggedIn(true);
 					this.blockUIService.stop();
 					this.router.navigateByUrl(this.returnUrl);
@@ -79,7 +75,7 @@ export class LoginComponent {
 				}
 				this.blockUIService.stop();
 			},
-			error: (error: HttpErrorResponse) => {
+			error: async (error: HttpErrorResponse) => {
 				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
@@ -99,11 +95,8 @@ export class LoginComponent {
 						}
 					}
 				} else {
-					this.translate.get('Authentication_Login_UnexpectedError')
-						.pipe(first())
-						.subscribe((translation: string) => {
-							this.errorMessage = '*' + translation;
-						});
+					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.authState.setLoggedIn(false);
 				this.blockUIService.stop();

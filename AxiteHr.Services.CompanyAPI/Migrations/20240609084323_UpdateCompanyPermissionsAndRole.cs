@@ -4,8 +4,8 @@
 
 namespace AxiteHr.Services.CompanyAPI.Migrations
 {
-    /// <inheritdoc />
-    public partial class UpdateCompanyPermissionsAndRole : Migration
+	/// <inheritdoc />
+	public partial class UpdateCompanyPermissionsAndRole : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

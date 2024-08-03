@@ -6,13 +6,19 @@
     "COMPANY_LIST_TITLE_PAGE": "Lista firm",
     "COMPANY_CREATE_TITLE_PAGE": "Kreator firmy",
     "MANAGER_MAIN_TITLE_PAGE": "Strona główna zarządzania",
+    "MANAGER_EMPLOYEES_TITLE_PAGE": "Lista pracowników",
     "NO_ACCESS_TITLE": "Brak dostępu",
     "NOT_FOUND_TITLE": "Nie znaleziono",
+    "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
+    "EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
     "Global_HelloWorld": "Witaj świecie",
     "Global_ErrorFetchingData": "Wystąpił błąd podczas pobierania danych",
+    "Global_UnknownError": "Nieznany bład",
+    "Global_Loading": "Ładowanie...",
+    "Global_UserNotLogged": "Użytkownik nie jest zalogowany",
 
     "//Section3": "NavBar messages",
     "Nav_Company": "Firma",
@@ -34,7 +40,7 @@
     "Authentication_ForgotPassword": "Zapomniałeś hasła?",
     "Authentication_OrContinueWith": "Lub kontynuuj z",
     "Authentication_EnterEmail": "Wprowadź E-mail",
-    "Authentication_EnterUserName": "wprowadź nazwę użytkownika",
+    "Authentication_EnterUserName": "Wprowadź nazwę użytkownika",
     "Authentication_EnterFirstName": "Wprowadź imię",
     "Authentication_EnterLastName": "Wprowadź nazwisko",
     "Authentication_EnterPassword": "Wprowadź hasło",
@@ -69,9 +75,20 @@
     "Company_Creator_CompanyName": "Nazwa firmy",
     "Company_Creator_Cancel": "Anuluj",
     "Company_Creator_Confirm": "Zatwierdź",
+    "Company_EmployeeList_CreateEmployeeBtn": "Stwórz nowego pracownika",
+    "Company_EmployeeList_Empty": "Brak pracowników",
+    "Company_EmployeeList_EmployeeCreated": "Użytkownik został poprawnie stworzony.",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",
     "Nav_Manager_Dashboard": "Panel główny",
-    "Nav_Manager_Team": "Zespół"
+    "Nav_Manager_Team": "Zespół",
+    "Nav_Manager_Team_Employees": "Pracownicy",
+
+    "//Section7": "Pagination",
+    "Pagination_Previous": " Poprzednia ",
+    "Pagination_Next": " Następna ",
+    "Pagination_Label": "Paginacja",
+    "Pagination_PageLabel": "Strona",
+    "Pagination_CurrentPageLabel": "Aktualna strona"
 }

@@ -1,8 +1,11 @@
 using AutoMapper;
 using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
+using AxiteHr.Services.CompanyAPI.Helpers;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Employee;
+using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
 using AxiteHR.GatewaySol.Extensions;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -22,13 +25,24 @@ IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddHttpClient(
+	HttpClientNameHelper.Auth,
+	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AuthAPI"]!)
+);
+
 builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
+//Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 //Scopes, singletons
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

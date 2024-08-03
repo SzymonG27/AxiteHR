@@ -3,6 +3,7 @@ using AxiteHr.Services.CompanyAPI.Helpers;
 using AxiteHr.Services.CompanyAPI.Infrastructure;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
+using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -62,11 +63,17 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 
 			var companyUserIds = await dbContext.CompanyUsers
 				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
+				.OrderBy(x => x.Id)
 				.Skip(paginationInfo.Page * paginationInfo.ItemsPerPage)
 				.Take(paginationInfo.ItemsPerPage)
 				.AsNoTracking()
-				.Select(x => x.UserId)
+				.Select(x => new CompanyUserUserRelation { CompanyUserId = x.Id, UserId = x.UserId })
 				.ToListAsync();
+
+			if (companyUserIds.Count == 0)
+			{
+				return [];
+			}
 
 			return await CompanyUserViewDtoListApiRequest(companyUserIds, bearerToken);
 		}
@@ -80,19 +87,26 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 		}
 
 		#region Private Methods
-		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<Guid> userIds, string bearerToken)
+		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<CompanyUserUserRelation> companyUserRelations, string bearerToken)
 		{
 			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Auth);
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
 
-			var jsonRequestDto = JsonSerializer.Serialize(userIds);
+			var jsonRequestDto = JsonSerializer.Serialize(companyUserRelations.Select(x => x.UserId));
 			var stringContent = new StringContent(jsonRequestDto, System.Text.Encoding.UTF8, "application/json");
 
 			var response = await client.PostAsync(ApiLinkHelper.GetUserDataListViews, stringContent);
 
 			var responseBody = await response.Content.ReadAsStringAsync();
 
-			return JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions) ?? [];
+			var companyUserViewDtos = JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions) ?? [];
+
+			foreach (var companyUserViewDto in companyUserViewDtos)
+			{
+				companyUserViewDto.CompanyUserId = companyUserRelations.Single(x => x.UserId.ToString() == companyUserViewDto.UserId).CompanyUserId;
+			}
+
+			return companyUserViewDtos.OrderBy(x => x.CompanyUserId);
 		}
 		#endregion
 	}

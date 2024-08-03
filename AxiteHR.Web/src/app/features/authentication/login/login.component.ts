@@ -65,7 +65,7 @@ export class LoginComponent {
 		this.authService.Login(loginModel).pipe(first()).subscribe({
 			next: (response: LoginResponse) => {
 				if (response.isLoggedSuccessful && response.token) {
-					localStorage.setItem(AuthDictionary.Token, response.token);
+					localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
 					this.authState.setLoggedIn(true);
 					this.blockUIService.stop();
 					this.router.navigateByUrl(this.returnUrl);

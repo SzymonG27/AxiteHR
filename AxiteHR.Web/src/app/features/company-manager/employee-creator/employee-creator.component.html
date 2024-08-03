@@ -1,1 +1,133 @@
-<p>employee-creator works!</p>
+<div class="text-[#333]">
+	<div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex flex-col items-center justify-center">
+		<div
+			class="md:mt-20 grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
+			<div class="md:max-w-md w-full sm:px-6 py-4">
+				<form [formGroup]="employeeCreatorForm">
+					<div class="mb-12">
+						<h3 class="text-3xl font-extrabold">{{ 'Company_EmployeeList_CreateEmployeeBtn' | translate }}</h3>
+					</div>
+					<div class="mb-4 text-red-600" *ngIf="errorMessage">
+						*{{ errorMessage }}
+					</div>
+					<div>
+						<label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</label>
+						<div class="relative flex items-center">
+							<input name="email" #email (focus)="onFocusEmail()" (blur)="onBlurEmail()"
+								formControlName="email" type="text" required
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+								placeholder="{{ 'Authentication_EnterEmail' | translate }}" />
+							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusEmail" fill="#bbb"
+								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 682.667 682.667">
+								<defs>
+									<clipPath id="a" clipPathUnits="userSpaceOnUse">
+										<path d="M0 512h512V0H0Z" data-original="#000000"></path>
+									</clipPath>
+								</defs>
+								<g clip-path="url(#a)" transform="matrix(1.33 0 0 -1.33 0 682.667)">
+									<path fill="none" stroke-miterlimit="10" stroke-width="40"
+										d="M452 444H60c-22.091 0-40-17.909-40-40v-39.446l212.127-157.782c14.17-10.54 33.576-10.54 47.746 0L492 364.554V404c0 22.091-17.909 40-40 40Z"
+										data-original="#000000"></path>
+									<path
+										d="M472 274.9V107.999c0-11.027-8.972-20-20-20H60c-11.028 0-20 8.973-20 20V274.9L0 304.652V107.999c0-33.084 26.916-60 60-60h392c33.084 0 60 26.916 60 60v196.653Z"
+										data-original="#000000"></path>
+								</g>
+							</svg>
+						</div>
+						<div class="text-red-600 relative items-center"
+							*ngIf="employeeCreatorForm.controls['email'].invalid && (employeeCreatorForm.controls['email'].touched || employeeCreatorForm.controls['email'].dirty)">
+							<div *ngIf="employeeCreatorForm.controls['email'].errors?.['required']">
+								*{{ 'Authentication_Email_RequiredError' | translate }}
+							</div>
+							<div *ngIf="employeeCreatorForm.controls['email'].errors?.['email']">
+								*{{ 'Authentication_Email_EmailError' | translate }}
+							</div>
+						</div>
+					</div>
+					<div class="mt-8">
+						<label class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</label>
+						<div class="relative flex items-center">
+							<input name="userName" #userName (focus)="onFocusUserName()" (blur)="onBlurUserName()"
+								formControlName="userName" type="text" required
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+								placeholder="{{ 'Authentication_EnterUserName' | translate }}" />
+							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusUserName" fill="#bbb"
+								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
+								<path
+									d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.859 0-7 2.686-7 6v2h14v-2c0-3.314-3.141-6-7-6z" />
+							</svg>
+						</div>
+						<div class="text-red-600 relative items-center"
+							*ngIf="employeeCreatorForm.controls['userName'].invalid && (employeeCreatorForm.controls['userName'].touched || employeeCreatorForm.controls['userName'].dirty)">
+							<div *ngIf="employeeCreatorForm.controls['userName'].errors?.['required']">
+								*{{ 'Authentication_UserName_RequiredError' | translate }}
+							</div>
+							<div *ngIf="employeeCreatorForm.controls['userName'].errors?.['minlength']">
+								*{{ 'Authentication_UserName_MinLengthError' | translate }}
+							</div>
+						</div>
+					</div>
+					<div class="mt-8">
+						<label class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</label>
+						<div class="relative flex items-center">
+							<input name="firstName" #firstName (focus)="onFocusFirstName()" (blur)="onBlurFirstName()"
+								formControlName="firstName" type="text" required
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+								placeholder="{{ 'Authentication_EnterFirstName' | translate }}" />
+							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusFirstName" fill="#bbb"
+								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
+								<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+								<path
+									d="M12 6a3.993 3.993 0 0 0-3 6.647V16a1 1 0 0 0 2 0v-1h2v1a1 1 0 0 0 2 0v-3.353A3.993 3.993 0 0 0 12 6zm0 6a2 2 0 1 1 2-2 2 2 0 0 1-2 2z" />
+							</svg>
+						</div>
+						<div class="text-red-600 relative items-center"
+							*ngIf="employeeCreatorForm.controls['firstName'].invalid && (employeeCreatorForm.controls['firstName'].touched || employeeCreatorForm.controls['firstName'].dirty)">
+							<div *ngIf="employeeCreatorForm.controls['firstName'].errors?.['required']">
+								*{{ 'Authentication_FirstName_RequiredError' | translate }}
+							</div>
+							<div *ngIf="employeeCreatorForm.controls['firstName'].errors?.['minlength']">
+								*{{ 'Authentication_FirstName_MinLengthError' | translate }}
+							</div>
+						</div>
+					</div>
+					<div class="mt-8">
+						<label class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</label>
+						<div class="relative flex items-center">
+							<input name="lastName" #lastName (focus)="onFocusLastName()" (blur)="onBlurLastName()"
+								formControlName="lastName" type="text" required
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+								placeholder="{{ 'Authentication_EnterLastName' | translate }}" />
+							<svg xmlns="http://www.w3.org/2000/svg" [class.focus-color]="focusLastName" fill="#bbb"
+								stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
+								<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+								<path
+									d="M12 6a3.993 3.993 0 0 0-3 6.647V16a1 1 0 0 0 2 0v-1h2v1a1 1 0 0 0 2 0v-3.353A3.993 3.993 0 0 0 12 6zm0 6a2 2 0 1 1 2-2 2 2 0 0 1-2 2z" />
+							</svg>
+						</div>
+						<div class="text-red-600 relative items-center"
+							*ngIf="employeeCreatorForm.controls['lastName'].invalid && (employeeCreatorForm.controls['lastName'].touched || employeeCreatorForm.controls['lastName'].dirty)">
+							<div *ngIf="employeeCreatorForm.controls['lastName'].errors?.['required']">
+								*{{ 'Authentication_LastName_RequiredError' | translate }}
+							</div>
+							<div *ngIf="employeeCreatorForm.controls['lastName'].errors?.['minlength']">
+								*{{ 'Authentication_LastName_MinLengthError' | translate }}
+							</div>
+						</div>
+					</div>
+					<!--TODO Phone number-->
+                    <div class="mt-12">
+						<button type="submit" [disabled]="employeeCreatorForm.invalid" (click)="createNewEmployee()"
+							class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition">
+							{{ 'Company_EmployeeList_CreateEmployeeBtn' | translate }}
+						</button>
+					</div>
+				</form>
+			</div>
+			<div class="md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8">
+				<img src="../../../../assets/auth/register.webp" class="w-full h-full object-contain"
+					alt="register-image" />
+			</div>
+		</div>
+	</div>
+</div>

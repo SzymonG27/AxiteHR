@@ -43,8 +43,7 @@ export class RegisterComponent {
 		private router: Router,
 		private dataService: DataBehaviourService,
 		private blockUI: BlockUIService,
-		private translate: TranslateService)
-	{
+		private translate: TranslateService) {
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.Email, {
 				validators: [Validators.required, Validators.email]
@@ -68,40 +67,41 @@ export class RegisterComponent {
 	}
 
 	register() {
-		if (this.registerForm.valid) {
-			this.blockUI.start();
-			this.registerModel = this.registerForm.value;
-			this.authService.Register(this.registerModel).pipe(first()).subscribe({
-				next: (_response: HttpEvent<any>) => {
-					this.dataService.setRegistered(true);
-					this.blockUI.stop();
-					this.router.navigate(['/Login']);
-				},
-				error: async (error: HttpErrorResponse) => {
-					if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
-						this.errorMessage = error.error.errorMessage;
-					} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-						let firstError: boolean = true;
-	
-						for (let key in error.error.errors) {
-							if (error.error.errors.hasOwnProperty(key)) {
-								error.error.errors[key].forEach((errText: string) => {
-									if (firstError) {
-										this.errorMessage = errText;
-										firstError = false;
-									} else {
-										this.errorMessage += `\n*${errText}`;
-									}
-								});
-							}
-						}
-					} else {
-						this.errorMessage = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
-					}
-					this.blockUI.stop();
-				}
-			});
+		if (!this.registerForm.valid) {
+			return;
 		}
+		this.blockUI.start();
+		this.registerModel = this.registerForm.value;
+		this.authService.Register(this.registerModel).pipe(first()).subscribe({
+			next: (_response: HttpEvent<any>) => {
+				this.dataService.setRegistered(true);
+				this.blockUI.stop();
+				this.router.navigate(['/Login']);
+			},
+			error: async (error: HttpErrorResponse) => {
+				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
+					this.errorMessage = error.error.errorMessage;
+				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
+					let firstError: boolean = true;
+
+					for (let key in error.error.errors) {
+						if (error.error.errors.hasOwnProperty(key)) {
+							error.error.errors[key].forEach((errText: string) => {
+								if (firstError) {
+									this.errorMessage = errText;
+									firstError = false;
+								} else {
+									this.errorMessage += `\n*${errText}`;
+								}
+							});
+						}
+					}
+				} else {
+					this.errorMessage = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+				}
+				this.blockUI.stop();
+			}
+		});
 	}
 
 	onFocusEmail() {

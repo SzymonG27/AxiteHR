@@ -40,7 +40,7 @@
     "Authentication_ForgotPassword": "Zapomniałeś hasła?",
     "Authentication_OrContinueWith": "Lub kontynuuj z",
     "Authentication_EnterEmail": "Wprowadź E-mail",
-    "Authentication_EnterUserName": "wprowadź nazwę użytkownika",
+    "Authentication_EnterUserName": "Wprowadź nazwę użytkownika",
     "Authentication_EnterFirstName": "Wprowadź imię",
     "Authentication_EnterLastName": "Wprowadź nazwisko",
     "Authentication_EnterPassword": "Wprowadź hasło",
@@ -77,6 +77,7 @@
     "Company_Creator_Confirm": "Zatwierdź",
     "Company_EmployeeList_CreateEmployeeBtn": "Stwórz nowego pracownika",
     "Company_EmployeeList_Empty": "Brak pracowników",
+    "Company_EmployeeList_EmployeeCreated": "Użytkownik został poprawnie stworzony.",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",

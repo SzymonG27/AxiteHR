@@ -77,6 +77,7 @@
     "Company_Creator_Confirm": "Confirm",
     "Company_EmployeeList_CreateEmployeeBtn": "Create new employee",
     "Company_EmployeeList_Empty": "No employees",
+    "Company_EmployeeList_EmployeeCreated": "The employee was successfully created.",
 
     "//Section6": "Nav manager messages",
     "Nav_Manager_Menu": "Menu",

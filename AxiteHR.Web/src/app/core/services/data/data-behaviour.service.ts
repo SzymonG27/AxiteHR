@@ -18,4 +18,10 @@ export class DataBehaviourService {
 	setIsTokenExpired(value: boolean) {
 		this.isTokenExpiredSource.next(value);
 	}
+
+	private newEmployeeCreatedSource = new BehaviorSubject<boolean>(false);
+	newEmployeeCreated = this.newEmployeeCreatedSource.asObservable();
+	setNewEmployeeCreated(value: boolean) {
+		this.newEmployeeCreatedSource.next(value);
+	}
 }

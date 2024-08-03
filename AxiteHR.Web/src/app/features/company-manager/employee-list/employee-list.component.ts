@@ -5,9 +5,10 @@ import { EmployeeListItem } from '../../../core/models/company-manager/employee-
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { first, firstValueFrom, switchMap, take } from 'rxjs';
+import { first, firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Pagination } from '../../../shared/models/Pagination';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-employee-list',
@@ -22,11 +23,12 @@ import { Pagination } from '../../../shared/models/Pagination';
 	styleUrl: './employee-list.component.css'
 })
 export class EmployeeListComponent {
-	isLoadingTableError: boolean = false;
 	errorMessage: string | null = null;
 	employeeList: EmployeeListItem[] = [];
 	companyId: number | null = null;
 	errorPage: string | null = null;
+	forkHelper: any[] = [];
+	employeeCreatedMessage: string | null = null;
 
 	//Pagination
 	pagination: Pagination = new Pagination();
@@ -36,65 +38,86 @@ export class EmployeeListComponent {
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private dataService: DataBehaviourService
 	) { }
 
-	async ngOnInit() {
+	ngOnInit() {
 		this.blockUIService.start();
+
+		this.dataService.newEmployeeCreated.pipe(first()).subscribe(async (value: boolean) => {
+			if (value === true) {
+				this.employeeCreatedMessage = await firstValueFrom(this.translate.get('Company_EmployeeList_EmployeeCreated'));
+				this.dataService.setNewEmployeeCreated(false);
+			}
+		});
 
 		this.companyId = this.route.snapshot.parent?.params['id'];
 		if (this.companyId == undefined || this.companyId == null) {
 			//ToDo client logger
 			this.router.navigate(['Internal-Error']);
+			this.blockUIService.stop();
 		}
 
-		this.getEmployeeListCount(this.companyId!);
-		this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize);
-
-		this.blockUIService.stop();
+		zip(
+			this.getEmployeeListCount(this.companyId!),
+			this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize)
+		).pipe(
+			take(1)
+		)
+		.subscribe({
+			next: () => {
+				this.blockUIService.stop();
+			},
+			error: async (err) => {
+				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
+				this.blockUIService.stop();
+			}
+		});
 	}
 
 	pageChanged(event: number) {
 		this.blockUIService.start();
 
 		this.pagination.pageNumber = event;
-		this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize);
 
-		this.blockUIService.stop();
+		zip(
+			this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize)
+		).pipe(
+			take(1)
+		)
+		.subscribe({
+			next: () => {
+				this.blockUIService.stop();
+			},
+			error: async (err) => {
+				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
+				this.blockUIService.stop();
+			}
+		});
 	}
 
-	private getEmployeeListViewPage(passedCompanyId: number, currentPage: number, pageSize: number) {
-		this.companyManagerListService.getEmployeeListView(passedCompanyId, currentPage, pageSize).pipe(
+	private getEmployeeListViewPage(passedCompanyId: number, currentPage: number, pageSize: number): Observable<void> {
+		return this.companyManagerListService.getEmployeeListView(passedCompanyId, currentPage, pageSize).pipe(
 			take(1),
 			switchMap(response => {
 				if (!response.isSucceed) {
-					this.isLoadingTableError = true;
+					//ToDo error handler
 					this.errorMessage = response.errorMessage;
-					throw new Error(this.errorMessage); // ToDo: Proper error handling
 				}
 				this.employeeList = response.employeeList;
-				return [];
+				return of(void 0);
 			})
-		).subscribe({
-			next: () => { },
-			error: async (err) => {
-				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
-			}
-		});
+		);
 	}
 
-	private getEmployeeListCount(passedCompanyId: number) {
-		this.companyManagerListService.getEmployeeListCount(passedCompanyId).pipe(
+	private getEmployeeListCount(passedCompanyId: number): Observable<void> {
+		return this.companyManagerListService.getEmployeeListCount(passedCompanyId).pipe(
 			take(1),
 			switchMap(response => {
 				this.pagination.totalItems = response;
-				return [];
+				return of(void 0);
 			})
-		).subscribe({
-			next: () => { },
-			error: async (err) => {
-				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
-			}
-		});
+		);
 	}
 }

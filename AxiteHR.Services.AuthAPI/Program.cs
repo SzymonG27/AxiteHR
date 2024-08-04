@@ -77,4 +77,19 @@ app.UseRequestLocalization(locOptions);
 
 app.MapControllers();
 
+if (builder.Configuration["IsDbFromDocker"] == "true")
+{
+	using var scope = app.Services.CreateScope();
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	try
+	{
+		db.Database.Migrate();
+	}
+	catch (Exception ex)
+	{
+		var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+		logger.LogError(ex, "An error occurred while migrating the database.");
+	}
+}
+
 app.Run();

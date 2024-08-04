@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "axitehr.gatewaysol": "StartDebugging",
+        "axitehr.services.applicationapi": "StartDebugging",
+        "axitehr.services.authapi": "StartDebugging",
+        "axitehr.services.companyapi": "StartDebugging",
+        "axitehr.services.documentapi": "StartDebugging",
+        "axitehr.services.emailapi": "StartDebugging"
+      }
+    }
+  }
+}

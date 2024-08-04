@@ -1,0 +1,140 @@
+version: '3.4'
+
+services:
+  sqlserverdb:
+    container_name: AxiteHR_Sql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql/data
+      - sqlserver_log:/var/opt/mssql/log
+      - sqlserver_secrets:/var/opt/mssql/secrets
+    networks:
+      - axitehr-network
+    user: root
+    command: >
+      /bin/bash -c "
+      chown -R mssql:mssql /var/opt/mssql &&
+      /opt/mssql/bin/sqlservr"
+    healthcheck:
+      test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P Password123 -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  axitehr.gatewaysol:
+    image: ${DOCKER_REGISTRY-}axitehrgatewaysol
+    build:
+      context: .
+      dockerfile: AxiteHR.GatewaySol/Dockerfile
+    ports:
+      - "5116:5116" # HTTP
+      - "7777:7777" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7777;http://+:5116"
+    networks:
+      - axitehr-network
+
+  axitehr.services.applicationapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicesapplicationapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.ApplicationAPI/Dockerfile
+    ports:
+      - "5176:5176" # HTTP
+      - "7002:7002" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7002;http://+:5176"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+      - axitehr.gatewaysol
+
+  axitehr.services.authapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicesauthapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.AuthAPI/Dockerfile
+    ports:
+      - "5087:5087" # HTTP
+      - "7001:7001" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7001;http://+:5087"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Identity;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+
+  axitehr.services.companyapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicescompanyapi
+    build:
+      context: .
+      dockerfile: AxiteHr.Services.CompanyAPI/Dockerfile
+    ports:
+      - "5020:5020" # HTTP
+      - "7004:7004" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7004;http://+:5020"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Company;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+      - axitehr.gatewaysol
+
+  axitehr.services.documentapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicesdocumentapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.DocumentAPI/Dockerfile
+    ports:
+      - "5187:5187" # HTTP
+      - "7003:7003" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7003;http://+:5187"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+      - axitehr.gatewaysol
+
+  axitehr.services.emailapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicesemailapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.EmailAPI/Dockerfile
+    ports:
+      - "5243:5243" # HTTP
+      - "7005:7005" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7005;http://+:5243"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Email;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+      - axitehr.gatewaysol
+
+volumes:
+  sqlserver_data:
+  sqlserver_log:
+  sqlserver_secrets:
+
+networks:
+  axitehr-network:
+    driver: bridge

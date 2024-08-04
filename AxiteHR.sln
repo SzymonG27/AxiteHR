@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Services.EmailAPI",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{39A36EE9-AC4A-40A4-B549-46534481ED4D}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A3C0271A-23C7-4C74-898B-339D9A3D3164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{0CBC8E66-9E3F-40A3-AF1F-E17BE7FB86D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CBC8E66-9E3F-40A3-AF1F-E17BE7FB86D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CBC8E66-9E3F-40A3-AF1F-E17BE7FB86D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C0271A-23C7-4C74-898B-339D9A3D3164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C0271A-23C7-4C74-898B-339D9A3D3164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C0271A-23C7-4C74-898B-339D9A3D3164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C0271A-23C7-4C74-898B-339D9A3D3164}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 
-namespace AxiteHR.Services.AuthAPI.Helpers
+namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
-	public static class TempPasswordHelper
+	public class TempPasswordGeneratorService : ITempPasswordGeneratorService
 	{
 		private static readonly char[] UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 		private static readonly char[] LowercaseChars = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
@@ -11,7 +11,7 @@ namespace AxiteHR.Services.AuthAPI.Helpers
 		private static readonly char[] AllChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?".ToCharArray();
 		private const int PasswordLength = 12;
 
-		public static string GenerateTempPassword()
+		public string GenerateTempPassword()
 		{
 			var passwordChars = new char[PasswordLength];
 			var filledPositions = new bool[PasswordLength];

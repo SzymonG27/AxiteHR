@@ -20,7 +20,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		IJwtTokenGenerator jwtTokenGenerator,
 		IStringLocalizer<AuthResources> authLocalizer,
 		IMessageBus messageBus,
-		IConfiguration configuration) : IAuthService
+		IConfiguration configuration,
+		ITempPasswordGeneratorService tempPasswordGeneratorService) : IAuthService
 	{
 		public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest)
 		{
@@ -68,7 +69,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 		public async Task<NewEmployeeResponseDto> RegisterNewEmployeeAsync(NewEmployeeRequestDto newEmployeeRequestDto)
 		{
-			var tempPassword = TempPasswordHelper.GenerateTempPassword();
+			var tempPassword = tempPasswordGeneratorService.GenerateTempPassword();
 			return await RegisterUser(newEmployeeRequestDto, tempPassword, Roles.UserFromCompany, true,
 				(user, isSuccess, errorMessage) => new NewEmployeeResponseDto
 				{
@@ -197,8 +198,9 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			{
 				return false;
 			}
-			await userManager.AddToRoleAsync(user, roleName);
-			return true;
+
+			var result = await userManager.AddToRoleAsync(user, roleName);
+			return result.Succeeded;
 		}
 
 		private async Task<bool> IsUserMailValidateSucceededAsync(string email)

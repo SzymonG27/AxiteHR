@@ -100,6 +100,8 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			builder.Services.AddTransient<ITempPasswordGeneratorService, TempPasswordGeneratorService>();
+
 			builder.Services.AddScoped<IAuthService, AuthService>();
 			builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 			builder.Services.AddScoped<IMessageBus, MessageBus>();

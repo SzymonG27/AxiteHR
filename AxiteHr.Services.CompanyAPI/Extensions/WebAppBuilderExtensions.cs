@@ -1,6 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AxiteHr.Services.CompanyAPI.Helpers;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Company;
+using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Employee;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Globalization;
 using System.Text;
 
@@ -69,6 +77,37 @@ namespace AxiteHR.GatewaySol.Extensions
 					new CultureInfo("pl")
 				];
 			}
+		}
+
+		public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.Enrich.WithProperty("Service", "companyapi")
+				.Enrich.FromLogContext()
+				.WriteTo.Http(
+					builder.Configuration[ConfigurationHelper.LogStashUrl]!,
+					builder.Configuration.GetValue<long>(ConfigurationHelper.LogStashQueueLimitBytes)
+				)
+				.WriteTo.Console()
+				.CreateLogger();
+
+			builder.Host.UseSerilog();
+
+			return builder;
+		}
+
+		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
+		{
+			builder.Services.AddScoped<ICompanyService, CompanyService>();
+			builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+			builder.Services.AddSingleton<IStringLocalizer<CompanyResources>, StringLocalizer<CompanyResources>>();
+
+			return builder;
 		}
 	}
 }

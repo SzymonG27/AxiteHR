@@ -1,17 +1,12 @@
-using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.MessageBus;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
+using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Models.Auth;
-using AxiteHR.Services.AuthAPI.Services.Auth;
-using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
-using AxiteHR.Services.AuthAPI.Services.Data;
-using AxiteHR.Services.AuthAPI.Services.Data.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +16,13 @@ builder.AddAuthentication();
 builder.Services.AddAuthorization();
 
 // Add services to the container.
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(ConfigurationHelper.JwtOptions));
+builder.Services.AddDbContext<AppDbContext>(opt =>
+	opt.UseSqlServer(
+		builder.Configuration.GetConnectionString(ConfigurationHelper.DefaultConnectionString)
+	)
+);
+
 builder.Services
 	.AddIdentity<AppUser, IdentityRole>()
 	.AddEntityFrameworkStores<AppDbContext>()
@@ -33,19 +33,10 @@ builder.Services.AddControllers()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 //Logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+builder.AddSerilog();
 
-//Scopes, singletons
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-builder.Services.AddScoped<IMessageBus, MessageBus>();
-builder.Services.AddScoped<IDataService, DataService>();
-
-builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
-builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
+//Service registration
+builder.RegisterServices();
 
 //Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -69,15 +60,15 @@ app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(locOptions);
 
 app.MapControllers();
 
-if (builder.Configuration["IsDbFromDocker"] == "true")
+if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 {
 	using var scope = app.Services.CreateScope();
 	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -92,4 +83,16 @@ if (builder.Configuration["IsDbFromDocker"] == "true")
 	}
 }
 
-app.Run();
+try
+{
+	Log.Information("Starting web host");
+	app.Run();
+}
+catch (Exception ex)
+{
+	Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+	Log.CloseAndFlush();
+}

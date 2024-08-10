@@ -1,6 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.MessageBus;
+using AxiteHR.Services.AuthAPI.Helpers;
+using AxiteHR.Services.AuthAPI.Services.Auth;
+using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
+using AxiteHR.Services.AuthAPI.Services.Data;
+using AxiteHR.Services.AuthAPI.Services.Data.Impl;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Globalization;
 using System.Text;
 
@@ -69,6 +78,38 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 					new CultureInfo("pl")
 				];
 			}
+		}
+
+		public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.Enrich.WithProperty("Service", "authapi")
+				.Enrich.FromLogContext()
+				.WriteTo.Http(
+					builder.Configuration[ConfigurationHelper.LogStashUrl]!,
+					builder.Configuration.GetValue<long>(ConfigurationHelper.LogStashQueueLimitBytes)
+				)
+				.WriteTo.Console()
+				.CreateLogger();
+
+			builder.Host.UseSerilog();
+
+			return builder;
+		}
+
+		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
+		{
+			builder.Services.AddScoped<IAuthService, AuthService>();
+			builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+			builder.Services.AddScoped<IMessageBus, MessageBus>();
+			builder.Services.AddScoped<IDataService, DataService>();
+
+			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+			builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
+
+			return builder;
 		}
 	}
 }

@@ -15,5 +15,9 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="elk-config\elasticsearch.yml" />
+    <None Include="elk-config\kibana.yml" />
+    <None Include="elk-config\logstash.conf" />
+    <None Include="elk-config\logstash.yml" />
   </ItemGroup>
 </Project>

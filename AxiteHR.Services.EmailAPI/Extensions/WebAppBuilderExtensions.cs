@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.EmailAPI.Helpers;
+using AxiteHR.Services.EmailAPI.Messaging;
+using AxiteHR.Services.EmailAPI.Services.EmailSender;
+using AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
+using Serilog;
 using System.Globalization;
 
 namespace AxiteHR.Services.EmailAPI.Extensions
@@ -37,6 +44,37 @@ namespace AxiteHR.Services.EmailAPI.Extensions
 					new CultureInfo("pl")
 				];
 			}
+		}
+
+		public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+		{
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.Enrich.WithProperty("Service", "emailapi")
+				.Enrich.FromLogContext()
+				.WriteTo.Http(
+					builder.Configuration[ConfigurationHelper.LogStashUrl]!,
+					builder.Configuration.GetValue<long>(ConfigurationHelper.LogStashQueueLimitBytes)
+				)
+				.WriteTo.Console()
+				.CreateLogger();
+
+			builder.Host.UseSerilog();
+
+			return builder;
+		}
+
+		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
+		{
+			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+			builder.Services.AddSingleton<IStringLocalizer<EmailResources>, StringLocalizer<EmailResources>>();
+
+			builder.Services.AddSingleton<IEmployeeTempPasswordService, EmployeeTempPasswordService>();
+			builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+			builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
+			return builder;
 		}
 	}
 }

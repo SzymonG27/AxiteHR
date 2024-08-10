@@ -1,6 +1,7 @@
 version: '3.4'
 
 services:
+  #MY SERVICES
   sqlserverdb:
     container_name: AxiteHR_Sql
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -74,6 +75,7 @@ services:
       - axitehr-network
     depends_on:
       - sqlserverdb
+      - logstash
 
   axitehr.services.companyapi:
     image: ${DOCKER_REGISTRY-}axitehrservicescompanyapi
@@ -93,6 +95,7 @@ services:
     depends_on:
       - sqlserverdb
       - axitehr.gatewaysol
+      - logstash
 
   axitehr.services.documentapi:
     image: ${DOCKER_REGISTRY-}axitehrservicesdocumentapi
@@ -129,11 +132,70 @@ services:
     depends_on:
       - sqlserverdb
       - axitehr.gatewaysol
+      - logstash
+  #END OF MY SERVICES
+
+  #ELK STACK
+  # Elasticsearch
+  elasticsearch:
+    image: elasticsearch:7.9.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - transport.host=0.0.0.0
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - cluster.name=elasticsearch
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./elk-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - es_data:/usr/share/elasticsearch/data/
+    networks:
+      - axitehr-network
+
+  # Logstash
+  logstash:
+    image: logstash:7.9.1
+    container_name: logstash
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./elk-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./elk-config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ls_data:/usr/share/logstash/data
+    depends_on:
+      - elasticsearch
+    networks:
+      - axitehr-network
+
+  # Kibana
+  kibana:
+    image: kibana:7.9.1
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./elk-config/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - kb_data:/usr/share/kibana/data
+    depends_on:
+      - logstash
+    networks:
+      - axitehr-network
+  #END OF ELK STACK
 
 volumes:
   sqlserver_data:
   sqlserver_log:
   sqlserver_secrets:
+  es_data:
+  ls_data:
+  kb_data:
 
 networks:
   axitehr-network:

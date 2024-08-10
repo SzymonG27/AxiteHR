@@ -1,21 +1,22 @@
 using AxiteHr.Services.EmailAPI.Data;
-using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.EmailAPI.Extensions;
-using AxiteHR.Services.EmailAPI.Messaging;
+using AxiteHR.Services.EmailAPI.Helpers;
 using AxiteHR.Services.EmailAPI.Models.SenderOptions;
-using AxiteHR.Services.EmailAPI.Services.EmailSender;
-using AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddGlobalization();
 
-builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection("EmailSenderSettings"));
+builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(ConfigurationHelper.EmailSenderSettings));
 
 // Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(opt =>
+	opt.UseSqlServer(
+		builder.Configuration.GetConnectionString(ConfigurationHelper.DefaultConnectionString)
+	)
+);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,18 +24,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+builder.AddSerilog();
 
 //Scopes, singletons
-builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
-builder.Services.AddSingleton<IStringLocalizer<EmailResources>, StringLocalizer<EmailResources>>();
-
-builder.Services.AddSingleton<IEmployeeTempPasswordService, EmployeeTempPasswordService>();
-builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
-builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.RegisterServices();
 
 var app = builder.Build();
 
@@ -53,4 +46,31 @@ app.MapControllers();
 
 app.UseAzureServiceBusConsumer();
 
-app.Run();
+if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
+{
+	using var scope = app.Services.CreateScope();
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	try
+	{
+		db.Database.Migrate();
+	}
+	catch (Exception ex)
+	{
+		var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+		logger.LogError(ex, "An error occurred while migrating the database.");
+	}
+}
+
+try
+{
+	Log.Information("Starting web host");
+	app.Run();
+}
+catch (Exception ex)
+{
+	Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+	Log.CloseAndFlush();
+}

@@ -10,6 +10,7 @@ using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using Serilog;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 {
@@ -19,8 +20,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		IJwtTokenGenerator jwtTokenGenerator,
 		IStringLocalizer<AuthResources> authLocalizer,
 		IMessageBus messageBus,
-		IConfiguration configuration,
-		ILogger<AuthService> logger) : IAuthService
+		IConfiguration configuration) : IAuthService
 	{
 		public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest)
 		{
@@ -47,6 +47,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			var roleList = await userManager.GetRolesAsync(user);
 			var token = jwtTokenGenerator.GenerateToken(user, roleList);
 
+			Log.Information("User with e-mail: {UserMail} logged successfully", user.Email);
 			return new LoginResponseDto
 			{
 				IsLoggedSuccessful = true,
@@ -128,7 +129,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 					lastName = empReq.LastName;
 					break;
 				default:
-					logger.LogError("Invalid request type RegisterUser: {RequestType}", request?.GetType().Name);
+					Log.Error("Invalid request type RegisterUser: {RequestType}", request?.GetType().Name);
 					throw new ArgumentException("Invalid request type");
 			}
 
@@ -183,7 +184,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			}
 			catch (Exception ex)
 			{
-				logger.LogError(ex, "Regiser failed for user: {UserMail}", user.Email);
+				Log.Error(ex, "Regiser failed for user: {UserMail}", user.Email);
 				await transaction.RollbackAsync();
 				return createResponse(null, false, authLocalizer[AuthResourcesKeys.RegisterGlobalError]);
 			}

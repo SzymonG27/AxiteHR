@@ -2,15 +2,10 @@ using AutoMapper;
 using AxiteHr.Services.CompanyAPI;
 using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Helpers;
-using AxiteHr.Services.CompanyAPI.Services.Company;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
-using AxiteHr.Services.CompanyAPI.Services.Employee;
-using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
 using AxiteHR.GatewaySol.Extensions;
-using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +14,11 @@ builder.AddGlobalization();
 builder.AddAuthentication();
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(opt =>
+	opt.UseSqlServer(
+		builder.Configuration.GetConnectionString(ConfigurationHelper.DefaultConnectionString)
+	)
+);
 
 IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -27,7 +26,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpClient(
 	HttpClientNameHelper.Auth,
-	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration["ServiceUrls:AuthAPI"]!)
+	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration[ConfigurationHelper.AuthApiUrl]!)
 );
 
 builder.Services.AddControllers()
@@ -35,19 +34,12 @@ builder.Services.AddControllers()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 //Logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+builder.AddSerilog();
 
 //Scopes, singletons
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.RegisterServices();
 
-builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
-builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
-builder.Services.AddSingleton<IStringLocalizer<CompanyResources>, StringLocalizer<CompanyResources>>();
-
+//Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -74,4 +66,31 @@ app.UseAuthentication();
 
 app.MapControllers();
 
-app.Run();
+if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
+{
+	using var scope = app.Services.CreateScope();
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	try
+	{
+		db.Database.Migrate();
+	}
+	catch (Exception ex)
+	{
+		var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+		logger.LogError(ex, "An error occurred while migrating the database.");
+	}
+}
+
+try
+{
+	Log.Information("Starting web host");
+	app.Run();
+}
+catch (Exception ex)
+{
+	Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+	Log.CloseAndFlush();
+}

@@ -1,5 +1,6 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.MessageBus;
+using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Services.Auth;
 using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
@@ -105,11 +106,13 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 			builder.Services.AddScoped<IAuthService, AuthService>();
 			builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 			builder.Services.AddScoped<IMessageBus, MessageBus>();
+			builder.Services.AddScoped<IDataRepository, DataRepository>();
 			builder.Services.AddScoped<IDataService, DataService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
+			builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 
 			return builder;
 		}

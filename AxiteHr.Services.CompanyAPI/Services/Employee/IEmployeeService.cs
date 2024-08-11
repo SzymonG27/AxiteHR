@@ -9,7 +9,8 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee
 		/// </summary>
 		/// <param name="requestDto">DTO of new employee data</param>
 		/// <param name="token">Token for creating auth user request</param>
+		/// <param name="acceptLanguage">Accept language to header. Possible values = { "pl", "en" }</param>
 		/// <returns>NewEmployeeResponseDto</returns>
-		Task<NewEmployeeResponseDto> CreateNewEmployeeAsync(NewEmployeeRequestDto requestDto, string token);
+		Task<NewEmployeeResponseDto> CreateNewEmployeeAsync(NewEmployeeRequestDto requestDto, string token, string acceptLanguage);
 	}
 }

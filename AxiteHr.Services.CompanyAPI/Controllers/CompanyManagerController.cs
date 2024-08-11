@@ -35,13 +35,18 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> CreateNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
 		{
+			var isLanguageHeaderExists = Request.Headers.TryGetValue("Accept-Language", out var acceptLanguage);
+			if (!isLanguageHeaderExists)
+			{
+				acceptLanguage = "en";
+			}
 			if (!Request.Headers.TryGetValue("Authorization", out var token))
 			{
 				return Unauthorized(sharedLocalizer[SharedResourcesKeys.Global_MissingToken]);
 			}
 			var bearerToken = token.ToString().Replace("Bearer ", "");
 
-			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken);
+			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken, acceptLanguage.ToString());
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

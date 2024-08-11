@@ -18,7 +18,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		ILogger<EmployeeService> logger,
 		AppDbContext dbContext) : IEmployeeService
 	{
-		public async Task<NewEmployeeResponseDto> CreateNewEmployeeAsync(NewEmployeeRequestDto requestDto, string token)
+		public async Task<NewEmployeeResponseDto> CreateNewEmployeeAsync(NewEmployeeRequestDto requestDto, string token, string acceptLanguage)
 		{
 			if (!await IsUserHasManagerPermissionAsync(requestDto.CompanyId, requestDto.InsUserId))
 			{
@@ -34,7 +34,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				newEmployeeResponseDto = await CreateNewAuthEmployeeAsync(requestDto, token);
+				newEmployeeResponseDto = await CreateNewAuthEmployeeAsync(requestDto, token, acceptLanguage);
 
 				if (newEmployeeResponseDto?.IsSucceeded != true || string.IsNullOrEmpty(newEmployeeResponseDto.EmployeeId))
 				{
@@ -68,10 +68,11 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		}
 
 		#region Private Methods
-		private async Task<NewEmployeeResponseDto?> CreateNewAuthEmployeeAsync(NewEmployeeRequestDto requestDto, string token)
+		private async Task<NewEmployeeResponseDto?> CreateNewAuthEmployeeAsync(NewEmployeeRequestDto requestDto, string token, string acceptLanguage)
 		{
 			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Auth);
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
 
 			var jsonRequestDto = JsonSerializer.Serialize(requestDto);
 			var stringContent = new StringContent(jsonRequestDto, System.Text.Encoding.UTF8, "application/json");
@@ -114,7 +115,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		}
 
 		private async Task<bool> IsUserHasManagerPermissionAsync(int companyId, string insUserId)
-		{
+		{ //ToDo big queries to repository layer
 			return await dbContext.CompanyUsers
 				.Join(
 					dbContext.CompanyUserPermissions,

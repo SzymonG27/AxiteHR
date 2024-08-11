@@ -3,14 +3,14 @@ import { NavManagerComponent } from '../../../core/components/nav-manager/nav-ma
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-company-manager',
-  standalone: true,
-  imports: [
-    NavManagerComponent,
-    RouterOutlet
-  ],
-  templateUrl: './company-manager.component.html',
-  styleUrl: './company-manager.component.css'
+	selector: 'app-company-manager',
+	standalone: true,
+	imports: [
+		NavManagerComponent,
+		RouterOutlet
+	],
+	templateUrl: './company-manager.component.html',
+	styleUrl: './company-manager.component.css'
 })
 export class CompanyManagerComponent {
 

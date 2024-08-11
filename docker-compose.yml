@@ -74,7 +74,7 @@ services:
       Kestrel__Endpoints__Https__Url: "https://+:7001"
       Kestrel__Endpoints__Https__Certificate__Path: "Certs/axitehr.services.authapi.pfx"
       Kestrel__Endpoints__Https__Certificate__Password: "Password123"
-      MessageBusSettings__ConnectionString: "Endpoint=sb://axitehr-mailing.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=IlHVo5z8JhVBMALz85Iws3I2cEOWrsTSX+ASbOUCg/U="
+      MessageBusSettings__ConnectionString: ""
     networks:
       - axitehr-network
     depends_on:
@@ -134,8 +134,8 @@ services:
       ASPNETCORE_URLS: "https://+:7005;http://+:5243"
       IsDbFromDocker: true
       ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Email;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
-      ConnectionStrings__ServiceBusConnectionString: "Endpoint=sb://axitehr-mailing.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=IlHVo5z8JhVBMALz85Iws3I2cEOWrsTSX+ASbOUCg/U="
-      EmailSenderSettings__From: "Frederick Casper"
+      ConnectionStrings__ServiceBusConnectionString: ""
+      EmailSenderSettings__From: "frederick22@ethereal.email"
       EmailSenderSettings__SmtpServer: "smtp.ethereal.email"
       EmailSenderSettings__Port: 587
       EmailSenderSettings__Username: "frederick22@ethereal.email"

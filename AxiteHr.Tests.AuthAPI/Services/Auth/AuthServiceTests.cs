@@ -1,6 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.MessageBus;
+using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Models.Auth;
@@ -31,6 +32,7 @@ public class AuthServiceTests
 	private Mock<IMessageBus> _messageBusMock;
 	private IConfiguration _configuration;
 	private Mock<ITempPasswordGeneratorService> _tempPasswordGeneratorServiceMock;
+	private Mock<IEncryptionService> _encryptionServiceMock;
 	private AuthService _authService;
 
 	[SetUp]
@@ -44,6 +46,7 @@ public class AuthServiceTests
 		_messageBusMock = new Mock<IMessageBus>();
 		_configuration = MockConfiguration();
 		_tempPasswordGeneratorServiceMock = new Mock<ITempPasswordGeneratorService>();
+		_encryptionServiceMock = new Mock<IEncryptionService>();
 
 		_authService = new AuthService(
 			_dbContextMock.Object,
@@ -53,7 +56,8 @@ public class AuthServiceTests
 			_authLocalizerMock.Object,
 			_messageBusMock.Object,
 			_configuration,
-			_tempPasswordGeneratorServiceMock.Object
+			_tempPasswordGeneratorServiceMock.Object,
+			_encryptionServiceMock.Object
 		);
 	}
 
@@ -291,9 +295,13 @@ public class AuthServiceTests
 		};
 
 		const string tempPassword = "tempPassword123";
+		const string tempPasswordEncrypted = "tempPassword123Encrypted";
 
 		_tempPasswordGeneratorServiceMock.Setup(x => x.GenerateTempPassword())
 			.Returns(tempPassword);
+
+		_encryptionServiceMock.Setup(x => x.Encrypt(tempPasswordEncrypted, It.IsAny<string>()))
+			.Returns(tempPasswordEncrypted);
 
 		_userManagerMock.Setup(x => x.FindByEmailAsync(newEmployeeRequest.Email))
 			.ReturnsAsync((AppUser?)null);
@@ -386,8 +394,9 @@ public class AuthServiceTests
 	private static IConfiguration MockConfiguration()
 	{
 		var inMemorySettings = new Dictionary<string, string?> {
-			{ConfigurationHelper.MessageBusConnectionString, "ConnectionString"},
-			{ConfigurationHelper.EmailTempPasswordQueue, "SectionValue"}
+			{ ConfigurationHelper.MessageBusConnectionString, "ConnectionString" },
+			{ ConfigurationHelper.EmailTempPasswordQueue, "SectionValue" },
+			{ ConfigurationHelper.TempPasswordEncryptionKey, "TempPasswordEncryptionKey"}
 		};
 
 		return new ConfigurationBuilder()

@@ -99,6 +99,7 @@ namespace AxiteHR.GatewaySol.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
 			builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();

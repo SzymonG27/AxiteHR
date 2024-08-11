@@ -9,5 +9,6 @@
 		public const string IsDbFromDocker = "IsDbFromDocker";
 		public const string LogStashUrl = "LogstashConfig:LogStashUrl";
 		public const string LogStashQueueLimitBytes = "LogstashConfig:QueueLimitBytes";
+		public const string TempPasswordEncryptionKey = "TempPasswordEncryptionKey";
 	}
 }

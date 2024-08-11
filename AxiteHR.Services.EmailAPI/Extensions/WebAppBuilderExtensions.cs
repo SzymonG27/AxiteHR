@@ -1,4 +1,5 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Security.Encryption;
 using AxiteHR.Services.EmailAPI.Helpers;
 using AxiteHR.Services.EmailAPI.Messaging;
 using AxiteHR.Services.EmailAPI.Services.EmailSender;
@@ -73,6 +74,7 @@ namespace AxiteHR.Services.EmailAPI.Extensions
 			builder.Services.AddSingleton<IEmployeeTempPasswordService, EmployeeTempPasswordService>();
 			builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
 			builder.Services.AddSingleton<IEmailSender, EmailSender>();
+			builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 
 			return builder;
 		}

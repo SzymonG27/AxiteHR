@@ -1,6 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.MessageBus;
+using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Helpers.MapHelpers;
@@ -21,7 +22,8 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		IStringLocalizer<AuthResources> authLocalizer,
 		IMessageBus messageBus,
 		IConfiguration configuration,
-		ITempPasswordGeneratorService tempPasswordGeneratorService) : IAuthService
+		ITempPasswordGeneratorService tempPasswordGeneratorService,
+		IEncryptionService encryptionService) : IAuthService
 	{
 		public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest)
 		{
@@ -173,10 +175,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 				if (isTempPassword)
 				{
-					var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, password);
-					var messageBusConnectionString = configuration.GetValue<string>(ConfigurationHelper.MessageBusConnectionString)!;
-					var queueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
-					await messageBus.PublishMessage(messageDto, messageBusConnectionString, queueName);
+					await PublishTempPasswordMessage(user, password);
 				}
 
 				await dbContext.SaveChangesAsync();
@@ -201,6 +200,19 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 			var result = await userManager.AddToRoleAsync(user, roleName);
 			return result.Succeeded;
+		}
+
+		private async Task PublishTempPasswordMessage(AppUser user, string password)
+		{
+			var encryptionKey = configuration.GetValue<string>(ConfigurationHelper.TempPasswordEncryptionKey) ??
+				throw new ArgumentException($"Appsetting {ConfigurationHelper.TempPasswordEncryptionKey} isn't configured");
+
+			var encryptedPassword = encryptionService.Encrypt(password, encryptionKey);
+
+			var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, encryptedPassword);
+			var messageBusConnectionString = configuration.GetValue<string>(ConfigurationHelper.MessageBusConnectionString)!;
+			var queueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
+			await messageBus.PublishMessage(messageDto, messageBusConnectionString, queueName);
 		}
 
 		private async Task<bool> IsUserMailValidateSucceededAsync(string email)

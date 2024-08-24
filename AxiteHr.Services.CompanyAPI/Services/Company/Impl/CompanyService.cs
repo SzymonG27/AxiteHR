@@ -2,6 +2,7 @@
 using AxiteHr.Services.CompanyAPI.Infrastructure;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using System.Text.Json;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
@@ -35,6 +36,11 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 		public async Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId)
 		{
 			return await companyRepository.GetCompanyUsersCountAsync(companyId, excludedUserId);
+		}
+
+		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId)
+		{
+			return await companyRepository.GetCompanyForEmployeeDto(employeeId);
 		}
 
 		#region Private Methods

@@ -1,5 +1,6 @@
 ﻿using AxiteHr.Services.CompanyAPI.Infrastructure;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company
 {
@@ -29,5 +30,12 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 		/// <param name="excludedUserId">User identifier to exclude from count</param>
 		/// <returns>Company users count</returns>
 		Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId);
+
+		/// <summary>
+		/// Get company for employee. Employee should have one company.
+		/// </summary>
+		/// <param name="employeeId"></param>
+		/// <returns><see cref="CompanyForEmployeeDto"/></returns>
+		Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId);
 	}
 }

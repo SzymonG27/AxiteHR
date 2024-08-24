@@ -3,6 +3,7 @@ using AxiteHr.Services.CompanyAPI.Infrastructure;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
@@ -11,43 +12,25 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 	{
 		public IEnumerable<CompanyListDto> GetCompanyList(Guid userId)
 		{
-			var companyUsersCount = dbContext.CompanyUsers
-				.GroupBy(cu => cu.CompanyId)
-				.AsNoTracking()
-				.Select(g => new
-				{
-					CompanyId = g.Key,
-					UserCount = g.Count()
-				});
-
 			return [.. dbContext.CompanyUsers
+				.Where(cu => cu.UserId == userId)
 				.Join(dbContext.CompanyUserPermissions,
 					cu => cu.Id,
 					cup => cup.CompanyUserId,
 					(cu, cup) => new { cu, cup })
-				.Where(x => x.cu.UserId == userId && x.cup.CompanyPermissionId == (int)PermissionDictionary.CompanyManager)
+				.Where(x => x.cup.CompanyPermissionId == (int)PermissionDictionary.CompanyManager)
 				.Join(dbContext.Companies,
-					previous => previous.cu.CompanyId,
+					x => x.cu.CompanyId,
 					c => c.Id,
-					(previous, c) => new { previous.cu, previous.cup, c })
-				.Join(companyUsersCount,
-					previous => previous.cu.CompanyId,
-					count => count.CompanyId,
-					(previous, count) => new
-					{
-						CompanyId = previous.c.Id,
-						previous.c.CompanyName,
-						previous.c.InsDate,
-						count.UserCount
-					})
-				.AsNoTracking()
-				.Select(x => new CompanyListDto
+					(x, c) => new { c, x.cu })
+				.Select(cu => new CompanyListDto
 				{
-					Id = x.CompanyId,
-					CompanyName = x.CompanyName,
-					InsDate = x.InsDate.ToShortDateString(),
-					UserCount = x.UserCount
-				})];
+					Id = cu.c.Id,
+					CompanyName = cu.c.CompanyName,
+					InsDate = cu.c.InsDate.ToShortDateString(),
+					UserCount = dbContext.CompanyUsers.Count(u => u.CompanyId == cu.c.Id)
+				})
+				.AsNoTracking()];
 		}
 
 		public async Task<IList<CompanyUserUserRelation>> GetCompanyUserUserRealtionListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo)
@@ -68,6 +51,19 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
 				.AsNoTracking()
 				.CountAsync();
+		}
+
+		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId)
+		{
+			return await dbContext.CompanyUsers
+				.AsNoTracking()
+				.Where(cu => cu.UserId == employeeId)
+				.Select(cu => new CompanyForEmployeeDto
+				{
+					CompanyId = cu.Company.Id,
+					CompanyName = cu.Company.CompanyName
+				})
+				.SingleAsync();
 		}
 	}
 }

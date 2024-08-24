@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { AuthStateService } from '../../services/authentication/auth-state.service';
@@ -34,6 +34,8 @@ import { UserRole } from '../../models/authentication/UserRole';
 	]
 })
 export class NavBarComponent {
+	private destroy$ = new Subject<void>();
+	
 	isMenuOpen: boolean = false;
 	isLoggedIn: boolean = false;
 	currentUrl: string = "";
@@ -61,19 +63,28 @@ export class NavBarComponent {
 	}
 
 	ngOnInit() {
-		this.authState.isLoggedIn.subscribe((status: boolean) => {
-			this.isLoggedIn = status;
-			this.mapUserRoles(this.isLoggedIn);
-		});
+		this.authState.isLoggedIn
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((status: boolean) => {
+				this.isLoggedIn = status;
+				this.mapUserRoles(this.isLoggedIn);
+			});
+
 		this.router.events
 			.pipe(
-				filter(event => event instanceof NavigationEnd)
+				filter(event => event instanceof NavigationEnd),
+				takeUntil(this.destroy$)
 			)
 			.subscribe((event) => {
 				const navEndEvent = event as NavigationEnd;
 				this.currentUrl = navEndEvent.urlAfterRedirects;
 				this.checkUrl();
 			});
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	private mapUserRoles(isLoggedIn: boolean) {

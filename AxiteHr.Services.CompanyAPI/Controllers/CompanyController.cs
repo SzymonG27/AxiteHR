@@ -2,6 +2,7 @@
 using AxiteHr.Services.CompanyAPI.Models.Auth;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,13 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		public async Task<int> CompanyUsersCount(int companyId, Guid excludedUserId)
 		{
 			return await companyService.GetCompanyUsersCountAsync(companyId, excludedUserId);
+		}
+
+		[HttpGet("[action]/{employeeId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
+		public async Task<CompanyForEmployeeDto> GetForEmployee(Guid employeeId)
+		{
+			return await companyService.GetCompanyForEmployeeDto(employeeId);
 		}
 	}
 }

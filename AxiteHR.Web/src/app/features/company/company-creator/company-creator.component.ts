@@ -6,9 +6,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { CompanyService } from '../../../core/services/company/company.service';
-import { CompanyCreatorResponse } from '../../../core/models/company/company-creator/CompanyCreatorResonse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { first, firstValueFrom, take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 
 @Component({
 	selector: 'app-company-creator',

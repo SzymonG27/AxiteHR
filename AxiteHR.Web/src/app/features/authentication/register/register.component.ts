@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { RegisterRequest } from '../../../core/models/authentication/RegisterRequest';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,6 +10,8 @@ import { AuthenticationService } from '../../../core/services/authentication/aut
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
+import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
+import { Environment } from '../../../environment/Environment';
 
 @Component({
 	selector: 'app-register',
@@ -22,9 +24,12 @@ import { first, firstValueFrom } from 'rxjs';
 		TranslateModule
 	],
 	templateUrl: './register.component.html',
-	styleUrl: './register.component.css'
+	styleUrl: './register.component.css',
+	animations: [routeAnimationState]
 })
 export class RegisterComponent {
+	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
+	
 	focusEmail: boolean = false;
 	focusPassword: boolean = false;
 	focusUserName: boolean = false;
@@ -35,8 +40,6 @@ export class RegisterComponent {
 	showPassword: boolean = false;
 	registerForm: FormGroup;
 	registerModel: RegisterRequest = new RegisterRequest();
-
-	private strongPassRegex: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
 	constructor(
 		private authService: AuthenticationService,
@@ -58,10 +61,10 @@ export class RegisterComponent {
 				validators: [Validators.required, Validators.minLength(2)]
 			}),
 			UserPassword: new FormControl(this.registerModel.UserPassword, {
-				validators: [Validators.required, Validators.minLength(8), Validators.pattern(this.strongPassRegex)]
+				validators: [Validators.required, Validators.minLength(8), Validators.pattern(Environment.strongPasswordRegex)]
 			}),
 			UserPasswordRepeated: new FormControl(this.registerModel.UserPasswordRepeated, {
-				validators: [Validators.required, Validators.minLength(8), Validators.pattern(this.strongPassRegex), mustMatch('UserPassword')]
+				validators: [Validators.required, Validators.minLength(8), Validators.pattern(Environment.strongPasswordRegex), mustMatch('UserPassword')]
 			})
 		});
 	}

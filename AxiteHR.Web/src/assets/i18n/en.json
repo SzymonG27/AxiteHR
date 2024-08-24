@@ -11,6 +11,7 @@
     "NOT_FOUND_TITLE": "Not found",
     "INTERNAL_ERROR_TITLE": "Internal error",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Employee creator",
+    "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
@@ -61,6 +62,11 @@
     "Authentication_Login_SessionExpired": "Login session expired. Please log in.",
     "Authentication_Login_RegistrationSuccessful" : "Registration successful! Please log in.",
     "Authentication_Login_UnexpectedError": "An unexpected error occurred. Please try again.",
+    "Authentication_TempPasswordChange": "Changing your temporary password",
+    "Authentication_TempPasswordChange_Confirm": "Confirm new password",
+    "Authentication_TempPasswordChange_InternalError": "An internal error occurred while changing the password. Please try again later",
+    "Authentication_TempPasswordChange_Success": "The password has been changed successfully. You can log in now",
+    "Authentication_Cancel": "Cancel",
 
     "//Section5": "Company messages",
     "Company_List_CompanyName": "Company name",

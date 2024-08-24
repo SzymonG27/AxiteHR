@@ -24,4 +24,16 @@ export class DataBehaviourService {
 	setNewEmployeeCreated(value: boolean) {
 		this.newEmployeeCreatedSource.next(value);
 	}
+
+	private tempPasswordErrorSource = new BehaviorSubject<string>("");
+	tempPasswordError = this.tempPasswordErrorSource.asObservable();
+	setTempPasswordError(value: string) {
+		this.tempPasswordErrorSource.next(value);
+	}
+
+	private tempPasswordSuccessSource = new BehaviorSubject<string>("");
+	tempPasswordSuccess = this.tempPasswordSuccessSource.asObservable();
+	setTempPasswordSuccess(value: string) {
+		this.tempPasswordSuccessSource.next(value);
+	}
 }

@@ -18,3 +18,8 @@
     border-color: red;
     transition: fill 150ms ease-in-out, stroke 150ms ease-in-out, border-color 150ms ease-in-out;
 }
+
+:host {
+    display: block;
+    overflow: hidden;
+}

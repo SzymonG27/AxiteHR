@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, HostBinding } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
+import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
 
 @Component({
 	selector: 'app-login',
@@ -23,9 +24,12 @@ import { first, firstValueFrom } from 'rxjs';
 		TranslateModule
 	],
 	templateUrl: './login.component.html',
-	styleUrl: './login.component.css'
+	styleUrl: './login.component.css',
+	animations: [routeAnimationState]
 })
 export class LoginComponent {
+	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
+
 	focusEmail: boolean = false;
 	focusPassword: boolean = false;
 	showPassword: boolean = false;
@@ -42,8 +46,8 @@ export class LoginComponent {
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute) {
-			this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-		}
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+	}
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.pipe(first()).subscribe(async (value: boolean) => {
@@ -54,8 +58,20 @@ export class LoginComponent {
 		});
 		this.dataService.isTokenExpired.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.loginMessage = await firstValueFrom(this.translate.get('Authentication_Login_SessionExpired'))
+				this.errorMessage = await firstValueFrom(this.translate.get('Authentication_Login_SessionExpired'))
 				this.dataService.setIsTokenExpired(false);
+			}
+		});
+		this.dataService.tempPasswordError.pipe(first()).subscribe(async (value: string) => {
+			if (value.length > 0) {
+				this.errorMessage = value;
+				this.dataService.setTempPasswordError("");
+			}
+		});
+		this.dataService.tempPasswordSuccess.pipe(first()).subscribe(async (value: string) => {
+			if (value.length > 0) {
+				this.loginMessage = value;
+				this.dataService.setTempPasswordSuccess("");
 			}
 		});
 	}
@@ -69,6 +85,11 @@ export class LoginComponent {
 					this.authState.setLoggedIn(true);
 					this.blockUIService.stop();
 					this.router.navigateByUrl(this.returnUrl);
+				} else if (response.isTempPasswordToChange && response.userId) {
+					this.authState.setLoggedIn(false);
+					this.authState.setTempPasswordUserId(response.userId);
+					this.blockUIService.stop();
+					this.router.navigate(['/ChangeTempPassword']);
 				} else if (!response.isLoggedSuccessful) {
 					this.authState.setLoggedIn(false);
 					this.errorMessage = response.errorMessage;

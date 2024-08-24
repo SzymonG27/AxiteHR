@@ -47,6 +47,15 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				};
 			}
 
+			if (user.IsTempPassword)
+			{
+				return new LoginResponseDto
+				{
+					IsTempPasswordToChange = true,
+					UserId = user.Id
+				};
+			}
+
 			var roleList = await userManager.GetRolesAsync(user);
 			var token = jwtTokenGenerator.GenerateToken(user, roleList);
 
@@ -93,23 +102,41 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 				};
 			}
 
-			var token = await userManager.GeneratePasswordResetTokenAsync(user);
-			var result = await userManager.ResetPasswordAsync(user, token, newPasswordChangeRequest.Password);
-
-			if (!result.Succeeded)
+			await using var transaction = await dbContext.Database.BeginTransactionAsync();
+			try
 			{
+				var token = await userManager.GeneratePasswordResetTokenAsync(user);
+				var result = await userManager.ResetPasswordAsync(user, token, newPasswordChangeRequest.Password);
+
+				if (!result.Succeeded)
+				{
+					return new TempPasswordChangeResponseDto
+					{
+						IsSucceeded = false,
+						ErrorMessage = authLocalizer[AuthResourcesKeys.PasswordChangeGlobalError]
+					};
+				}
+
+				user.IsTempPassword = false;
+
+				await dbContext.SaveChangesAsync();
+				await transaction.CommitAsync();
+				return new TempPasswordChangeResponseDto
+				{
+					IsSucceeded = true,
+					UserId = user.Id
+				};
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex, "Temp password change failed for user: {UserMail}", user.Email);
+				await transaction.RollbackAsync();
 				return new TempPasswordChangeResponseDto
 				{
 					IsSucceeded = false,
 					ErrorMessage = authLocalizer[AuthResourcesKeys.PasswordChangeGlobalError]
 				};
 			}
-
-			return new TempPasswordChangeResponseDto
-			{
-				IsSucceeded = true,
-				UserId = user.Id
-			};
 		}
 
 		#region Private Methods

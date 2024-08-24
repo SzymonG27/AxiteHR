@@ -24,6 +24,7 @@ public class EmployeeServiceTests
 	private Mock<ILogger<EmployeeService>> _loggerMock;
 	private AppDbContext _dbContext;
 	private EmployeeService _employeeService;
+	private const string AcceptLanguage = "pl";
 
 	[SetUp]
 	public void SetUp()
@@ -66,7 +67,7 @@ public class EmployeeServiceTests
 			.Returns(new LocalizedString(SharedResourcesKeys.Global_UserWithoutPermission, "User without permission"));
 
 		// Act
-		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token);
+		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token, AcceptLanguage);
 
 		// Assert
 		Assert.Multiple(() =>
@@ -138,7 +139,7 @@ public class EmployeeServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
 		// Act
-		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token);
+		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token, AcceptLanguage);
 
 		// Assert
 		Assert.Multiple(() =>
@@ -192,7 +193,7 @@ public class EmployeeServiceTests
 			.Returns(new LocalizedString(CompanyResourcesKeys.NewEmployeeRequestDto_RegisterError, "Register error"));
 
 		// Act
-		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token);
+		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token, AcceptLanguage);
 
 		// Assert
 		Assert.Multiple(() =>

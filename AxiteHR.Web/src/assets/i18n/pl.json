@@ -11,6 +11,7 @@
     "NOT_FOUND_TITLE": "Nie znaleziono",
     "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
+    "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
@@ -61,6 +62,11 @@
     "Authentication_Login_SessionExpired": "Sesja logowania wygasła. Proszę się zalogować.",
     "Authentication_Login_RegistrationSuccessful" : "Pomyślnie zarejestrowano! Proszę się zalogować.",
     "Authentication_Login_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie.",
+    "Authentication_TempPasswordChange": "Zmiana hasła tymczasowego",
+    "Authentication_TempPasswordChange_Confirm": "Zatwierdź nowe hasło",
+    "Authentication_TempPasswordChange_InternalError": "Wystąpił błąd wewnętrzny podczas zmiany hasła. Spróbuj ponownie później",
+    "Authentication_TempPasswordChange_Success": "Hasło zostało poprawnie zmienione. Możesz się teraz zalogować",
+    "Authentication_Cancel": "Anuluj",
 
     "//Section5": "Company messages",
     "Company_List_CompanyName": "Nazwa firmy",

@@ -4,18 +4,18 @@ import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { JWTTokenService } from './jwttoken.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthStateService {
 
-  	private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+	private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
 	constructor(private jwtTokenService: JWTTokenService) { }
 
 	private hasToken(): boolean {
 		return !!localStorage.getItem(AuthDictionary.Token);
 	}
-	
+
 	get isLoggedIn() {
 		return this.loggedIn.asObservable();
 	}
@@ -51,5 +51,17 @@ export class AuthStateService {
 
 	hasAnyRole(roles: string[]) {
 		return roles.some(role => this.hasRole(role));
+	}
+
+	setTempPasswordUserId(userId: string): void {
+		localStorage.setItem(AuthDictionary.TempPasswordUserIdStorageKey, userId);
+	}
+
+	getTempPasswordUserId(): string | null {
+		return localStorage.getItem(AuthDictionary.TempPasswordUserIdStorageKey);
+	}
+
+	removeTempPasswordUserId(): void {
+		localStorage.removeItem(AuthDictionary.TempPasswordUserIdStorageKey);
 	}
 }

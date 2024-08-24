@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { RegisterRequest } from '../../../core/models/authentication/RegisterRequest';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
@@ -8,6 +8,8 @@ import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { LoginResponse } from '../../../core/models/authentication/LoginResponse';
 import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { AuthStateService } from './auth-state.service';
+import { TempPasswordChangeRequest } from '../../models/authentication/TempPasswordChangeRequest';
+import { TempPasswordChangeResponse } from '../../models/authentication/TempPasswordChangeResponse';
 
 @Injectable({
 	providedIn: 'root'
@@ -35,5 +37,12 @@ export class AuthenticationService {
 			localStorage.removeItem(AuthDictionary.Token);
 			this.authState.setLoggedIn(false);
 		}
+	}
+
+	public TempPasswordChange(tempPasswordChange: TempPasswordChangeRequest) {
+		return this.http.post<TempPasswordChangeResponse>(
+			`${Environment.authApiUrl}${ApiPaths.TempPasswordChange}`,
+			tempPasswordChange	
+		).pipe(take(1));
 	}
 }

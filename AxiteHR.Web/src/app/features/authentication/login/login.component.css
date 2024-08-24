@@ -11,3 +11,8 @@
 .input-focus {
     transition: border-color 150ms ease-in-out;
 }
+
+:host {
+    display: block;
+    overflow: hidden;
+}

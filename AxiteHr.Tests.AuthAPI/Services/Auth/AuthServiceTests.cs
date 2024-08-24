@@ -333,6 +333,144 @@ public class AuthServiceTests
 		});
 	}
 
+	[Test]
+	public async Task TempPasswordChangeAsync_UserNotFound_ReturnsError()
+	{
+		// Arrange
+		var request = new TempPasswordChangeRequestDto { UserId = Guid.NewGuid(), Password = "newPassword123" };
+		_userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+			.ReturnsAsync((AppUser?)null);
+
+		_authLocalizerMock.Setup(l => l[AuthResourcesKeys.PasswordChangeGlobalError])
+			.Returns(new LocalizedString(AuthResourcesKeys.PasswordChangeGlobalError, "Global Error"));
+
+		// Act
+		var result = await _authService.TempPasswordChangeAsync(request);
+
+		// Assert
+		Assert.Multiple(() =>
+		{
+			Assert.That(result.IsSucceeded, Is.False);
+			Assert.That(result.ErrorMessage, Is.EqualTo("Global Error"));
+		});
+	}
+
+	[Test]
+	public async Task TempPasswordChangeAsync_UserNotTempPassword_ReturnsError()
+	{
+		// Arrange
+		var user = new AppUser { IsTempPassword = false };
+		var request = new TempPasswordChangeRequestDto { UserId = Guid.NewGuid(), Password = "newPassword123" };
+		_userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+			.ReturnsAsync(user);
+
+		_authLocalizerMock.Setup(l => l[AuthResourcesKeys.PasswordChangeGlobalError])
+			.Returns(new LocalizedString(AuthResourcesKeys.PasswordChangeGlobalError, "Global Error"));
+
+		// Act
+		var result = await _authService.TempPasswordChangeAsync(request);
+
+		// Assert
+		Assert.Multiple(() =>
+		{
+			Assert.That(result.IsSucceeded, Is.False);
+			Assert.That(result.ErrorMessage, Is.EqualTo("Global Error"));
+		});
+	}
+
+	[Test]
+	public async Task TempPasswordChangeAsync_ResetPasswordFails_ReturnsError()
+	{
+		// Arrange
+		var user = new AppUser { IsTempPassword = true };
+		var request = new TempPasswordChangeRequestDto { UserId = Guid.NewGuid(), Password = "newPassword123" };
+		_userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+			.ReturnsAsync(user);
+
+		_userManagerMock.Setup(um => um.GeneratePasswordResetTokenAsync(user))
+			.ReturnsAsync("resetToken");
+
+		_userManagerMock.Setup(um => um.ResetPasswordAsync(user, "resetToken", request.Password))
+			.ReturnsAsync(IdentityResult.Failed());
+
+		_authLocalizerMock.Setup(l => l[AuthResourcesKeys.PasswordChangeGlobalError])
+			.Returns(new LocalizedString(AuthResourcesKeys.PasswordChangeGlobalError, "Global Error"));
+
+		// Act
+		var result = await _authService.TempPasswordChangeAsync(request);
+
+		// Assert
+		Assert.Multiple(() =>
+		{
+			Assert.That(result.IsSucceeded, Is.False);
+			Assert.That(result.ErrorMessage, Is.EqualTo("Global Error"));
+		});
+	}
+
+	[Test]
+	public async Task TempPasswordChangeAsync_SuccessfulPasswordChange_ReturnsSuccess()
+	{
+		// Arrange
+		var user = new AppUser { IsTempPassword = true };
+		var request = new TempPasswordChangeRequestDto { UserId = Guid.NewGuid(), Password = "newPassword123" };
+		_userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+			.ReturnsAsync(user);
+
+		_userManagerMock.Setup(um => um.GeneratePasswordResetTokenAsync(user))
+			.ReturnsAsync("resetToken");
+
+		_userManagerMock.Setup(um => um.ResetPasswordAsync(user, "resetToken", request.Password))
+			.ReturnsAsync(IdentityResult.Success);
+
+		_dbContextMock.Setup(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(1);
+
+		_dbContextMock.Setup(db => db.Database.BeginTransactionAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(Mock.Of<IDbContextTransaction>());
+
+		// Act
+		var result = await _authService.TempPasswordChangeAsync(request);
+
+		// Assert
+		Assert.Multiple(() =>
+		{
+			Assert.That(result.IsSucceeded, Is.True);
+			Assert.That(result.UserId, Is.EqualTo(user.Id));
+		});
+	}
+
+	[Test]
+	public async Task TempPasswordChangeAsync_ExceptionThrown_ReturnsError()
+	{
+		// Arrange
+		var user = new AppUser { IsTempPassword = true };
+		var request = new TempPasswordChangeRequestDto { UserId = Guid.NewGuid(), Password = "newPassword123" };
+		_userManagerMock.Setup(um => um.FindByIdAsync(It.IsAny<string>()))
+			.ReturnsAsync(user);
+
+		_userManagerMock.Setup(um => um.GeneratePasswordResetTokenAsync(user))
+			.ReturnsAsync("resetToken");
+
+		_userManagerMock.Setup(um => um.ResetPasswordAsync(user, "resetToken", request.Password))
+			.ThrowsAsync(new Exception("Database error"));
+
+		_authLocalizerMock.Setup(l => l[AuthResourcesKeys.PasswordChangeGlobalError])
+			.Returns(new LocalizedString(AuthResourcesKeys.PasswordChangeGlobalError, "Global Error"));
+
+		_dbContextMock.Setup(db => db.Database.BeginTransactionAsync(It.IsAny<CancellationToken>()))
+			.ReturnsAsync(Mock.Of<IDbContextTransaction>());
+
+		// Act
+		var result = await _authService.TempPasswordChangeAsync(request);
+
+		// Assert
+		Assert.Multiple(() =>
+		{
+			Assert.That(result.IsSucceeded, Is.False);
+			Assert.That(result.ErrorMessage, Is.EqualTo("Global Error"));
+		});
+	}
+
 	#region Mocks
 	private static Mock<AppDbContext> MockAppDbContext()
 	{

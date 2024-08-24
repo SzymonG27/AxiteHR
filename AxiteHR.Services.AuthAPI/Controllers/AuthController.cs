@@ -27,7 +27,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
 			var response = await authService.LoginAsync(loginRequest);
-			if (!response.IsLoggedSuccessful)
+			if (!response.IsLoggedSuccessful && !response.IsTempPasswordToChange)
 			{
 				return BadRequest(response);
 			}
@@ -47,7 +47,6 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		}
 
 		[HttpPost("[action]")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IActionResult> TempPasswordChange([FromBody] TempPasswordChangeRequestDto tempPasswordChangeDto)
 		{
 			var response = await authService.TempPasswordChangeAsync(tempPasswordChangeDto);

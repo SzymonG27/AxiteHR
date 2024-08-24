@@ -15,6 +15,9 @@ import { MainComponent } from './features/company-manager/main/main.component';
 import { EmployeeListComponent } from './features/company-manager/employee-list/employee-list.component';
 import { InternalErrorComponent } from './core/components/internal-error/internal-error.component';
 import { EmployeeCreatorComponent } from './features/company-manager/employee-creator/employee-creator.component';
+import { TempPasswordChangeComponent } from './features/authentication/temp-password-change/temp-password-change.component';
+import { TempPasswordLeaveGuard } from './core/guards/auth/temp-password-leave-guard.service';
+import { TempPasswordEnterGuard } from './core/guards/auth/temp-password-enter-guard.service';
 
 export const routes: Routes = [
 	//Home
@@ -49,6 +52,13 @@ export const routes: Routes = [
 		canActivate: [ IsNotLoggedInGuard ],
 		data: { title: 'REGISTER_PAGE_TITLE' }
 	},
+	{
+		path: 'ChangeTempPassword',
+		component: TempPasswordChangeComponent,
+		canActivate: [ IsNotLoggedInGuard, TempPasswordEnterGuard ],
+		canDeactivate: [ TempPasswordLeaveGuard ],
+		data: { title: 'CHANGE_TEMP_PASSWORD_PAGE_TITLE' }
+	},
 
 	//Company
 	{
@@ -66,7 +76,7 @@ export const routes: Routes = [
 	{
 		path: 'Manager/:id',
 		component: CompanyManagerComponent,
-		canActivate: [ IsLoggedInGuard, IsInRoleGuard ],
+		canActivate: [ IsLoggedInGuard, IsInRoleGuard ], //ToDo IsInCompanyGuard
 		data: { requiredRoles: [UserRole.Admin, UserRole.User] },
 		children: [
 			{

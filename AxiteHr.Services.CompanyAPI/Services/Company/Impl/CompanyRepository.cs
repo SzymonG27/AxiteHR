@@ -70,7 +70,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 		{
 			return await dbContext.CompanyUsers
 				.AsNoTracking()
-				.AnyAsync(cu => cu.UserId ==  userId && cu.CompanyId == companyId)
+				.AnyAsync(cu => cu.UserId == userId && cu.CompanyId == companyId);
 		}
 	}
 }

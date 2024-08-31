@@ -75,7 +75,7 @@ export const routes: Routes = [
 		data: { title: 'COMPANY_CREATE_TITLE_PAGE', requiredRoles: [UserRole.Admin, UserRole.User] }
 	},
 	{
-		path: 'Manager/:id',
+		path: 'CompanyMenu/:id',
 		component: CompanyManagerComponent,
 		canActivate: [ IsLoggedInGuard, IsInRoleGuard, IsInCompanyGuard ],
 		data: { requiredRoles: [UserRole.Admin, UserRole.User] },

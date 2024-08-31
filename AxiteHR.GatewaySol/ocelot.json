@@ -47,6 +47,36 @@
 			}
 		},
 		{
+			"DownstreamPathTemplate": "/api/Company/GetForEmployee/{employeeId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/Company/GetForEmployee/{employeeId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/Company/IsUserInCompany/{userId}/{companyId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/Company/IsUserInCompany/{userId}/{companyId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
 			"DownstreamPathTemplate": "/api/CompanyManager/CreateNewCompany",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [

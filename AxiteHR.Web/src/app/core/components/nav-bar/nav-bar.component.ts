@@ -6,7 +6,6 @@ import { filter, Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { AuthStateService } from '../../services/authentication/auth-state.service';
-import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { UserRole } from '../../models/authentication/UserRole';
 
 @Component({

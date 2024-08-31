@@ -43,7 +43,7 @@ export class NavManagerComponent {
 	}
 
 	toggleDropdown(itemName: string) {
-		if (itemName === "Teams") {
+		if (itemName === 'Teams') {
 			this.isTeamsExpanded = !this.isTeamsExpanded;
 		} else if (itemName === 'Projects') {
 			this.isProjectsExpanded = !this.isProjectsExpanded;

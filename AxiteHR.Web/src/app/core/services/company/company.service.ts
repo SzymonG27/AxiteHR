@@ -37,4 +37,14 @@ export class CompanyService {
 			newCompany
 		).pipe(take(1));
 	}
+
+	public isUserInCompany(userId: string, companyId: number) : Observable<boolean> {
+		if (userId === "" || companyId === 0) {
+			return of(false);
+		}
+
+		return this.http.get<boolean>(
+			`${Environment.gatewayApiUrl}${ApiPaths.IsUserInCompany}/${userId}/${companyId}`,
+		).pipe(take(1))
+	}
 }

@@ -18,6 +18,6 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 		/// </summary>
 		/// <param name="employeeId"></param>
 		/// <returns><see cref="CompanyForEmployeeDto"/></returns>
-		Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId);
+		Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId);
 	}
 }

@@ -53,7 +53,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				.CountAsync();
 		}
 
-		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId)
+		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId)
 		{
 			return await dbContext.CompanyUsers
 				.AsNoTracking()
@@ -64,6 +64,13 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 					CompanyName = cu.Company.CompanyName
 				})
 				.SingleAsync();
+		}
+
+		public async Task<bool> IsUserInCompanyAsync(Guid userId, int companyId)
+		{
+			return await dbContext.CompanyUsers
+				.AsNoTracking()
+				.AnyAsync(cu => cu.UserId ==  userId && cu.CompanyId == companyId)
 		}
 	}
 }

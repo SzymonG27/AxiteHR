@@ -45,7 +45,14 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
 		public async Task<CompanyForEmployeeDto> GetForEmployee(Guid employeeId)
 		{
-			return await companyService.GetCompanyForEmployeeDto(employeeId);
+			return await companyService.GetCompanyForEmployeeDtoAsync(employeeId);
+		}
+
+		[HttpGet("[action]/{userId}/{companyId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<bool> IsUserInCompany(Guid userId, int companyId)
+		{
+			return await companyService.IsUserInCompanyAsync(userId, companyId);
 		}
 	}
 }

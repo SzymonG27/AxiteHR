@@ -38,9 +38,14 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			return await companyRepository.GetCompanyUsersCountAsync(companyId, excludedUserId);
 		}
 
-		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDto(Guid employeeId)
+		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId)
 		{
-			return await companyRepository.GetCompanyForEmployeeDto(employeeId);
+			return await companyRepository.GetCompanyForEmployeeDtoAsync(employeeId);
+		}
+
+		public async Task<bool> IsUserInCompanyAsync(Guid userId, int companyId)
+		{
+			return await companyRepository.IsUserInCompanyAsync(userId, companyId);
 		}
 
 		#region Private Methods

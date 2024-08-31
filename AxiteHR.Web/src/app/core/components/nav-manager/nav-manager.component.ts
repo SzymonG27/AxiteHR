@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { UserRole } from '../../models/authentication/UserRole';
 
 @Component({
 	selector: 'app-nav-manager',
@@ -15,17 +18,33 @@ import { TranslateModule } from '@ngx-translate/core';
 	styleUrl: './nav-manager.component.css'
 })
 export class NavManagerComponent {
+	private destroy$ = new Subject<void>();
+	
 	isMenuOpen: boolean = false;
   	isTeamsExpanded: boolean = false;
   	isProjectsExpanded: boolean = false;
 	companyId: string | null = null;
 
-	constructor(private route: ActivatedRoute) { }
+	UserRole = UserRole;
+	userRoles: string[] = [];
+
+	constructor(
+		private route: ActivatedRoute,
+		private authState: AuthStateService) { }
 
 	ngOnInit(): void {
-		this.route.paramMap.subscribe(params => {
-			this.companyId = params.get('id');
-		});
+		this.route.paramMap
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(params => {
+				this.companyId = params.get('id');
+			});
+
+		this.userRoles = this.authState.getUserRoles();
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	toggleMenu() {
@@ -33,7 +52,7 @@ export class NavManagerComponent {
 	}
 
 	toggleDropdown(itemName: string) {
-		if (itemName === "Teams") {
+		if (itemName === 'Teams') {
 			this.isTeamsExpanded = !this.isTeamsExpanded;
 		} else if (itemName === 'Projects') {
 			this.isProjectsExpanded = !this.isProjectsExpanded;

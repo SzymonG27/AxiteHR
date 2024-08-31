@@ -6,8 +6,8 @@ export const TempPasswordEnterGuard: CanActivateFn = () => {
 	const authStateService = inject(AuthStateService);
     const router = inject(Router);
 
-    const tempPassword = authStateService.getTempPasswordUserId();
-    if (tempPassword === null || tempPassword.length === 0) {
+    const tempPasswordUserId = authStateService.getTempPasswordUserId();
+    if (tempPasswordUserId === null || tempPasswordUserId.length === 0) {
         router.navigate(['Login']);
 		return false;
     }

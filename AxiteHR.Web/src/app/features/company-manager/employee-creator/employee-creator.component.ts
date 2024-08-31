@@ -80,7 +80,7 @@ export class EmployeeCreatorComponent {
 				if (response.isSucceeded) {
 					this.dataBehaviourService.setNewEmployeeCreated(true);
 					this.blockUI.stop();
-					this.router.navigate(['/Manager', this.companyId, 'EmployeeList']);
+					this.router.navigate(['/CompanyMenu', this.companyId, 'EmployeeList']);
 					return;
 				}
 				this.errorMessage = response.errorMessage;

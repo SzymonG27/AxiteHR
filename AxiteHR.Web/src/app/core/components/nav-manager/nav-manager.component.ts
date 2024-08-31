@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { UserRole } from '../../models/authentication/UserRole';
 
 @Component({
 	selector: 'app-nav-manager',
@@ -23,7 +25,12 @@ export class NavManagerComponent {
   	isProjectsExpanded: boolean = false;
 	companyId: string | null = null;
 
-	constructor(private route: ActivatedRoute) { }
+	UserRole = UserRole;
+	userRoles: string[] = [];
+
+	constructor(
+		private route: ActivatedRoute,
+		private authState: AuthStateService) { }
 
 	ngOnInit(): void {
 		this.route.paramMap
@@ -31,6 +38,8 @@ export class NavManagerComponent {
 			.subscribe(params => {
 				this.companyId = params.get('id');
 			});
+
+		this.userRoles = this.authState.getUserRoles();
 	}
 
 	ngOnDestroy(): void {

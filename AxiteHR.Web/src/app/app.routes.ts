@@ -78,7 +78,7 @@ export const routes: Routes = [
 		path: 'CompanyMenu/:id',
 		component: CompanyManagerComponent,
 		canActivate: [ IsLoggedInGuard, IsInRoleGuard, IsInCompanyGuard ],
-		data: { requiredRoles: [UserRole.Admin, UserRole.User] },
+		data: { requiredRoles: [UserRole.Admin, UserRole.User, UserRole.UserFromCompany] },
 		children: [
 			{
 				path: 'Dashboard',

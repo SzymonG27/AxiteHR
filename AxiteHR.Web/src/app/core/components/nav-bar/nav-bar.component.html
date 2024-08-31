@@ -19,7 +19,11 @@
                         class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
                         {{ 'Nav_Company_List' | translate }}
                     </a>
-                    <a href="#" class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100">Subopcja 2</a>
+                    <a *ngIf="userRoles.includes(UserRole.UserFromCompany) && companyForEmployee.companyId !== 0"
+                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" 
+                        [routerLink]="['/CompanyMenu', companyForEmployee.companyId, 'Dashboard']">
+                        {{ companyForEmployee.companyName }}
+                    </a>
                 </div>
             </div>
             <a class="href-nav-option">Opcja 2</a>

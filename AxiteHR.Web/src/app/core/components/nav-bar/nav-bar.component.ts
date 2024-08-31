@@ -2,11 +2,14 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { filter, first, Subject, takeUntil } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { AuthStateService } from '../../services/authentication/auth-state.service';
 import { UserRole } from '../../models/authentication/UserRole';
+import { CompanyForEmployee } from '../../models/company/CompanyForEmployee';
+import { CompanyService } from '../../services/company/company.service';
+import { BlockUIService } from '../../services/block-ui.service';
 
 @Component({
 	selector: 'app-nav-bar',
@@ -21,12 +24,12 @@ import { UserRole } from '../../models/authentication/UserRole';
 	animations: [
 		trigger('menuAnimation', [
 			state('closed', style({
-			  maxHeight: '0px',
-			  opacity: 0
+				maxHeight: '0px',
+				opacity: 0
 			})),
 			state('open', style({
-			  maxHeight: '500px',
-			  opacity: 1
+				maxHeight: '500px',
+				opacity: 1
 			})),
 			transition('closed <=> open', animate('300ms ease-in-out'))
 		])
@@ -34,7 +37,7 @@ import { UserRole } from '../../models/authentication/UserRole';
 })
 export class NavBarComponent {
 	private destroy$ = new Subject<void>();
-	
+
 	isMenuOpen: boolean = false;
 	isLoggedIn: boolean = false;
 	currentUrl: string = "";
@@ -52,12 +55,16 @@ export class NavBarComponent {
 	isLanguageMenuOpen: boolean = false;
 	isLanguageFlagPressed: boolean = false;
 
+	isEmployee: boolean = false;
+	companyForEmployee: CompanyForEmployee = new CompanyForEmployee();
+
 	constructor(
 		private router: Router,
 		private authService: AuthenticationService,
 		private authState: AuthStateService,
-		private translate: TranslateService)
-	{
+		private translate: TranslateService,
+		private companyService: CompanyService,
+		private blockUIService: BlockUIService) {
 		this.currentLanguage = this.translate.currentLang || 'en';
 	}
 
@@ -65,8 +72,18 @@ export class NavBarComponent {
 		this.authState.isLoggedIn
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((status: boolean) => {
+				this.blockUIService.start();
+
 				this.isLoggedIn = status;
 				this.mapUserRoles(this.isLoggedIn);
+
+				if (status === true) {
+					this.fetchCompanyForEmployee();
+				} else {
+					this.companyForEmployee = new CompanyForEmployee();
+				}
+
+				this.blockUIService.stop();
 			});
 
 		this.router.events
@@ -96,7 +113,7 @@ export class NavBarComponent {
 		this.userRoles = [];
 	}
 
-	isInRole(role: string) : boolean {
+	isInRole(role: string): boolean {
 		return this.userRoles.includes(role);
 	}
 
@@ -120,7 +137,7 @@ export class NavBarComponent {
 		this.currentLanguage = language;
 		this.isLanguageMenuOpen = false;
 	}
-	
+
 	toggleLanguageMenu(event: MouseEvent) {
 		event.stopPropagation();
 		this.isLanguageMenuOpen = !this.isLanguageMenuOpen;
@@ -136,9 +153,26 @@ export class NavBarComponent {
 		}
 		this.isLanguageMenuOpen = false;
 	}
-	
+
 	getCurrentLanguageFlag() {
 		const currentLang = this.languages.find(lang => lang.code === this.currentLanguage);
 		return currentLang ? currentLang.flag : this.languages[0].flag;
+	}
+
+	private fetchCompanyForEmployee() {
+		if (this.userRoles.includes(UserRole.UserFromCompany)) {
+			this.companyService.getCompanyForEmployee(this.authState.getLoggedUserId())
+				.pipe(first())
+				.subscribe({
+					next: (company) => {
+						this.companyForEmployee = company;
+						this.blockUIService.stop()
+					},
+					error: () => {
+						this.companyForEmployee = new CompanyForEmployee();
+						this.blockUIService.stop()
+					}
+				});
+		}
 	}
 }

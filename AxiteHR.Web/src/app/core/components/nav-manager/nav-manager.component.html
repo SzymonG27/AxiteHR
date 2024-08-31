@@ -12,7 +12,7 @@
                         <span class="hidden md:inline">{{ 'Nav_Manager_Dashboard' | translate }}</span>
                     </a>
                 </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
+                <li *ngIf="!userRoles.includes(UserRole.UserFromCompany)" class="p-4 hover:bg-gray-200 cursor-pointer">
                     <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Teams')">
                         <span class="material-icons">groups</span>
                         <span class="hidden md:inline">{{ 'Nav_Manager_Team' | translate }}</span>
@@ -45,7 +45,7 @@
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
                     <a href="#" class="flex items-center space-x-2">
                         <span class="material-icons">calendar_today</span>
-                        <span class="hidden md:inline">Calendar</span>
+                        <span class="hidden md:inline">{{ 'Nav_Manager_Calendar' | translate }}</span>
                     </a>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
@@ -120,7 +120,7 @@
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
                     <a href="#" class="flex items-center space-x-2">
                         <span class="material-icons">calendar_today</span>
-                        <span>Calendar</span>
+                        <span>{{ 'Nav_Manager_Calendar' | translate }}</span>
                     </a>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">

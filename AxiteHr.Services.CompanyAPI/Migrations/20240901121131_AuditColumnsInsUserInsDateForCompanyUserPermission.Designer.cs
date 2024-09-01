@@ -4,6 +4,7 @@ using AxiteHr.Services.CompanyAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AxiteHr.Services.CompanyAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240901121131_AuditColumnsInsUserInsDateForCompanyUserPermission")]
+    partial class AuditColumnsInsUserInsDateForCompanyUserPermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,9 +242,6 @@ namespace AxiteHr.Services.CompanyAPI.Migrations
 
                     b.Property<Guid>("InsUserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsSupervisor")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

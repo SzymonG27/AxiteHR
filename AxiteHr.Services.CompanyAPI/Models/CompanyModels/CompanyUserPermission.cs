@@ -17,5 +17,9 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 		public virtual int CompanyPermissionId { get; set; }
 
 		public virtual CompanyPermission CompanyPermission { get; set; } = new CompanyPermission();
+
+		public virtual Guid InsUserId { get; set; }
+
+		public virtual DateTime InsDate { get; set; }
 	}
 }

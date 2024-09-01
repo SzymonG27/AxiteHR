@@ -18,6 +18,8 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 
 		public virtual CompanyRole CompanyRole { get; set; } = new CompanyRole();
 
+		public virtual bool IsSupervisor { get; set; }
+
 		public virtual Guid InsUserId { get; set; }
 
 		public virtual DateTime InsDate { get; set; }

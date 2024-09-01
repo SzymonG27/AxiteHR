@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, first, Subject, takeUntil } from 'rxjs';
+import { filter, first, Subject, takeUntil, tap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { AuthStateService } from '../../services/authentication/auth-state.service';
@@ -70,20 +70,20 @@ export class NavBarComponent {
 
 	ngOnInit() {
 		this.authState.isLoggedIn
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((status: boolean) => {
-				this.blockUIService.start();
-
-				this.isLoggedIn = status;
-				this.mapUserRoles(this.isLoggedIn);
-
-				if (status === true) {
-					this.fetchCompanyForEmployee();
-				} else {
-					this.companyForEmployee = new CompanyForEmployee();
+			.pipe(
+				takeUntil(this.destroy$),
+				tap((status: boolean) => {
+					this.isLoggedIn = status;
+					this.mapUserRoles(this.isLoggedIn);
+				})
+			)
+			.subscribe({
+				next: (status: boolean) => {
+					this.fetchCompanyForEmployee(status);
+				},
+				error: () => {
+					this.blockUIService.stop();
 				}
-
-				this.blockUIService.stop();
 			});
 
 		this.router.events
@@ -159,20 +159,25 @@ export class NavBarComponent {
 		return currentLang ? currentLang.flag : this.languages[0].flag;
 	}
 
-	private fetchCompanyForEmployee() {
-		if (this.userRoles.includes(UserRole.UserFromCompany)) {
+	private fetchCompanyForEmployee(status: boolean) {
+		if (status && this.userRoles.includes(UserRole.UserFromCompany)) {
+			this.blockUIService.start();
 			this.companyService.getCompanyForEmployee(this.authState.getLoggedUserId())
 				.pipe(first())
 				.subscribe({
 					next: (company) => {
 						this.companyForEmployee = company;
-						this.blockUIService.stop()
 					},
 					error: () => {
 						this.companyForEmployee = new CompanyForEmployee();
-						this.blockUIService.stop()
+					},
+					complete: () => {
+						this.blockUIService.stop();
 					}
 				});
+		} else {
+			this.companyForEmployee = new CompanyForEmployee();
+			this.blockUIService.stop();
 		}
 	}
 }

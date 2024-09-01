@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{74
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Security.Encryption", "AxiteHR.Security.Encryption\AxiteHR.Security.Encryption.csproj", "{0EE1BC70-A83B-474F-AB80-8FEE9BCA3996}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{F5AFB712-B372-44B2-98F1-0D4C33F2A267}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

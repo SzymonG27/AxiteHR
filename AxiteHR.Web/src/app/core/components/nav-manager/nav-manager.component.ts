@@ -23,6 +23,8 @@ export class NavManagerComponent {
 	isMenuOpen: boolean = false;
   	isTeamsExpanded: boolean = false;
   	isProjectsExpanded: boolean = false;
+	isApplicationsExpanded: boolean = false;
+
 	companyId: string | null = null;
 
 	UserRole = UserRole;
@@ -52,10 +54,16 @@ export class NavManagerComponent {
 	}
 
 	toggleDropdown(itemName: string) {
-		if (itemName === 'Teams') {
-			this.isTeamsExpanded = !this.isTeamsExpanded;
-		} else if (itemName === 'Projects') {
-			this.isProjectsExpanded = !this.isProjectsExpanded;
+		switch (itemName) {
+			case 'Teams':
+				this.isTeamsExpanded = !this.isTeamsExpanded;
+				break;
+			case 'Projects':
+				this.isProjectsExpanded = !this.isProjectsExpanded;
+				break;
+			case 'Applications':
+				this.isApplicationsExpanded = !this.isApplicationsExpanded;
+				break;
 		}
 	}
 }

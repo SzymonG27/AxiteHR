@@ -12,6 +12,7 @@
     "INTERNAL_ERROR_TITLE": "Internal error",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Employee creator",
     "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
+    "CALENDAR_TITLE_PAGE": "Calendar",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
@@ -90,7 +91,8 @@
     "Nav_Manager_Dashboard": "Dashboard",
     "Nav_Manager_Team": "Team",
     "Nav_Manager_Team_Employees": "Employees",
-    "Nav_Manager_Calendar": "Calendar",
+    "Nav_Manager_Applications": "Applications",
+    "Nav_Manager_Applications_Calendar": "Calendar",
 
     "//Section7": "Pagination",
     "Pagination_Previous": " Previous ",

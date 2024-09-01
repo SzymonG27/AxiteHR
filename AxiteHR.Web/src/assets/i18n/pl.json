@@ -12,6 +12,7 @@
     "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
     "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
+    "CALENDAR_TITLE_PAGE": "Kalendarz",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
@@ -90,7 +91,8 @@
     "Nav_Manager_Dashboard": "Panel główny",
     "Nav_Manager_Team": "Zespół",
     "Nav_Manager_Team_Employees": "Pracownicy",
-    "Nav_Manager_Calendar": "Kalendarz",
+    "Nav_Manager_Applications": "Wnioski",
+    "Nav_Manager_Applications_Calendar": "Kalendarz",
 
     "//Section7": "Pagination",
     "Pagination_Previous": " Poprzednia ",

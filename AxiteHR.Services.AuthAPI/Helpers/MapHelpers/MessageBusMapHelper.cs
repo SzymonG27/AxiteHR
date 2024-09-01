@@ -7,7 +7,6 @@ namespace AxiteHR.Services.AuthAPI.Helpers.MapHelpers
 	{
 		public static UserMessageBusDto MapAppUserToUserMessageBusDto(AppUser user, string tempPassword)
 		{
-			//ToDo TempPassword encryption and decryption
 			return new UserMessageBusDto
 			{
 				Email = user.Email,

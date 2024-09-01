@@ -115,7 +115,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 		}
 
 		private async Task<bool> IsUserHasManagerPermissionAsync(int companyId, string insUserId)
-		{ //ToDo big queries to repository layer
+		{
 			return await dbContext.CompanyUsers
 				.Join(
 					dbContext.CompanyUserPermissions,

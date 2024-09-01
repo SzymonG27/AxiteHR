@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { first, firstValueFrom, map } from 'rxjs';
+import { first, map } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'

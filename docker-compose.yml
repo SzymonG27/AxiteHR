@@ -148,6 +148,7 @@ services:
       - sqlserverdb
       - axitehr.gatewaysol
       - logstash
+      - rabbitmq
   #END OF MY SERVICES
 
   #ELK STACK
@@ -204,6 +205,20 @@ services:
       - axitehr-network
   #END OF ELK STACK
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Interface
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - axitehr-network
+
 volumes:
   sqlserver_data:
   sqlserver_log:
@@ -211,6 +226,7 @@ volumes:
   es_data:
   ls_data:
   kb_data:
+  rabbitmq_data:
 
 networks:
   axitehr-network:

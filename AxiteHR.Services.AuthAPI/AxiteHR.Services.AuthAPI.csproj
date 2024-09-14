@@ -32,6 +32,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+	  <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />
 	  <ProjectReference Include="..\AxiteHR.Integration.MessageBus\AxiteHR.Integration.MessageBus.csproj" />
 	  <ProjectReference Include="..\AxiteHR.Security.Encryption\AxiteHR.Security.Encryption.csproj" />
 	</ItemGroup>

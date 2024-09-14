@@ -1,3 +1,4 @@
+using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Extensions;
 using AxiteHR.Services.AuthAPI.Helpers;
@@ -17,6 +18,8 @@ builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(ConfigurationHelper.JwtOptions));
+builder.Services.Configure<RabbitMqMessageSenderConfig>(builder.Configuration.GetSection(ConfigurationHelper.RabbitMqBrokerMessageSenderConfig));
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlServer(
 		builder.Configuration.GetConnectionString(ConfigurationHelper.DefaultConnectionString)

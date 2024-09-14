@@ -1,11 +1,11 @@
 ﻿namespace AxiteHR.Integration.BrokerMessageSender.Models
 {
-	public record RabbitMqMessageSenderModel
+	public record RabbitMqMessageSenderConfig : IBrokerConfig
 	{
 		public string HostName { get; set; } = string.Empty;
+		public int Port { get; set; }
 		public string UserName { get; set; } = string.Empty;
 		public string Password { get; set; } = string.Empty;
-		public object Message { get; set; } = new();
 		public string QueueName { get; set; } = string.Empty;
 	}
 }

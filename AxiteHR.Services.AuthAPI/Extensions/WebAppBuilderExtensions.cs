@@ -1,4 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.BrokerMessageSender.Senders.Factory;
+using AxiteHR.Integration.BrokerMessageSender.Senders;
+using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Integration.MessageBus;
 using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Helpers;
@@ -13,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Globalization;
 using System.Text;
+using AxiteHR.Integration.BrokerMessageSender.Models;
 
 namespace AxiteHR.Services.AuthAPI.Extensions
 {
@@ -105,7 +109,6 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 
 			builder.Services.AddScoped<IAuthService, AuthService>();
 			builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-			builder.Services.AddScoped<IMessageBus, MessageBus>();
 			builder.Services.AddScoped<IDataRepository, DataRepository>();
 			builder.Services.AddScoped<IDataService, DataService>();
 
@@ -113,6 +116,12 @@ namespace AxiteHR.Services.AuthAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<AuthResources>, StringLocalizer<AuthResources>>();
 			builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+
+			//BrokerMessageSender
+			builder.Services.AddSingleton<IBrokerMessageSender<RabbitMqMessageSenderConfig>, RabbitMqMessageSender>();
+			builder.Services.AddSingleton<IBrokerMessageSender<ServiceBusMessageSenderConfig>, ServiceBusMessageSender>();
+			builder.Services.AddSingleton<IBrokerMessageSenderFactory, BrokerMessageSenderFactory>();
+			builder.Services.AddTransient<MessagePublisher>();
 
 			return builder;
 		}

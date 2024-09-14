@@ -72,9 +72,11 @@ namespace AxiteHR.Services.EmailAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizer<EmailResources>, StringLocalizer<EmailResources>>();
 
 			builder.Services.AddSingleton<IEmployeeTempPasswordService, EmployeeTempPasswordService>();
-			builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
 			builder.Services.AddSingleton<IEmailSender, EmailSender>();
 			builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+
+			//Messaging consumers
+			builder.Services.AddHostedService<RabbitMqEmployeeTempPasswordConsumer>();
 
 			return builder;
 		}

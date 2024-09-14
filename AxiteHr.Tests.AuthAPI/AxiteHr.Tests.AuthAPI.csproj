@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />
     <ProjectReference Include="..\AxiteHR.Services.AuthAPI\AxiteHR.Services.AuthAPI.csproj" />
   </ItemGroup>
 

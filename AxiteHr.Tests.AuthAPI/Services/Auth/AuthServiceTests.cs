@@ -83,7 +83,7 @@ public class AuthServiceTests
 
 		// Setup the sender to return a completed task
 		_rabbitMqMessageSenderMock
-			.Setup(sender => sender.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig>>()))
+			.Setup(sender => sender.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()))
 			.Returns(Task.CompletedTask);
 
 		// Initialize the AuthService with the updated dependencies
@@ -356,13 +356,13 @@ public class AuthServiceTests
 			.ReturnsAsync(IdentityResult.Success);
 
 		_userManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<AppUser>()))
-			.ReturnsAsync(new List<string>());
+			.ReturnsAsync([]);
 
 		_dbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(1);
 
 		_messagePublisherMock
-			.Setup(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig>>()))
+			.Setup(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()))
 			.Returns(Task.CompletedTask);
 
 		// Act
@@ -376,7 +376,7 @@ public class AuthServiceTests
 			Assert.That(result.EmployeeId, Is.Not.Empty);
 		});
 
-		_messagePublisherMock.Verify(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig>>()), Times.Once);
+		_messagePublisherMock.Verify(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()), Times.Once);
 	}
 
 	[Test]
@@ -578,7 +578,6 @@ public class AuthServiceTests
 	private static IConfiguration MockConfiguration()
 	{
 		var inMemorySettings = new Dictionary<string, string?> {
-			{ ConfigurationHelper.MessageBusConnectionString, "ConnectionString" },
 			{ ConfigurationHelper.EmailTempPasswordQueue, "SectionValue" },
 			{ ConfigurationHelper.TempPasswordEncryptionKey, "TempPasswordEncryptionKey" }
 		};

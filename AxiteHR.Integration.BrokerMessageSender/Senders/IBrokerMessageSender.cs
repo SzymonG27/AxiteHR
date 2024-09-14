@@ -5,6 +5,6 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders
 	public interface IBrokerMessageSender<TConfig>
 		where TConfig : IBrokerConfig
 	{
-		Task PublishMessageAsync(MessageSenderModel<TConfig> brokerModel);
+		Task PublishMessageAsync<TMessage>(MessageSenderModel<TConfig, TMessage> serviceBusSenderModel);
 	}
 }

@@ -7,7 +7,7 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders
 {
 	public class ServiceBusMessageSender : IBrokerMessageSender<ServiceBusMessageSenderConfig>
 	{
-		public async Task PublishMessageAsync(MessageSenderModel<ServiceBusMessageSenderConfig> serviceBusSenderModel)
+		public async Task PublishMessageAsync<TMessage>(MessageSenderModel<ServiceBusMessageSenderConfig, TMessage> serviceBusSenderModel)
 		{
 			await using var client = new ServiceBusClient(serviceBusSenderModel.Config.ConnectionString);
 

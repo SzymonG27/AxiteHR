@@ -10,7 +10,7 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders
 	{
 		private IConnection? connection;
 
-		public Task PublishMessageAsync(MessageSenderModel<RabbitMqMessageSenderConfig> rabbitMqModel)
+		public Task PublishMessageAsync<TMessage>(MessageSenderModel<RabbitMqMessageSenderConfig, TMessage> rabbitMqModel)
 		{
 			CreateConnectionIfNotExists(rabbitMqModel.Config);
 

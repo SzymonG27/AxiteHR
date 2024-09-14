@@ -243,7 +243,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 			var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, encryptedPassword);
 
-			MessageSenderModel<RabbitMqMessageSenderConfig> messageSenderModel = new MessageSenderModel<RabbitMqMessageSenderConfig>
+			MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto> messageSenderModel = new()
 			{
 				Message = messageDto,
 				Config = _rabbitMqMessageSenderConfig

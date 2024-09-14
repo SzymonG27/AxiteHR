@@ -1,4 +1,5 @@
 using AxiteHr.Services.EmailAPI.Data;
+using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Services.EmailAPI.Extensions;
 using AxiteHR.Services.EmailAPI.Helpers;
 using AxiteHR.Services.EmailAPI.Models.SenderOptions;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddGlobalization();
 
 builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(ConfigurationHelper.EmailSenderSettings));
+builder.Services.Configure<RabbitMqMessageSenderConfig>(builder.Configuration.GetSection(ConfigurationHelper.RabbitMqBrokerMessageSenderConfig));
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
@@ -44,15 +46,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseAzureServiceBusConsumer();
-
 if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 {
 	using var scope = app.Services.CreateScope();
 	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 	try
 	{
-		db.Database.Migrate();
+		await db.Database.MigrateAsync();
 	}
 	catch (Exception ex)
 	{
@@ -64,7 +64,7 @@ if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 try
 {
 	Log.Information("Starting web host");
-	app.Run();
+	await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -72,5 +72,5 @@ catch (Exception ex)
 }
 finally
 {
-	Log.CloseAndFlush();
+	await Log.CloseAndFlushAsync();
 }

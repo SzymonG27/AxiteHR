@@ -1,6 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.MessageBus;
+using AxiteHR.Integration.BrokerMessageSender;
+using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
@@ -11,6 +12,7 @@ using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
@@ -20,11 +22,14 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 		RoleManager<IdentityRole> roleManager,
 		IJwtTokenGenerator jwtTokenGenerator,
 		IStringLocalizer<AuthResources> authLocalizer,
-		IMessageBus messageBus,
 		IConfiguration configuration,
 		ITempPasswordGeneratorService tempPasswordGeneratorService,
-		IEncryptionService encryptionService) : IAuthService
+		IEncryptionService encryptionService,
+		IServiceProvider serviceProvider,
+		IOptions<RabbitMqMessageSenderConfig> rabbitMqMessageSenderConfig) : IAuthService
 	{
+		private readonly RabbitMqMessageSenderConfig _rabbitMqMessageSenderConfig = rabbitMqMessageSenderConfig.Value;
+
 		public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequest)
 		{
 			var user = await userManager.FindByEmailAsync(loginRequest.Email);
@@ -237,9 +242,16 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			var encryptedPassword = encryptionService.Encrypt(password, encryptionKey);
 
 			var messageDto = MessageBusMapHelper.MapAppUserToUserMessageBusDto(user, encryptedPassword);
-			var messageBusConnectionString = configuration.GetValue<string>(ConfigurationHelper.MessageBusConnectionString)!;
-			var queueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
-			await messageBus.PublishMessage(messageDto, messageBusConnectionString, queueName);
+
+			MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto> messageSenderModel = new()
+			{
+				Message = messageDto,
+				Config = _rabbitMqMessageSenderConfig
+			};
+			messageSenderModel.Config.QueueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
+
+			var messagePublisher = serviceProvider.GetService<MessagePublisher>() ?? throw new NotSupportedException("No such service for MessagePublisher");
+			await messagePublisher.PublishMessageAsync(messageSenderModel);
 		}
 
 		private async Task<bool> IsUserMailValidateSucceededAsync(string email)

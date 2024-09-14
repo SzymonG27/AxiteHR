@@ -1,6 +1,9 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.MessageBus;
+using AxiteHR.Integration.BrokerMessageSender;
+using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.BrokerMessageSender.Senders;
+using AxiteHR.Integration.BrokerMessageSender.Senders.Factory;
 using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
@@ -29,7 +32,11 @@ public class AuthServiceTests
 	private Mock<RoleManager<IdentityRole>> _roleManagerMock;
 	private Mock<IJwtTokenGenerator> _jwtTokenGeneratorMock;
 	private Mock<IStringLocalizer<AuthResources>> _authLocalizerMock;
-	private Mock<IMessageBus> _messageBusMock;
+	private Mock<IServiceProvider> _serviceProviderMock;
+	private Mock<IOptions<RabbitMqMessageSenderConfig>> _rabbitMqOptionsMock;
+	private Mock<IBrokerMessageSenderFactory> _messageSenderFactoryMock;
+	private Mock<IBrokerMessageSender<RabbitMqMessageSenderConfig>> _rabbitMqMessageSenderMock;
+	private Mock<MessagePublisher> _messagePublisherMock;
 	private IConfiguration _configuration;
 	private Mock<ITempPasswordGeneratorService> _tempPasswordGeneratorServiceMock;
 	private Mock<IEncryptionService> _encryptionServiceMock;
@@ -43,21 +50,54 @@ public class AuthServiceTests
 		_roleManagerMock = MockRoleManager();
 		_jwtTokenGeneratorMock = new Mock<IJwtTokenGenerator>();
 		_authLocalizerMock = new Mock<IStringLocalizer<AuthResources>>();
-		_messageBusMock = new Mock<IMessageBus>();
+		_serviceProviderMock = new Mock<IServiceProvider>();
+		_rabbitMqOptionsMock = new Mock<IOptions<RabbitMqMessageSenderConfig>>();
+		_messageSenderFactoryMock = new Mock<IBrokerMessageSenderFactory>();
+		_rabbitMqMessageSenderMock = new Mock<IBrokerMessageSender<RabbitMqMessageSenderConfig>>();
+		_messagePublisherMock = new Mock<MessagePublisher>(_messageSenderFactoryMock.Object);
 		_configuration = MockConfiguration();
 		_tempPasswordGeneratorServiceMock = new Mock<ITempPasswordGeneratorService>();
 		_encryptionServiceMock = new Mock<IEncryptionService>();
 
+		// Initialize RabbitMqMessageSenderConfig with test values
+		var rabbitMqConfig = new RabbitMqMessageSenderConfig
+		{
+			HostName = "localhost",
+			UserName = "guest",
+			Password = "guest",
+			QueueName = "testQueue"
+		};
+
+		// Setup the Value property of the options mock
+		_rabbitMqOptionsMock.Setup(o => o.Value).Returns(rabbitMqConfig);
+
+		// Setup IServiceProvider to return the MessagePublisher mock
+		_serviceProviderMock
+			.Setup(sp => sp.GetService(typeof(MessagePublisher)))
+			.Returns(_messagePublisherMock.Object);
+
+		// Setup IBrokerMessageSenderFactory to return the sender mock
+		_messageSenderFactoryMock
+			.Setup(factory => factory.GetSender<RabbitMqMessageSenderConfig>())
+			.Returns(_rabbitMqMessageSenderMock.Object);
+
+		// Setup the sender to return a completed task
+		_rabbitMqMessageSenderMock
+			.Setup(sender => sender.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()))
+			.Returns(Task.CompletedTask);
+
+		// Initialize the AuthService with the updated dependencies
 		_authService = new AuthService(
 			_dbContextMock.Object,
 			_userManagerMock.Object,
 			_roleManagerMock.Object,
 			_jwtTokenGeneratorMock.Object,
 			_authLocalizerMock.Object,
-			_messageBusMock.Object,
 			_configuration,
 			_tempPasswordGeneratorServiceMock.Object,
-			_encryptionServiceMock.Object
+			_encryptionServiceMock.Object,
+			_serviceProviderMock.Object,
+			_rabbitMqOptionsMock.Object
 		);
 	}
 
@@ -300,7 +340,7 @@ public class AuthServiceTests
 		_tempPasswordGeneratorServiceMock.Setup(x => x.GenerateTempPassword())
 			.Returns(tempPassword);
 
-		_encryptionServiceMock.Setup(x => x.Encrypt(tempPasswordEncrypted, It.IsAny<string>()))
+		_encryptionServiceMock.Setup(x => x.Encrypt(tempPassword, It.IsAny<string>()))
 			.Returns(tempPasswordEncrypted);
 
 		_userManagerMock.Setup(x => x.FindByEmailAsync(newEmployeeRequest.Email))
@@ -310,7 +350,7 @@ public class AuthServiceTests
 			.ReturnsAsync(IdentityResult.Success);
 
 		_roleManagerMock.Setup(x => x.RoleExistsAsync(It.IsAny<string>()))
-		.ReturnsAsync(true); // Rola istnieje
+			.ReturnsAsync(true); // Rola istnieje
 
 		_userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
 			.ReturnsAsync(IdentityResult.Success);
@@ -320,6 +360,10 @@ public class AuthServiceTests
 
 		_dbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(1);
+
+		_messagePublisherMock
+			.Setup(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()))
+			.Returns(Task.CompletedTask);
 
 		// Act
 		var result = await _authService.RegisterNewEmployeeAsync(newEmployeeRequest);
@@ -331,6 +375,8 @@ public class AuthServiceTests
 			Assert.That(result.ErrorMessage, Is.Empty);
 			Assert.That(result.EmployeeId, Is.Not.Empty);
 		});
+
+		_messagePublisherMock.Verify(mp => mp.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()), Times.Once);
 	}
 
 	[Test]
@@ -532,9 +578,8 @@ public class AuthServiceTests
 	private static IConfiguration MockConfiguration()
 	{
 		var inMemorySettings = new Dictionary<string, string?> {
-			{ ConfigurationHelper.MessageBusConnectionString, "ConnectionString" },
 			{ ConfigurationHelper.EmailTempPasswordQueue, "SectionValue" },
-			{ ConfigurationHelper.TempPasswordEncryptionKey, "TempPasswordEncryptionKey"}
+			{ ConfigurationHelper.TempPasswordEncryptionKey, "TempPasswordEncryptionKey" }
 		};
 
 		return new ConfigurationBuilder()

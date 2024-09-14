@@ -8,10 +8,7 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders.Factory
 		public IBrokerMessageSender<TConfig> GetSender<TConfig>() where TConfig : IBrokerConfig
 		{
 			var sender = serviceProvider.GetService<IBrokerMessageSender<TConfig>>();
-			if (sender == null)
-				throw new NotSupportedException($"There is no registered message sender for the configuration type {typeof(TConfig).Name}");
-
-			return sender;
+			return sender ?? throw new NotSupportedException($"There is no registered message sender for the configuration type {typeof(TConfig).Name}");
 		}
 	}
 }

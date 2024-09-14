@@ -1,8 +1,8 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.BrokerMessageSender.Senders.Factory;
-using AxiteHR.Integration.BrokerMessageSender.Senders;
 using AxiteHR.Integration.BrokerMessageSender;
-using AxiteHR.Integration.MessageBus;
+using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.BrokerMessageSender.Senders;
+using AxiteHR.Integration.BrokerMessageSender.Senders.Factory;
 using AxiteHR.Security.Encryption;
 using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Services.Auth;
@@ -16,7 +16,6 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Globalization;
 using System.Text;
-using AxiteHR.Integration.BrokerMessageSender.Models;
 
 namespace AxiteHR.Services.AuthAPI.Extensions
 {

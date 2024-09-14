@@ -77,6 +77,10 @@ services:
       Kestrel__Endpoints__Https__Certificate__Path: "Certs/axitehr.services.authapi.pfx"
       Kestrel__Endpoints__Https__Certificate__Password: "Password123"
       MessageBusSettings__ConnectionString: ""
+      BrokerMessageSenderConfigs_RabbitMq_HostName: "rabbitmq"
+      BrokerMessageSenderConfigs_RabbitMq_UserName: "guest"
+      BrokerMessageSenderConfigs_RabbitMq_Password: "guest"
+      BrokerMessageSenderConfigs_RabbitMq_Port: 5672
     networks:
       - axitehr-network
     depends_on:
@@ -137,11 +141,15 @@ services:
       IsDbFromDocker: true
       ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Email;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
       ConnectionStrings__ServiceBusConnectionString: ""
-      EmailSenderSettings__From: "frederick22@ethereal.email"
+      EmailSenderSettings__From: "joelle.howe@ethereal.email"
       EmailSenderSettings__SmtpServer: "smtp.ethereal.email"
       EmailSenderSettings__Port: 587
-      EmailSenderSettings__Username: "frederick22@ethereal.email"
-      EmailSenderSettings__Password: "1mKePuzGqEmh6zZ12Y"
+      EmailSenderSettings__Username: "joelle.howe@ethereal.email"
+      EmailSenderSettings__Password: "6fZ5gyrjrDDURYv24p"
+      BrokerMessageSenderConfigs_RabbitMq_HostName: "rabbitmq"
+      BrokerMessageSenderConfigs_RabbitMq_UserName: "guest"
+      BrokerMessageSenderConfigs_RabbitMq_Password: "guest"
+      BrokerMessageSenderConfigs_RabbitMq_Port: 5672
     networks:
       - axitehr-network
     depends_on:

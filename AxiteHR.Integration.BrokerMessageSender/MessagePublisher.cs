@@ -5,7 +5,7 @@ namespace AxiteHR.Integration.BrokerMessageSender
 {
 	public class MessagePublisher(IBrokerMessageSenderFactory messageSenderFactory)
 	{
-		public async Task PublishMessageAsync<TConfig>(MessageSenderModel<TConfig> model) where TConfig : IBrokerConfig
+		public virtual async Task PublishMessageAsync<TConfig>(MessageSenderModel<TConfig> model) where TConfig : IBrokerConfig
 		{
 			var sender = messageSenderFactory.GetSender<TConfig>();
 			await sender.PublishMessageAsync(model);

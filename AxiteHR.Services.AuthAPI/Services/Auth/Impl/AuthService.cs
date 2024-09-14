@@ -250,7 +250,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			};
 			messageSenderModel.Config.QueueName = configuration.GetValue<string>(ConfigurationHelper.EmailTempPasswordQueue)!;
 
-			var messagePublisher = serviceProvider.GetService<MessagePublisher>() ?? throw new NotSupportedException("No such service like MessagePublisher");
+			var messagePublisher = serviceProvider.GetService<MessagePublisher>() ?? throw new NotSupportedException("No such service for MessagePublisher");
 			await messagePublisher.PublishMessageAsync(messageSenderModel);
 		}
 

@@ -18,7 +18,7 @@ namespace AxiteHR.Services.EmailAPI.Services.EmployeeTempPassword
 		IConfiguration configuration,
 		IEncryptionService encryptionService) : IEmployeeTempPasswordService
 	{
-		public async Task EmailTempPasswordCreateAndLog(UserTempPasswordMessageBusDto messageBusDto)
+		public async Task EmailTempPasswordCreateAndLogAsync(UserTempPasswordMessageBusDto messageBusDto)
 		{
 			var decryptedPassword = DecryptTempPassword(messageBusDto.TempPassword);
 

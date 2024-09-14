@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using System.Text;
+﻿using AxiteHR.Integration.BrokerMessageSender.Models;
 using RabbitMQ.Client;
-using AxiteHR.Integration.BrokerMessageSender.Models;
 using Serilog;
+using System.Text;
+using System.Text.Json;
 
 namespace AxiteHR.Integration.BrokerMessageSender.Senders
 {

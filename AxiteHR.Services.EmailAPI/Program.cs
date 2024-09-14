@@ -1,4 +1,5 @@
 using AxiteHr.Services.EmailAPI.Data;
+using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Services.EmailAPI.Extensions;
 using AxiteHR.Services.EmailAPI.Helpers;
 using AxiteHR.Services.EmailAPI.Models.SenderOptions;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddGlobalization();
 
 builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(ConfigurationHelper.EmailSenderSettings));
+builder.Services.Configure<RabbitMqMessageSenderConfig>(builder.Configuration.GetSection(ConfigurationHelper.RabbitMqBrokerMessageSenderConfig));
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
@@ -43,8 +45,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseAzureServiceBusConsumer();
 
 if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 {

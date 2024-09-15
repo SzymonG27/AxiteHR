@@ -1,0 +1,109 @@
+.calendar-container {
+	width: 77.5vw !important;
+	margin: 0 auto;
+	padding: 20px;
+	flex-wrap: nowrap;
+	margin-left: 1.25vw;
+}
+
+.calendar-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+	flex-grow: 1;
+	text-align: center;
+	margin: 0 20px;
+	font-size: 2rem;
+}
+
+/* Przyciski nawigacyjne i przycisk "Dziś" */
+.nav-button,
+.today-button {
+	background-color: #1e90ff;
+	color: white;
+	border: none;
+	padding: 12px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+	flex-shrink: 0;
+}
+
+.today-button {
+	margin-left: 10px;
+}
+
+.nav-button:hover,
+.today-button:hover {
+	background-color: #0d6efd;
+}
+
+h2 {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.add-event {
+	margin-top: 30px;
+}
+
+.add-event form {
+	display: flex;
+	flex-direction: column;
+}
+
+.add-event label {
+	margin-bottom: 10px;
+}
+
+.add-event input {
+	padding: 8px;
+	font-size: 14px;
+	margin-top: 4px;
+}
+
+.add-event button {
+	width: 100px;
+	padding: 8px;
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.add-event button:hover {
+	background-color: #218838;
+}
+
+@media (min-width: 1024px) {
+	.calendar-container {
+		width: 82.5vw !important;
+		margin-left: 1.25vw;
+	}
+}
+
+@media (max-width: 768px) {
+	.calendar-container {
+		padding: 10px;
+		width: 95vw !important;
+	}
+
+	.calendar-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.nav-button,
+	.today-button {
+		margin-bottom: 10px;
+	}
+
+	h2 {
+		font-size: 1.2rem;
+	}
+}

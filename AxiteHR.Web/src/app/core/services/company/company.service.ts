@@ -19,7 +19,7 @@ export class CompanyService {
 		private translate: TranslateService) { }
 
 	public createNewCompany(companyName: string) : Observable<CompanyCreatorResponse> {
-		let newCompany: CompanyCreatorRequest =
+		const newCompany: CompanyCreatorRequest =
 		{
 			companyName: companyName,
 			creatorId: this.authStateService.getLoggedUserId()

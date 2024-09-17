@@ -1,4 +1,4 @@
-export class CompanyCreatorRequest {
-	companyName: string = "";
-	creatorId: string = "";
+export type CompanyCreatorRequest = {
+	companyName: string;
+	creatorId: string;
 }

@@ -1,4 +1,4 @@
-export class CompanyCreatorResponse {
-	isSucceeded: boolean = false;
-	errorMessage: string | null = null;
+export type CompanyCreatorResponse = {
+	isSucceeded: boolean;
+	errorMessage: string | null;
 }

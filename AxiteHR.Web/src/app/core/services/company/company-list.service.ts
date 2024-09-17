@@ -15,7 +15,11 @@ export class CompanyListService {
 	constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
 
 	getCompanyListView(): Observable<CompanyListViewModel> {
-		var companyListViewModel = new CompanyListViewModel();
+		var companyListViewModel: CompanyListViewModel = {
+			isSucceed: false,
+			errorMessage: "",
+			companyList: []
+		};
 		var decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {
 			companyListViewModel.isSucceed = false;

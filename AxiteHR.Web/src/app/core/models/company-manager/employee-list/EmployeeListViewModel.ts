@@ -1,7 +1,7 @@
 import { EmployeeListItem } from "./EmployeeListItem";
 
-export class EmployeeListViewModel {
-	isSucceed: boolean = false;
-	errorMessage: string = '';
-	employeeList: EmployeeListItem[] = [];
+export type EmployeeListViewModel = {
+	isSucceed: boolean;
+	errorMessage: string;
+	employeeList: EmployeeListItem[];
 }

@@ -1,8 +1,8 @@
-export class EmployeeCreatorRequest {
-	companyId: number = 0;
-	email: string = "";
-	userName: string = "";
-	firstName: string = "";
-	lastName: string = "";
-	insUserId: string = "";
+export type EmployeeCreatorRequest = {
+	companyId: number;
+	email: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	insUserId: string;
 }

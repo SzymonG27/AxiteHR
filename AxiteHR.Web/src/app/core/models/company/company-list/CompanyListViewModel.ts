@@ -1,7 +1,7 @@
 import { CompanyListItem } from "./CompanyListItem";
 
-export class CompanyListViewModel {
-	isSucceed: boolean = false;
-	errorMessage: string = '';
-	companyList: CompanyListItem[] = [];
+export type CompanyListViewModel = {
+	isSucceed: boolean;
+	errorMessage: string;
+	companyList: CompanyListItem[];
 }

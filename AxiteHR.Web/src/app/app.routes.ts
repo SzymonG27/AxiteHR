@@ -19,6 +19,7 @@ import { TempPasswordChangeComponent } from './features/authentication/temp-pass
 import { TempPasswordLeaveGuard } from './core/guards/auth/temp-password-leave-guard.service';
 import { TempPasswordEnterGuard } from './core/guards/auth/temp-password-enter-guard.service';
 import { IsInCompanyGuard } from './core/guards/company/is-in-company-guard.service';
+import { CalendarComponent } from './features/application/calendar/calendar.component';
 
 export const routes: Routes = [
 	//Home
@@ -94,6 +95,12 @@ export const routes: Routes = [
 				path: 'EmployeeCreator',
 				component: EmployeeCreatorComponent,
 				data: { title: 'EMPLOYEE_CREATE_TITLE_PAGE' }
+			},
+			//Application
+			{
+				path: 'Calendar',
+				component: CalendarComponent,
+				data: { title: 'CALENDAR_TITLE_PAGE' }
 			}
 		]
 	},

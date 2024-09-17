@@ -1,4 +1,4 @@
-export type LoginResponse = {
+export interface LoginResponse {
 	isLoggedSuccessful: boolean;
 	isTempPasswordToChange: boolean;
 	errorMessage: string;

@@ -21,7 +21,7 @@ export class CompanyService {
 	public createNewCompany(newCompany: CompanyCreatorRequest) : Observable<CompanyCreatorResponse> {
 		newCompany.creatorId = this.authStateService.getLoggedUserId();
 		if (newCompany.creatorId.length === 0) {
-			let responseError: CompanyCreatorResponse = {
+			const responseError: CompanyCreatorResponse = {
 				isSucceeded: false,
 				errorMessage: null
 			};

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthStateService } from '../../core/services/authentication/auth-state.service';
 
@@ -9,8 +9,8 @@ import { AuthStateService } from '../../core/services/authentication/auth-state.
 	templateUrl: './home.component.html',
 	styleUrl: './home.component.css'
 })
-export class HomeComponent {
-	isLoggedIn: boolean = false;
+export class HomeComponent implements OnInit {
+	isLoggedIn = false;
 
 	constructor(private authState: AuthStateService) { }
 

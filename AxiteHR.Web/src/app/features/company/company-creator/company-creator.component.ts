@@ -23,7 +23,7 @@ import { firstValueFrom, take } from 'rxjs';
 	styleUrl: './company-creator.component.css'
 })
 export class CompanyCreatorComponent {
-	companyStateName: boolean = false;
+	companyStateName = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
 	companyCreatorModel: CompanyCreatorRequest = {
@@ -58,10 +58,10 @@ export class CompanyCreatorComponent {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;
@@ -73,7 +73,7 @@ export class CompanyCreatorComponent {
 						}
 					}
 				} else {
-					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.blockUIService.stop();

@@ -1,6 +1,6 @@
 import { EmployeeListItem } from "./EmployeeListItem";
 
-export type EmployeeListViewModel = {
+export interface EmployeeListViewModel {
 	isSucceed: boolean;
 	errorMessage: string;
 	employeeList: EmployeeListItem[];

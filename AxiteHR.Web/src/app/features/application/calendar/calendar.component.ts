@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CalendarModule, CalendarEvent, CalendarView, CalendarMonthViewDay } from 'angular-calendar';
 import { addDays, subDays, isSameDay, isSameMonth } from 'date-fns';
 import { FormsModule } from '@angular/forms';
@@ -21,12 +21,12 @@ import { Subscription } from 'rxjs';
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnDestroy {
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
 	viewDate: Date = new Date();
 
-	currentLang: string = "en";
+	currentLang = "en";
 	langChangeSubscription: Subscription;
 
 	// Zarządzanie aktywnym dniem
@@ -87,9 +87,8 @@ export class CalendarComponent {
 		return this.translate.instant(`Calendar_Months.${monthNames[monthIndex]}`);
 	}
 
-	dayClicked({ day, sourceEvent }: { day: CalendarMonthViewDay; sourceEvent: MouseEvent | KeyboardEvent }): void {
+	dayClicked({ day }: { day: CalendarMonthViewDay }): void {
 		const date = day.date;
-		const events = day.events;
 
 		if (isSameMonth(date, this.viewDate)) {
 			if (isSameDay(this.viewDate, date)) {

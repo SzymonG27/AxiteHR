@@ -4,7 +4,7 @@ import { RegisterRequest } from '../../../core/models/authentication/RegisterReq
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
-import { HttpErrorResponse, HttpEvent, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
@@ -30,14 +30,14 @@ import { Environment } from '../../../environment/Environment';
 export class RegisterComponent {
 	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
 	
-	focusEmail: boolean = false;
-	focusPassword: boolean = false;
-	focusUserName: boolean = false;
-	focusFirstName: boolean = false;
-	focusLastName: boolean = false;
+	focusEmail = false;
+	focusPassword = false;
+	focusUserName = false;
+	focusFirstName = false;
+	focusLastName = false;
 	errorMessage: string | null = null;
 
-	showPassword: boolean = false;
+	showPassword = false;
 	registerForm: FormGroup;
 	registerModel: RegisterRequest = {
 		email: '',
@@ -84,7 +84,7 @@ export class RegisterComponent {
 		this.blockUI.start();
 		this.registerModel = this.registerForm.value;
 		this.authService.Register(this.registerModel).pipe(first()).subscribe({
-			next: (_response: HttpEvent<any>) => {
+			next: () => {
 				this.dataService.setRegistered(true);
 				this.blockUI.stop();
 				this.router.navigate(['/Login']);
@@ -93,10 +93,10 @@ export class RegisterComponent {
 				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;

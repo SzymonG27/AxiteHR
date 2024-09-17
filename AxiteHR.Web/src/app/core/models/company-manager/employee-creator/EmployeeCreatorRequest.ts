@@ -1,4 +1,4 @@
-export type EmployeeCreatorRequest = {
+export interface EmployeeCreatorRequest {
 	companyId: number;
 	email: string;
 	userName: string;

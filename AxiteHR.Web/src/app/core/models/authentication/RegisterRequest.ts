@@ -1,9 +1,9 @@
-export class RegisterRequest {
-	Email: string = '';
-	UserName: string = '';
-	FirstName: string = '';
-	LastName: string = '';
-	UserPassword: string = '';
-	UserPasswordRepeated: string = '';
-	PhoneNumber: string = '';
+export type RegisterRequest = {
+	email: string;
+	userName: string;
+	firstName: string;
+	lastName: string;
+	userPassword: string;
+	userPasswordRepeated: string;
+	phoneNumber: string;
 }

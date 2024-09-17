@@ -1,4 +1,4 @@
-export class TempPasswordChangeResponse {
-    isSucceeded: boolean = false;
-    errorMessage: string = "";
+export type TempPasswordChangeResponse = {
+    isSucceeded: boolean;
+    errorMessage: string;
 }

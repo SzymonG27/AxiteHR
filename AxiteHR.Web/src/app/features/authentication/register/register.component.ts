@@ -39,7 +39,15 @@ export class RegisterComponent {
 
 	showPassword: boolean = false;
 	registerForm: FormGroup;
-	registerModel: RegisterRequest = new RegisterRequest();
+	registerModel: RegisterRequest = {
+		email: '',
+		userName: '',
+		firstName: '',
+		lastName: '',
+		userPassword: '',
+		userPasswordRepeated: '',
+		phoneNumber: ''
+	};
 
 	constructor(
 		private authService: AuthenticationService,
@@ -48,22 +56,22 @@ export class RegisterComponent {
 		private blockUI: BlockUIService,
 		private translate: TranslateService) {
 		this.registerForm = new FormGroup({
-			Email: new FormControl(this.registerModel.Email, {
+			Email: new FormControl(this.registerModel.email, {
 				validators: [Validators.required, Validators.email]
 			}),
-			UserName: new FormControl(this.registerModel.UserName, {
+			UserName: new FormControl(this.registerModel.userName, {
 				validators: [Validators.required, Validators.minLength(5)]
 			}),
-			FirstName: new FormControl(this.registerModel.FirstName, {
+			FirstName: new FormControl(this.registerModel.firstName, {
 				validators: [Validators.required, Validators.minLength(2)]
 			}),
-			LastName: new FormControl(this.registerModel.LastName, {
+			LastName: new FormControl(this.registerModel.lastName, {
 				validators: [Validators.required, Validators.minLength(2)]
 			}),
-			UserPassword: new FormControl(this.registerModel.UserPassword, {
+			UserPassword: new FormControl(this.registerModel.userPassword, {
 				validators: [Validators.required, Validators.minLength(8), Validators.pattern(Environment.strongPasswordRegex)]
 			}),
-			UserPasswordRepeated: new FormControl(this.registerModel.UserPasswordRepeated, {
+			UserPasswordRepeated: new FormControl(this.registerModel.userPasswordRepeated, {
 				validators: [Validators.required, Validators.minLength(8), Validators.pattern(Environment.strongPasswordRegex), mustMatch('UserPassword')]
 			})
 		});

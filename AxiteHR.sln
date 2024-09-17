@@ -31,7 +31,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F89D37B-85B8-4F2C-98B4-B3D99E10B4CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHr.Tests.AuthAPI", "AxiteHr.Tests.AuthAPI\AxiteHr.Tests.AuthAPI.csproj", "{DF40C06A-1467-4DE6-8057-6606C3BA6B3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Tests.AuthAPI", "AxiteHr.Tests.AuthAPI\AxiteHR.Tests.AuthAPI.csproj", "{DF40C06A-1467-4DE6-8057-6606C3BA6B3B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Tests.CompanyAPI", "AxiteHR.Tests.CompanyAPI\AxiteHR.Tests.CompanyAPI.csproj", "{022F71AE-BB78-4086-B0DA-0DC6398C6124}"
 EndProject
@@ -42,6 +42,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.BrokerMessageSender", "AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj", "{8D9A64A4-FB96-48DD-95CF-8104D7A8B49F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{F5AFB712-B372-44B2-98F1-0D4C33F2A267}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Tests.ApplicationAPI", "AxiteHR.Tests.ApplicationAPI\AxiteHR.Tests.ApplicationAPI.csproj", "{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{8D9A64A4-FB96-48DD-95CF-8104D7A8B49F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D9A64A4-FB96-48DD-95CF-8104D7A8B49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D9A64A4-FB96-48DD-95CF-8104D7A8B49F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{022F71AE-BB78-4086-B0DA-0DC6398C6124} = {1F89D37B-85B8-4F2C-98B4-B3D99E10B4CD}
 		{0EE1BC70-A83B-474F-AB80-8FEE9BCA3996} = {74CF8BB2-5BCB-40F7-96F0-6D9F63C01B34}
 		{8D9A64A4-FB96-48DD-95CF-8104D7A8B49F} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
+		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD} = {1F89D37B-85B8-4F2C-98B4-B3D99E10B4CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {339B3C41-1206-4D05-A93F-ECA428BBFD67}

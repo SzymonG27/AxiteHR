@@ -1,4 +1,4 @@
-export class CompanyForEmployee {
-	companyId: number = 0;
-	companyName: string = "";
+export type CompanyForEmployee = {
+	companyId: number;
+	companyName: string;
 }

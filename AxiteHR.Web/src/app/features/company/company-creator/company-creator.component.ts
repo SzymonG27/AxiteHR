@@ -26,7 +26,10 @@ export class CompanyCreatorComponent {
 	companyStateName: boolean = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
-	companyCreatorModel: CompanyCreatorRequest = new CompanyCreatorRequest();
+	companyCreatorModel: CompanyCreatorRequest = {
+		creatorId: "",
+		companyName: ""
+	};
 
 	constructor(private blockUIService: BlockUIService,
 		private companyService: CompanyService,

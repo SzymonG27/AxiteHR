@@ -39,7 +39,11 @@ export class TempPasswordChangeComponent {
 
 	tempPasswordChangeForm: FormGroup;
 	errorMessage: string | null = null;
-	tempPasswordChangeModel: TempPasswordChangeRequest = new TempPasswordChangeRequest();
+	tempPasswordChangeModel: TempPasswordChangeRequest = {
+		userId: '',
+		password: '',
+		confirmPassword: ''
+	};
 
 	constructor(private blockUI: BlockUIService,
 		private authService: AuthenticationService,

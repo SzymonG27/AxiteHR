@@ -34,7 +34,14 @@ export class EmployeeCreatorComponent {
 
 	companyId: number | null = null;
 	employeeCreatorForm: FormGroup;
-	employeeCreatorModel: EmployeeCreatorRequest = new EmployeeCreatorRequest();
+	employeeCreatorModel: EmployeeCreatorRequest = {
+		companyId: 0,
+		email: '',
+		userName: '',
+		firstName: '',
+		lastName: '',
+		insUserId: ''
+	};
 
 	constructor(
 		private employeeService: EmployeeService,

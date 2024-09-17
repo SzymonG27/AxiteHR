@@ -35,7 +35,10 @@ export class LoginComponent {
 	showPassword: boolean = false;
 	loginMessage: string | null = null;
 	errorMessage: string | null = null;
-	loginModel: LoginRequest = new LoginRequest();
+	loginModel: LoginRequest = {
+		email: '',
+		password: ''
+	};
 	returnUrl: string;
 
 	constructor(

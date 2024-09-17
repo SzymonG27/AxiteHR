@@ -56,7 +56,10 @@ export class NavBarComponent {
 	isLanguageFlagPressed: boolean = false;
 
 	isEmployee: boolean = false;
-	companyForEmployee: CompanyForEmployee = new CompanyForEmployee();
+	companyForEmployee: CompanyForEmployee = {
+		companyId: 0,
+		companyName: ""
+	};
 
 	constructor(
 		private router: Router,
@@ -169,14 +172,20 @@ export class NavBarComponent {
 						this.companyForEmployee = company;
 					},
 					error: () => {
-						this.companyForEmployee = new CompanyForEmployee();
+						this.companyForEmployee = {
+							companyId: 0,
+							companyName: ""
+						};
 					},
 					complete: () => {
 						this.blockUIService.stop();
 					}
 				});
 		} else {
-			this.companyForEmployee = new CompanyForEmployee();
+			this.companyForEmployee = {
+				companyId: 0,
+				companyName: ""
+			};
 			this.blockUIService.stop();
 		}
 	}

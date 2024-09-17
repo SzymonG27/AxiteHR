@@ -1,4 +1,4 @@
-export type CompanyListItem = {
+export interface CompanyListItem {
 	id: number;
 	companyName: string;
 	insDate: string;

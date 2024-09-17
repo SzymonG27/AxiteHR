@@ -1,4 +1,4 @@
-export type EmployeeListItem = {
+export interface EmployeeListItem {
 	companyUserId: number;
 	userId: string;
 	userName: string;

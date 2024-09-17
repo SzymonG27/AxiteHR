@@ -5,8 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 	providedIn: 'root'
 })
 export class DataBehaviourService {
-	constructor () {}
-
 	private registeredSource = new BehaviorSubject<boolean>(false);
 	currentRegistered = this.registeredSource.asObservable();
 	setRegistered(value: boolean) {

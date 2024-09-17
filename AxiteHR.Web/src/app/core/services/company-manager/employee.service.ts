@@ -20,7 +20,7 @@ export class EmployeeService {
 	createNewEmployee(newEmployeeRequest: EmployeeCreatorRequest) : Observable<EmployeeCreatorResponse> {
 		newEmployeeRequest.insUserId = this.authStateService.getLoggedUserId();
 		if (newEmployeeRequest.insUserId.length === 0) {
-			let responseError: EmployeeCreatorResponse = {
+			const responseError: EmployeeCreatorResponse = {
 				isSucceeded: false,
 				errorMessage: null,
 				employeeId: ""

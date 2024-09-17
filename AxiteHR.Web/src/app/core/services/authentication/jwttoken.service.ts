@@ -7,8 +7,6 @@ import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 	providedIn: 'root'
 })
 export class JWTTokenService {
-	constructor() { }
-
 	getDecodedToken(): JwtPayloadClient {
 		const token = localStorage.getItem(AuthDictionary.Token);
 		if (!token) {

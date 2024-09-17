@@ -11,7 +11,7 @@
 						*{{ errorMessage }}
 					</div>
 					<div>
-						<label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="email" #email (focus)="onFocusEmail()" (blur)="onBlurEmail()"
 								formControlName="email" type="text" required
@@ -45,7 +45,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="userName" #userName (focus)="onFocusUserName()" (blur)="onBlurUserName()"
 								formControlName="userName" type="text" required
@@ -68,7 +68,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="firstName" #firstName (focus)="onFocusFirstName()" (blur)="onBlurFirstName()"
 								formControlName="firstName" type="text" required
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="lastName" #lastName (focus)="onFocusLastName()" (blur)="onBlurLastName()"
 								formControlName="lastName" type="text" required

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,13 +17,13 @@ import { UserRole } from '../../models/authentication/UserRole';
 	templateUrl: './nav-manager.component.html',
 	styleUrl: './nav-manager.component.css'
 })
-export class NavManagerComponent {
+export class NavManagerComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	
-	isMenuOpen: boolean = false;
-  	isTeamsExpanded: boolean = false;
-  	isProjectsExpanded: boolean = false;
-	isApplicationsExpanded: boolean = false;
+	isMenuOpen = false;
+  	isTeamsExpanded = false;
+  	isProjectsExpanded = false;
+	isApplicationsExpanded = false;
 
 	companyId: string | null = null;
 

@@ -1,4 +1,4 @@
-export type TempPasswordChangeResponse = {
+export interface TempPasswordChangeResponse {
     isSucceeded: boolean;
     errorMessage: string;
 }

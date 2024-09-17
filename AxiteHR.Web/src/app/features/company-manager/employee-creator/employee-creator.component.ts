@@ -25,11 +25,11 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 	styleUrl: './employee-creator.component.css'
 })
 export class EmployeeCreatorComponent {
-	focusEmail: boolean = false;
-	focusPassword: boolean = false;
-	focusUserName: boolean = false;
-	focusFirstName: boolean = false;
-	focusLastName: boolean = false;
+	focusEmail = false;
+	focusPassword = false;
+	focusUserName = false;
+	focusFirstName = false;
+	focusLastName = false;
 	errorMessage: string | null = null;
 
 	companyId: number | null = null;
@@ -98,10 +98,10 @@ export class EmployeeCreatorComponent {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;
@@ -113,7 +113,7 @@ export class EmployeeCreatorComponent {
 						}
 					}
 				} else {
-					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.blockUI.stop();

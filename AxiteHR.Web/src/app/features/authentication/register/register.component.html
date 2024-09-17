@@ -15,7 +15,7 @@
 						*{{ errorMessage }}
 					</div>
 					<div>
-						<label class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_Email' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="email" #email (focus)="onFocusEmail()" (blur)="onBlurEmail()"
 								formControlName="Email" type="text" required
@@ -49,7 +49,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_UserName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="userName" #userName (focus)="onFocusUserName()" (blur)="onBlurUserName()"
 								formControlName="UserName" type="text" required
@@ -72,7 +72,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_FirstName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="firstName" #firstName (focus)="onFocusFirstName()" (blur)="onBlurFirstName()"
 								formControlName="FirstName" type="text" required
@@ -96,7 +96,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_LastName' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="lastName" #lastName (focus)="onFocusLastName()" (blur)="onBlurLastName()"
 								formControlName="LastName" type="text" required
@@ -121,7 +121,7 @@
 					</div>
 					<!--TODO Phone number-->
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_Password' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_Password' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="password" #password (focus)="onFocusPassword()" (blur)="onBlurPassword()"
 								formControlName="UserPassword" [type]="showPassword ? 'text' : 'password'" required
@@ -149,7 +149,7 @@
 						</div>
 					</div>
 					<div class="mt-8">
-						<label class="text-sm block mb-2">{{ 'Authentication_ConfirmPassword' | translate }}*</label>
+						<div class="text-sm block mb-2">{{ 'Authentication_ConfirmPassword' | translate }}*</div>
 						<div class="relative flex items-center">
 							<input name="confirmPassword" #confirmPassword formControlName="UserPasswordRepeated"
 								type="password" required

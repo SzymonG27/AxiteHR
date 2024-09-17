@@ -5,7 +5,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { CompanyService } from '../../../core/services/company/company.service';
 import { TempPasswordChangeRequest } from '../../../core/models/authentication/TempPasswordChangeRequest';
 import { Environment } from '../../../environment/Environment';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
@@ -33,9 +32,9 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 export class TempPasswordChangeComponent {
 	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
 
-	passwordState: boolean = false;
-	confirmPasswordState: boolean = false;
-	showPassword: boolean = false;
+	passwordState = false;
+	confirmPasswordState = false;
+	showPassword = false;
 
 	tempPasswordChangeForm: FormGroup;
 	errorMessage: string | null = null;
@@ -95,10 +94,10 @@ export class TempPasswordChangeComponent {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;
@@ -110,7 +109,7 @@ export class TempPasswordChangeComponent {
 						}
 					}
 				} else {
-					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.blockUI.stop();

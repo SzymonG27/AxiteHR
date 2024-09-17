@@ -1,7 +1,7 @@
 import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 export function mustMatch(controlName: string): ValidatorFn {
-	return (control: AbstractControl): { [key: string]: any } | null => {
+	return (control: AbstractControl): Record<string, unknown> | null => {
 		const formGroup = control.parent as FormGroup;
 		if (!formGroup) {
 			return null;

@@ -43,10 +43,19 @@
                     </ul>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
+                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Applications')">
                         <span class="material-icons">calendar_today</span>
-                        <span class="hidden md:inline">{{ 'Nav_Manager_Calendar' | translate }}</span>
-                    </a>
+                        <span class="hidden md:inline">{{ 'Nav_Manager_Applications' | translate }}</span>
+                        <span class="ml-auto material-icons" [ngClass]="isApplicationsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
+                    </button>
+                    <ul [ngClass]="{'block': isApplicationsExpanded, 'hidden': !isApplicationsExpanded}" class="pl-6">
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['Calendar']">
+                            <a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
+                        </li>
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
+                            <a href="#">Project 2</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
                     <a href="#" class="flex items-center space-x-2">
@@ -118,10 +127,19 @@
                     </ul>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
+                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Applications')">
                         <span class="material-icons">calendar_today</span>
-                        <span>{{ 'Nav_Manager_Calendar' | translate }}</span>
-                    </a>
+                        <span>{{ 'Nav_Manager_Applications' | translate }}</span>
+                        <span class="ml-auto material-icons" [ngClass]="isApplicationsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
+                    </button>
+                    <ul [ngClass]="{'block': isApplicationsExpanded, 'hidden': !isApplicationsExpanded}" class="pl-6">
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['Calendar']">
+                            <a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
+                        </li>
+                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
+                            <a href="#">Project 2</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="p-4 hover:bg-gray-200 cursor-pointer">
                     <a href="#" class="flex items-center space-x-2">

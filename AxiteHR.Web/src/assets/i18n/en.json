@@ -12,6 +12,7 @@
     "INTERNAL_ERROR_TITLE": "Internal error",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Employee creator",
     "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
+    "CALENDAR_TITLE_PAGE": "Calendar",
     "defaultTitle": "My Application",
     
     "//Section2": "Global messages",
@@ -90,12 +91,32 @@
     "Nav_Manager_Dashboard": "Dashboard",
     "Nav_Manager_Team": "Team",
     "Nav_Manager_Team_Employees": "Employees",
-    "Nav_Manager_Calendar": "Calendar",
+    "Nav_Manager_Applications": "Applications",
+    "Nav_Manager_Applications_Calendar": "Calendar",
 
     "//Section7": "Pagination",
     "Pagination_Previous": " Previous ",
     "Pagination_Next": " Next ",
     "Pagination_Label": "Pagination",
     "Pagination_PageLabel": "Page",
-    "Pagination_CurrentPageLabel": "Current Page"
+    "Pagination_CurrentPageLabel": "Current Page",
+
+    "//Section8": "Calendar",
+    "Calendar_Previous": "Previous",
+    "Calendar_Next": "Next",
+    "Calendar_Today": "Today",
+    "Calendar_Months": {
+        "JANUARY": "January",
+        "FEBRUARY": "February",
+        "MARCH": "March",
+        "APRIL": "April",
+        "MAY": "May",
+        "JUNE": "June",
+        "JULY": "July",
+        "AUGUST": "August",
+        "SEPTEMBER": "September",
+        "OCTOBER": "October",
+        "NOVEMBER": "November",
+        "DECEMBER": "December"
+    }
 }

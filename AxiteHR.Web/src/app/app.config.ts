@@ -9,6 +9,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageInterceptor } from './core/interceptors/language.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 // Factory function for TranslateHttpLoader
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,7 +32,11 @@ export const appConfig: ApplicationConfig = {
 				  deps: [HttpClient]
 				}
 			}),
-			NgxPaginationModule
+			NgxPaginationModule,
+			CalendarModule.forRoot({
+				provide: DateAdapter,
+				useFactory: adapterFactory
+			})
 		),
 		{
 			provide: HTTP_INTERCEPTORS,

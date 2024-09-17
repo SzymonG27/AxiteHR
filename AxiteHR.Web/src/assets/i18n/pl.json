@@ -12,6 +12,7 @@
     "INTERNAL_ERROR_TITLE": "Błąd wewnętrzny",
     "EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
     "CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
+    "CALENDAR_TITLE_PAGE": "Kalendarz",
     "defaultTitle": "Moja Aplikacja",
 
     "//Section2": "Global messages",
@@ -90,12 +91,32 @@
     "Nav_Manager_Dashboard": "Panel główny",
     "Nav_Manager_Team": "Zespół",
     "Nav_Manager_Team_Employees": "Pracownicy",
-    "Nav_Manager_Calendar": "Kalendarz",
+    "Nav_Manager_Applications": "Wnioski",
+    "Nav_Manager_Applications_Calendar": "Kalendarz",
 
     "//Section7": "Pagination",
     "Pagination_Previous": " Poprzednia ",
     "Pagination_Next": " Następna ",
     "Pagination_Label": "Paginacja",
     "Pagination_PageLabel": "Strona",
-    "Pagination_CurrentPageLabel": "Aktualna strona"
+    "Pagination_CurrentPageLabel": "Aktualna strona",
+
+    "//Section8": "Calendar",
+    "Calendar_Previous": "Poprzedni",
+    "Calendar_Next": "Następny",
+    "Calendar_Today": "Dziś",
+    "Calendar_Months": {
+        "JANUARY": "Styczeń",
+        "FEBRUARY": "Luty",
+        "MARCH": "Marzec",
+        "APRIL": "Kwiecień",
+        "MAY": "Maj",
+        "JUNE": "Czerwiec",
+        "JULY": "Lipiec",
+        "AUGUST": "Sierpień",
+        "SEPTEMBER": "Wrzesień",
+        "OCTOBER": "Październik",
+        "NOVEMBER": "Listopad",
+        "DECEMBER": "Grudzień"
+    }
 }

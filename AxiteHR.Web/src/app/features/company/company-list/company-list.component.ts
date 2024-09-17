@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CompanyListService } from '../../../core/services/company/company-list.service';
 import { CompanyListViewModel } from '../../../core/models/company/company-list/CompanyListViewModel';
 import { CompanyListItem } from '../../../core/models/company/company-list/CompanyListItem';
-import { first, firstValueFrom, take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 
 @Component({
@@ -19,8 +19,8 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 	templateUrl: './company-list.component.html',
 	styleUrl: './company-list.component.css'
 })
-export class CompanyListComponent {
-	isLoadingTableError: boolean = false;
+export class CompanyListComponent implements OnInit {
+	isLoadingTableError = false;
 	errorMessage: string | null = null;
 	companyList: CompanyListItem[] = [];
 	constructor(private companyListService: CompanyListService,

@@ -6,10 +6,11 @@ import { provideRouter, Router, RouterLink } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { CompanyService } from '../../../core/services/company/company.service';
-import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { CompanyCreatorResponse } from '../../../core/models/company/company-creator/CompanyCreatorResonse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { MockComponent } from '../../../tests/utils/MockComponent';
 
 describe('CompanyCreatorComponent', () => {
   let component: CompanyCreatorComponent;
@@ -73,7 +74,7 @@ describe('CompanyCreatorComponent', () => {
   });
 
   it('Field CompanyName should be required', () => {
-    let control = component.companyCreatorForm.get('CompanyName');
+    const control = component.companyCreatorForm.get('CompanyName');
     control!.setValue('');
     expect(control!.valid).toBeFalse();
 
@@ -89,9 +90,9 @@ describe('CompanyCreatorComponent', () => {
   });
 
   it('Should call createNewCompany when the form is valid', () => {
-    component.companyCreatorForm.get('CompanyName')!.setValue('Test company');
+    component.companyCreatorForm.get('CompanyName')!.setValue('Test Company');
 
-    let companyCreatorResponse: CompanyCreatorResponse = {
+    const companyCreatorResponse: CompanyCreatorResponse = {
       isSucceeded: true,
       errorMessage: null
     }
@@ -104,7 +105,7 @@ describe('CompanyCreatorComponent', () => {
   });
 
   it('Should navigate to /Company/List on success', fakeAsync(() => {
-    let companyCreatorResponse: CompanyCreatorResponse = {
+    const companyCreatorResponse: CompanyCreatorResponse = {
       isSucceeded: true,
       errorMessage: null
     }

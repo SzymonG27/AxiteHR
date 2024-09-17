@@ -1,1 +1,1 @@
-class MockComponent {}
+export class MockComponent {}

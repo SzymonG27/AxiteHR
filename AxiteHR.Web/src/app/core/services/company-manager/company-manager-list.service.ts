@@ -15,8 +15,12 @@ export class CompanyManagerListService {
 	constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
 
 	getEmployeeListView(companyId: number, page: number, itemsPerPage: number): Observable<EmployeeListViewModel> {
-		let employeeListViewModel = new EmployeeListViewModel();
-		let decodedToken = this.jwtToken.getDecodedToken();
+		const employeeListViewModel: EmployeeListViewModel = {
+			isSucceed: false,
+			errorMessage: "",
+			employeeList: []
+		};
+		const decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {
 			employeeListViewModel.isSucceed = false;
 			//ToDo Error message
@@ -41,7 +45,7 @@ export class CompanyManagerListService {
 
 	getEmployeeListCount(companyId: number): Observable<number> {
 		let employeeListCount = 0;
-		let decodedToken = this.jwtToken.getDecodedToken();
+		const decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {
 			//ToDo Error message
 			return of(employeeListCount);

@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, first, Subject, takeUntil, tap } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -35,15 +35,15 @@ import { BlockUIService } from '../../services/block-ui.service';
 		])
 	]
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 
-	isMenuOpen: boolean = false;
-	isLoggedIn: boolean = false;
-	currentUrl: string = "";
-	isLoginPage: boolean = false;
-	isRegisterPage: boolean = false;
-	mouseCompanySectionOvered: boolean = false;
+	isMenuOpen = false;
+	isLoggedIn = false;
+	currentUrl = "";
+	isLoginPage = false;
+	isRegisterPage = false;
+	mouseCompanySectionOvered = false;
 	UserRole = UserRole;
 	userRoles: string[] = [];
 
@@ -51,12 +51,15 @@ export class NavBarComponent {
 		{ code: 'en', label: 'English', flag: 'assets/flags/us.webp' },
 		{ code: 'pl', label: 'Polski', flag: 'assets/flags/pl.webp' }
 	];
-	currentLanguage: string = 'en';
-	isLanguageMenuOpen: boolean = false;
-	isLanguageFlagPressed: boolean = false;
+	currentLanguage = 'en';
+	isLanguageMenuOpen = false;
+	isLanguageFlagPressed = false;
 
-	isEmployee: boolean = false;
-	companyForEmployee: CompanyForEmployee = new CompanyForEmployee();
+	isEmployee = false;
+	companyForEmployee: CompanyForEmployee = {
+		companyId: 0,
+		companyName: ""
+	};
 
 	constructor(
 		private router: Router,
@@ -147,7 +150,7 @@ export class NavBarComponent {
 	}
 
 	@HostListener('document:click', ['$event'])
-	closeLanguageMenuOnClickingOutside(event: MouseEvent) {
+	closeLanguageMenuOnClickingOutside() {
 		if (!this.isLanguageMenuOpen) {
 			return;
 		}
@@ -169,14 +172,20 @@ export class NavBarComponent {
 						this.companyForEmployee = company;
 					},
 					error: () => {
-						this.companyForEmployee = new CompanyForEmployee();
+						this.companyForEmployee = {
+							companyId: 0,
+							companyName: ""
+						};
 					},
 					complete: () => {
 						this.blockUIService.stop();
 					}
 				});
 		} else {
-			this.companyForEmployee = new CompanyForEmployee();
+			this.companyForEmployee = {
+				companyId: 0,
+				companyName: ""
+			};
 			this.blockUIService.stop();
 		}
 	}

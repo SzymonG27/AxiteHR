@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CompanyCreatorRequest } from '../../../core/models/company/company-creator/CompanyCreatorRequest';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
@@ -23,10 +22,10 @@ import { firstValueFrom, take } from 'rxjs';
 	styleUrl: './company-creator.component.css'
 })
 export class CompanyCreatorComponent {
-	companyStateName: boolean = false;
+	companyStateName = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
-	companyName: string = "";
+	companyName = "";
 
 	constructor(private blockUIService: BlockUIService,
 		private companyService: CompanyService,
@@ -55,10 +54,10 @@ export class CompanyCreatorComponent {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;
@@ -70,7 +69,7 @@ export class CompanyCreatorComponent {
 						}
 					}
 				} else {
-					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.blockUIService.stop();

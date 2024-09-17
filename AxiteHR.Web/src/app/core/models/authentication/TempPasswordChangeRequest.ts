@@ -1,5 +1,5 @@
-export class TempPasswordChangeRequest {
-    userId: string = "";
-    password: string = "";
-    confirmPassword: string = "";
+export interface TempPasswordChangeRequest {
+    userId: string;
+    password: string;
+    confirmPassword: string;
 }

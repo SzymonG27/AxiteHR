@@ -1,6 +1,6 @@
-export class CompanyListItem {
-	id: number = 0;
-	companyName: string = '';
-	insDate: string = '';
-	userCount: number = 0;
+export interface CompanyListItem {
+	id: number;
+	companyName: string;
+	insDate: string;
+	userCount: number;
 }

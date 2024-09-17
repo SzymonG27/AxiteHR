@@ -25,10 +25,10 @@ export class CompanyService {
 			creatorId: this.authStateService.getLoggedUserId()
 		}
 		if (newCompany.creatorId.length === 0) {
-			let responseError: CompanyCreatorResponse = {
+			const responseError: CompanyCreatorResponse = {
 				isSucceeded: false,
-				errorMessage: ""
-			}
+				errorMessage: null
+			};
 
 			responseError.isSucceeded = false;
 			this.translate.get('Global_UserNotLogged').pipe(
@@ -58,7 +58,10 @@ export class CompanyService {
 
 	public getCompanyForEmployee(employeeId: string) : Observable<CompanyForEmployee> {
 		if (employeeId === "") {
-			return of(new CompanyForEmployee());
+			return of({
+				companyId: 0,
+				companyName: ""
+			} as CompanyForEmployee);
 		}
 
 		return this.http.get<CompanyForEmployee>(

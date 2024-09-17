@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CompanyManagerListService } from '../../../core/services/company-manager/company-manager-list.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EmployeeListItem } from '../../../core/models/company-manager/employee-list/EmployeeListItem';
@@ -22,12 +22,12 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 	templateUrl: './employee-list.component.html',
 	styleUrl: './employee-list.component.css'
 })
-export class EmployeeListComponent {
+export class EmployeeListComponent implements OnInit {
 	errorMessage: string | null = null;
 	employeeList: EmployeeListItem[] = [];
 	companyId: number | null = null;
 	errorPage: string | null = null;
-	forkHelper: any[] = [];
+	forkHelper: unknown[] = [];
 	employeeCreatedMessage: string | null = null;
 
 	//Pagination

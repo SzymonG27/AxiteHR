@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { RegisterRequest } from '../../../core/models/authentication/RegisterRequest';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
@@ -17,8 +17,8 @@ import { TempPasswordChangeResponse } from '../../models/authentication/TempPass
 export class AuthenticationService {
 	constructor(private http: HttpClient, private authState: AuthStateService) {}
 
-	public Register(register: RegisterRequest): Observable<HttpEvent<any>> {
-		return this.http.post<HttpEvent<any>>(
+	public Register(register: RegisterRequest): Observable<HttpEvent<unknown>> {
+		return this.http.post<HttpEvent<unknown>>(
 			`${Environment.authApiUrl}${ApiPaths.Register}`,
 			register
 		);
@@ -32,7 +32,7 @@ export class AuthenticationService {
 	}
 
 	public LogOut() {
-		let token = localStorage.getItem(AuthDictionary.Token);
+		const token = localStorage.getItem(AuthDictionary.Token);
 		if (token) {
 			localStorage.removeItem(AuthDictionary.Token);
 			this.authState.setLoggedIn(false);

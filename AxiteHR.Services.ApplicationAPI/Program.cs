@@ -59,7 +59,7 @@ if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 	try
 	{
-		db.Database.Migrate();
+		await db.Database.MigrateAsync();
 	}
 	catch (Exception ex)
 	{
@@ -71,7 +71,7 @@ if (builder.Configuration.GetValue<bool>(ConfigurationHelper.IsDbFromDocker))
 try
 {
 	Log.Information("Starting web host");
-	app.Run();
+	await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -79,5 +79,5 @@ catch (Exception ex)
 }
 finally
 {
-	Log.CloseAndFlush();
+	await Log.CloseAndFlushAsync();
 }

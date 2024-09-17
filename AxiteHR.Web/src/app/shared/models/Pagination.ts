@@ -1,5 +1,5 @@
 export class Pagination {
-    totalItems: number = 100;
-	pageSize: number = 10;
-    pageNumber: number = 1;
+    totalItems = 100;
+	pageSize = 10;
+    pageNumber = 1;
 }

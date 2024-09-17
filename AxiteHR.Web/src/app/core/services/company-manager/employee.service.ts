@@ -20,7 +20,11 @@ export class EmployeeService {
 	createNewEmployee(newEmployeeRequest: EmployeeCreatorRequest) : Observable<EmployeeCreatorResponse> {
 		newEmployeeRequest.insUserId = this.authStateService.getLoggedUserId();
 		if (newEmployeeRequest.insUserId.length === 0) {
-			let responseError = new EmployeeCreatorResponse();
+			const responseError: EmployeeCreatorResponse = {
+				isSucceeded: false,
+				errorMessage: null,
+				employeeId: ""
+			};
 
 			responseError.isSucceeded = false;
 			this.translate.get('Global_UserNotLogged').pipe(

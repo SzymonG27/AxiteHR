@@ -1,5 +1,5 @@
-import { Component, HostBinding } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { Component, HostBinding, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../../core/models/authentication/LoginRequest';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
@@ -27,15 +27,18 @@ import { routeAnimationState } from '../../../shared/animations/routeAnimationSt
 	styleUrl: './login.component.css',
 	animations: [routeAnimationState]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
 
-	focusEmail: boolean = false;
-	focusPassword: boolean = false;
-	showPassword: boolean = false;
+	focusEmail = false;
+	focusPassword = false;
+	showPassword = false;
 	loginMessage: string | null = null;
 	errorMessage: string | null = null;
-	loginModel: LoginRequest = new LoginRequest();
+	loginModel: LoginRequest = {
+		email: '',
+		password: ''
+	};
 	returnUrl: string;
 
 	constructor(
@@ -101,10 +104,10 @@ export class LoginComponent {
 					//Errors from response
 					this.errorMessage = error.error.errorMessage;
 				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError: boolean = true;
+					let firstError = true;
 
-					for (let key in error.error.errors) {
-						if (error.error.errors.hasOwnProperty(key)) {
+					for (const key in error.error.errors) {
+						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
 							error.error.errors[key].forEach((errText: string) => {
 								if (firstError) {
 									this.errorMessage = errText;
@@ -116,7 +119,7 @@ export class LoginComponent {
 						}
 					}
 				} else {
-					let unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
+					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
 					this.errorMessage = '*' + unexpectedErrorTranslation;
 				}
 				this.authState.setLoggedIn(false);

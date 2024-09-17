@@ -100,7 +100,7 @@ export const routes: Routes = [
 			{
 				path: 'Calendar',
 				component: CalendarComponent,
-				data: { title: '' }
+				data: { title: 'CALENDAR_TITLE_PAGE' }
 			}
 		]
 	},

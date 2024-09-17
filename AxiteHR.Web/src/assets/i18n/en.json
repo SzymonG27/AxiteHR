@@ -104,5 +104,19 @@
     "//Section8": "Calendar",
     "Calendar_Previous": "Previous",
     "Calendar_Next": "Next",
-    "Calendar_Today": "Today"
+    "Calendar_Today": "Today",
+    "Calendar_Months": {
+        "JANUARY": "January",
+        "FEBRUARY": "February",
+        "MARCH": "March",
+        "APRIL": "April",
+        "MAY": "May",
+        "JUNE": "June",
+        "JULY": "July",
+        "AUGUST": "August",
+        "SEPTEMBER": "September",
+        "OCTOBER": "October",
+        "NOVEMBER": "November",
+        "DECEMBER": "December"
+    }
 }

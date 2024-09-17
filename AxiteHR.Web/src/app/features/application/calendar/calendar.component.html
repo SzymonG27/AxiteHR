@@ -1,7 +1,7 @@
 <div class="calendar-container">
 	<div class="calendar-header">
 		<button (click)="prevMonth()" class="nav-button">&laquo; {{ 'Calendar_Previous' | translate }}</button>
-		<h2>{{ viewDate | date: 'MMMM yyyy' }}</h2>
+		<h2>{{ getTranslatedMonth() }} {{ viewDate | date: 'yyyy' : currentLang }}</h2>
 		<button (click)="nextMonth()" class="nav-button">{{ 'Calendar_Next' | translate }} &raquo;</button>
 		<button (click)="today()" class="today-button">{{ 'Calendar_Today' | translate }}</button>
 	</div>
@@ -10,6 +10,7 @@
 		[viewDate]="viewDate"
 		[events]="events"
 		[activeDayIsOpen]="activeDay != null"
+		[locale]="currentLang"
 		(dayClicked)="dayClicked($event)"
 		(eventClicked)="eventClicked($event)"
 		class="month-view-calendar">

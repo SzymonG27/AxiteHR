@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CalendarModule, CalendarEvent, CalendarView, CalendarMonthViewDay } from 'angular-calendar';
-import {addDays, subDays, isSameDay, isSameMonth} from 'date-fns';
+import { addDays, subDays, isSameDay, isSameMonth } from 'date-fns';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { registerLocaleData } from '@angular/common';
+import localePl from '@angular/common/locales/pl'
+import localeEn from '@angular/common/locales/en'
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-calendar',
@@ -21,6 +25,9 @@ export class CalendarComponent {
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
 	viewDate: Date = new Date();
+
+	currentLang: string = "en";
+	langChangeSubscription: Subscription;
 
 	// Zarządzanie aktywnym dniem
 	activeDay: Date | null = null;
@@ -44,6 +51,18 @@ export class CalendarComponent {
 		},
 	];
 
+	constructor(private translate: TranslateService) {
+		registerLocaleData(localePl);
+		registerLocaleData(localeEn);
+
+		this.currentLang = translate.currentLang;
+
+		this.langChangeSubscription = translate.onLangChange.subscribe((event: LangChangeEvent) => {
+			this.currentLang = event.lang;
+			this.updateCalendarLocale();
+		});
+	}
+
 	prevMonth(): void {
 		this.viewDate = subDays(this.viewDate, 30);
 		this.activeDay = null;
@@ -56,6 +75,16 @@ export class CalendarComponent {
 
 	today(): void {
 		this.viewDate = new Date();
+	}
+
+	getTranslatedMonth(): string {
+		const monthIndex = this.viewDate.getMonth();
+		const monthNames = [
+			'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+		];
+
+		// Pobierz tłumaczoną nazwę miesiąca
+		return this.translate.instant(`Calendar_Months.${monthNames[monthIndex]}`);
 	}
 
 	dayClicked({ day, sourceEvent }: { day: CalendarMonthViewDay; sourceEvent: MouseEvent | KeyboardEvent }): void {
@@ -91,6 +120,16 @@ export class CalendarComponent {
 			];
 			// Resetowanie formularza
 			this.newEvent = { title: '', start: '' };
+		}
+	}
+
+	updateCalendarLocale(): void {
+		this.viewDate = new Date();
+	}
+
+	ngOnDestroy(): void {
+		if (this.langChangeSubscription) {
+			this.langChangeSubscription.unsubscribe();
 		}
 	}
 }

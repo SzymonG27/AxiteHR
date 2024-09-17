@@ -6,11 +6,26 @@
 	margin-left: 1.25vw;
 }
 
+.month-view-calendar {
+	flex: 1 1 auto;
+	width: 150%;
+	height: 100%;
+}
+
 .calendar-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 20px;
+}
+
+::ng-deep.cal-day-cell.cal-in-month {
+	cursor: pointer;
+}
+
+::ng-deep.cal-day-cell.cal-out-month .cal-day-number {
+	opacity: 0.1;
+	cursor: pointer;
 }
 
 .calendar-header h2 {

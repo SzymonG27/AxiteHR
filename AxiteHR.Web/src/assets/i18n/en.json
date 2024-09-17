@@ -99,5 +99,10 @@
     "Pagination_Next": " Next ",
     "Pagination_Label": "Pagination",
     "Pagination_PageLabel": "Page",
-    "Pagination_CurrentPageLabel": "Current Page"
+    "Pagination_CurrentPageLabel": "Current Page",
+
+    "//Section8": "Calendar",
+    "Calendar_Previous": "Previous",
+    "Calendar_Next": "Next",
+    "Calendar_Today": "Today"
 }

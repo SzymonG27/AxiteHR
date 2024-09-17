@@ -1,13 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CalendarModule, CalendarEvent, CalendarView, CalendarMonthViewDay } from 'angular-calendar';
-import {
-	addDays,
-	subDays,
-	isSameDay,
-	isSameMonth,
-} from 'date-fns';
+import {addDays, subDays, isSameDay, isSameMonth} from 'date-fns';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-calendar',
@@ -15,18 +11,19 @@ import { FormsModule } from '@angular/forms';
 	imports: [
 		CommonModule,
 		CalendarModule,
-		FormsModule, // Dodaj FormsModule dla ngModel
+		FormsModule,
+		TranslateModule
 	],
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent {
-	// Określenie aktualnego widoku kalendarza
 	view: CalendarView = CalendarView.Month;
-
 	CalendarView = CalendarView;
-
 	viewDate: Date = new Date();
+
+	// Zarządzanie aktywnym dniem
+	activeDay: Date | null = null;
 
 	// Przykładowe wydarzenia
 	events: CalendarEvent[] = [
@@ -47,15 +44,14 @@ export class CalendarComponent {
 		},
 	];
 
-	// Zarządzanie aktywnym dniem
-	activeDay: Date | null = null;
-
 	prevMonth(): void {
 		this.viewDate = subDays(this.viewDate, 30);
+		this.activeDay = null;
 	}
 
 	nextMonth(): void {
 		this.viewDate = addDays(this.viewDate, 30);
+		this.activeDay = null;
 	}
 
 	today(): void {
@@ -73,11 +69,6 @@ export class CalendarComponent {
 				this.activeDay = date;
 			}
 			this.viewDate = date;
-
-			// Przykładowa logika: otwieranie alertu z liczbą wydarzeń
-			if (events.length > 0) {
-				alert(`Liczba wydarzeń w tym dniu: ${events.length}`);
-			}
 		}
 	}
 

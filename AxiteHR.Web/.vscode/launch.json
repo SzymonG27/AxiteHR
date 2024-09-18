@@ -1,27 +1,27 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "vscode-edge-devtools.debug",
-      "request": "launch",
-      "name": "Launch Microsoft Edge and open the Edge DevTools",
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
-    },
-  
-    {
-      "type": "msedge",
-      "request": "launch",
-      "name": "localhost (Edge)",
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "localhost (Chrome)",
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
-    }
-  ]
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "vscode-edge-devtools.debug",
+			"request": "launch",
+			"name": "Launch Microsoft Edge and open the Edge DevTools",
+			"url": "http://localhost:4200",
+			"webRoot": "${workspaceFolder}"
+		},
+
+		{
+			"type": "msedge",
+			"request": "launch",
+			"name": "localhost (Edge)",
+			"url": "http://localhost:4200",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "localhost (Chrome)",
+			"url": "http://localhost:4200",
+			"webRoot": "${workspaceFolder}"
+		}
+	]
 }

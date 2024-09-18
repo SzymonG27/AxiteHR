@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+	FormControl,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -11,30 +17,26 @@ import { firstValueFrom, take } from 'rxjs';
 @Component({
 	selector: 'app-company-creator',
 	standalone: true,
-	imports: [
-		CommonModule,
-		TranslateModule,
-		ReactiveFormsModule,
-		RouterModule,
-		FormsModule,
-	],
+	imports: [CommonModule, TranslateModule, ReactiveFormsModule, RouterModule, FormsModule],
 	templateUrl: './company-creator.component.html',
-	styleUrl: './company-creator.component.css'
+	styleUrl: './company-creator.component.css',
 })
 export class CompanyCreatorComponent {
 	companyStateName = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
-	companyName = "";
+	companyName = '';
 
-	constructor(private blockUIService: BlockUIService,
+	constructor(
+		private blockUIService: BlockUIService,
 		private companyService: CompanyService,
 		private translate: TranslateService,
-		private router: Router) {
-		this.companyCreatorForm = new FormGroup( {
+		private router: Router
+	) {
+		this.companyCreatorForm = new FormGroup({
 			CompanyName: new FormControl(this.companyName, {
-				validators: [Validators.required]
-			})
+				validators: [Validators.required],
+			}),
 		});
 	}
 
@@ -44,37 +46,50 @@ export class CompanyCreatorComponent {
 		}
 		this.blockUIService.start();
 		this.companyName = this.companyCreatorForm.get('CompanyName')?.value;
-		this.companyService.createNewCompany(this.companyName).pipe(take(1)).subscribe({
-			next: () => {
-				this.router.navigate(['/Company/List']);
-				this.blockUIService.stop();
-			},
-			error: async (error: HttpErrorResponse) => {
-				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
-					//Errors from response
-					this.errorMessage = error.error.errorMessage;
-				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError = true;
+		this.companyService
+			.createNewCompany(this.companyName)
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.router.navigate(['/Company/List']);
+					this.blockUIService.stop();
+				},
+				error: async (error: HttpErrorResponse) => {
+					if (
+						error.status === HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errorMessage
+					) {
+						//Errors from response
+						this.errorMessage = error.error.errorMessage;
+					} else if (
+						error.status == HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errors
+					) {
+						let firstError = true;
 
-					for (const key in error.error.errors) {
-						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
-							error.error.errors[key].forEach((errText: string) => {
-								if (firstError) {
-									this.errorMessage = errText;
-									firstError = false;
-								} else {
-									this.errorMessage += `\n*${errText}`;
-								}
-							});
+						for (const key in error.error.errors) {
+							if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
+								error.error.errors[key].forEach((errText: string) => {
+									if (firstError) {
+										this.errorMessage = errText;
+										firstError = false;
+									} else {
+										this.errorMessage += `\n*${errText}`;
+									}
+								});
+							}
 						}
+					} else {
+						const unexpectedErrorTranslation: string = await firstValueFrom(
+							this.translate.get('Authentication_Login_UnexpectedError')
+						);
+						this.errorMessage = '*' + unexpectedErrorTranslation;
 					}
-				} else {
-					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
-					this.errorMessage = '*' + unexpectedErrorTranslation;
-				}
-				this.blockUIService.stop();
-			}
-		});
+					this.blockUIService.stop();
+				},
+			});
 	}
 
 	toggleCompanyNameState(state: boolean) {

@@ -1,8 +1,8 @@
-import { inject } from "@angular/core"
-import { CanActivateFn, Router } from "@angular/router"
-import { AuthStateService } from "../../services/authentication/auth-state.service"
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
 
-export const IsInRoleGuard: CanActivateFn = (route) => {
+export const IsInRoleGuard: CanActivateFn = route => {
 	const authStateService = inject(AuthStateService);
 	const router = inject(Router);
 
@@ -17,4 +17,4 @@ export const IsInRoleGuard: CanActivateFn = (route) => {
 		return false;
 	}
 	return true;
-}
+};

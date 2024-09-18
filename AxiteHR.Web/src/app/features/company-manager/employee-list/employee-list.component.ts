@@ -13,14 +13,9 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 @Component({
 	selector: 'app-employee-list',
 	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		TranslateModule,
-		NgxPaginationModule
-	],
+	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
 	templateUrl: './employee-list.component.html',
-	styleUrl: './employee-list.component.css'
+	styleUrl: './employee-list.component.css',
 })
 export class EmployeeListComponent implements OnInit {
 	errorMessage: string | null = null;
@@ -40,14 +35,16 @@ export class EmployeeListComponent implements OnInit {
 		private route: ActivatedRoute,
 		private router: Router,
 		private dataService: DataBehaviourService
-	) { }
+	) {}
 
 	ngOnInit() {
 		this.blockUIService.start();
 
 		this.dataService.newEmployeeCreated.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.employeeCreatedMessage = await firstValueFrom(this.translate.get('Company_EmployeeList_EmployeeCreated'));
+				this.employeeCreatedMessage = await firstValueFrom(
+					this.translate.get('Company_EmployeeList_EmployeeCreated')
+				);
 				this.dataService.setNewEmployeeCreated(false);
 			}
 		});
@@ -61,19 +58,24 @@ export class EmployeeListComponent implements OnInit {
 
 		zip(
 			this.getEmployeeListCount(this.companyId!),
-			this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize)
-		).pipe(
-			take(1)
+			this.getEmployeeListViewPage(
+				this.companyId!,
+				this.pagination.pageNumber - 1,
+				this.pagination.pageSize
+			)
 		)
-		.subscribe({
-			next: () => {
-				this.blockUIService.stop();
-			},
-			error: async (err) => {
-				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
-				this.blockUIService.stop();
-			}
-		});
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.errorMessage =
+						err.message ||
+						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+					this.blockUIService.stop();
+				},
+			});
 	}
 
 	pageChanged(event: number) {
@@ -82,33 +84,44 @@ export class EmployeeListComponent implements OnInit {
 		this.pagination.pageNumber = event;
 
 		zip(
-			this.getEmployeeListViewPage(this.companyId!, this.pagination.pageNumber - 1, this.pagination.pageSize)
-		).pipe(
-			take(1)
+			this.getEmployeeListViewPage(
+				this.companyId!,
+				this.pagination.pageNumber - 1,
+				this.pagination.pageSize
+			)
 		)
-		.subscribe({
-			next: () => {
-				this.blockUIService.stop();
-			},
-			error: async (err) => {
-				this.errorMessage = err.message || await firstValueFrom(this.translate.get('Global_UnknownError'));
-				this.blockUIService.stop();
-			}
-		});
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.errorMessage =
+						err.message ||
+						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+					this.blockUIService.stop();
+				},
+			});
 	}
 
-	private getEmployeeListViewPage(passedCompanyId: number, currentPage: number, pageSize: number): Observable<void> {
-		return this.companyManagerListService.getEmployeeListView(passedCompanyId, currentPage, pageSize).pipe(
-			take(1),
-			switchMap(response => {
-				if (!response.isSucceed) {
-					//ToDo error handler
-					this.errorMessage = response.errorMessage;
-				}
-				this.employeeList = response.employeeList;
-				return of(void 0);
-			})
-		);
+	private getEmployeeListViewPage(
+		passedCompanyId: number,
+		currentPage: number,
+		pageSize: number
+	): Observable<void> {
+		return this.companyManagerListService
+			.getEmployeeListView(passedCompanyId, currentPage, pageSize)
+			.pipe(
+				take(1),
+				switchMap(response => {
+					if (!response.isSucceed) {
+						//ToDo error handler
+						this.errorMessage = response.errorMessage;
+					}
+					this.employeeList = response.employeeList;
+					return of(void 0);
+				})
+			);
 	}
 
 	private getEmployeeListCount(passedCompanyId: number): Observable<void> {

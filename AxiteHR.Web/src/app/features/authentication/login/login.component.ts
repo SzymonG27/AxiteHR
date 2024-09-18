@@ -17,15 +17,10 @@ import { routeAnimationState } from '../../../shared/animations/routeAnimationSt
 @Component({
 	selector: 'app-login',
 	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		FormsModule,
-		TranslateModule
-	],
+	imports: [CommonModule, RouterModule, FormsModule, TranslateModule],
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.css',
-	animations: [routeAnimationState]
+	animations: [routeAnimationState],
 })
 export class LoginComponent implements OnInit {
 	@HostBinding('@routeAnimationTrigger') routeAnimation = true;
@@ -37,7 +32,7 @@ export class LoginComponent implements OnInit {
 	errorMessage: string | null = null;
 	loginModel: LoginRequest = {
 		email: '',
-		password: ''
+		password: '',
 	};
 	returnUrl: string;
 
@@ -48,84 +43,102 @@ export class LoginComponent implements OnInit {
 		private authState: AuthStateService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
-		private route: ActivatedRoute) {
+		private route: ActivatedRoute
+	) {
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
 	}
 
 	ngOnInit(): void {
 		this.dataService.currentRegistered.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.loginMessage = await firstValueFrom(this.translate.get('Authentication_Login_RegistrationSuccessful'));
+				this.loginMessage = await firstValueFrom(
+					this.translate.get('Authentication_Login_RegistrationSuccessful')
+				);
 				this.dataService.setRegistered(false);
 			}
 		});
 		this.dataService.isTokenExpired.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
-				this.errorMessage = await firstValueFrom(this.translate.get('Authentication_Login_SessionExpired'))
+				this.errorMessage = await firstValueFrom(
+					this.translate.get('Authentication_Login_SessionExpired')
+				);
 				this.dataService.setIsTokenExpired(false);
 			}
 		});
 		this.dataService.tempPasswordError.pipe(first()).subscribe(async (value: string) => {
 			if (value.length > 0) {
 				this.errorMessage = value;
-				this.dataService.setTempPasswordError("");
+				this.dataService.setTempPasswordError('');
 			}
 		});
 		this.dataService.tempPasswordSuccess.pipe(first()).subscribe(async (value: string) => {
 			if (value.length > 0) {
 				this.loginMessage = value;
-				this.dataService.setTempPasswordSuccess("");
+				this.dataService.setTempPasswordSuccess('');
 			}
 		});
 	}
 
 	login(loginModel: LoginRequest) {
 		this.blockUIService.start();
-		this.authService.Login(loginModel).pipe(first()).subscribe({
-			next: (response: LoginResponse) => {
-				if (response.isLoggedSuccessful && response.token) {
-					localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
-					this.authState.setLoggedIn(true);
-					this.blockUIService.stop();
-					this.router.navigateByUrl(this.returnUrl);
-				} else if (response.isTempPasswordToChange && response.userId) {
-					this.authState.setLoggedIn(false);
-					this.authState.setTempPasswordUserId(response.userId);
-					this.blockUIService.stop();
-					this.router.navigate(['/ChangeTempPassword']);
-				} else if (!response.isLoggedSuccessful) {
-					this.authState.setLoggedIn(false);
-					this.errorMessage = response.errorMessage;
-				}
-				this.blockUIService.stop();
-			},
-			error: async (error: HttpErrorResponse) => {
-				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
-					//Errors from response
-					this.errorMessage = error.error.errorMessage;
-				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError = true;
-
-					for (const key in error.error.errors) {
-						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
-							error.error.errors[key].forEach((errText: string) => {
-								if (firstError) {
-									this.errorMessage = errText;
-									firstError = false;
-								} else {
-									this.errorMessage += `\n*${errText}`;
-								}
-							});
-						}
+		this.authService
+			.Login(loginModel)
+			.pipe(first())
+			.subscribe({
+				next: (response: LoginResponse) => {
+					if (response.isLoggedSuccessful && response.token) {
+						localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
+						this.authState.setLoggedIn(true);
+						this.blockUIService.stop();
+						this.router.navigateByUrl(this.returnUrl);
+					} else if (response.isTempPasswordToChange && response.userId) {
+						this.authState.setLoggedIn(false);
+						this.authState.setTempPasswordUserId(response.userId);
+						this.blockUIService.stop();
+						this.router.navigate(['/ChangeTempPassword']);
+					} else if (!response.isLoggedSuccessful) {
+						this.authState.setLoggedIn(false);
+						this.errorMessage = response.errorMessage;
 					}
-				} else {
-					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
-					this.errorMessage = '*' + unexpectedErrorTranslation;
-				}
-				this.authState.setLoggedIn(false);
-				this.blockUIService.stop();
-			}
-		});
+					this.blockUIService.stop();
+				},
+				error: async (error: HttpErrorResponse) => {
+					if (
+						error.status === HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errorMessage
+					) {
+						//Errors from response
+						this.errorMessage = error.error.errorMessage;
+					} else if (
+						error.status == HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errors
+					) {
+						let firstError = true;
+
+						for (const key in error.error.errors) {
+							if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
+								error.error.errors[key].forEach((errText: string) => {
+									if (firstError) {
+										this.errorMessage = errText;
+										firstError = false;
+									} else {
+										this.errorMessage += `\n*${errText}`;
+									}
+								});
+							}
+						}
+					} else {
+						const unexpectedErrorTranslation: string = await firstValueFrom(
+							this.translate.get('Authentication_Login_UnexpectedError')
+						);
+						this.errorMessage = '*' + unexpectedErrorTranslation;
+					}
+					this.authState.setLoggedIn(false);
+					this.blockUIService.stop();
+				},
+			});
 	}
 
 	onFocusEmail() {

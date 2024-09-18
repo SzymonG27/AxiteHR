@@ -12,10 +12,13 @@ import { TempPasswordChangeRequest } from '../../models/authentication/TempPassw
 import { TempPasswordChangeResponse } from '../../models/authentication/TempPasswordChangeResponse';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class AuthenticationService {
-	constructor(private http: HttpClient, private authState: AuthStateService) {}
+	constructor(
+		private http: HttpClient,
+		private authState: AuthStateService
+	) {}
 
 	public Register(register: RegisterRequest): Observable<HttpEvent<unknown>> {
 		return this.http.post<HttpEvent<unknown>>(
@@ -25,10 +28,7 @@ export class AuthenticationService {
 	}
 
 	public Login(login: LoginRequest): Observable<LoginResponse> {
-		return this.http.post<LoginResponse>(
-			`${Environment.authApiUrl}${ApiPaths.Login}`,
-			login
-		);
+		return this.http.post<LoginResponse>(`${Environment.authApiUrl}${ApiPaths.Login}`, login);
 	}
 
 	public LogOut() {
@@ -40,9 +40,11 @@ export class AuthenticationService {
 	}
 
 	public TempPasswordChange(tempPasswordChange: TempPasswordChangeRequest) {
-		return this.http.post<TempPasswordChangeResponse>(
-			`${Environment.authApiUrl}${ApiPaths.TempPasswordChange}`,
-			tempPasswordChange	
-		).pipe(take(1));
+		return this.http
+			.post<TempPasswordChangeResponse>(
+				`${Environment.authApiUrl}${ApiPaths.TempPasswordChange}`,
+				tempPasswordChange
+			)
+			.pipe(take(1));
 	}
 }

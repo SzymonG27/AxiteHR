@@ -4,12 +4,14 @@
 	</button>
 </div>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg flex flex-col justify-center w-11/12 mx-auto mt-10">
+<div
+	class="relative overflow-x-auto shadow-md sm:rounded-lg flex flex-col justify-center w-11/12 mx-auto mt-10"
+>
 	<table class="w-full text-sm text-left rtl:text-right text-gray-500">
 		<thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
 			<tr>
 				<th scope="col" class="px-6 py-3">
-					{{'Company_List_CompanyName' | translate}}
+					{{ 'Company_List_CompanyName' | translate }}
 				</th>
 				<th scope="col" class="px-6 py-3">
 					{{ 'Company_List_CreatedDate' | translate }}
@@ -34,8 +36,10 @@
 					{{ company.userCount }}
 				</td>
 				<td class="px-6 py-4">
-					<a [routerLink]="['/CompanyMenu', company.id, 'Dashboard']"
-						class="font-medium text-blue-600 hover:underline">
+					<a
+						[routerLink]="['/CompanyMenu', company.id, 'Dashboard']"
+						class="font-medium text-blue-600 hover:underline"
+					>
 						{{ 'Company_List_Manage' | translate }}
 					</a>
 				</td>

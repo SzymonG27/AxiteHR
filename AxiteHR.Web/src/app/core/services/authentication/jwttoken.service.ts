@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class JWTTokenService {
 	getDecodedToken(): JwtPayloadClient {

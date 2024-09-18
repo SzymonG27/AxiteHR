@@ -5,13 +5,8 @@ import { RouterOutlet } from '@angular/router';
 @Component({
 	selector: 'app-company-manager',
 	standalone: true,
-	imports: [
-		NavManagerComponent,
-		RouterOutlet
-	],
+	imports: [NavManagerComponent, RouterOutlet],
 	templateUrl: './company-manager.component.html',
-	styleUrl: './company-manager.component.css'
+	styleUrl: './company-manager.component.css',
 })
-export class CompanyManagerComponent {
-
-}
+export class CompanyManagerComponent {}

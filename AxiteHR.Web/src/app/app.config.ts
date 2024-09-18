@@ -2,7 +2,12 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+	HTTP_INTERCEPTORS,
+	HttpClient,
+	provideHttpClient,
+	withInterceptorsFromDi,
+} from '@angular/common/http';
 import { AuthenticationInterceptor } from './core/interceptors/authentication.interceptor';
 import { BlockUIModule } from 'ng-block-ui';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -27,26 +32,26 @@ export const appConfig: ApplicationConfig = {
 			BlockUIModule.forRoot(),
 			TranslateModule.forRoot({
 				loader: {
-				  provide: TranslateLoader,
-				  useFactory: HttpLoaderFactory,
-				  deps: [HttpClient]
-				}
+					provide: TranslateLoader,
+					useFactory: HttpLoaderFactory,
+					deps: [HttpClient],
+				},
 			}),
 			NgxPaginationModule,
 			CalendarModule.forRoot({
 				provide: DateAdapter,
-				useFactory: adapterFactory
+				useFactory: adapterFactory,
 			})
 		),
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthenticationInterceptor,
-			multi: true
+			multi: true,
 		},
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: LanguageInterceptor,
-			multi: true
-		}
-	]
+			multi: true,
+		},
+	],
 };

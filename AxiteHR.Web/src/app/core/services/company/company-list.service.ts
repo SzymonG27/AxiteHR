@@ -8,17 +8,19 @@ import { CompanyListItem } from '../../models/company/company-list/CompanyListIt
 import { CompanyListViewModel } from '../../models/company/company-list/CompanyListViewModel';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class CompanyListService {
-
-	constructor(private http: HttpClient, private jwtToken: JWTTokenService) { }
+	constructor(
+		private http: HttpClient,
+		private jwtToken: JWTTokenService
+	) {}
 
 	getCompanyListView(): Observable<CompanyListViewModel> {
 		const companyListViewModel: CompanyListViewModel = {
 			isSucceed: false,
-			errorMessage: "",
-			companyList: []
+			errorMessage: '',
+			companyList: [],
 		};
 		const decodedToken = this.jwtToken.getDecodedToken();
 		if (!decodedToken) {
@@ -27,19 +29,21 @@ export class CompanyListService {
 			return of(companyListViewModel);
 		}
 
-		return this.http.get<CompanyListItem[]>(
-			`${Environment.gatewayApiUrl}${ApiPaths.CompanyList}/${decodedToken.sub}`
-		).pipe(
-			map(data => {
-			  companyListViewModel.isSucceed = true;
-			  companyListViewModel.companyList = data;
-			  return companyListViewModel;
-			}),
-			catchError(error => {
-			  companyListViewModel.isSucceed = false;
-			  companyListViewModel.errorMessage = error.message;
-			  return of(companyListViewModel);
-			})
-		);
+		return this.http
+			.get<
+				CompanyListItem[]
+			>(`${Environment.gatewayApiUrl}${ApiPaths.CompanyList}/${decodedToken.sub}`)
+			.pipe(
+				map(data => {
+					companyListViewModel.isSucceed = true;
+					companyListViewModel.companyList = data;
+					return companyListViewModel;
+				}),
+				catchError(error => {
+					companyListViewModel.isSucceed = false;
+					companyListViewModel.errorMessage = error.message;
+					return of(companyListViewModel);
+				})
+			);
 	}
 }

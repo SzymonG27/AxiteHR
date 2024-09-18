@@ -1,4 +1,4 @@
-import { JwtPayload } from "jwt-decode";
+import { JwtPayload } from 'jwt-decode';
 
 export class JwtPayloadClient implements JwtPayload {
 	iss?: string;

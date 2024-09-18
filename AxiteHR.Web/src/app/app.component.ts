@@ -13,19 +13,21 @@ import { TitleService } from './core/services/title-translate.service';
 		NavBarComponent,
 		BlockUIModule,
 		//Others
-		RouterOutlet
+		RouterOutlet,
 	],
 	templateUrl: './app.component.html',
-	styleUrl: './app.component.css'
+	styleUrl: './app.component.css',
 })
 export class AppComponent {
-	constructor(private translate: TranslateService, private titleService: TitleService) {
-
+	constructor(
+		private translate: TranslateService,
+		private titleService: TitleService
+	) {
 		//Translate configure
 		this.translate.addLangs(['en', 'pl']);
 		const savedLanguage = localStorage.getItem('language') || 'en';
-    	this.translate.setDefaultLang(savedLanguage);
-    	this.translate.use(savedLanguage);
+		this.translate.setDefaultLang(savedLanguage);
+		this.translate.use(savedLanguage);
 
 		this.titleService.init();
 	}

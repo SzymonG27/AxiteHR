@@ -1,4 +1,4 @@
-import { CompanyListItem } from "./CompanyListItem";
+import { CompanyListItem } from './CompanyListItem';
 
 export interface CompanyListViewModel {
 	isSucceed: boolean;

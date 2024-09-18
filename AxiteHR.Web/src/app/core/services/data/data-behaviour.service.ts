@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DataBehaviourService {
 	private registeredSource = new BehaviorSubject<boolean>(false);
@@ -23,13 +23,13 @@ export class DataBehaviourService {
 		this.newEmployeeCreatedSource.next(value);
 	}
 
-	private tempPasswordErrorSource = new BehaviorSubject<string>("");
+	private tempPasswordErrorSource = new BehaviorSubject<string>('');
 	tempPasswordError = this.tempPasswordErrorSource.asObservable();
 	setTempPasswordError(value: string) {
 		this.tempPasswordErrorSource.next(value);
 	}
 
-	private tempPasswordSuccessSource = new BehaviorSubject<string>("");
+	private tempPasswordSuccessSource = new BehaviorSubject<string>('');
 	tempPasswordSuccess = this.tempPasswordSuccessSource.asObservable();
 	setTempPasswordSuccess(value: string) {
 		this.tempPasswordSuccessSource.next(value);

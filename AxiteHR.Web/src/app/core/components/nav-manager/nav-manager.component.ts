@@ -9,20 +9,16 @@ import { UserRole } from '../../models/authentication/UserRole';
 @Component({
 	selector: 'app-nav-manager',
 	standalone: true,
-	imports: [
-		CommonModule,
-		TranslateModule,
-		RouterModule
-	],
+	imports: [CommonModule, TranslateModule, RouterModule],
 	templateUrl: './nav-manager.component.html',
-	styleUrl: './nav-manager.component.css'
+	styleUrl: './nav-manager.component.css',
 })
 export class NavManagerComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
-	
+
 	isMenuOpen = false;
-  	isTeamsExpanded = false;
-  	isProjectsExpanded = false;
+	isTeamsExpanded = false;
+	isProjectsExpanded = false;
 	isApplicationsExpanded = false;
 
 	companyId: string | null = null;
@@ -32,14 +28,13 @@ export class NavManagerComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private route: ActivatedRoute,
-		private authState: AuthStateService) { }
+		private authState: AuthStateService
+	) {}
 
 	ngOnInit(): void {
-		this.route.paramMap
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(params => {
-				this.companyId = params.get('id');
-			});
+		this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+			this.companyId = params.get('id');
+		});
 
 		this.userRoles = this.authState.getUserRoles();
 	}

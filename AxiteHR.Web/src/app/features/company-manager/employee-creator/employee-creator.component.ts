@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+	FormControl,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { EmployeeCreatorRequest } from '../../../core/models/company-manager/employee-creator/EmployeeCreatorRequest';
@@ -14,15 +20,9 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 @Component({
 	selector: 'app-employee-creator',
 	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		TranslateModule
-	],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, TranslateModule],
 	templateUrl: './employee-creator.component.html',
-	styleUrl: './employee-creator.component.css'
+	styleUrl: './employee-creator.component.css',
 })
 export class EmployeeCreatorComponent {
 	focusEmail = false;
@@ -40,7 +40,7 @@ export class EmployeeCreatorComponent {
 		userName: '',
 		firstName: '',
 		lastName: '',
-		insUserId: ''
+		insUserId: '',
 	};
 
 	constructor(
@@ -60,17 +60,17 @@ export class EmployeeCreatorComponent {
 
 		this.employeeCreatorForm = new FormGroup({
 			email: new FormControl(this.employeeCreatorModel.email, {
-				validators: [Validators.required, Validators.email]
+				validators: [Validators.required, Validators.email],
 			}),
 			userName: new FormControl(this.employeeCreatorModel.userName, {
-				validators: [Validators.required, Validators.minLength(5)]
+				validators: [Validators.required, Validators.minLength(5)],
 			}),
 			firstName: new FormControl(this.employeeCreatorModel.firstName, {
-				validators: [Validators.required, Validators.minLength(2)]
+				validators: [Validators.required, Validators.minLength(2)],
 			}),
 			lastName: new FormControl(this.employeeCreatorModel.lastName, {
-				validators: [Validators.required, Validators.minLength(2)]
-			})
+				validators: [Validators.required, Validators.minLength(2)],
+			}),
 		});
 	}
 
@@ -78,47 +78,60 @@ export class EmployeeCreatorComponent {
 		if (!this.employeeCreatorForm.valid) {
 			return;
 		}
-		
+
 		this.blockUI.start();
 		this.employeeCreatorModel = this.employeeCreatorForm.value;
 		this.employeeCreatorModel.companyId = this.companyId!;
-		this.employeeService.createNewEmployee(this.employeeCreatorModel).pipe(first()).subscribe({
-			next: (response: EmployeeCreatorResponse) => {
-				if (response.isSucceeded) {
-					this.dataBehaviourService.setNewEmployeeCreated(true);
-					this.blockUI.stop();
-					this.router.navigate(['/CompanyMenu', this.companyId, 'EmployeeList']);
-					return;
-				}
-				this.errorMessage = response.errorMessage;
-				this.blockUI.stop();
-			},
-			error: async (error: HttpErrorResponse) => {
-				if (error.status === HttpStatusCode.BadRequest && error.error && error.error.errorMessage) {
-					//Errors from response
-					this.errorMessage = error.error.errorMessage;
-				} else if (error.status == HttpStatusCode.BadRequest && error.error && error.error.errors) {
-					let firstError = true;
-
-					for (const key in error.error.errors) {
-						if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
-							error.error.errors[key].forEach((errText: string) => {
-								if (firstError) {
-									this.errorMessage = errText;
-									firstError = false;
-								} else {
-									this.errorMessage += `\n*${errText}`;
-								}
-							});
-						}
+		this.employeeService
+			.createNewEmployee(this.employeeCreatorModel)
+			.pipe(first())
+			.subscribe({
+				next: (response: EmployeeCreatorResponse) => {
+					if (response.isSucceeded) {
+						this.dataBehaviourService.setNewEmployeeCreated(true);
+						this.blockUI.stop();
+						this.router.navigate(['/CompanyMenu', this.companyId, 'EmployeeList']);
+						return;
 					}
-				} else {
-					const unexpectedErrorTranslation: string = await firstValueFrom(this.translate.get('Authentication_Login_UnexpectedError'));
-					this.errorMessage = '*' + unexpectedErrorTranslation;
-				}
-				this.blockUI.stop();
-			}
-		});
+					this.errorMessage = response.errorMessage;
+					this.blockUI.stop();
+				},
+				error: async (error: HttpErrorResponse) => {
+					if (
+						error.status === HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errorMessage
+					) {
+						//Errors from response
+						this.errorMessage = error.error.errorMessage;
+					} else if (
+						error.status == HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errors
+					) {
+						let firstError = true;
+
+						for (const key in error.error.errors) {
+							if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
+								error.error.errors[key].forEach((errText: string) => {
+									if (firstError) {
+										this.errorMessage = errText;
+										firstError = false;
+									} else {
+										this.errorMessage += `\n*${errText}`;
+									}
+								});
+							}
+						}
+					} else {
+						const unexpectedErrorTranslation: string = await firstValueFrom(
+							this.translate.get('Authentication_Login_UnexpectedError')
+						);
+						this.errorMessage = '*' + unexpectedErrorTranslation;
+					}
+					this.blockUI.stop();
+				},
+			});
 	}
 
 	onFocusEmail() {

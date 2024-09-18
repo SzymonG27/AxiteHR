@@ -1,18 +1,20 @@
 .h-login {
-    min-height: 90vh;
+	min-height: 90vh;
 }
 
 .focus-color {
-    fill: #8697C4;
-    stroke: #8697C4;
-    transition: fill 150ms ease-in-out, stroke 150ms ease-in-out;
+	fill: #8697c4;
+	stroke: #8697c4;
+	transition:
+		fill 150ms ease-in-out,
+		stroke 150ms ease-in-out;
 }
 
 .input-focus {
-    transition: border-color 150ms ease-in-out;
+	transition: border-color 150ms ease-in-out;
 }
 
 :host {
-    display: block;
-    overflow: hidden;
+	display: block;
+	overflow: hidden;
 }

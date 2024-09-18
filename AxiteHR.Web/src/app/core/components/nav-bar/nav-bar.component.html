@@ -1,129 +1,244 @@
-<nav class="bg-gradient-to-b lg:max-h-[82px] from-[#8697C4] to-[#a3b4e2] p-4 border-b-2 border-b-[#c8d6fc]">
-    <div class="w-[95%] mx-auto flex items-center justify-between select-none">
-        <div class="flex items-center cursor-pointer" [routerLink]="['']">
-            <img src="assets/logo.webp" type="image/webp" alt="logo" class="h-12 w-12 mr-5" />
-            <span class="text-white font-medium text-lg">Axite HR</span>
-        </div>
-        <div *ngIf="isLoggedIn" class="hidden lg:flex space-x-12 lg:space-x-6 xl:space-x-12">
-            <div class="menu-item group m-0" (mouseenter)="mouseCompanySectionOvered = true" (mouseleave)="mouseCompanySectionOvered = false">
-                <div class="href-nav-option">
-                    <span class="text-and-icon">{{ 'Nav_Company' | translate }}
-                        <svg class="icon-svg ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            [ngClass]="mouseCompanySectionOvered ? 'rotate-180' : 'rotate-0'">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="submenu hidden absolute bg-white shadow-md group-hover:block rounded-md py-2 z-10">
-                    <a *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)"
-                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
-                        {{ 'Nav_Company_List' | translate }}
-                    </a>
-                    <a *ngIf="userRoles.includes(UserRole.UserFromCompany) && companyForEmployee.companyId !== 0"
-                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" 
-                        [routerLink]="['/CompanyMenu', companyForEmployee.companyId, 'Dashboard']">
-                        {{ companyForEmployee.companyName }}
-                    </a>
-                </div>
-            </div>
-            <a class="href-nav-option">Opcja 2</a>
-            <a class="href-nav-option">Opcja 3</a>
-            <a class="href-nav-option">Opcja 4</a>
-            <a class="href-nav-option">Opcja 5</a>
-        </div>
-        <div class="hidden lg:flex items-center space-x-4">
-            <ng-container *ngIf="isLoggedIn">
-                <button (click)="logOut()" class="button-nav-option">{{ 'Authentication_Signout' | translate }}</button>
-            </ng-container>
-            <ng-container *ngIf="!isLoggedIn">
-                <button *ngIf="!isLoginPage" [routerLink]="['Login']" class="button-nav-option">{{
-                    'Authentication_Login' | translate }}</button>
-                <button *ngIf="!isRegisterPage" [routerLink]="['Register']" class="button-nav-option">{{
-                    'Authentication_Register' | translate }}</button>
-            </ng-container>
-            <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-            <div class="relative pl-10" tabindex="0" (click)="closeLanguageMenuOnClickingOutside()">
-                <button class="flex items-center space-x-2 text-white" tabindex="0" (click)="toggleLanguageMenu($event)">
-                    <div class="relative w-9 h-7">
-                        <div class="absolute inset-0 flex justify-center items-center rounded-2xl bg-white transition-opacity duration-300 ease-in-out"
-                            [style.opacity]="isLanguageMenuOpen ? '0.8' : '0'"
-                            [style.pointerEvents]="isLanguageMenuOpen ? 'auto' : 'none'">
-                        </div>
-                        <img [src]="getCurrentLanguageFlag()" alt="language"
-                            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4 w-6"
-                            (mousedown)="isLanguageFlagPressed = true" (mouseup)="isLanguageFlagPressed = false"
-                            (mouseleave)="isLanguageFlagPressed = false" [class.scale-90]="isLanguageFlagPressed"
-                            [class.scale-100]="!isLanguageFlagPressed" transition-transform duration-300 ease-out>
-                    </div>
-                    <svg class="h-4 w-4" [ngClass]="isLanguageMenuOpen ? 'rotate-180' : 'rotate-0'" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                        transition-transform duration-300>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div *ngIf="isLanguageMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
-                    <div class="py-1">
-                        <ng-container *ngFor="let lang of languages">
-                            <button (click)="switchLanguage(lang.code)"
-                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <img [src]="lang.flag" alt="{{ lang.label }}" class="inline-block h-4 w-6 mr-2" />
-                                {{ lang.label }}
-                            </button>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="lg:hidden flex items-center">
-            <button class="text-white" (click)="toggleMenu()">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
-                    </path>
-                </svg>
-            </button>
-        </div>
-    </div>
-    <div [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
-        <div class="flex flex-col items-center">
-            <div class="relative group" *ngIf="isLoggedIn">
-                <a class="href-nav-option py-2 inline-flex items-center">{{ 'Nav_Company' | translate }}
-                    <svg class="ml-auto mr-auto w-4 h-4" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" class="inline-block" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </a>
-                <div class="absolute left-0 hidden bg-white shadow-md group-hover:block z-10">
-                    <a *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)"
-                        class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100" [routerLink]="['Company/List']">
-                        {{ 'Nav_Company_List' | translate }}
-                    </a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Subopcja 2</a>
-                </div>
-            </div>
-            <a class="block href-nav-option py-2">Opcja 1</a>
-            <a class="block href-nav-option py-2">Opcja 2</a>
-            <a class="block href-nav-option py-2">Opcja 3</a>
-            <a class="block href-nav-option py-2">Opcja 4</a>
-            <a class="block href-nav-option py-2">Opcja 5</a>
-            <ng-container *ngIf="isLoggedIn">
-                <button (click)="logOut()" class="w-full mt-2 button-nav-option">{{ 'Authentication_Signout' | translate
-                    }}</button>
-            </ng-container>
-            <ng-container *ngIf="!isLoggedIn">
-                <button *ngIf="!isLoginPage" class="w-full mt-2 button-nav-option" [routerLink]="['Login']">{{
-                    'Authentication_Login' | translate }}</button>
-                <button *ngIf="!isRegisterPage" class="w-full button-nav-option mt-2" [routerLink]="['Register']">{{
-                    'Authentication_Register' | translate }}</button>
-            </ng-container>
-            <div class="flex space-x-4 mt-4">
-                <ng-container *ngFor="let lang of languages">
-                    <button (click)="switchLanguage(lang.code)"
-                        class="flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <img [src]="lang.flag" alt="{{ lang.label }}" class="inline-block h-4 w-6" />
-                    </button>
-                </ng-container>
-            </div>
-        </div>
-    </div>
+<nav
+	class="bg-gradient-to-b lg:max-h-[82px] from-[#8697C4] to-[#a3b4e2] p-4 border-b-2 border-b-[#c8d6fc]"
+>
+	<div class="w-[95%] mx-auto flex items-center justify-between select-none">
+		<div class="flex items-center cursor-pointer" [routerLink]="['']">
+			<img src="assets/logo.webp" type="image/webp" alt="logo" class="h-12 w-12 mr-5" />
+			<span class="text-white font-medium text-lg">Axite HR</span>
+		</div>
+		<div *ngIf="isLoggedIn" class="hidden lg:flex space-x-12 lg:space-x-6 xl:space-x-12">
+			<div
+				class="menu-item group m-0"
+				(mouseenter)="mouseCompanySectionOvered = true"
+				(mouseleave)="mouseCompanySectionOvered = false"
+			>
+				<div class="href-nav-option">
+					<span class="text-and-icon"
+						>{{ 'Nav_Company' | translate }}
+						<svg
+							class="icon-svg ml-2 w-4 h-4"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							[ngClass]="mouseCompanySectionOvered ? 'rotate-180' : 'rotate-0'"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M19 9l-7 7-7-7"
+							></path>
+						</svg>
+					</span>
+				</div>
+				<div
+					class="submenu hidden absolute bg-white shadow-md group-hover:block rounded-md py-2 z-10"
+				>
+					<a
+						*ngIf="
+							userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)
+						"
+						class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						[routerLink]="['Company/List']"
+					>
+						{{ 'Nav_Company_List' | translate }}
+					</a>
+					<a
+						*ngIf="
+							userRoles.includes(UserRole.UserFromCompany) &&
+							companyForEmployee.companyId !== 0
+						"
+						class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						[routerLink]="['/CompanyMenu', companyForEmployee.companyId, 'Dashboard']"
+					>
+						{{ companyForEmployee.companyName }}
+					</a>
+				</div>
+			</div>
+			<a class="href-nav-option">Opcja 2</a>
+			<a class="href-nav-option">Opcja 3</a>
+			<a class="href-nav-option">Opcja 4</a>
+			<a class="href-nav-option">Opcja 5</a>
+		</div>
+		<div class="hidden lg:flex items-center space-x-4">
+			<ng-container *ngIf="isLoggedIn">
+				<button (click)="logOut()" class="button-nav-option">
+					{{ 'Authentication_Signout' | translate }}
+				</button>
+			</ng-container>
+			<ng-container *ngIf="!isLoggedIn">
+				<button *ngIf="!isLoginPage" [routerLink]="['Login']" class="button-nav-option">
+					{{ 'Authentication_Login' | translate }}
+				</button>
+				<button
+					*ngIf="!isRegisterPage"
+					[routerLink]="['Register']"
+					class="button-nav-option"
+				>
+					{{ 'Authentication_Register' | translate }}
+				</button>
+			</ng-container>
+			<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+			<div class="relative pl-10" tabindex="0" (click)="closeLanguageMenuOnClickingOutside()">
+				<button
+					class="flex items-center space-x-2 text-white"
+					tabindex="0"
+					(click)="toggleLanguageMenu($event)"
+				>
+					<div class="relative w-9 h-7">
+						<div
+							class="absolute inset-0 flex justify-center items-center rounded-2xl bg-white transition-opacity duration-300 ease-in-out"
+							[style.opacity]="isLanguageMenuOpen ? '0.8' : '0'"
+							[style.pointerEvents]="isLanguageMenuOpen ? 'auto' : 'none'"
+						></div>
+						<img
+							[src]="getCurrentLanguageFlag()"
+							alt="language"
+							class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-4 w-6"
+							(mousedown)="isLanguageFlagPressed = true"
+							(mouseup)="isLanguageFlagPressed = false"
+							(mouseleave)="isLanguageFlagPressed = false"
+							[class.scale-90]="isLanguageFlagPressed"
+							[class.scale-100]="!isLanguageFlagPressed"
+							transition-transform
+							duration-300
+							ease-out
+						/>
+					</div>
+					<svg
+						class="h-4 w-4"
+						[ngClass]="isLanguageMenuOpen ? 'rotate-180' : 'rotate-0'"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+						transition-transform
+						duration-300
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						></path>
+					</svg>
+				</button>
+				<div
+					*ngIf="isLanguageMenuOpen"
+					class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20"
+				>
+					<div class="py-1">
+						<ng-container *ngFor="let lang of languages">
+							<button
+								(click)="switchLanguage(lang.code)"
+								class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+							>
+								<img
+									[src]="lang.flag"
+									alt="{{ lang.label }}"
+									class="inline-block h-4 w-6 mr-2"
+								/>
+								{{ lang.label }}
+							</button>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="lg:hidden flex items-center">
+			<button class="text-white" (click)="toggleMenu()">
+				<svg
+					class="h-6 w-6"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 6h16M4 12h16m-7 6h7"
+					></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<div [@menuAnimation]="isMenuOpen ? 'open' : 'closed'" class="lg:hidden overflow-hidden">
+		<div class="flex flex-col items-center">
+			<div class="relative group" *ngIf="isLoggedIn">
+				<a class="href-nav-option py-2 inline-flex items-center"
+					>{{ 'Nav_Company' | translate }}
+					<svg
+						class="ml-auto mr-auto w-4 h-4"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							stroke-linecap="round"
+							class="inline-block"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						></path>
+					</svg>
+				</a>
+				<div class="absolute left-0 hidden bg-white shadow-md group-hover:block z-10">
+					<a
+						*ngIf="
+							userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.User)
+						"
+						class="block px-5 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						[routerLink]="['Company/List']"
+					>
+						{{ 'Nav_Company_List' | translate }}
+					</a>
+					<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						>Subopcja 2</a
+					>
+				</div>
+			</div>
+			<a class="block href-nav-option py-2">Opcja 1</a>
+			<a class="block href-nav-option py-2">Opcja 2</a>
+			<a class="block href-nav-option py-2">Opcja 3</a>
+			<a class="block href-nav-option py-2">Opcja 4</a>
+			<a class="block href-nav-option py-2">Opcja 5</a>
+			<ng-container *ngIf="isLoggedIn">
+				<button (click)="logOut()" class="w-full mt-2 button-nav-option">
+					{{ 'Authentication_Signout' | translate }}
+				</button>
+			</ng-container>
+			<ng-container *ngIf="!isLoggedIn">
+				<button
+					*ngIf="!isLoginPage"
+					class="w-full mt-2 button-nav-option"
+					[routerLink]="['Login']"
+				>
+					{{ 'Authentication_Login' | translate }}
+				</button>
+				<button
+					*ngIf="!isRegisterPage"
+					class="w-full button-nav-option mt-2"
+					[routerLink]="['Register']"
+				>
+					{{ 'Authentication_Register' | translate }}
+				</button>
+			</ng-container>
+			<div class="flex space-x-4 mt-4">
+				<ng-container *ngFor="let lang of languages">
+					<button
+						(click)="switchLanguage(lang.code)"
+						class="flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-100"
+					>
+						<img
+							[src]="lang.flag"
+							alt="{{ lang.label }}"
+							class="inline-block h-4 w-6"
+						/>
+					</button>
+				</ng-container>
+			</div>
+		</div>
+	</div>
 </nav>

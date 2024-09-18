@@ -4,13 +4,12 @@ import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { JWTTokenService } from './jwttoken.service';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class AuthStateService {
-
 	private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
 
-	constructor(private jwtTokenService: JWTTokenService) { }
+	constructor(private jwtTokenService: JWTTokenService) {}
 
 	private hasToken(): boolean {
 		return !!localStorage.getItem(AuthDictionary.Token);
@@ -45,7 +44,7 @@ export class AuthStateService {
 	}
 
 	hasRole(role: string) {
-		const userRoles = this.getUserRoles()
+		const userRoles = this.getUserRoles();
 		return userRoles.includes(role);
 	}
 

@@ -1,32 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { CalendarModule, CalendarEvent, CalendarView, CalendarMonthViewDay } from 'angular-calendar';
+import {
+	CalendarModule,
+	CalendarEvent,
+	CalendarView,
+	CalendarMonthViewDay,
+} from 'angular-calendar';
 import { addDays, subDays, isSameDay, isSameMonth } from 'date-fns';
 import { FormsModule } from '@angular/forms';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
-import localePl from '@angular/common/locales/pl'
-import localeEn from '@angular/common/locales/en'
+import localePl from '@angular/common/locales/pl';
+import localeEn from '@angular/common/locales/en';
 import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-calendar',
 	standalone: true,
-	imports: [
-		CommonModule,
-		CalendarModule,
-		FormsModule,
-		TranslateModule
-	],
+	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule],
 	templateUrl: './calendar.component.html',
-	styleUrls: ['./calendar.component.css']
+	styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnDestroy {
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
 	viewDate: Date = new Date();
 
-	currentLang = "en";
+	currentLang = 'en';
 	langChangeSubscription: Subscription;
 
 	// Zarządzanie aktywnym dniem
@@ -80,7 +80,18 @@ export class CalendarComponent implements OnDestroy {
 	getTranslatedMonth(): string {
 		const monthIndex = this.viewDate.getMonth();
 		const monthNames = [
-			'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+			'JANUARY',
+			'FEBRUARY',
+			'MARCH',
+			'APRIL',
+			'MAY',
+			'JUNE',
+			'JULY',
+			'AUGUST',
+			'SEPTEMBER',
+			'OCTOBER',
+			'NOVEMBER',
+			'DECEMBER',
 		];
 
 		// Pobierz tłumaczoną nazwę miesiąca

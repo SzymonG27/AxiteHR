@@ -11,41 +11,42 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 @Component({
 	selector: 'app-company-list',
 	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		TranslateModule
-	],
+	imports: [CommonModule, RouterModule, TranslateModule],
 	templateUrl: './company-list.component.html',
-	styleUrl: './company-list.component.css'
+	styleUrl: './company-list.component.css',
 })
 export class CompanyListComponent implements OnInit {
 	isLoadingTableError = false;
 	errorMessage: string | null = null;
 	companyList: CompanyListItem[] = [];
-	constructor(private companyListService: CompanyListService,
+	constructor(
+		private companyListService: CompanyListService,
 		private blockUIService: BlockUIService,
-		private translate: TranslateService) { }
+		private translate: TranslateService
+	) {}
 
 	ngOnInit() {
 		this.blockUIService.start();
-		this.companyListService.getCompanyListView().pipe(
-			take(1)
-		).subscribe({
-			next: (response: CompanyListViewModel) => {
-				if (!response.isSucceed) {
+		this.companyListService
+			.getCompanyListView()
+			.pipe(take(1))
+			.subscribe({
+				next: (response: CompanyListViewModel) => {
+					if (!response.isSucceed) {
+						this.isLoadingTableError = true;
+						this.errorMessage = response.errorMessage;
+					}
+					this.companyList = response.companyList;
+					this.blockUIService.stop();
+				},
+				error: async () => {
+					//ToDo message
 					this.isLoadingTableError = true;
-					this.errorMessage = response.errorMessage;
-				}
-				this.companyList = response.companyList;
-				this.blockUIService.stop();
-			},
-			error: async () => {
-				//ToDo message
-				this.isLoadingTableError = true;
-				this.errorMessage = await firstValueFrom(this.translate.get('Global_ErrorFetchingData'));
-				this.blockUIService.stop();
-			}
-		});
+					this.errorMessage = await firstValueFrom(
+						this.translate.get('Global_ErrorFetchingData')
+					);
+					this.blockUIService.stop();
+				},
+			});
 	}
 }

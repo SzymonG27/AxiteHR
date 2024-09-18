@@ -1,11 +1,11 @@
-import { inject } from "@angular/core";
-import { CanActivateFn, Router } from "@angular/router";
-import { CompanyService } from "../../services/company/company.service";
-import { AuthStateService } from "../../services/authentication/auth-state.service";
-import { catchError, map, of } from "rxjs";
-import { BlockUIService } from "../../services/block-ui.service";
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { CompanyService } from '../../services/company/company.service';
+import { AuthStateService } from '../../services/authentication/auth-state.service';
+import { catchError, map, of } from 'rxjs';
+import { BlockUIService } from '../../services/block-ui.service';
 
-export const IsInCompanyGuard: CanActivateFn = (route) => {
+export const IsInCompanyGuard: CanActivateFn = route => {
 	const authStateService = inject(AuthStateService);
 	const blockUIService = inject(BlockUIService);
 	const companyService = inject(CompanyService);
@@ -31,4 +31,4 @@ export const IsInCompanyGuard: CanActivateFn = (route) => {
 			return of(false);
 		})
 	);
-}
+};

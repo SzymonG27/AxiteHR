@@ -7,12 +7,12 @@ import { AuthStateService } from '../../core/services/authentication/auth-state.
 	standalone: true,
 	imports: [TranslateModule],
 	templateUrl: './home.component.html',
-	styleUrl: './home.component.css'
+	styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
 	isLoggedIn = false;
 
-	constructor(private authState: AuthStateService) { }
+	constructor(private authState: AuthStateService) {}
 
 	ngOnInit() {
 		this.authState.isLoggedIn.subscribe((status: boolean) => {

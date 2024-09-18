@@ -1,159 +1,277 @@
 <div class="flex select-none">
-    <!-- Sidebar -->
-    <div class="w-[20vw] lg:w-[15vw] h-[calc(100vh-82px)] bg-gray-50 shadow-md hidden md:block">
-        <div class="p-4 flex items-center">
-            <span class="font-bold text-xl">{{ 'Nav_Manager_Menu' | translate }}</span>
-        </div>
-        <nav>
-            <ul>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
-                    <a class="flex items-center space-x-2">
-                        <span class="material-icons">home</span>
-                        <span class="hidden md:inline">{{ 'Nav_Manager_Dashboard' | translate }}</span>
-                    </a>
-                </li>
-                <li *ngIf="!userRoles.includes(UserRole.UserFromCompany)" class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Teams')">
-                        <span class="material-icons">groups</span>
-                        <span class="hidden md:inline">{{ 'Nav_Manager_Team' | translate }}</span>
-                        <span class="ml-auto material-icons" [ngClass]="isTeamsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['EmployeeList']">
-                            <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Team 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Projects')">
-                        <span class="material-icons">folder</span>
-                        <span class="hidden md:inline">Projects</span>
-                        <span class="ml-auto material-icons" [ngClass]="isProjectsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isProjectsExpanded, 'hidden': !isProjectsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 1</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Applications')">
-                        <span class="material-icons">calendar_today</span>
-                        <span class="hidden md:inline">{{ 'Nav_Manager_Applications' | translate }}</span>
-                        <span class="ml-auto material-icons" [ngClass]="isApplicationsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isApplicationsExpanded, 'hidden': !isApplicationsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['Calendar']">
-                            <a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
-                        <span class="material-icons">description</span>
-                        <span class="hidden md:inline">Documents</span>
-                    </a>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
-                        <span class="material-icons">bar_chart</span>
-                        <span class="hidden md:inline">Reports</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+	<!-- Sidebar -->
+	<div class="w-[20vw] lg:w-[15vw] h-[calc(100vh-82px)] bg-gray-50 shadow-md hidden md:block">
+		<div class="p-4 flex items-center">
+			<span class="font-bold text-xl">{{ 'Nav_Manager_Menu' | translate }}</span>
+		</div>
+		<nav>
+			<ul>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
+					<a class="flex items-center space-x-2">
+						<span class="material-icons">home</span>
+						<span class="hidden md:inline">{{
+							'Nav_Manager_Dashboard' | translate
+						}}</span>
+					</a>
+				</li>
+				<li
+					*ngIf="!userRoles.includes(UserRole.UserFromCompany)"
+					class="p-4 hover:bg-gray-200 cursor-pointer"
+				>
+					<button
+						class="flex items-center space-x-2 w-full"
+						(click)="toggleDropdown('Teams')"
+					>
+						<span class="material-icons">groups</span>
+						<span class="hidden md:inline">{{ 'Nav_Manager_Team' | translate }}</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isTeamsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{ block: isTeamsExpanded, hidden: !isTeamsExpanded }"
+						class="pl-6"
+					>
+						<li
+							class="p-2 hover:bg-gray-300 cursor-pointer"
+							[routerLink]="['EmployeeList']"
+						>
+							<a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Team 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<button
+						class="flex items-center space-x-2 w-full"
+						(click)="toggleDropdown('Projects')"
+					>
+						<span class="material-icons">folder</span>
+						<span class="hidden md:inline">Projects</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isProjectsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{ block: isProjectsExpanded, hidden: !isProjectsExpanded }"
+						class="pl-6"
+					>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 1</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<button
+						class="flex items-center space-x-2 w-full"
+						(click)="toggleDropdown('Applications')"
+					>
+						<span class="material-icons">calendar_today</span>
+						<span class="hidden md:inline">{{
+							'Nav_Manager_Applications' | translate
+						}}</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isApplicationsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{
+							block: isApplicationsExpanded,
+							hidden: !isApplicationsExpanded,
+						}"
+						class="pl-6"
+					>
+						<li
+							class="p-2 hover:bg-gray-300 cursor-pointer"
+							[routerLink]="['Calendar']"
+						>
+							<a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<a href="#" class="flex items-center space-x-2">
+						<span class="material-icons">description</span>
+						<span class="hidden md:inline">Documents</span>
+					</a>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<a href="#" class="flex items-center space-x-2">
+						<span class="material-icons">bar_chart</span>
+						<span class="hidden md:inline">Reports</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 
-    <!-- Mobile Hamburger -->
-    <div class="fixed bottom-4 left-4 md:hidden">
-        <button (click)="toggleMenu()" class="p-2 bg-gray-200 rounded-full shadow-md max-w-10 max-h-10">
-            <span class="material-icons">menu</span>
-        </button>
-    </div>
+	<!-- Mobile Hamburger -->
+	<div class="fixed bottom-4 left-4 md:hidden">
+		<button
+			(click)="toggleMenu()"
+			class="p-2 bg-gray-200 rounded-full shadow-md max-w-10 max-h-10"
+		>
+			<span class="material-icons">menu</span>
+		</button>
+	</div>
 
-    <!-- Mobile Menu -->
-    <div [ngClass]="{'flex': isMenuOpen, 'hidden': !isMenuOpen}" class="fixed inset-0 bg-gray-50 z-50 flex-col">
-        <div class="p-4 flex items-center justify-between">
-            <span class="font-bold text-xl">{{ 'Nav_Manager_Menu' | translate }}</span>
-            <button (click)="toggleMenu()" class="p-2 bg-gray-200 rounded-full shadow-md max-w-10 max-h-10">
-                <span class="material-icons">close</span>
-            </button>
-        </div>
-        <nav class="flex-1 overflow-y-auto">
-            <ul>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
-                    <a class="flex items-center space-x-2">
-                        <span class="material-icons">home</span>
-                        <span>{{ 'Nav_Manager_Dashboard' | translate }}</span>
-                    </a>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full h-full" (click)="toggleDropdown('Teams')">
-                        <span class="material-icons">groups</span>
-                        <span>{{ 'Nav_Manager_Team' | translate }}</span>
-                        <span class="ml-auto material-icons" [ngClass]="isTeamsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isTeamsExpanded, 'hidden': !isTeamsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['EmployeeList']">
-                            <a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Team 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Projects')">
-                        <span class="material-icons">folder</span>
-                        <span>Projects</span>
-                        <span class="ml-auto material-icons" [ngClass]="isProjectsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isProjectsExpanded, 'hidden': !isProjectsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 1</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <button class="flex items-center space-x-2 w-full" (click)="toggleDropdown('Applications')">
-                        <span class="material-icons">calendar_today</span>
-                        <span>{{ 'Nav_Manager_Applications' | translate }}</span>
-                        <span class="ml-auto material-icons" [ngClass]="isApplicationsExpanded ? 'rotate-180 transition-all duration-150' : 'rotate-0 transition-all duration-150'">expand_more</span>
-                    </button>
-                    <ul [ngClass]="{'block': isApplicationsExpanded, 'hidden': !isApplicationsExpanded}" class="pl-6">
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer" [routerLink]="['Calendar']">
-                            <a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
-                        </li>
-                        <li class="p-2 hover:bg-gray-300 cursor-pointer">
-                            <a href="#">Project 2</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
-                        <span class="material-icons">description</span>
-                        <span>Documents</span>
-                    </a>
-                </li>
-                <li class="p-4 hover:bg-gray-200 cursor-pointer">
-                    <a href="#" class="flex items-center space-x-2">
-                        <span class="material-icons">bar_chart</span>
-                        <span>Reports</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+	<!-- Mobile Menu -->
+	<div
+		[ngClass]="{ flex: isMenuOpen, hidden: !isMenuOpen }"
+		class="fixed inset-0 bg-gray-50 z-50 flex-col"
+	>
+		<div class="p-4 flex items-center justify-between">
+			<span class="font-bold text-xl">{{ 'Nav_Manager_Menu' | translate }}</span>
+			<button
+				(click)="toggleMenu()"
+				class="p-2 bg-gray-200 rounded-full shadow-md max-w-10 max-h-10"
+			>
+				<span class="material-icons">close</span>
+			</button>
+		</div>
+		<nav class="flex-1 overflow-y-auto">
+			<ul>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
+					<a class="flex items-center space-x-2">
+						<span class="material-icons">home</span>
+						<span>{{ 'Nav_Manager_Dashboard' | translate }}</span>
+					</a>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<button
+						class="flex items-center space-x-2 w-full h-full"
+						(click)="toggleDropdown('Teams')"
+					>
+						<span class="material-icons">groups</span>
+						<span>{{ 'Nav_Manager_Team' | translate }}</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isTeamsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{ block: isTeamsExpanded, hidden: !isTeamsExpanded }"
+						class="pl-6"
+					>
+						<li
+							class="p-2 hover:bg-gray-300 cursor-pointer"
+							[routerLink]="['EmployeeList']"
+						>
+							<a>{{ 'Nav_Manager_Team_Employees' | translate }}</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Team 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<button
+						class="flex items-center space-x-2 w-full"
+						(click)="toggleDropdown('Projects')"
+					>
+						<span class="material-icons">folder</span>
+						<span>Projects</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isProjectsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{ block: isProjectsExpanded, hidden: !isProjectsExpanded }"
+						class="pl-6"
+					>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 1</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<button
+						class="flex items-center space-x-2 w-full"
+						(click)="toggleDropdown('Applications')"
+					>
+						<span class="material-icons">calendar_today</span>
+						<span>{{ 'Nav_Manager_Applications' | translate }}</span>
+						<span
+							class="ml-auto material-icons"
+							[ngClass]="
+								isApplicationsExpanded
+									? 'rotate-180 transition-all duration-150'
+									: 'rotate-0 transition-all duration-150'
+							"
+							>expand_more</span
+						>
+					</button>
+					<ul
+						[ngClass]="{
+							block: isApplicationsExpanded,
+							hidden: !isApplicationsExpanded,
+						}"
+						class="pl-6"
+					>
+						<li
+							class="p-2 hover:bg-gray-300 cursor-pointer"
+							[routerLink]="['Calendar']"
+						>
+							<a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
+						</li>
+						<li class="p-2 hover:bg-gray-300 cursor-pointer">
+							<a href="#">Project 2</a>
+						</li>
+					</ul>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<a href="#" class="flex items-center space-x-2">
+						<span class="material-icons">description</span>
+						<span>Documents</span>
+					</a>
+				</li>
+				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+					<a href="#" class="flex items-center space-x-2">
+						<span class="material-icons">bar_chart</span>
+						<span>Reports</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 </div>

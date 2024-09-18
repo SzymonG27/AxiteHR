@@ -14,33 +14,35 @@ import { BlockUIService } from '../../services/block-ui.service';
 @Component({
 	selector: 'app-nav-bar',
 	standalone: true,
-	imports: [
-		CommonModule,
-		RouterModule,
-		TranslateModule
-	],
+	imports: [CommonModule, RouterModule, TranslateModule],
 	templateUrl: './nav-bar.component.html',
 	styleUrl: './nav-bar.component.css',
 	animations: [
 		trigger('menuAnimation', [
-			state('closed', style({
-				maxHeight: '0px',
-				opacity: 0
-			})),
-			state('open', style({
-				maxHeight: '500px',
-				opacity: 1
-			})),
-			transition('closed <=> open', animate('300ms ease-in-out'))
-		])
-	]
+			state(
+				'closed',
+				style({
+					maxHeight: '0px',
+					opacity: 0,
+				})
+			),
+			state(
+				'open',
+				style({
+					maxHeight: '500px',
+					opacity: 1,
+				})
+			),
+			transition('closed <=> open', animate('300ms ease-in-out')),
+		]),
+	],
 })
 export class NavBarComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 
 	isMenuOpen = false;
 	isLoggedIn = false;
-	currentUrl = "";
+	currentUrl = '';
 	isLoginPage = false;
 	isRegisterPage = false;
 	mouseCompanySectionOvered = false;
@@ -49,7 +51,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
 	languages = [
 		{ code: 'en', label: 'English', flag: 'assets/flags/us.webp' },
-		{ code: 'pl', label: 'Polski', flag: 'assets/flags/pl.webp' }
+		{ code: 'pl', label: 'Polski', flag: 'assets/flags/pl.webp' },
 	];
 	currentLanguage = 'en';
 	isLanguageMenuOpen = false;
@@ -58,7 +60,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 	isEmployee = false;
 	companyForEmployee: CompanyForEmployee = {
 		companyId: 0,
-		companyName: ""
+		companyName: '',
 	};
 
 	constructor(
@@ -67,7 +69,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
 		private authState: AuthStateService,
 		private translate: TranslateService,
 		private companyService: CompanyService,
-		private blockUIService: BlockUIService) {
+		private blockUIService: BlockUIService
+	) {
 		this.currentLanguage = this.translate.currentLang || 'en';
 	}
 
@@ -86,7 +89,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 				},
 				error: () => {
 					this.blockUIService.stop();
-				}
+				},
 			});
 
 		this.router.events
@@ -94,7 +97,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 				filter(event => event instanceof NavigationEnd),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((event) => {
+			.subscribe(event => {
 				const navEndEvent = event as NavigationEnd;
 				this.currentUrl = navEndEvent.urlAfterRedirects;
 				this.checkUrl();
@@ -165,26 +168,27 @@ export class NavBarComponent implements OnInit, OnDestroy {
 	private fetchCompanyForEmployee(status: boolean) {
 		if (status && this.userRoles.includes(UserRole.UserFromCompany)) {
 			this.blockUIService.start();
-			this.companyService.getCompanyForEmployee(this.authState.getLoggedUserId())
+			this.companyService
+				.getCompanyForEmployee(this.authState.getLoggedUserId())
 				.pipe(first())
 				.subscribe({
-					next: (company) => {
+					next: company => {
 						this.companyForEmployee = company;
 					},
 					error: () => {
 						this.companyForEmployee = {
 							companyId: 0,
-							companyName: ""
+							companyName: '',
 						};
 					},
 					complete: () => {
 						this.blockUIService.stop();
-					}
+					},
 				});
 		} else {
 			this.companyForEmployee = {
 				companyId: 0,
-				companyName: ""
+				companyName: '',
 			};
 			this.blockUIService.stop();
 		}

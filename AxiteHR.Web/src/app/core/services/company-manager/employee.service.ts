@@ -9,36 +9,43 @@ import { ApiPaths } from '../../../environment/ApiPaths';
 import { Environment } from '../../../environment/Environment';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class EmployeeService {
-
-	constructor(private http: HttpClient,
+	constructor(
+		private http: HttpClient,
 		private authStateService: AuthStateService,
-		private translate: TranslateService) { }
+		private translate: TranslateService
+	) {}
 
-	createNewEmployee(newEmployeeRequest: EmployeeCreatorRequest) : Observable<EmployeeCreatorResponse> {
+	createNewEmployee(
+		newEmployeeRequest: EmployeeCreatorRequest
+	): Observable<EmployeeCreatorResponse> {
 		newEmployeeRequest.insUserId = this.authStateService.getLoggedUserId();
 		if (newEmployeeRequest.insUserId.length === 0) {
 			const responseError: EmployeeCreatorResponse = {
 				isSucceeded: false,
 				errorMessage: null,
-				employeeId: ""
+				employeeId: '',
 			};
 
 			responseError.isSucceeded = false;
-			this.translate.get('Global_UserNotLogged').pipe(
-				first(),
-				map((translation: string) => translation)
-			)
-			.subscribe(message => responseError.errorMessage = message);
+			this.translate
+				.get('Global_UserNotLogged')
+				.pipe(
+					first(),
+					map((translation: string) => translation)
+				)
+				.subscribe(message => (responseError.errorMessage = message));
 
 			return of(responseError);
 		}
 
-		return this.http.post<EmployeeCreatorResponse>(
-			`${Environment.gatewayApiUrl}${ApiPaths.EmployeeCreator}`,
-			newEmployeeRequest
-		).pipe(take(1));
+		return this.http
+			.post<EmployeeCreatorResponse>(
+				`${Environment.gatewayApiUrl}${ApiPaths.EmployeeCreator}`,
+				newEmployeeRequest
+			)
+			.pipe(take(1));
 	}
 }

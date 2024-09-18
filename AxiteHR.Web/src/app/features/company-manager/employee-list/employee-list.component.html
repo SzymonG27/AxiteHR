@@ -1,10 +1,9 @@
 <div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex justify-start">
 	<div class="w-11/12 mx-auto">
-
 		<div *ngIf="errorMessage" class="w-full text-red-500 mt-3">
 			{{ this.errorMessage }}
 		</div>
-	
+
 		<div *ngIf="employeeCreatedMessage" class="w-full text-green-600 mt-3">
 			{{ this.employeeCreatedMessage }}
 		</div>
@@ -34,8 +33,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let employee of employeeList | paginate: { id: 'employee-list-pagination', itemsPerPage: pagination.pageSize, currentPage: pagination.pageNumber, totalItems: pagination.totalItems }"
-						class="odd:bg-white even:bg-[#f2f4f9]">
+					<tr
+						*ngFor="
+							let employee of employeeList
+								| paginate
+									: {
+											id: 'employee-list-pagination',
+											itemsPerPage: pagination.pageSize,
+											currentPage: pagination.pageNumber,
+											totalItems: pagination.totalItems,
+									  }
+						"
+						class="odd:bg-white even:bg-[#f2f4f9]"
+					>
 						<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
 							{{ employee.firstName }}
 						</td>
@@ -50,7 +60,10 @@
 						</td>
 					</tr>
 					<tr *ngIf="employeeList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
-						<td colspan="4" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+						<td
+							colspan="4"
+							class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+						>
 							{{ 'Company_EmployeeList_Empty' | translate }}
 						</td>
 					</tr>
@@ -58,11 +71,16 @@
 			</table>
 		</div>
 
-		<pagination-controls class="mt-5 block" id="employee-list-pagination" (pageChange)="pageChanged($event)"
-			previousLabel="{{ 'Pagination_Previous' | translate }}" nextLabel="{{ 'Pagination_Next' | translate }}"
+		<pagination-controls
+			class="mt-5 block"
+			id="employee-list-pagination"
+			(pageChange)="pageChanged($event)"
+			previousLabel="{{ 'Pagination_Previous' | translate }}"
+			nextLabel="{{ 'Pagination_Next' | translate }}"
 			screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
 			screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
-			screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}">
+			screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}"
+		>
 		</pagination-controls>
 	</div>
 </div>

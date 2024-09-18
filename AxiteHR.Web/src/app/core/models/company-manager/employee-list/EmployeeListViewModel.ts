@@ -1,4 +1,4 @@
-import { EmployeeListItem } from "./EmployeeListItem";
+import { EmployeeListItem } from './EmployeeListItem';
 
 export interface EmployeeListViewModel {
 	isSucceed: boolean;

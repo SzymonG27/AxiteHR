@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CompanyCreatorRequest } from '../../../core/models/company/company-creator/CompanyCreatorRequest';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
@@ -17,7 +16,7 @@ import { firstValueFrom, take } from 'rxjs';
 		TranslateModule,
 		ReactiveFormsModule,
 		RouterModule,
-		FormsModule
+		FormsModule,
 	],
 	templateUrl: './company-creator.component.html',
 	styleUrl: './company-creator.component.css'
@@ -26,17 +25,14 @@ export class CompanyCreatorComponent {
 	companyStateName = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
-	companyCreatorModel: CompanyCreatorRequest = {
-		creatorId: "",
-		companyName: ""
-	};
+	companyName = "";
 
 	constructor(private blockUIService: BlockUIService,
 		private companyService: CompanyService,
 		private translate: TranslateService,
 		private router: Router) {
 		this.companyCreatorForm = new FormGroup( {
-			CompanyName: new FormControl(this.companyCreatorModel.companyName, {
+			CompanyName: new FormControl(this.companyName, {
 				validators: [Validators.required]
 			})
 		});
@@ -47,8 +43,8 @@ export class CompanyCreatorComponent {
 			return;
 		}
 		this.blockUIService.start();
-		this.companyCreatorModel = this.companyCreatorForm.value;
-		this.companyService.createNewCompany(this.companyCreatorModel).pipe(take(1)).subscribe({
+		this.companyName = this.companyCreatorForm.get('CompanyName')?.value;
+		this.companyService.createNewCompany(this.companyName).pipe(take(1)).subscribe({
 			next: () => {
 				this.router.navigate(['/Company/List']);
 				this.blockUIService.stop();

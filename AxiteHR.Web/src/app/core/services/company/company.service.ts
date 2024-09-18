@@ -18,8 +18,12 @@ export class CompanyService {
 		private authStateService: AuthStateService,
 		private translate: TranslateService) { }
 
-	public createNewCompany(newCompany: CompanyCreatorRequest) : Observable<CompanyCreatorResponse> {
-		newCompany.creatorId = this.authStateService.getLoggedUserId();
+	public createNewCompany(companyName: string) : Observable<CompanyCreatorResponse> {
+		const newCompany: CompanyCreatorRequest =
+		{
+			companyName: companyName,
+			creatorId: this.authStateService.getLoggedUserId()
+		}
 		if (newCompany.creatorId.length === 0) {
 			const responseError: CompanyCreatorResponse = {
 				isSucceeded: false,

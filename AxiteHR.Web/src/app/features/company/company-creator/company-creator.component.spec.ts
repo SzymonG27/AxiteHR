@@ -25,19 +25,17 @@ describe('CompanyCreatorComponent', () => {
     const blockUIServiceSpy = jasmine.createSpyObj('BlockUIService', ['start', 'stop']);
     translateServiceSpy = jasmine.createSpyObj('TranslateService', ['get', 'stream', 'instant']);
 
-    // Mock metody
     translateServiceSpy.get.and.returnValue(of(''));
     translateServiceSpy.instant.and.returnValue('');
     translateServiceSpy.stream.and.returnValue(of(''));
 
-    // Definiuj właściwości tylko do odczytu
     Object.defineProperty(translateServiceSpy, 'onLangChange', { value: of() });
     Object.defineProperty(translateServiceSpy, 'onTranslationChange', { value: of() });
     Object.defineProperty(translateServiceSpy, 'onDefaultLangChange', { value: of() });
 
     await TestBed.configureTestingModule({
       imports: [
-        CompanyCreatorComponent, // Importuj komponent standalone
+        CompanyCreatorComponent,
         FormsModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
@@ -46,9 +44,8 @@ describe('CompanyCreatorComponent', () => {
       providers: [
           provideRouter([
             { path: 'Company/List', component: MockComponent },
-            // Include other routes if necessary
           ]),
-        provideLocationMocks(), // Dostarcz mocki lokalizacji
+        provideLocationMocks(),
         { provide: CompanyService, useValue: companyServiceSpy },
         { provide: BlockUIService, useValue: blockUIServiceSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
@@ -168,4 +165,3 @@ describe('CompanyCreatorComponent', () => {
     expect(component.companyStateName).toBeFalse();
   });
 });
-

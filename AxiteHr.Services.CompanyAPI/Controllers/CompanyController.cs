@@ -2,7 +2,9 @@
 using AxiteHr.Services.CompanyAPI.Models.Auth;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
+using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +27,11 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IEnumerable<CompanyUserViewDto>> CompanyUserList(int companyId, Guid excludedUserId, [FromQuery] Pagination paginationInfo)
 		{
-			if (!Request.Headers.TryGetValue("Authorization", out var token))
+			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
+			if (string.IsNullOrEmpty(bearerToken))
 			{
 				return [];
 			}
-			var bearerToken = token.ToString().Replace("Bearer ", "");
 
 			return await companyService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken);
 		}

@@ -119,10 +119,11 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 			_disposed = true;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "<Pending>")]
 		public override void Dispose()
 		{
 			DisposeConnection(true);
-			base.Dispose();
+			base.Dispose(); //base.Dispose() has SuppressFinalize inside
 		}
 
 		#region Private Methods
@@ -139,6 +140,5 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 				rabbitMqMessageSenderConfig.Port == 0;
 		}
 		#endregion
-
 	}
 }

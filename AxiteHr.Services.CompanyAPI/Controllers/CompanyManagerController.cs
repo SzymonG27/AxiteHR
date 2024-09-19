@@ -5,6 +5,8 @@ using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Employee;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Helpers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,20 +35,19 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 
 		[HttpPost("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public async Task<IActionResult> CreateNewEmployee([FromBody] NewEmployeeRequestDto newEmployeeRequestDto)
+		public async Task<IActionResult> CreateNewEmployee(
+			[FromBody] NewEmployeeRequestDto newEmployeeRequestDto,
+			[FromHeader(Name = HeaderNamesHelper.AcceptLanguage)] string acceptLanguage = "en")
 		{
-			var isLanguageHeaderExists = Request.Headers.TryGetValue("Accept-Language", out var acceptLanguage);
-			if (!isLanguageHeaderExists)
-			{
-				acceptLanguage = "en";
-			}
-			if (!Request.Headers.TryGetValue("Authorization", out var token))
+			acceptLanguage ??= "en";
+
+			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
+			if (string.IsNullOrEmpty(bearerToken))
 			{
 				return Unauthorized(sharedLocalizer[SharedResourcesKeys.Global_MissingToken]);
 			}
-			var bearerToken = token.ToString().Replace("Bearer ", "");
 
-			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken, acceptLanguage.ToString());
+			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken, acceptLanguage);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

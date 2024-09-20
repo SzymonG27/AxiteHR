@@ -18,3 +18,52 @@ div.block-ui-wrapper .loader {
 div.block-ui-spinner .message {
 	color: #fff; /* Loading text color */
 }
+
+.button {
+	padding-left: 1rem /* 16px */;
+	padding-right: 1rem /* 16px */;
+	padding-top: 0.5rem /* 8px */;
+	padding-bottom: 0.5rem /* 8px */;
+	border-radius: 0.25rem /* 4px */;
+
+	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke,
+		opacity, box-shadow, transform, filter, backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+
+	flex-shrink: 0;
+}
+
+.button-border {
+	--tw-border-opacity: 1;
+	border-color: rgb(134 151 196 / var(--tw-border-opacity));
+	border-width: 1px;
+
+	--tw-text-opacity: 1;
+	color: rgb(134 151 196 / var(--tw-text-opacity));
+}
+
+.button-border:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgb(134 151 196 / var(--tw-bg-opacity));
+
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.button-full {
+	--tw-bg-opacity: 1;
+	background-color: rgb(134 151 196 / var(--tw-border-opacity));
+
+	--tw-border-opacity: 1;
+	border-color: rgb(152, 166, 205 / var(--tw-border-opacity));
+	border-width: 1px;
+
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.button-full:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgb(101, 122, 179);
+}

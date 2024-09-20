@@ -14,16 +14,16 @@ export class ModalComponent {
 	@Input() title = 'Modal Title';
 	@Input() closeButtonTitle = 'Close';
 	@Input() submitButtonTitle = 'Submit';
-	@Output() close = new EventEmitter<void>();
-	@Output() submit = new EventEmitter<void>();
+	@Output() closeModalEmitter = new EventEmitter<void>();
+	@Output() submitModalEmitter = new EventEmitter<void>();
 
 	closeModal() {
 		this.isOpen = false;
-		this.close.emit();
+		this.closeModalEmitter.emit();
 	}
 
 	submitForm() {
 		this.isOpen = false;
-		this.submit.emit();
+		this.submitModalEmitter.emit();
 	}
 }

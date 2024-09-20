@@ -7,7 +7,9 @@
 		<button type="button" (click)="nextMonth()" class="button button-border">
 			{{ 'Calendar_Next' | translate }} &raquo;
 		</button>
-		<button type="button" (click)="today()" class="ml-4 button button-full">{{ 'Calendar_Today' | translate }}</button>
+		<button type="button" (click)="today()" class="ml-4 button button-full">
+			{{ 'Calendar_Today' | translate }}
+		</button>
 	</div>
 
 	<mwl-calendar-month-view

@@ -176,8 +176,8 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - ./elk-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - es_data:/usr/share/elasticsearch/data/
+      - ./elk-config/elasticsearch.yml:/var/lib/share/elasticsearch/config/elasticsearch.yml
+      - es_data:/var/lib/share/elasticsearch/data/
     networks:
       - axitehr-network
 
@@ -190,9 +190,9 @@ services:
     ports:
       - "5044:5044"
     volumes:
-      - ./elk-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-      - ./elk-config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ls_data:/usr/share/logstash/data
+      - ./elk-config/logstash.conf:/var/lib/share/logstash/pipeline/logstash.conf
+      - ./elk-config/logstash.yml:/var/lib/share/logstash/config/logstash.yml
+      - ls_data:/var/lib/share/logstash/data
     depends_on:
       - elasticsearch
     networks:
@@ -205,8 +205,8 @@ services:
     ports:
       - "5601:5601"
     volumes:
-      - ./elk-config/kibana.yml:/usr/share/kibana/config/kibana.yml
-      - kb_data:/usr/share/kibana/data
+      - ./elk-config/kibana.yml:/var/lib/share/kibana/config/kibana.yml
+      - kb_data:/var/lib/share/kibana/data
     depends_on:
       - logstash
     networks:

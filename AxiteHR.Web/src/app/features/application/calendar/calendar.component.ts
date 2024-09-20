@@ -29,10 +29,8 @@ export class CalendarComponent implements OnDestroy {
 	currentLang = 'en';
 	langChangeSubscription: Subscription;
 
-	// Zarządzanie aktywnym dniem
 	activeDay: Date | null = null;
 
-	// Przykładowe wydarzenia
 	events: CalendarEvent[] = [
 		{
 			start: subDays(new Date(), 1),
@@ -94,7 +92,6 @@ export class CalendarComponent implements OnDestroy {
 			'DECEMBER',
 		];
 
-		// Pobierz tłumaczoną nazwę miesiąca
 		return this.translate.instant(`Calendar_Months.${monthNames[monthIndex]}`);
 	}
 

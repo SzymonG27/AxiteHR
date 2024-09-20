@@ -233,9 +233,11 @@ services:
       - '9092:9092'
       - '9093:9093'
     volumes:
-      - ./kafka-data:/bitnami/kafka
+      - kafka_data:/bitnami/kafka/data
+      - kafka_logs:/bitnami/kafka/logs
     networks:
       - axitehr-network
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -258,6 +260,8 @@ volumes:
   ls_data:
   kb_data:
   rabbitmq_data:
+  kafka_data:
+  kafka_logs:
 
 networks:
   axitehr-network:

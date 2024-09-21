@@ -23,4 +23,9 @@
 	></mwl-calendar-month-view>
 </div>
 
-<app-modal [isOpen]="true" [isForm]="true"></app-modal>
+<app-modal
+	[isOpen]="isModalApplicationOpen"
+	[isForm]="true"
+	(closeModalEmitter)="closeApplicationModal()"
+	(submitModalEmitter)="submitApplicationModal()"
+></app-modal>

@@ -17,13 +17,12 @@
 							<a
 								[routerLink]="['/Register']"
 								class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
-								>{{ 'Authentication_RegisterHere' | translate }}</a
 							>
+								{{ 'Authentication_RegisterHere' | translate }}
+							</a>
 						</p>
 					</div>
-					<div class="mb-4 text-red-600" *ngIf="errorMessage">
-						{{ errorMessage }}
-					</div>
+					<div class="mb-4 text-red-600" *ngIf="errorMessage">{{ errorMessage }}</div>
 					<div>
 						<div class="text-sm block mb-2">
 							{{ 'Authentication_Email' | translate }}

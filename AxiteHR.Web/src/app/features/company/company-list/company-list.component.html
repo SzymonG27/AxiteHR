@@ -10,18 +10,12 @@
 	<table class="w-full text-sm text-left rtl:text-right text-gray-500">
 		<thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
 			<tr>
-				<th scope="col" class="px-6 py-3">
-					{{ 'Company_List_CompanyName' | translate }}
-				</th>
-				<th scope="col" class="px-6 py-3">
-					{{ 'Company_List_CreatedDate' | translate }}
-				</th>
+				<th scope="col" class="px-6 py-3">{{ 'Company_List_CompanyName' | translate }}</th>
+				<th scope="col" class="px-6 py-3">{{ 'Company_List_CreatedDate' | translate }}</th>
 				<th scope="col" class="px-6 py-3">
 					{{ 'Company_List_EmployeeCount' | translate }}
 				</th>
-				<th scope="col" class="px-6 py-3">
-					{{ 'Company_List_Action' | translate }}
-				</th>
+				<th scope="col" class="px-6 py-3">{{ 'Company_List_Action' | translate }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,12 +23,8 @@
 				<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
 					{{ company.companyName }}
 				</th>
-				<td class="px-6 py-4">
-					{{ company.insDate }}
-				</td>
-				<td class="px-6 py-4">
-					{{ company.userCount }}
-				</td>
+				<td class="px-6 py-4">{{ company.insDate }}</td>
+				<td class="px-6 py-4">{{ company.userCount }}</td>
 				<td class="px-6 py-4">
 					<a
 						[routerLink]="['/CompanyMenu', company.id, 'Dashboard']"

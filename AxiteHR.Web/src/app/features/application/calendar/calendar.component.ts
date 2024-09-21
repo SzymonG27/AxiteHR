@@ -13,15 +13,18 @@ import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import localeEn from '@angular/common/locales/en';
 import { Subscription } from 'rxjs';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
 	selector: 'app-calendar',
 	standalone: true,
-	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule],
+	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule, ModalComponent],
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnDestroy {
+	isModalApplicationOpen = false;
+
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
 	viewDate: Date = new Date();
@@ -132,6 +135,15 @@ export class CalendarComponent implements OnDestroy {
 
 	updateCalendarLocale(): void {
 		this.viewDate = new Date();
+	}
+
+	closeApplicationModal(): void {
+		this.isModalApplicationOpen = false;
+	}
+
+	submitApplicationModal(): void {
+		//Application action
+		this.isModalApplicationOpen = false;
 	}
 
 	ngOnDestroy(): void {

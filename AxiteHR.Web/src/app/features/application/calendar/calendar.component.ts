@@ -13,11 +13,12 @@ import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import localeEn from '@angular/common/locales/en';
 import { Subscription } from 'rxjs';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
 	selector: 'app-calendar',
 	standalone: true,
-	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule],
+	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule, ModalComponent],
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css'],
 })

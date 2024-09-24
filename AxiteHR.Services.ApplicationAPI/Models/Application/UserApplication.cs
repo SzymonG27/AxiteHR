@@ -8,11 +8,15 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application
 		[Key]
 		public virtual int Id { get; set; }
 
-		public virtual Guid UserId { get; set; }
+		public virtual int CompanyUserId { get; set; }
 
 		public virtual ApplicationType ApplicationType { get; set; }
 
 		public virtual ApplicationStatus ApplicationStatus { get; set; }
+
+		public virtual DateTime DateFrom { get; set; }
+
+		public virtual DateTime DateTo { get; set; }
 
 		public virtual Guid InsUserId { get; set; }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AxiteHR.Services.ApplicationAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240922100255_InitialApplicationDbSchema")]
-    partial class InitialApplicationDbSchema
+    [Migration("20240922202214_UserIdToCompanyUserId")]
+    partial class UserIdToCompanyUserId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,15 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<int>("ApplicationType")
                         .HasColumnType("int");
 
+                    b.Property<int>("CompanyUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("InsDate")
                         .HasColumnType("datetime2");
 
@@ -51,14 +60,11 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<Guid>("UpdUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CompanyUserId");
 
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId"), false);
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyUserId"), false);
 
                     b.ToTable("UserApplications");
                 });
@@ -98,10 +104,13 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int>("ApplicationType")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("InaccessibilityDaysOff")
+                    b.Property<int>("CompanyUserId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("DaysOff")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("InsDate")
@@ -110,38 +119,17 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<Guid>("InsUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsInaccessibilityDaysUnlimited")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVacationDaysUnlimited")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("VacationDaysOff")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyUserId");
 
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyId"), false);
-
-                    b.HasIndex("UserId");
-
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId"), false);
-
-                    b.HasIndex("UserId", "CompanyId")
-                        .IsUnique();
-
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId", "CompanyId"), false);
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyUserId"), false);
 
                     b.ToTable("UserCompanyDaysOffs");
                 });

@@ -8,6 +8,11 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Resources\ApplicationResources.pl.resx" />
+		<EmbeddedResource Include="Resources\ApplicationResources.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\AuthResources.pl.resx">
 		  <Generator></Generator>
 		</EmbeddedResource>
@@ -41,6 +46,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Resources\ApplicationResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ApplicationResources.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\AuthResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

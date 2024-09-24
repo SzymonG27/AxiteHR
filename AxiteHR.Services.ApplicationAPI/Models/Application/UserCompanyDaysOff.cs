@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.ApplicationAPI.Models.Application
 {
@@ -7,17 +8,11 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application
 		[Key]
 		public virtual int Id { get; set; }
 
-		public virtual Guid UserId { get; set; }
+		public virtual int CompanyUserId { get; set; }
 
-		public virtual int CompanyId { get; set; }
+		public virtual ApplicationType ApplicationType { get; set; }
 
-		public virtual bool IsVacationDaysUnlimited { get; set; }
-
-		public virtual decimal? VacationDaysOff { get; set; }
-
-		public virtual bool IsInaccessibilityDaysUnlimited { get; set; }
-
-		public virtual decimal? InaccessibilityDaysOff { get; set; }
+		public virtual decimal? DaysOff { get; set; }
 
 		public virtual Guid InsUserId { get; set; }
 

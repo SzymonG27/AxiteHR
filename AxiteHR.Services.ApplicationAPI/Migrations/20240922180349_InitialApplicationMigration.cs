@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AxiteHR.Services.ApplicationAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialApplicationDbSchema : Migration
+    public partial class InitialApplicationMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,6 +20,8 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationType = table.Column<int>(type: "int", nullable: false),
                     ApplicationStatus = table.Column<int>(type: "int", nullable: false),
+                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InsUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     InsDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -38,10 +40,8 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    IsVacationDaysUnlimited = table.Column<bool>(type: "bit", nullable: false),
-                    VacationDaysOff = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    IsInaccessibilityDaysUnlimited = table.Column<bool>(type: "bit", nullable: false),
-                    InaccessibilityDaysOff = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    ApplicationType = table.Column<int>(type: "int", nullable: false),
+                    DaysOff = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     InsUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     InsDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),

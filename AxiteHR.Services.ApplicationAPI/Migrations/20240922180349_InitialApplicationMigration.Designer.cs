@@ -4,6 +4,7 @@ using AxiteHR.Services.ApplicationAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AxiteHR.Services.ApplicationAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922180349_InitialApplicationMigration")]
+    partial class InitialApplicationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,9 +39,6 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<int>("ApplicationType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateFrom")
                         .HasColumnType("datetime2");
 
@@ -57,11 +57,14 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<Guid>("UpdUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyUserId");
+                    b.HasIndex("UserId");
 
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyUserId"), false);
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId"), false);
 
                     b.ToTable("UserApplications");
                 });
@@ -104,7 +107,7 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<int>("ApplicationType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyUserId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("DaysOff")
@@ -122,11 +125,23 @@ namespace AxiteHR.Services.ApplicationAPI.Migrations
                     b.Property<Guid>("UpdUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyUserId");
+                    b.HasIndex("CompanyId");
 
-                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyUserId"), false);
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("CompanyId"), false);
+
+                    b.HasIndex("UserId");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId"), false);
+
+                    b.HasIndex("UserId", "CompanyId")
+                        .IsUnique();
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId", "CompanyId"), false);
 
                     b.ToTable("UserCompanyDaysOffs");
                 });

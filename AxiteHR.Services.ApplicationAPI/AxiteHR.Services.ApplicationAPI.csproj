@@ -30,7 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Application\Dto\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
   </ItemGroup>
 
 </Project>

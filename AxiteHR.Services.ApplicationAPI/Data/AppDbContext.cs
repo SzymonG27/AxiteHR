@@ -16,20 +16,11 @@ namespace AxiteHR.Services.ApplicationAPI.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<UserCompanyDaysOff>()
-				.HasIndex(uc => new { uc.UserId, uc.CompanyId })
-				.IsUnique()
-				.IsClustered(false);
-
-			modelBuilder.Entity<UserCompanyDaysOff>()
-				.HasIndex(uc => new { uc.UserId })
-				.IsClustered(false);
-
-			modelBuilder.Entity<UserCompanyDaysOff>()
-				.HasIndex(uc => new { uc.CompanyId })
+				.HasIndex(uc => uc.CompanyUserId)
 				.IsClustered(false);
 
 			modelBuilder.Entity<UserApplication>()
-				.HasIndex(ua => ua.UserId)
+				.HasIndex(ua => ua.CompanyUserId)
 				.IsClustered(false);
 
 			modelBuilder.Entity<UserApplicationSupervisorAccepted>()

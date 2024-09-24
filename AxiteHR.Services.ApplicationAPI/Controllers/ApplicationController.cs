@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
+using AxiteHR.Services.ApplicationAPI.Services.Application;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AxiteHR.Services.ApplicationAPI.Controllers
 {
-	public class ApplicationController : Controller
+	[Route("api/[controller]")]
+	[ApiController]
+	public class ApplicationController(IApplicationService applicationService) : ControllerBase
 	{
-		public IActionResult Index()
+		[HttpPost("[action]")]
+		public async Task<IActionResult> CreateNewApplication([FromBody] CreateApplicationRequestDto createApplicationRequestDto)
 		{
-			return View();
+			var response = await applicationService.CreateNewUserApplicationAsync(createApplicationRequestDto);
+			if (!response.IsSucceeded)
+			{
+				return BadRequest(response);
+			}
+			return Ok();
 		}
 	}
 }

@@ -16,8 +16,8 @@ namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
 
 		public Guid UpdUserId => CreatorId;
 
-		public DateTime InsDate => DateTime.UtcNow;
+		public static DateTime InsDate => DateTime.UtcNow;
 
-		public DateTime UpdDate => DateTime.UtcNow;
+		public static DateTime UpdDate => DateTime.UtcNow;
 	}
 }

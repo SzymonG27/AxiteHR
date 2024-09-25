@@ -9,17 +9,23 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application.Dto
 	public class CreateApplicationRequestDto
 	{
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
-		[Display]
+		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_CompanyUserId)]
 		public int CompanyUserId { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_ApplicationType)]
 		public ApplicationType ApplicationType { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[Display(ResourceType = typeof(SharedResources), Name = SharedResourcesKeys.Global_PeriodFrom)]
 		public DateTime PeriodFrom { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
-		[PeriodToGreaterThanPeriodFrom(nameof(PeriodFrom))]
+		[PeriodToGreaterThanPeriodFrom(nameof(PeriodFrom), ErrorMessageResourceType = typeof(ApplicationResources), ErrorMessageResourceName = ApplicationResourcesKeys.CreateApplication_PeriodToGreaterThanPeriodFrom)]
+		[Display(ResourceType = typeof(SharedResources), Name = SharedResourcesKeys.Global_PeriodTo)]
 		public DateTime PeriodTo { get; set; }
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		public Guid InsUserId { get; set; }
 	}
 }

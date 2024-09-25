@@ -2,7 +2,9 @@
 using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -13,6 +15,7 @@ public class CompanyCreatorServiceTests
 {
 	private AppDbContext _dbContext;
 	private Mock<IMapper> _mapperMock;
+	private Mock<IStringLocalizer<CompanyResources>> _localizerMock;
 	private Mock<ILogger<CompanyCreatorService>> _loggerMock;
 	private CompanyCreatorService _companyCreatorService;
 
@@ -29,11 +32,13 @@ public class CompanyCreatorServiceTests
 		_dbContext.Database.EnsureCreated();
 
 		_mapperMock = new Mock<IMapper>();
+		_localizerMock = new Mock<IStringLocalizer<CompanyResources>>();
 		_loggerMock = new Mock<ILogger<CompanyCreatorService>>();
 
 		_companyCreatorService = new CompanyCreatorService(
 			_dbContext,
 			_mapperMock.Object,
+			_localizerMock.Object,
 			_loggerMock.Object);
 	}
 
@@ -92,6 +97,9 @@ public class CompanyCreatorServiceTests
 		_mapperMock.Setup(m => m.Map<AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
 			.Throws(new Exception("Test Exception"));
 
+		_localizerMock.Setup(localizer => localizer[It.IsAny<string>()])
+				.Returns(new LocalizedString("Error", "Internal error."));
+
 		// Act
 		var result = await _companyCreatorService.NewCompanyCreateAsync(request);
 
@@ -99,7 +107,7 @@ public class CompanyCreatorServiceTests
 		Assert.Multiple(async () =>
 		{
 			Assert.That(result.IsSucceeded, Is.False);
-			Assert.That(result.ErrorMessage, Is.EqualTo("Test Exception"));
+			Assert.That(result.ErrorMessage, Is.EqualTo("Internal error."));
 
 			Assert.That(await _dbContext.Companies.CountAsync(), Is.EqualTo(0));
 			Assert.That(await _dbContext.CompanyUsers.CountAsync(), Is.EqualTo(0));

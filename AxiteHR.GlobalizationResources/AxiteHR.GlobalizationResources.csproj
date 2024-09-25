@@ -10,7 +10,7 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\ApplicationResources.pl.resx" />
 		<EmbeddedResource Include="Resources\ApplicationResources.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\AuthResources.pl.resx">

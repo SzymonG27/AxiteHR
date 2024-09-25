@@ -22,7 +22,7 @@ namespace AxiteHR.GlobalizationResources.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ApplicationResources {
+    public class ApplicationResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace AxiteHR.GlobalizationResources.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AxiteHR.GlobalizationResources.Resources.ApplicationResources", typeof(ApplicationResources).Assembly);
@@ -51,12 +51,48 @@ namespace AxiteHR.GlobalizationResources.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application type.
+        /// </summary>
+        public static string CreateApplication_ApplicationType {
+            get {
+                return ResourceManager.GetString("CreateApplication_ApplicationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company user identifier.
+        /// </summary>
+        public static string CreateApplication_CompanyUserId {
+            get {
+                return ResourceManager.GetString("CreateApplication_CompanyUserId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured while trying to create a new application. Please try again later..
+        /// </summary>
+        public static string CreateApplication_InternalError {
+            get {
+                return ResourceManager.GetString("CreateApplication_InternalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period to must be greater than Period from..
+        /// </summary>
+        public static string CreateApplication_PeriodToGreaterThanPeriodFrom {
+            get {
+                return ResourceManager.GetString("CreateApplication_PeriodToGreaterThanPeriodFrom", resourceCulture);
             }
         }
     }

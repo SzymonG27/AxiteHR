@@ -144,4 +144,10 @@
   <data name="HelloWorld" xml:space="preserve">
     <value>Cześć świecie!</value>
   </data>
+  <data name="Global_PeriodFrom" xml:space="preserve">
+    <value>Okres od</value>
+  </data>
+  <data name="Global_PeriodTo" xml:space="preserve">
+    <value>Okres do</value>
+  </data>
 </root>

@@ -3,5 +3,11 @@ namespace AxiteHR.GlobalizationResources
 {
     public static class ApplicationResourcesKeys
     {
+        public const string CreateApplication_PeriodToGreaterThanPeriodFrom = "CreateApplication_PeriodToGreaterThanPeriodFrom";
+        public const string CreateApplication_ApplicationType = "CreateApplication_ApplicationType";
+        public const string CreateApplication_CompanyUserId = "CreateApplication_CompanyUserId";
+        public const string CreateApplication_InternalError = "CreateApplication_InternalError";
+        public const string CreateApplication_NotEnoughDaysOffError = "CreateApplication_NotEnoughDaysOffError";
+        public const string CreateApplication_ApplicationIntersectsError = "CreateApplication_ApplicationIntersectsError";
     }
 }

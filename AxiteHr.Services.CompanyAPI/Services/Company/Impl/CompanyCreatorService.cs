@@ -4,12 +4,16 @@ using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 {
 	public class CompanyCreatorService(AppDbContext dbContext,
 		IMapper mapper,
+		IStringLocalizer<CompanyResources> companyLocalizer,
 		ILogger<CompanyCreatorService> logger) : ICompanyCreatorService
 	{
 		public async Task<NewCompanyReponseDto> NewCompanyCreateAsync(NewCompanyRequestDto newCompanyRequest)
@@ -32,12 +36,12 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			}
 			catch (Exception ex)
 			{
-				logger.LogError(ex, "Error while creating new company");
+				logger.LogError(ex, "Error while creating new company, params: {Params}", newCompanyRequest);
 
 				await transaction.RollbackAsync();
 
 				response.IsSucceeded = false;
-				response.ErrorMessage = ex.Message;
+				response.ErrorMessage = companyLocalizer[CompanyResourcesKeys.NewCompanyCreate_InternalError];
 			}
 
 			return response;

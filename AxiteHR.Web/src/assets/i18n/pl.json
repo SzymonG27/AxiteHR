@@ -13,6 +13,7 @@
 	"EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
 	"CALENDAR_TITLE_PAGE": "Kalendarz",
+	"NEW_APPLICATION_TITLE_PAGE": "Nowy wniosek",
 	"defaultTitle": "Moja Aplikacja",
 
 	"//Section2": "Global messages",
@@ -93,6 +94,7 @@
 	"Nav_Manager_Team_Employees": "Pracownicy",
 	"Nav_Manager_Applications": "Wnioski",
 	"Nav_Manager_Applications_Calendar": "Kalendarz",
+	"Nav_Manager_Applications_NewApplication": "Nowa aplikacja",
 
 	"//Section7": "Pagination",
 	"Pagination_Previous": " Poprzednia ",

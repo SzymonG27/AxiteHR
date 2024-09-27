@@ -13,6 +13,7 @@
 	"EMPLOYEE_CREATE_TITLE_PAGE": "Employee creator",
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
 	"CALENDAR_TITLE_PAGE": "Calendar",
+	"NEW_APPLICATION_TITLE_PAGE": "New application",
 	"defaultTitle": "My Application",
 
 	"//Section2": "Global messages",
@@ -93,6 +94,7 @@
 	"Nav_Manager_Team_Employees": "Employees",
 	"Nav_Manager_Applications": "Applications",
 	"Nav_Manager_Applications_Calendar": "Calendar",
+	"Nav_Manager_Applications_NewApplication": "New application",
 
 	"//Section7": "Pagination",
 	"Pagination_Previous": " Previous ",

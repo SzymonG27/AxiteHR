@@ -72,7 +72,7 @@ public class CompanyCreatorServiceTests
 		var result = await _companyCreatorService.NewCompanyCreateAsync(request);
 
 		// Assert
-		Assert.Multiple(async () =>
+		await Assert.MultipleAsync(async () =>
 		{
 			Assert.That(result.IsSucceeded, Is.True);
 			Assert.That(result.ErrorMessage, Is.Empty);
@@ -104,7 +104,7 @@ public class CompanyCreatorServiceTests
 		var result = await _companyCreatorService.NewCompanyCreateAsync(request);
 
 		// Assert
-		Assert.Multiple(async () =>
+		await Assert.MultipleAsync(async () =>
 		{
 			Assert.That(result.IsSucceeded, Is.False);
 			Assert.That(result.ErrorMessage, Is.EqualTo("Internal error."));

@@ -1,6 +1,4 @@
-﻿using AxiteHR.GlobalizationResources.Resources;
-using Microsoft.Extensions.Localization;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.ApplicationAPI.Attributes;
 

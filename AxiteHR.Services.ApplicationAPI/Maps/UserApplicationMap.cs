@@ -14,6 +14,7 @@ namespace AxiteHR.Services.ApplicationAPI.Maps
 				ApplicationStatus = Models.Application.Enums.ApplicationStatus.New,
 				DateFrom = dto.PeriodFrom,
 				DateTo = dto.PeriodTo,
+				Reason = dto.Reason,
 				InsUserId = dto.InsUserId,
 				InsDate = DateTime.UtcNow,
 				UpdUserId = dto.InsUserId,

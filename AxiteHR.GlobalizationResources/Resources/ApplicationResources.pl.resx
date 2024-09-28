@@ -135,4 +135,7 @@
   <data name="CreateApplication_ApplicationIntersectsError" xml:space="preserve">
     <value>Wybrany okres wniosku pokrywa się z innym wnioskiem.</value>
   </data>
+  <data name="CreateApplication_ApplicationReason" xml:space="preserve">
+    <value>Powód wniosku</value>
+  </data>
 </root>

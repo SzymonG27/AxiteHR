@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.Auth
+﻿namespace AxiteHr.Integration.GlobalClass.Auth
 {
 	public static class Roles
 	{

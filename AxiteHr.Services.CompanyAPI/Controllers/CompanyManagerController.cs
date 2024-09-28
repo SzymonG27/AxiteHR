@@ -1,5 +1,5 @@
-﻿using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
-using AxiteHr.Services.CompanyAPI.Models.Auth;
+﻿using AxiteHr.Integration.GlobalClass.Auth;
+using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Employee;

@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.GlobalClass\AxiteHR.Integration.GlobalClass.csproj" />
   </ItemGroup>
 
 </Project>

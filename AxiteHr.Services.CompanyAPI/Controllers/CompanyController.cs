@@ -1,5 +1,5 @@
-﻿using AxiteHr.Services.CompanyAPI.Infrastructure;
-using AxiteHr.Services.CompanyAPI.Models.Auth;
+﻿using AxiteHr.Integration.GlobalClass.Auth;
+using AxiteHr.Services.CompanyAPI.Infrastructure;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Helpers;

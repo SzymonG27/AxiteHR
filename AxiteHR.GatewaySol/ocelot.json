@@ -105,6 +105,22 @@
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}
+		},
+		//ApplicationAPI: 7002
+		{
+			"DownstreamPathTemplate": "/api/Application/CreateNewApplication",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.applicationapi",
+					"Port": 7002
+				}
+			],
+			"UpstreamPathTemplate": "/api/Application/CreateNewApplication",
+			"UpstreamHttpMethod": [ "Post" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
 		}
 	],
 	"GlobalConfiguration": {

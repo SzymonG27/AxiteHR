@@ -73,6 +73,16 @@ h2 {
 	background-color: #218838;
 }
 
+.add-event-button-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.textbutton-line-hover:hover {
+	text-decoration: underline;
+}
+
 @media (min-width: 1024px) {
 	.calendar-container {
 		width: 82.5vw !important;

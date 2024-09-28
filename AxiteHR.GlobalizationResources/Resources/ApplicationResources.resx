@@ -135,4 +135,7 @@
   <data name="CreateApplication_ApplicationIntersectsError" xml:space="preserve">
     <value>The selected application period intersects with another application.</value>
   </data>
+  <data name="CreateApplication_ApplicationReason" xml:space="preserve">
+    <value>Reason of the application</value>
+  </data>
 </root>

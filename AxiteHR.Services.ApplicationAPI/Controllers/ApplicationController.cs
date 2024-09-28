@@ -1,5 +1,8 @@
-﻿using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
+﻿using AxiteHr.Integration.GlobalClass.Auth;
+using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AxiteHR.Services.ApplicationAPI.Controllers
@@ -25,6 +28,7 @@ namespace AxiteHR.Services.ApplicationAPI.Controllers
 		/// This method interacts with the <c>applicationService</c> to process the creation logic and responds with the appropriate HTTP status code based on the result of the operation.
 		/// </remarks>
 		[HttpPost("[action]")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
 		public async Task<IActionResult> CreateNewApplication([FromBody] CreateApplicationRequestDto createApplicationRequestDto)
 		{
 			var response = await applicationService.CreateNewUserApplicationAsync(createApplicationRequestDto);

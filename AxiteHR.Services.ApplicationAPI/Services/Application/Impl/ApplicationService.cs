@@ -1,6 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.ApplicationAPI.Data;
+using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Maps;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
@@ -45,7 +46,11 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 
 				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto);
 				await dbContext.UserApplications.AddAsync(createdUserApplication);
-				userDaysOff.DaysOff -= workingDaysEquivalent;
+
+				if (!createApplicationRequestDto.ApplicationType.IsTypeThatDontCountDaysOff())
+				{
+					userDaysOff.DaysOff -= workingDaysEquivalent;
+				}
 
 				await dbContext.SaveChangesAsync();
 				await transaction.CommitAsync();

@@ -20,6 +20,9 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application
 		/// The method operates within a database transaction to ensure that either all changes (creating the application and updating 
 		/// the user's days off) are committed or none in case of a failure. The transaction is rolled back in case of any exceptions.
 		/// </remarks>
-		Task<CreateApplicationResponseDto> CreateNewUserApplicationAsync(CreateApplicationRequestDto createApplicationRequestDto);
+		Task<CreateApplicationResponseDto> CreateNewUserApplicationAsync(
+			CreateApplicationRequestDto createApplicationRequestDto,
+			string bearerToken,
+			string acceptLanguage);
 	}
 }

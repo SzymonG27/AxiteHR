@@ -1,15 +1,22 @@
 ﻿using AxiteHr.Integration.GlobalClass.Auth;
+using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace AxiteHR.Services.ApplicationAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ApplicationController(IApplicationService applicationService) : ControllerBase
+	public class ApplicationController(
+		IApplicationService applicationService,
+		IStringLocalizer<SharedResources> sharedLocalizer) : ControllerBase
 	{
 		/// <summary>
 		/// Handles the HTTP POST request to create a new user application.
@@ -29,9 +36,17 @@ namespace AxiteHR.Services.ApplicationAPI.Controllers
 		/// </remarks>
 		[HttpPost("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
-		public async Task<IActionResult> CreateNewApplication([FromBody] CreateApplicationRequestDto createApplicationRequestDto)
+		public async Task<IActionResult> CreateNewApplication(
+			[FromBody] CreateApplicationRequestDto createApplicationRequestDto,
+			[FromHeader(Name = HeaderNamesHelper.AcceptLanguage)] string acceptLanguage = "en")
 		{
-			var response = await applicationService.CreateNewUserApplicationAsync(createApplicationRequestDto);
+			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
+			if (string.IsNullOrEmpty(bearerToken))
+			{
+				return Unauthorized(sharedLocalizer[SharedResourcesKeys.Global_MissingToken]);
+			}
+
+			var response = await applicationService.CreateNewUserApplicationAsync(createApplicationRequestDto, bearerToken, acceptLanguage);
 			if (!response.IsSucceeded)
 			{
 				return BadRequest(response);

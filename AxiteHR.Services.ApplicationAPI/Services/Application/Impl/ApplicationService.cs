@@ -1,6 +1,8 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
+using AxiteHR.Services.ApplicationAPI.Extensions;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Maps;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
@@ -14,15 +16,49 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 {
 	public class ApplicationService(
 		AppDbContext dbContext,
+		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<ApplicationResources> applicationLocalizer) : IApplicationService
 	{
 		private const double WorkHoursPerDay = 8.0; //TODO Can be configured for user
 
-		public async Task<CreateApplicationResponseDto> CreateNewUserApplicationAsync(CreateApplicationRequestDto createApplicationRequestDto)
+		public async Task<CreateApplicationResponseDto> CreateNewUserApplicationAsync(
+			CreateApplicationRequestDto createApplicationRequestDto,
+			string bearerToken,
+			string acceptLanguage)
 		{
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
+				var insUserId = JwtDecode.GetUserIdFromToken(bearerToken);
+				if (insUserId is null)
+				{
+					var param = new
+					{
+						request = createApplicationRequestDto,
+						bearerToken
+					};
+					Log.Error("Error while creating new user application. Token was null or userId was null.", param);
+					return new CreateApplicationResponseDto
+					{
+						IsSucceeded = false,
+						ErrorMessage = applicationLocalizer[ApplicationResources.CreateApplication_InternalError]
+					};
+				}
+
+				var isUserCanManageApplication = await IsUserCanManageApplicationForCompanyUser(
+					bearerToken,
+					acceptLanguage,
+					createApplicationRequestDto.CompanyUserId,
+					insUserId.Value);
+				if (!isUserCanManageApplication)
+				{
+					return new CreateApplicationResponseDto
+					{
+						IsSucceeded = false,
+						ErrorMessage = applicationLocalizer[ApplicationResourcesKeys.CreateApplication_UserDontHavePermissionToCreateApplication]
+					};
+				}
+
 				var applicationTypeThatIntestects = await GetApplicationTypeThatIntersectsWithPeriodAsync(createApplicationRequestDto);
 				if (applicationTypeThatIntestects.Count > 0
 					&& IsApplicationTypeIntersectWithAnother(createApplicationRequestDto.ApplicationType, applicationTypeThatIntestects))
@@ -44,7 +80,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto);
+				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto, insUserId.Value);
 				await dbContext.UserApplications.AddAsync(createdUserApplication);
 
 				if (!createApplicationRequestDto.ApplicationType.IsTypeThatDontCountDaysOff())
@@ -74,6 +110,19 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 		}
 
 		#region Private Methods
+		private async Task<bool> IsUserCanManageApplicationForCompanyUser(string token, string acceptLanguage, int companyUserId, Guid insUserId)
+		{
+			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
+
+			var response = await client.GetAsync("CompanyIsUserCanManageApplications" + companyUserId + "&" + insUserId);
+			response.EnsureSuccessStatusCode();
+
+			var content = await response.Content.ReadAsStringAsync();
+			return bool.Parse(content);
+		}
+
 		private async Task<List<ApplicationType>> GetApplicationTypeThatIntersectsWithPeriodAsync(CreateApplicationRequestDto dto)
 		{
 			return await dbContext.UserApplications

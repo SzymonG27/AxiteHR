@@ -5,7 +5,7 @@ namespace AxiteHR.Services.ApplicationAPI.Maps
 {
 	public static class UserApplicationMap
 	{
-		public static UserApplication Map(CreateApplicationRequestDto dto)
+		public static UserApplication Map(CreateApplicationRequestDto dto, Guid insUserId)
 		{
 			return new UserApplication
 			{
@@ -15,9 +15,9 @@ namespace AxiteHR.Services.ApplicationAPI.Maps
 				DateFrom = dto.PeriodFrom,
 				DateTo = dto.PeriodTo,
 				Reason = dto.Reason,
-				InsUserId = dto.InsUserId,
+				InsUserId = insUserId,
 				InsDate = DateTime.UtcNow,
-				UpdUserId = dto.InsUserId,
+				UpdUserId = insUserId,
 				UpdDate = DateTime.UtcNow
 			};
 		}

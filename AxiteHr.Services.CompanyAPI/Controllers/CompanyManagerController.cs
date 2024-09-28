@@ -39,8 +39,6 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 			[FromBody] NewEmployeeRequestDto newEmployeeRequestDto,
 			[FromHeader(Name = HeaderNamesHelper.AcceptLanguage)] string acceptLanguage = "en")
 		{
-			acceptLanguage ??= "en";
-
 			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
 			if (string.IsNullOrEmpty(bearerToken))
 			{

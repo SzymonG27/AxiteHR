@@ -1,6 +1,10 @@
-﻿using AxiteHR.Services.ApplicationAPI.Helpers;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.ApplicationAPI.Helpers;
+using AxiteHR.Services.ApplicationAPI.Services.Application;
+using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Globalization;
@@ -93,6 +97,11 @@ namespace AxiteHR.Services.ApplicationAPI.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
+			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+			builder.Services.AddSingleton<IStringLocalizer<ApplicationResources>, StringLocalizer<ApplicationResources>>();
 			return builder;
 		}
 	}

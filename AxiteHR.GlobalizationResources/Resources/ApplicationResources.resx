@@ -138,4 +138,7 @@
   <data name="CreateApplication_ApplicationReason" xml:space="preserve">
     <value>Reason of the application</value>
   </data>
+  <data name="CreateApplication_UserDontHavePermissionToCreateApplication" xml:space="preserve">
+    <value>User don't have permission to create application.</value>
+  </data>
 </root>

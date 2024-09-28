@@ -138,4 +138,7 @@
   <data name="CreateApplication_ApplicationReason" xml:space="preserve">
     <value>Powód wniosku</value>
   </data>
+  <data name="CreateApplication_UserDontHavePermissionToCreateApplication" xml:space="preserve">
+    <value>Użytkownik nie ma uprawnień do stworzenia wniosku.</value>
+  </data>
 </root>

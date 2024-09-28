@@ -10,5 +10,6 @@ namespace AxiteHR.GlobalizationResources
         public const string CreateApplication_NotEnoughDaysOffError = "CreateApplication_NotEnoughDaysOffError";
         public const string CreateApplication_ApplicationIntersectsError = "CreateApplication_ApplicationIntersectsError";
         public const string CreateApplication_ApplicationReason = "CreateApplication_ApplicationReason";
+        public const string CreateApplication_UserDontHavePermissionToCreateApplication = "CreateApplication_UserDontHavePermissionToCreateApplication";
     }
 }

@@ -18,6 +18,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	)
 );
 
+builder.Services.AddHttpClient(
+	HttpClientNameHelper.Company,
+	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration[ConfigurationHelper.CompanyApiUrl]!)
+);
+
 builder.Services.AddControllers()
 	.AddDataAnnotationsLocalization()
 	.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);

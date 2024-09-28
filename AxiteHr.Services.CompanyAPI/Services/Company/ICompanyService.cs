@@ -55,5 +55,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 		/// </list>
 		/// </returns>
 		Task<bool> IsUserInCompanyAsync(Guid userId, int companyId);
+
+		Task<bool> IsUserCanManageApplicationsAsync(int companyUserId, Guid insUserId);
 	}
 }

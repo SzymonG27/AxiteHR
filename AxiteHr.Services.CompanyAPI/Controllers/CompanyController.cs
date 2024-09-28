@@ -56,5 +56,12 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 		{
 			return await companyService.IsUserInCompanyAsync(userId, companyId);
 		}
+
+		[HttpGet("[action]/{companyUserId}/{insUserId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<bool> IsUserCanManageApplications(int companyUserId, Guid insUserId)
+		{
+			return await companyService.IsUserCanManageApplications(companyUserId, insUserId);
+		}
 	}
 }

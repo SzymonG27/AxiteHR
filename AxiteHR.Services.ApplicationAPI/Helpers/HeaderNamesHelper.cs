@@ -1,4 +1,4 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Helpers
+﻿namespace AxiteHR.Services.ApplicationAPI.Helpers
 {
 	public record HeaderNamesHelper
 	{

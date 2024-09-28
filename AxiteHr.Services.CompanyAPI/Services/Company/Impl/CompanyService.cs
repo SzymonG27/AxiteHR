@@ -48,6 +48,12 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			return await companyRepository.IsUserInCompanyAsync(userId, companyId);
 		}
 
+		public Task<bool> IsUserCanManageApplicationsAsync(int companyUserId, Guid insUserId)
+		{
+			//TODO
+			return Task.FromResult(true);
+		}
+
 		#region Private Methods
 		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<CompanyUserUserRelation> companyUserRelations, string bearerToken)
 		{

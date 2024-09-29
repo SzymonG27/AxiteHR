@@ -1,4 +1,5 @@
 ﻿using AxiteHr.Services.CompanyAPI.Infrastructure;
+using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
@@ -21,5 +22,11 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 		Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId);
 
 		Task<bool> IsUserInCompanyAsync(Guid userId, int companyId);
+
+		Task<CompanyUser?> GetCompanyUserAsync(int companyUserId);
+
+		Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyUserId);
+
+		Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyId, Guid insUserId);
 	}
 }

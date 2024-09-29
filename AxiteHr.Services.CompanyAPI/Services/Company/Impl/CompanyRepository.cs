@@ -1,5 +1,6 @@
 ﻿using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Infrastructure;
+using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
@@ -71,6 +72,44 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			return await dbContext.CompanyUsers
 				.AsNoTracking()
 				.AnyAsync(cu => cu.UserId == userId && cu.CompanyId == companyId);
+		}
+
+		public async Task<CompanyUser?> GetCompanyUserAsync(int companyUserId)
+		{
+			return await dbContext.CompanyUsers
+				.AsNoTracking()
+				.SingleOrDefaultAsync(x => x.Id == companyUserId);
+		}
+
+		public async Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyUserId)
+		{
+			return await dbContext.CompanyUserRoles
+				.AsNoTracking()
+				.Join(dbContext.CompanyRoles,
+					cur => cur.CompanyRoleId,
+					cr => cr.Id,
+					(cur, cr) => new { cur, cr.IsMain })
+				.Where(x => x.cur.CompanyUserId == companyUserId && x.IsMain)
+				.Select(x => x.cur)
+				.SingleOrDefaultAsync();
+		}
+
+		public async Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyId, Guid insUserId)
+		{
+			return await dbContext.CompanyUserRoles
+				.AsNoTracking()
+				.Join(dbContext.CompanyRoles,
+					cur => cur.CompanyRoleId,
+					cr => cr.Id,
+					(cur, cr) => new { cur, cr.IsMain })
+				.Where(x => x.IsMain)
+				.Join(dbContext.CompanyUsers,
+					x => x.cur.CompanyUserId,
+					cu => cu.Id,
+					(x, cu) => new { x.cur, cu })
+				.Where(x => x.cu.CompanyId == companyId && x.cu.UserId == insUserId)
+				.Select(x => x.cur)
+				.SingleOrDefaultAsync();
 		}
 	}
 }

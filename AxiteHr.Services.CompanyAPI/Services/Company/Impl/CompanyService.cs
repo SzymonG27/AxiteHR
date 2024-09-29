@@ -48,10 +48,40 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 			return await companyRepository.IsUserInCompanyAsync(userId, companyId);
 		}
 
-		public Task<bool> IsUserCanManageApplicationsAsync(int companyUserId, Guid insUserId)
+		public async Task<bool> IsUserCanManageApplicationsAsync(int companyUserId, Guid insUserId)
 		{
-			//TODO
-			return Task.FromResult(true);
+			var companyUser = await companyRepository.GetCompanyUserAsync(companyUserId);
+			if (companyUser == null)
+			{
+				return false;
+			}
+
+			//CompanyUser created application is the same as ins user, return true
+			if (companyUser.UserId == insUserId)
+			{
+				return true;
+			}
+
+			//Else validate supervisor
+			var insUserRole = await companyRepository.GetCompanyUserMainRoleAsync(companyUser.CompanyId, insUserId);
+			if (insUserRole == null)
+			{
+				return false;
+			}
+
+			if (!insUserRole.IsSupervisor)
+			{
+				return false;
+			}
+
+			var companyUserRole = await companyRepository.GetCompanyUserMainRoleAsync(companyUserId);
+			if (companyUserRole == null)
+			{
+				return false;
+			}
+
+			//InsUser is supervisor and main roles are the same, return true, else false
+			return companyUserRole.CompanyRoleId == insUserRole.CompanyRoleId;
 		}
 
 		#region Private Methods

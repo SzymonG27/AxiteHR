@@ -17,7 +17,8 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 	public class ApplicationService(
 		AppDbContext dbContext,
 		IHttpClientFactory httpClientFactory,
-		IStringLocalizer<ApplicationResources> applicationLocalizer) : IApplicationService
+		IStringLocalizer<ApplicationResources> applicationLocalizer,
+		IJwtDecode jwtDecode) : IApplicationService
 	{
 		private const double WorkHoursPerDay = 8.0; //TODO Can be configured for user
 
@@ -29,7 +30,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				var insUserId = JwtDecode.GetUserIdFromToken(bearerToken);
+				var insUserId = jwtDecode.GetUserIdFromToken(bearerToken);
 				if (insUserId is null)
 				{
 					var param = new
@@ -116,7 +117,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
 
-			var response = await client.GetAsync("CompanyIsUserCanManageApplications" + companyUserId + "&" + insUserId);
+			var response = await client.GetAsync(ApiLinkHelper.CompanyIsUserCanManageApplications + companyUserId + "&" + insUserId);
 			response.EnsureSuccessStatusCode();
 
 			var content = await response.Content.ReadAsStringAsync();

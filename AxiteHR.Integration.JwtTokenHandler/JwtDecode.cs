@@ -2,9 +2,9 @@
 
 namespace AxiteHR.Integration.JwtTokenHandler
 {
-	public static class JwtDecode
+	public class JwtDecode : IJwtDecode
 	{
-		public static Guid? GetUserIdFromToken(string token)
+		public Guid? GetUserIdFromToken(string token)
 		{
 			var jwtSecurityToken = GetJwtSecurityToken(token);
 			if (jwtSecurityToken == null)

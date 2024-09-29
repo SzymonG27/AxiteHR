@@ -1,4 +1,5 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
@@ -102,6 +103,8 @@ namespace AxiteHR.Services.ApplicationAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<ApplicationResources>, StringLocalizer<ApplicationResources>>();
+
+			builder.Services.AddSingleton<IJwtDecode, JwtDecode>();
 			return builder;
 		}
 	}

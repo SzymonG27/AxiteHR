@@ -20,15 +20,16 @@ namespace AxiteHR.Services.ApplicationAPI.Controllers
 	{
 		/// <summary>
 		/// Handles the HTTP POST request to create a new user application.
-		/// The method validates the request data, checks for overlapping application periods, 
+		/// The method validates the request data, checks for overlapping application periods,
 		/// and ensures the user has enough available days off before creating the application.
 		/// </summary>
 		/// <param name="createApplicationRequestDto">The DTO containing the details of the application request, including period, type, and user information.</param>
+		/// <param name="acceptLanguage">Accept language from header as two-letter code</param>
 		/// <returns>
 		/// Returns an <see cref="IActionResult"/>:
 		/// <list type="bullet">
-		/// <item><description><see cref="BadRequest(object)"/> if the application creation fails, returning the error details in the response.</description></item>
-		/// <item><description><see cref="Ok()"/> if the application is created successfully.</description></item>
+		/// <item><description><see cref="BadRequestObjectResult"/> if the application creation fails, returning the error details in the response.</description></item>
+		/// <item><description><see cref="OkObjectResult"/> if the application is created successfully.</description></item>
 		/// </list>
 		/// </returns>
 		/// <remarks>
@@ -51,6 +52,7 @@ namespace AxiteHR.Services.ApplicationAPI.Controllers
 			{
 				return BadRequest(response);
 			}
+
 			return Ok();
 		}
 	}

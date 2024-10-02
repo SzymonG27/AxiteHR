@@ -6,7 +6,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth
 	public interface IAuthService
 	{
 		/// <summary>
-		/// This method is used to login user (app and company)
+		/// This method is used to log in user (app and company)
 		/// </summary>
 		/// <param name="loginRequest"></param>
 		/// <returns>LoginResponseDto</returns>

@@ -68,7 +68,7 @@ public class AuthServiceTests
 			QueueName = "testQueue"
 		};
 
-		// Setup the Value property of the options mock
+		// Set up the Value property of the options mock
 		_rabbitMqOptionsMock.Setup(o => o.Value).Returns(rabbitMqConfig);
 
 		// Setup IServiceProvider to return the MessagePublisher mock
@@ -81,7 +81,7 @@ public class AuthServiceTests
 			.Setup(factory => factory.GetSender<RabbitMqMessageSenderConfig>())
 			.Returns(_rabbitMqMessageSenderMock.Object);
 
-		// Setup the sender to return a completed task
+		// Set up the sender to return a completed task
 		_rabbitMqMessageSenderMock
 			.Setup(sender => sender.PublishMessageAsync(It.IsAny<MessageSenderModel<RabbitMqMessageSenderConfig, UserMessageBusDto>>()))
 			.Returns(Task.CompletedTask);

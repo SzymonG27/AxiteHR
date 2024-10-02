@@ -1,4 +1,4 @@
-﻿using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
+﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 
 namespace AxiteHr.Services.CompanyAPI.Services.Company

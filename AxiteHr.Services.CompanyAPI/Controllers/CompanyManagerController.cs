@@ -1,11 +1,11 @@
 ﻿using AxiteHr.Integration.GlobalClass.Auth;
-using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHr.Services.CompanyAPI.Services.Company;
 using AxiteHr.Services.CompanyAPI.Services.Employee;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

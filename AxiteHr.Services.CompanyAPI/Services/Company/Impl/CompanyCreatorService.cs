@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Data;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 

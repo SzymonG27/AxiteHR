@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 
 namespace AxiteHr.Services.CompanyAPI
 {

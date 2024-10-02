@@ -6,7 +6,7 @@
 
 		public int CompanyId { get; set; }
 
-		public CompanyDto Company { get; set; } = new CompanyDto();
+		public CompanyDto Company { get; set; } = new();
 
 		public Guid UserId { get; set; }
 	}

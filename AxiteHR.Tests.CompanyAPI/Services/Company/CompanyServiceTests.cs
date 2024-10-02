@@ -83,13 +83,13 @@ public class CompanyServiceTests
 		_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
 		// Act
-		var result = await _companyService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken);
+		var result = (await _companyService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken)).ToList();
 
 		// Assert
 		Assert.Multiple(() =>
 		{
-			Assert.That(result.Count(), Is.EqualTo(1));
-			Assert.That(result.First().CompanyUserId, Is.EqualTo(1));
+			Assert.That(result.Count, Is.EqualTo(1));
+			Assert.That(result[0].CompanyUserId, Is.EqualTo(1));
 		});
 	}
 

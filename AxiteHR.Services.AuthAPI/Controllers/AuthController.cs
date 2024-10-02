@@ -27,7 +27,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
 			var response = await authService.LoginAsync(loginRequest);
-			if (!response.IsLoggedSuccessful && !response.IsTempPasswordToChange)
+			if (response is { IsLoggedSuccessful: false, IsTempPasswordToChange: false })
 			{
 				return BadRequest(response);
 			}

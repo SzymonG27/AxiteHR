@@ -8,6 +8,6 @@
 
 		public int CompanyLevelId { get; set; }
 
-		public CompanyLevelDto CompanyLevel { get; set; } = new CompanyLevelDto();
+		public CompanyLevelDto CompanyLevel { get; set; } = new();
 	}
 }

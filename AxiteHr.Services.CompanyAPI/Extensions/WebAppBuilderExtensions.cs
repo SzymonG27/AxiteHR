@@ -1,18 +1,18 @@
-﻿using AxiteHr.Services.CompanyAPI.Helpers;
+﻿using System.Globalization;
+using System.Text;
 using AxiteHR.GlobalizationResources.Resources;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHr.Services.CompanyAPI.Helpers;
 using AxiteHr.Services.CompanyAPI.Services.Company;
-using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
+using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHr.Services.CompanyAPI.Services.Employee;
+using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Globalization;
-using System.Text;
 
-namespace AxiteHR.GatewaySol.Extensions
+namespace AxiteHR.Services.CompanyAPI.Extensions
 {
 	public static class WebAppBuilderExtensions
 	{

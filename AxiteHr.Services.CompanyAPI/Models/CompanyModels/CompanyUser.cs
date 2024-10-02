@@ -11,7 +11,7 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 		[ForeignKey(nameof(Company))]
 		public virtual int CompanyId { get; set; }
 
-		public virtual Company Company { get; set; } = new Company();
+		public virtual Company Company { get; set; } = new();
 
 		public virtual Guid UserId { get; set; }
 

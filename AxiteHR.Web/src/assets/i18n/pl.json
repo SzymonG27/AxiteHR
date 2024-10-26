@@ -120,5 +120,15 @@
 		"OCTOBER": "Październik",
 		"NOVEMBER": "Listopad",
 		"DECEMBER": "Grudzień"
+	},
+
+	"//Section9": "Application",
+	"Application_NewApplication_Title": "Stwórz nowy wniosek",
+	"Application_ApplicationType": "Typ wniosku",
+	"Application_Types": {
+		"Vacation": "Urlop",
+		"Inaccessibility": "Niedostępność",
+		"UnpaidBreak": "Nieodpłatna przerwa w świadczeniu usług",
+		"HomeWork": "Praca zdalna"
 	}
 }

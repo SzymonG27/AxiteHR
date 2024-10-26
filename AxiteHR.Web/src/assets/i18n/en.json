@@ -120,5 +120,15 @@
 		"OCTOBER": "October",
 		"NOVEMBER": "November",
 		"DECEMBER": "December"
+	},
+
+	"//Section9": "Application",
+	"Application_NewApplication_Title": "Create new application",
+	"Application_ApplicationType": "Application type",
+	"Application_Types": {
+		"Vacation": "Vacation",
+		"Inaccessibility": "Inaccessibility",
+		"UnpaidBreak": "Unpaid interruption in the provision of services",
+		"HomeWork": "Remote work"
 	}
 }

@@ -11,7 +11,7 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application
 		[ForeignKey(nameof(UserApplication))]
 		public virtual int UserApplicationId { get; set; }
 
-		public virtual UserApplication UserApplication { get; set; } = new UserApplication();
+		public virtual UserApplication UserApplication { get; set; } = new();
 
 		/// <summary>
 		/// UserId of supervisor who accepted application

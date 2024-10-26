@@ -1,8 +1,8 @@
-﻿using AxiteHR.GlobalizationResources;
+﻿using System.ComponentModel.DataAnnotations;
+using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
-using System.ComponentModel.DataAnnotations;
 
-namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
+namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request
 {
 	public record NewCompanyRequestDto
 	{

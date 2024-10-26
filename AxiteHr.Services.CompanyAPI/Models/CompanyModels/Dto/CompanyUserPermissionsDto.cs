@@ -2,7 +2,7 @@
 {
 	public record CompanyUserPermissionsDto
 	{
-		public CompanyUserDto CompanyUser { get; set; } = new CompanyUserDto();
+		public CompanyUserDto CompanyUser { get; set; } = new();
 		public IList<CompanyPermissionDto> CompanyUserPermissionList { get; set; } = [];
 	}
 }

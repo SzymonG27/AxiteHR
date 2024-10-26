@@ -2,7 +2,7 @@
 {
 	public record CompanyUserRolesDto
 	{
-		public CompanyUserDto CompanyUser { get; set; } = new CompanyUserDto();
+		public CompanyUserDto CompanyUser { get; set; } = new();
 		public IList<CompanyRoleDto> CompanyUserRoleList { get; set; } = [];
 	}
 }

@@ -18,6 +18,7 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application
 
 		public virtual DateTime DateTo { get; set; }
 
+		[MaxLength(250)]
 		public virtual string? Reason { get; set; }
 
 		public virtual Guid InsUserId { get; set; }

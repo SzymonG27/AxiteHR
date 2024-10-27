@@ -12,11 +12,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ApplicationType } from '../../../core/models/application/ApplicationType';
 import { dateGreaterThanOrEqualsTo } from '../../../shared/validators/date-greater-than-or-equals-to.validator';
 import { NewApplicationFormRequest } from '../../../core/models/application/new-application/NewApplicationFormRequest';
-import { requiredIfTrue } from '../../../shared/validators/required-if-true.validator';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { greaterThan } from '../../../shared/validators/greater-than.validator';
 import { maxPeriodDifference } from '../../../shared/validators/max-period-difference.validator';
 import { BlockUIService } from '../../../core/services/block-ui.service';
+import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-new-application',
@@ -47,6 +48,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 	workingHoursTo = 16;
 	maxHours = this.workingHoursTo - this.workingHoursFrom;
 	reasonMaxLength = 200;
+
+	private destroy$ = new Subject<void>();
 
 	errorMessage: string | null = null;
 	applicationCreatorForm: FormGroup;
@@ -108,25 +111,17 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 				//Additional fields
 				isFullDay: new FormControl(this.applicationFormCreatorRequest.isFullDay),
 				hoursFrom: new FormControl(this.applicationFormCreatorRequest.hoursFrom, {
-					validators: [
-						requiredIfTrue('isFullDay'),
-						Validators.min(this.workingHoursFrom),
-						Validators.max(this.workingHoursTo),
-					],
+					validators: [requiredIfFalse('isFullDay')],
 				}),
 				hoursTo: new FormControl(this.applicationFormCreatorRequest.hoursTo, {
-					validators: [
-						requiredIfTrue('isFullDay'),
-						Validators.min(this.workingHoursFrom),
-						Validators.max(this.workingHoursTo),
-						greaterThan('hoursFrom'),
-					],
+					validators: [requiredIfFalse('isFullDay')],
 				}),
 			},
 			{
 				validators: [
 					dateGreaterThanOrEqualsTo('periodFrom', 'periodTo'),
 					maxPeriodDifference('hoursFrom', 'hoursTo', this.maxHours),
+					greaterThan('hoursFrom', 'hoursTo'),
 				],
 			}
 		);
@@ -156,7 +151,21 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 	};
 
 	sendApplication(): void {
+		this.applicationCreatorForm.markAllAsTouched();
+		this.applicationCreatorForm.updateValueAndValidity();
+
 		if (!this.applicationCreatorForm.valid) {
+			const invalidFields = Object.keys(this.applicationCreatorForm.controls)
+				.filter(name => this.applicationCreatorForm.controls[name].invalid)
+				.map(name => {
+					const controlErrors = this.applicationCreatorForm.controls[name].errors;
+					return {
+						field: name,
+						errors: controlErrors ? Object.keys(controlErrors) : [],
+					};
+				});
+
+			console.log('Invalid fields and their errors:', invalidFields);
 			return;
 		}
 
@@ -177,9 +186,40 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 
 	ngOnInit(): void {
 		document.addEventListener('click', this.handleClickOutside);
+
+		this.applicationCreatorForm
+			.get('isFullDay')
+			?.valueChanges.pipe(takeUntil(this.destroy$))
+			.subscribe((isFullDay: boolean) => {
+				const hoursFromControl = this.applicationCreatorForm.get('hoursFrom');
+				const hoursToControl = this.applicationCreatorForm.get('hoursTo');
+
+				if (isFullDay === false) {
+					hoursFromControl?.setValidators([
+						requiredIfFalse('isFullDay'),
+						Validators.min(this.workingHoursFrom),
+						Validators.max(this.workingHoursTo),
+					]);
+
+					hoursToControl?.setValidators([
+						requiredIfFalse('isFullDay'),
+						Validators.min(this.workingHoursFrom),
+						Validators.max(this.workingHoursTo),
+					]);
+				} else {
+					hoursFromControl?.setValidators([requiredIfFalse('isFullDay')]);
+					hoursToControl?.setValidators([requiredIfFalse('isFullDay')]);
+				}
+
+				hoursFromControl?.updateValueAndValidity();
+				hoursToControl?.updateValueAndValidity();
+			});
 	}
 
 	ngOnDestroy(): void {
 		document.removeEventListener('click', this.handleClickOutside);
+
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

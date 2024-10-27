@@ -1,19 +1,16 @@
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export function greaterThan(controlName: string): ValidatorFn {
-	return (control: AbstractControl): Record<string, unknown> | null => {
-		const formGroup = control.parent as FormGroup;
-		if (!formGroup) {
+export function greaterThan(from: string, to: string): ValidatorFn {
+	return (formGroup: AbstractControl): ValidationErrors | null => {
+		const control = formGroup.get(from);
+		const matchingControl = formGroup.get(to);
+
+		if (!control || !matchingControl || !control.value || !matchingControl.value) {
 			return null;
 		}
 
-		const controlToCompare = formGroup.get(controlName);
-		if (!control || !controlToCompare) {
-			return null;
-		}
-
-		const period1 = Number(controlToCompare.value);
-		const period2 = Number(control.value);
+		const period1 = Number(control.value);
+		const period2 = Number(matchingControl.value);
 
 		if (isNaN(period1) || isNaN(period2)) {
 			return null;

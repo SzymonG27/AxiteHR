@@ -214,15 +214,18 @@
 								applicationCreatorForm.controls['hoursFrom'].invalid
 								&& (applicationCreatorForm.controls['hoursFrom'].touched
 									|| applicationCreatorForm.controls['hoursFrom'].dirty)
+								&& !applicationCreatorForm.get('isFullDay')?.value
 							"
 					>
 						<div
-							*ngIf="applicationCreatorForm.controls['hoursFrom'].errors?.['requiredIfTrue']"
+							*ngIf="applicationCreatorForm.controls['hoursFrom'].errors?.['requiredIfFalse']"
+							@slideDownUp
 						>
 							*{{ 'Application_HoursFrom_RequiredError' | translate }}
 						</div>
 						<div
 							*ngIf="applicationCreatorForm.controls['hoursFrom'].errors?.['min'] || applicationCreatorForm.controls['hoursFrom'].errors?.['max']"
+							@slideDownUp
 						>
 							*{{ 'Application_HoursFrom_MinMaxError' | translate: { workingHoursFrom:
 							workingHoursFrom, workingHoursTo: workingHoursTo } }}
@@ -234,31 +237,38 @@
 								applicationCreatorForm.controls['hoursTo'].invalid
 								&& (applicationCreatorForm.controls['hoursTo'].touched
 									|| applicationCreatorForm.controls['hoursTo'].dirty)
+								&& !applicationCreatorForm.get('isFullDay')?.value
 							"
 					>
 						<div
-							*ngIf="applicationCreatorForm.controls['hoursTo'].errors?.['requiredIfTrue']"
+							*ngIf="applicationCreatorForm.controls['hoursTo'].errors?.['requiredIfFalse'] && !applicationCreatorForm.get('isFullDay')?.value"
+							@slideDownUp
 						>
 							*{{ 'Application_HoursTo_RequiredError' | translate }}
 						</div>
 						<div
-							*ngIf="applicationCreatorForm.controls['hoursTo'].errors?.['min'] || applicationCreatorForm.controls['hoursTo'].errors?.['max']"
+							*ngIf="(applicationCreatorForm.controls['hoursTo'].errors?.['min'] || applicationCreatorForm.controls['hoursTo'].errors?.['max']) && !applicationCreatorForm.get('isFullDay')?.value"
+							@slideDownUp
 						>
 							*{{ 'Application_HoursTo_MinMaxError' | translate: { workingHoursFrom:
 							workingHoursFrom, workingHoursTo: workingHoursTo } }}
 						</div>
-						<div
-							*ngIf="applicationCreatorForm.controls['hoursTo'].errors?.['greaterThan']"
-						>
-							*{{ 'Application_Hours_GreaterThanError' | translate }}
-						</div>
 					</div>
 					<div
 						class="text-red-600 relative items-center"
-						*ngIf="applicationCreatorForm.errors?.['maxPeriodDifference']"
+						*ngIf="applicationCreatorForm.errors?.['maxPeriodDifference'] && !applicationCreatorForm.get('isFullDay')?.value"
+						@slideDownUp
 					>
 						*{{ 'Application_Hours_MaxPeriodDifferenceError' | translate: { maxHours:
 						maxHours } }}
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="applicationCreatorForm.errors?.['greaterThan'] && !applicationCreatorForm.get('isFullDay')?.value"
+						@slideDownUp
+					>
+						*{{ 'Application_Hours_GreaterThanError' | translate: { maxHours: maxHours }
+						}}
 					</div>
 					<div class="mt-8">
 						<label for="reasonTextArea" class="text-sm block mb-2"

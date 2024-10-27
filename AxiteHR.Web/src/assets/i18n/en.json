@@ -130,5 +130,22 @@
 		"Inaccessibility": "Inaccessibility",
 		"UnpaidBreak": "Unpaid interruption in the provision of services",
 		"HomeWork": "Remote work"
-	}
+	},
+	"Application_PeriodFrom": "Period from",
+	"Application_PeriodTo": "Period to",
+	"Application_IsFullDay": "Full day",
+	"Application_HoursPeriod": "Hours period",
+	"Application_Reason": "Reason",
+	"Application_ApplicationType_RequiredError": "Application type is a required field",
+	"Application_PeriodFrom_RequiredError": "Period from is a required field",
+	"Application_PeriodTo_RequiredError": "Period to is a required field",
+	"Application_Periods_GreaterThanOrEqualTo": "Period to must be greater than or equal to Period from",
+	"Application_HoursFrom_RequiredError": "Hour from is a required field",
+	"Application_HoursTo_RequiredError": "Hour to is a required field",
+	"Application_HoursFrom_MinMaxError": "Invalid hour ({{workingHoursFrom}}-{{workingHoursTo}}) in Hour from field",
+	"Application_HoursTo_MinMaxError": "Invalid hour ({{workingHoursFrom}}-{{workingHoursTo}}) in Hour to field",
+	"Application_Hours_GreaterThanError": "Hour to must be greater than Hour from",
+	"Application_Hours_MaxPeriodDifferenceError": "The difference between hours cannot exceed {{maxHours}}",
+	"Application_Reason_MaxLengthError": "The Reason field can contain a maximum of {{maxLength}} characters",
+	"Application_SendApplication": "Send application"
 }

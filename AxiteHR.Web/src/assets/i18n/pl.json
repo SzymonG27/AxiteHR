@@ -130,5 +130,22 @@
 		"Inaccessibility": "Niedostępność",
 		"UnpaidBreak": "Nieodpłatna przerwa w świadczeniu usług",
 		"HomeWork": "Praca zdalna"
-	}
+	},
+	"Application_PeriodFrom": "Okres od",
+	"Application_PeriodTo": "Okres do",
+	"Application_IsFullDay": "Cały dzień",
+	"Application_HoursPeriod": "Okres godzin",
+	"Application_Reason": "Powód",
+	"Application_ApplicationType_RequiredError": "Pole Typ wniosku jest wymagane",
+	"Application_PeriodFrom_RequiredError": "Pole Okres od jest wymagane",
+	"Application_PeriodTo_RequiredError": "Pole Okres do jest wymagane",
+	"Application_Periods_GreaterThanOrEqualTo": "Okres do musi być większy bądź równy okresowi od",
+	"Application_HoursFrom_RequiredError": "Pole Godzina od jest wymagane",
+	"Application_HoursTo_RequiredError": "Pole Godzina do jest wymagane",
+	"Application_HoursFrom_MinMaxError": "Niepoprawna godzina ({{workingHoursFrom}}-{{workingHoursTo}}) w polu Godzina od",
+	"Application_HoursTo_MinMaxError": "Niepoprawna godzina ({{workingHoursFrom}}-{{workingHoursTo}}) w polu Godzina do",
+	"Application_Hours_GreaterThanError": "Godzina do musi być większa od godziny od",
+	"Application_Hours_MaxPeriodDifferenceError": "Różnica między godzinami nie może przekraczać {{maxHours}}",
+	"Application_Reason_MaxLengthError": "Pole Powód może zawierać maksymalnie {{maxLength}} znaków",
+	"Application_SendApplication": "Wyślij wniosek"
 }

@@ -8,7 +8,7 @@ export function dateGreaterThanOrEqualsTo(
 		const control = formGroup.get(controlName);
 		const matchingControl = formGroup.get(matchingControlName);
 
-		if (!control || !matchingControl) {
+		if (!control || !matchingControl || !control.value || !matchingControl.value) {
 			return null;
 		}
 

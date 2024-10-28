@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import {
 	FormControl,
 	FormGroup,
@@ -18,6 +18,7 @@ import { maxPeriodDifference } from '../../../shared/validators/max-period-diffe
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
 import { Subject, takeUntil } from 'rxjs';
+import { NewApplicationForm } from '../../../core/models/application/new-application/NewApplicationForm';
 
 @Component({
 	selector: 'app-new-application',
@@ -43,7 +44,7 @@ import { Subject, takeUntil } from 'rxjs';
 	templateUrl: './new-application.component.html',
 	styleUrl: './new-application.component.css',
 })
-export class NewApplicationComponent implements OnDestroy, OnInit {
+export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit {
 	workingHoursFrom = 8;
 	workingHoursTo = 16;
 	maxHours = this.workingHoursTo - this.workingHoursFrom;
@@ -57,14 +58,17 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 		newApplicationRequest: {
 			companyUserId: 0,
 			applicationType: ApplicationType.Vacation,
-			periodFrom: new Date(),
-			periodTo: new Date(),
+			periodFrom: null,
+			periodTo: null,
 			reason: '',
 		},
 		isFullDay: true,
 		hoursFrom: null,
 		hoursTo: null,
 	};
+
+	hoursFromBeforeFullDayDisabled: number | null = null;
+	hoursToBeforeFullDayDisabled: number | null = null;
 
 	applicationTypeOptions = Object.values(ApplicationType).filter(
 		value => typeof value === 'number'
@@ -154,23 +158,31 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 		this.applicationCreatorForm.markAllAsTouched();
 		this.applicationCreatorForm.updateValueAndValidity();
 
-		if (!this.applicationCreatorForm.valid) {
-			const invalidFields = Object.keys(this.applicationCreatorForm.controls)
-				.filter(name => this.applicationCreatorForm.controls[name].invalid)
-				.map(name => {
-					const controlErrors = this.applicationCreatorForm.controls[name].errors;
-					return {
-						field: name,
-						errors: controlErrors ? Object.keys(controlErrors) : [],
-					};
-				});
-
-			console.log('Invalid fields and their errors:', invalidFields);
-			return;
-		}
-
 		this.blockUI.start();
 		this.applicationFormCreatorRequest = this.applicationCreatorForm.value;
+
+		this.mapFormToRequest();
+
+		const periodFrom = this.applicationFormCreatorRequest.newApplicationRequest.periodFrom
+			? new Date(this.applicationFormCreatorRequest.newApplicationRequest.periodFrom)
+			: null;
+		const periodTo = this.applicationFormCreatorRequest.newApplicationRequest.periodTo
+			? new Date(this.applicationFormCreatorRequest.newApplicationRequest.periodTo)
+			: null;
+
+		const isFullDayControlValue = this.applicationCreatorForm.get('isFullDay')
+			?.value as boolean;
+
+		if (isFullDayControlValue) {
+			periodFrom?.setHours(this.workingHoursFrom);
+			periodTo?.setHours(this.workingHoursTo);
+		} else {
+			periodFrom?.setHours(this.applicationFormCreatorRequest.hoursFrom!);
+			periodTo?.setHours(this.applicationFormCreatorRequest.hoursTo!);
+		}
+		this.applicationFormCreatorRequest.newApplicationRequest.periodFrom = periodFrom;
+		this.applicationFormCreatorRequest.newApplicationRequest.periodTo = periodTo;
+
 		this.blockUI.stop();
 	}
 
@@ -182,6 +194,59 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 	open(elementId: string): void {
 		const element = document.getElementById(elementId);
 		element?.focus();
+	}
+
+	toggleFullDayDisabled(): void {
+		const fullDayElement = document.getElementById('isFullDay') as HTMLInputElement;
+
+		const periodFromToValid = this.applicationCreatorForm.get('periodFrom')
+			?.value as Date | null;
+		const periodToToValid = this.applicationCreatorForm.get('periodTo')?.value as Date | null;
+
+		const hoursFromControl = this.applicationCreatorForm.get('hoursFrom');
+		const hoursToControl = this.applicationCreatorForm.get('hoursTo');
+		const isFullDayControl = this.applicationCreatorForm.get('isFullDay');
+
+		const disableFullDayControls = () => {
+			this.hoursFromBeforeFullDayDisabled = hoursFromControl?.value ?? null;
+			this.hoursToBeforeFullDayDisabled = hoursToControl?.value ?? null;
+			hoursFromControl?.setValue(null);
+			hoursToControl?.setValue(null);
+			isFullDayControl?.setValue(true);
+			fullDayElement.disabled = true;
+		};
+
+		if (!periodFromToValid || !periodToToValid) {
+			disableFullDayControls();
+			return;
+		}
+
+		if (periodFromToValid !== periodToToValid) {
+			disableFullDayControls();
+			return;
+		}
+
+		fullDayElement.disabled = false;
+		if (this.hoursFromBeforeFullDayDisabled && this.hoursFromBeforeFullDayDisabled) {
+			hoursFromControl?.setValue(this.hoursFromBeforeFullDayDisabled);
+			hoursToControl?.setValue(this.hoursToBeforeFullDayDisabled);
+		}
+	}
+
+	private mapFormToRequest(): void {
+		const form = this.applicationCreatorForm.value as NewApplicationForm;
+		this.applicationFormCreatorRequest = {
+			newApplicationRequest: {
+				companyUserId: 0,
+				applicationType: form.applicationType,
+				periodFrom: form.periodFrom,
+				periodTo: form.periodTo,
+				reason: form.reason,
+			},
+			isFullDay: form.isFullDay,
+			hoursFrom: form.hoursFrom,
+			hoursTo: form.hoursTo,
+		};
 	}
 
 	ngOnInit(): void {
@@ -214,6 +279,10 @@ export class NewApplicationComponent implements OnDestroy, OnInit {
 				hoursFromControl?.updateValueAndValidity();
 				hoursToControl?.updateValueAndValidity();
 			});
+	}
+
+	ngAfterViewInit(): void {
+		this.toggleFullDayDisabled();
 	}
 
 	ngOnDestroy(): void {

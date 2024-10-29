@@ -17,8 +17,9 @@ import { greaterThan } from '../../../shared/validators/greater-than.validator';
 import { maxPeriodDifference } from '../../../shared/validators/max-period-difference.validator';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { NewApplicationForm } from '../../../core/models/application/new-application/NewApplicationForm';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-new-application',
@@ -83,7 +84,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 
 	constructor(
 		private router: Router,
-		private blockUI: BlockUIService
+		private blockUI: BlockUIService,
+		private dataService: DataBehaviourService
 	) {
 		this.applicationCreatorForm = new FormGroup(
 			{
@@ -282,6 +284,17 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 	}
 
 	ngAfterViewInit(): void {
+		this.dataService.selectedDate.pipe(take(1)).subscribe(async (value: Date | null) => {
+			if (value) {
+				const year = value.getFullYear();
+				const month = String(value.getMonth() + 1).padStart(2, '0');
+				const day = String(value.getDate()).padStart(2, '0');
+
+				const formattedDate = `${year}-${month}-${day}`;
+				this.applicationCreatorForm.get('periodFrom')?.setValue(formattedDate);
+				this.applicationCreatorForm.get('periodTo')?.setValue(formattedDate);
+			}
+		});
 		this.toggleFullDayDisabled();
 	}
 

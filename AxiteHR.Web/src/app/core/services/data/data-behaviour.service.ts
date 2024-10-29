@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 	providedIn: 'root',
 })
 export class DataBehaviourService {
+	//#region Authorization
 	private registeredSource = new BehaviorSubject<boolean>(false);
 	currentRegistered = this.registeredSource.asObservable();
 	setRegistered(value: boolean) {
@@ -34,4 +35,13 @@ export class DataBehaviourService {
 	setTempPasswordSuccess(value: string) {
 		this.tempPasswordSuccessSource.next(value);
 	}
+	//#region Authorization
+
+	//#region Calendar
+	private selectedDateSource = new BehaviorSubject<Date | null>(null);
+	selectedDate = this.selectedDateSource.asObservable();
+	setSelectedDate(value: Date) {
+		this.selectedDateSource.next(value);
+	}
+	//#endregion Calendar
 }

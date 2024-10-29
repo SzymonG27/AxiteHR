@@ -24,8 +24,19 @@
 </div>
 
 <app-modal
-	[isOpen]="isModalApplicationOpen"
-	[isForm]="true"
-	(closeModalEmitter)="closeApplicationModal()"
-	(submitModalEmitter)="submitApplicationModal()"
-></app-modal>
+	[isOpen]="isModalEventOpen"
+	[isForm]="false"
+	[title]="getTranslatedModalTitle()"
+	(closeModalEmitter)="closeEventModal()"
+>
+	<div>
+		<button
+			type="button"
+			(click)="submitApplicationModal()"
+			class="button button-full w-[45%] mr-[10%]"
+		>
+			{{ 'Calendar_Modal_Application' | translate }}
+		</button>
+		<button type="button" class="button button-full w-[45%]">ToDo</button>
+	</div>
+</app-modal>

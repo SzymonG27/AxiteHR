@@ -121,6 +121,8 @@
 		"NOVEMBER": "Listopad",
 		"DECEMBER": "Grudzień"
 	},
+	"Calendar_EventModal_Title": "Wybierz typ wydarzenia",
+	"Calendar_Modal_Application": "Wniosek",
 
 	"//Section9": "Application",
 	"Application_NewApplication_Title": "Stwórz nowy wniosek",

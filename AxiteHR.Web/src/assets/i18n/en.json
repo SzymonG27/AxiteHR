@@ -121,6 +121,8 @@
 		"NOVEMBER": "November",
 		"DECEMBER": "December"
 	},
+	"Calendar_EventModal_Title": "Select event type",
+	"Calendar_Modal_Application": "Application",
 
 	"//Section9": "Application",
 	"Application_NewApplication_Title": "Create new application",

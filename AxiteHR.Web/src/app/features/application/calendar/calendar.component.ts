@@ -21,6 +21,8 @@ import localePl from '@angular/common/locales/pl';
 import localeEn from '@angular/common/locales/en';
 import { Subscription, take } from 'rxjs';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-calendar',
@@ -32,7 +34,7 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 export class CalendarComponent implements OnDestroy, AfterViewChecked {
 	@ViewChild('calendar', { static: false }) calendar!: ElementRef;
 
-	isModalApplicationOpen = false;
+	isModalEventOpen = false;
 
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
@@ -64,7 +66,10 @@ export class CalendarComponent implements OnDestroy, AfterViewChecked {
 	constructor(
 		private translate: TranslateService,
 		private renderer: Renderer2,
-		private el: ElementRef
+		private el: ElementRef,
+		private router: Router,
+		private dataService: DataBehaviourService,
+		private route: ActivatedRoute
 	) {
 		registerLocaleData(localePl);
 		registerLocaleData(localeEn);
@@ -172,14 +177,30 @@ export class CalendarComponent implements OnDestroy, AfterViewChecked {
 		this.viewDate = new Date();
 	}
 
-	closeApplicationModal(): void {
-		this.isModalApplicationOpen = false;
+	//#region Modal
+	getTranslatedModalTitle() {
+		return this.translate.instant('Calendar_EventModal_Title');
+	}
+
+	closeEventModal(): void {
+		this.isModalEventOpen = false;
 	}
 
 	submitApplicationModal(): void {
-		//Application action
-		this.isModalApplicationOpen = false;
+		if (!this.activeDay) {
+			this.isModalEventOpen = false;
+			return;
+		}
+
+		this.isModalEventOpen = false;
+
+		this.dataService.setSelectedDate(this.activeDay);
+
+		const currentFullPath = this.router.url.split('/');
+		currentFullPath[currentFullPath.length - 1] = 'NewApplication';
+		this.router.navigate(currentFullPath);
 	}
+	//#endregion Modal
 
 	setNewApplicationButtonText(): void {
 		this.translate
@@ -219,7 +240,10 @@ export class CalendarComponent implements OnDestroy, AfterViewChecked {
 				this.renderer.appendChild(buttonTextSpan, buttonText);
 				this.renderer.appendChild(button, buttonTextSpan);
 
-				this.renderer.listen(button, 'click', () => this.addEvent());
+				this.renderer.listen(button, 'click', () => {
+					this.isModalEventOpen = true;
+					this.addEvent();
+				});
 
 				const firstChild = element.firstChild;
 				this.renderer.insertBefore(element, button, firstChild);

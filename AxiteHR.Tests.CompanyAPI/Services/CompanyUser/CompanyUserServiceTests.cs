@@ -10,6 +10,7 @@ using AxiteHR.Services.CompanyAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 using CompanyModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company;
+using AxiteHR.Services.CompanyAPI.Services.Cache;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 {
@@ -18,12 +19,15 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 	{
 		private AppDbContext _dbContext;
 		private Mock<IHttpClientFactory> _httpClientFactoryMock;
+		private Mock<IRedisCacheService> _redisCacheServiceMock;
+
 		private CompanyUserService _companyUserService;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_httpClientFactoryMock = new Mock<IHttpClientFactory>();
+			_redisCacheServiceMock = new Mock<IRedisCacheService>();
 
 			var options = new DbContextOptionsBuilder<AppDbContext>()
 			.UseSqlite("DataSource=:memory:")
@@ -32,7 +36,10 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 			_dbContext.Database.OpenConnection();
 			_dbContext.Database.EnsureCreated();
 
-			_companyUserService = new CompanyUserService(_dbContext, _httpClientFactoryMock.Object);
+			_companyUserService = new CompanyUserService(
+				_dbContext,
+				_httpClientFactoryMock.Object,
+				_redisCacheServiceMock.Object);
 		}
 
 		[TearDown]

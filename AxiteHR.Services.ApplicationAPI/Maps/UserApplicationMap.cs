@@ -5,11 +5,11 @@ namespace AxiteHR.Services.ApplicationAPI.Maps
 {
 	public static class UserApplicationMap
 	{
-		public static UserApplication Map(CreateApplicationRequestDto dto, Guid insUserId)
+		public static UserApplication Map(CreateApplicationRequestDto dto, Guid insUserId, int companyUserId)
 		{
 			return new UserApplication
 			{
-				CompanyUserId = dto.CompanyUserId,
+				CompanyUserId = companyUserId,
 				ApplicationType = dto.ApplicationType,
 				ApplicationStatus = Models.Application.Enums.ApplicationStatus.New,
 				DateFrom = dto.PeriodFrom,

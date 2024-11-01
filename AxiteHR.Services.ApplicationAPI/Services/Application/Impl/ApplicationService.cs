@@ -108,7 +108,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto, insUserId.Value);
+				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto, insUserId.Value, companyUserId.Value);
 				await dbContext.UserApplications.AddAsync(createdUserApplication);
 
 				if (!createApplicationRequestDto.ApplicationType.IsTypeThatDontCountDaysOff())
@@ -150,7 +150,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
 
-			var requestUri = new Uri($"{ApiLinkHelper.CompanyGetCompanyUserId}/{companyId}/{userId}");
+			var requestUri = $"{ApiLinkHelper.CompanyGetCompanyUserId}/{companyId}/{userId}";
 			var response = await client.GetAsync(requestUri);
 			response.EnsureSuccessStatusCode();
 
@@ -169,7 +169,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
 
-			var requestUri = new Uri($"{ApiLinkHelper.CompanyIsUserCanManageApplications}/{companyUserId}&{insUserId}");
+			var requestUri = $"{ApiLinkHelper.CompanyIsUserCanManageApplications}/{companyUserId}&{insUserId}";
 			var response = await client.GetAsync(requestUri);
 			response.EnsureSuccessStatusCode();
 

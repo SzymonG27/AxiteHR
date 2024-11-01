@@ -1,10 +1,12 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.GlobalClass.RedisKeys;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
+using AxiteHR.Services.ApplicationAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Moq;
@@ -23,6 +25,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		private Mock<IStringLocalizer<ApplicationResources>> _localizerMock;
 		private Mock<IHttpClientFactory> _httpClientFactoryMock;
 		private Mock<IJwtDecode> _jwtDecodeMock;
+		private Mock<IRedisCacheService> _redisCacheService;
+
 		private ApplicationService _applicationService;
 
 		[SetUp]
@@ -39,13 +43,22 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_localizerMock = new Mock<IStringLocalizer<ApplicationResources>>();
 			_httpClientFactoryMock = new Mock<IHttpClientFactory>();
 			_jwtDecodeMock = new Mock<IJwtDecode>();
-			_applicationService = new ApplicationService(_dbContext, _httpClientFactoryMock.Object, _localizerMock.Object, _jwtDecodeMock.Object);
+			_redisCacheService = new Mock<IRedisCacheService>();
+
+			_applicationService = new ApplicationService(
+				_dbContext,
+				_httpClientFactoryMock.Object,
+				_localizerMock.Object,
+				_jwtDecodeMock.Object,
+				_redisCacheService.Object);
 		}
 
 		[Test]
 		public async Task CreateNewUserApplicationAsync_WhenApplicationIntersects_ReturnsFailedResponse()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -69,7 +82,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 10, 8, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 12, 8, 0, 0, DateTimeKind.Unspecified)
@@ -79,7 +93,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Error", "Application period intersects."));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler
@@ -115,6 +132,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		public async Task CreateNewUserApplicationAsync_WhenNotEnoughDaysOffWithWeekend_ReturnsFailedResponse()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -138,7 +157,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 11, 0, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 15, 8, 0, 0, DateTimeKind.Unspecified)
@@ -148,7 +168,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Error", "Not enough days off."));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler
@@ -184,6 +207,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		public async Task CreateNewUserApplicationAsync_WhenNotEnoughDaysOffWithoutWeekend_ReturnsFailedResponse()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -207,7 +232,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 12, 7, 0, 0, DateTimeKind.Unspecified)
@@ -217,7 +243,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Error", "Not enough days off."));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler
@@ -253,6 +282,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		public async Task CreateNewUserApplicationAsync_WhenAllConditionsMet_ReturnsSuccessResponse()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -276,7 +307,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 12, 8, 0, 0, DateTimeKind.Unspecified)
@@ -286,7 +318,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Success", "Application created successfully."));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler
@@ -321,6 +356,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		public async Task CreateNewUserApplicationAsync_IsUserCanManageApplicationForCompanyUserReturnsFalse_ReturnsFailedResponse()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -344,7 +381,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 12, 8, 0, 0, DateTimeKind.Unspecified)
@@ -354,7 +392,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Success", "False from response"));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler
@@ -390,6 +431,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 		public async Task CreateNewUserApplicationAsync_WhenExceptionOccurs_RollsBackTransactionAndReturnsError()
 		{
 			// Arrange
+			var userId = Guid.NewGuid();
+
 			_dbContext.UserApplications.Add(new UserApplication
 			{
 				CompanyUserId = 1,
@@ -426,7 +469,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 			var dto = new CreateApplicationRequestDto
 			{
-				CompanyUserId = 1,
+				CompanyId = 1,
+				UserId = userId,
 				ApplicationType = ApplicationType.Vacation,
 				PeriodFrom = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Unspecified),
 				PeriodTo = new DateTime(2024, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -436,7 +480,10 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 				.Returns(new LocalizedString("Error", "Internal server error."));
 
 			_jwtDecodeMock.Setup(jwtDecode => jwtDecode.GetUserIdFromToken(BearerToken))
-				.Returns(Guid.NewGuid());
+				.Returns(userId);
+
+			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
+				.Returns(Task.FromResult(1));
 
 			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 			mockHttpMessageHandler

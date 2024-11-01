@@ -61,6 +61,24 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The selected application period intersects with another application..
+        /// </summary>
+        public static string CreateApplication_ApplicationIntersectsError {
+            get {
+                return ResourceManager.GetString("CreateApplication_ApplicationIntersectsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason of the application.
+        /// </summary>
+        public static string CreateApplication_ApplicationReason {
+            get {
+                return ResourceManager.GetString("CreateApplication_ApplicationReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application type.
         /// </summary>
         public static string CreateApplication_ApplicationType {
@@ -70,11 +88,11 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company user identifier.
+        ///   Looks up a localized string similar to Company Id.
         /// </summary>
-        public static string CreateApplication_CompanyUserId {
+        public static string CreateApplication_CompanyId {
             get {
-                return ResourceManager.GetString("CreateApplication_CompanyUserId", resourceCulture);
+                return ResourceManager.GetString("CreateApplication_CompanyId", resourceCulture);
             }
         }
         
@@ -88,11 +106,38 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You do not have enough days off available to submit this application..
+        /// </summary>
+        public static string CreateApplication_NotEnoughDaysOffError {
+            get {
+                return ResourceManager.GetString("CreateApplication_NotEnoughDaysOffError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Period to must be greater than Period from..
         /// </summary>
         public static string CreateApplication_PeriodToGreaterThanPeriodFrom {
             get {
                 return ResourceManager.GetString("CreateApplication_PeriodToGreaterThanPeriodFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User don&apos;t have permission to create application..
+        /// </summary>
+        public static string CreateApplication_UserDontHavePermissionToCreateApplication {
+            get {
+                return ResourceManager.GetString("CreateApplication_UserDontHavePermissionToCreateApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Id.
+        /// </summary>
+        public static string CreateApplication_UserId {
+            get {
+                return ResourceManager.GetString("CreateApplication_UserId", resourceCulture);
             }
         }
     }

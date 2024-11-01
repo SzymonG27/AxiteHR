@@ -54,11 +54,13 @@ services:
       ASPNETCORE_URLS: "https://+:7002;http://+:5176"
       IsDbFromDocker: true
       ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Application;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+      Redis__ConnectionString: "localhost:6379"
     networks:
       - axitehr-network
     depends_on:
       - sqlserverdb
       - axitehr.gatewaysol
+      - redis
 
   axitehr.services.authapi:
     image: ${DOCKER_REGISTRY-}axitehrservicesauthapi
@@ -103,6 +105,7 @@ services:
       Kestrel__Endpoints__Https__Url: "https://+:7004"
       Kestrel__Endpoints__Https__Certificate__Path: "Certs/axitehr.services.companyapi.pfx"
       Kestrel__Endpoints__Https__Certificate__Password: "Password123"
+      Redis__ConnectionString: "localhost:6379"
     networks:
       - axitehr-network
     depends_on:
@@ -249,6 +252,14 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - axitehr-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - axitehr-network
 

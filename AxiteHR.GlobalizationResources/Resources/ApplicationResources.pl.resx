@@ -123,8 +123,8 @@
   <data name="CreateApplication_ApplicationType" xml:space="preserve">
     <value>Typ wniosku</value>
   </data>
-  <data name="CreateApplication_CompanyUserId" xml:space="preserve">
-    <value>Id użytkownika firmy</value>
+  <data name="CreateApplication_CompanyId" xml:space="preserve">
+    <value>Id firmy</value>
   </data>
   <data name="CreateApplication_InternalError" xml:space="preserve">
     <value>Wystąpił błąd podczas tworzenia nowego wniosku. Spróbuj ponownie później.</value>
@@ -140,5 +140,8 @@
   </data>
   <data name="CreateApplication_UserDontHavePermissionToCreateApplication" xml:space="preserve">
     <value>Użytkownik nie ma uprawnień do stworzenia wniosku.</value>
+  </data>
+  <data name="CreateApplication_UserId" xml:space="preserve">
+    <value>Id użytkownika</value>
   </data>
 </root>

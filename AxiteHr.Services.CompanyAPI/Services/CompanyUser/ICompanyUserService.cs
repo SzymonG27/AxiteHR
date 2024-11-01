@@ -15,6 +15,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser
 		/// <returns>IEnumerable of CompanyUserViewDto</returns>
 		Task<IEnumerable<CompanyUserViewDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken);
 
+		Task<int?> GetIdAsync(int companyId, Guid userId);
+
 		/// <summary>
 		/// Get count of employees contains in company, exclude user who is searching
 		/// </summary>

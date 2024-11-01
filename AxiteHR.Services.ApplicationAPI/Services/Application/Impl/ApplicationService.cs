@@ -1,5 +1,6 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.GlobalClass.RedisKeys;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
 using AxiteHR.Services.ApplicationAPI.Extensions;
@@ -8,6 +9,7 @@ using AxiteHR.Services.ApplicationAPI.Maps;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
+using AxiteHR.Services.ApplicationAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Serilog;
@@ -18,7 +20,8 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 		AppDbContext dbContext,
 		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<ApplicationResources> applicationLocalizer,
-		IJwtDecode jwtDecode) : IApplicationService
+		IJwtDecode jwtDecode,
+		IRedisCacheService redisCacheService) : IApplicationService
 	{
 		private const double WorkHoursPerDay = 8.0; //TODO Can be configured for user
 
@@ -38,7 +41,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 						request = createApplicationRequestDto,
 						bearerToken
 					};
-					Log.Error("Error while creating new user application. Token was null or userId was null.", param);
+					Log.Error("Error while creating new user application. Token was null or userId from token was null. Param: {Param}", param);
 					return new CreateApplicationResponseDto
 					{
 						IsSucceeded = false,
@@ -46,10 +49,32 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var isUserCanManageApplication = await IsUserCanManageApplicationForCompanyUser(
+				var companyUserId = await GetCompanyUserIdAsync(
+					createApplicationRequestDto.CompanyId,
+					createApplicationRequestDto.UserId,
+					bearerToken,
+					acceptLanguage);
+				if (companyUserId is null)
+				{
+					var param = new
+					{
+						request = createApplicationRequestDto,
+						bearerToken
+					};
+					Log.Error("Error while creating new user application. UserId is not exists in company. Param: {Param}", param);
+
+					//Internal error, we don't expect such situation
+					return new CreateApplicationResponseDto
+					{
+						IsSucceeded = false,
+						ErrorMessage = applicationLocalizer[ApplicationResources.CreateApplication_InternalError]
+					};
+				}
+
+				var isUserCanManageApplication = await IsUserCanManageApplicationForCompanyUserAsync(
 					bearerToken,
 					acceptLanguage,
-					createApplicationRequestDto.CompanyUserId,
+					companyUserId.Value,
 					insUserId.Value);
 				if (!isUserCanManageApplication)
 				{
@@ -60,7 +85,9 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var applicationTypeThatIntestects = await GetApplicationTypeThatIntersectsWithPeriodAsync(createApplicationRequestDto);
+				var applicationTypeThatIntestects = await GetApplicationTypeThatIntersectsWithPeriodAsync(
+					createApplicationRequestDto,
+					companyUserId.Value);
 				if (applicationTypeThatIntestects.Count > 0
 					&& IsApplicationTypeIntersectWithAnother(createApplicationRequestDto.ApplicationType, applicationTypeThatIntestects))
 				{
@@ -71,7 +98,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var userDaysOff = await GetUserDaysOffAsync(createApplicationRequestDto);
+				var userDaysOff = await GetUserDaysOffAsync(createApplicationRequestDto, companyUserId.Value);
 				if (userDaysOff == null || !IsUserHaveEnoughDaysOff(createApplicationRequestDto, userDaysOff, out decimal workingDaysEquivalent))
 				{
 					return new CreateApplicationResponseDto
@@ -99,7 +126,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			}
 			catch (Exception ex)
 			{
-				Log.Error(ex, "Error while trying to create a new user application.", createApplicationRequestDto);
+				Log.Error(ex, "Error while trying to create a new user application. Param: {CreateApplicationRequestDto}", createApplicationRequestDto);
 				await transaction.RollbackAsync();
 
 				return new CreateApplicationResponseDto
@@ -111,24 +138,50 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 		}
 
 		#region Private Methods
-		private async Task<bool> IsUserCanManageApplicationForCompanyUser(string token, string acceptLanguage, int companyUserId, Guid insUserId)
+		private async Task<int?> GetCompanyUserIdAsync(int companyId, Guid userId, string token, string acceptLanguage)
+		{
+			var companyUserIdFromCache = await redisCacheService.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(companyId, userId));
+			if (companyUserIdFromCache is not default(int))
+			{
+				return companyUserIdFromCache;
+			}
+
+			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
+
+			var requestUri = new Uri($"{ApiLinkHelper.CompanyGetCompanyUserId}/{companyId}/{userId}");
+			var response = await client.GetAsync(requestUri);
+			response.EnsureSuccessStatusCode();
+
+			var content = await response.Content.ReadAsStringAsync();
+			if (string.IsNullOrEmpty(content))
+			{
+				return null;
+			}
+
+			return int.Parse(content);
+		}
+
+		private async Task<bool> IsUserCanManageApplicationForCompanyUserAsync(string token, string acceptLanguage, int companyUserId, Guid insUserId)
 		{
 			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
 
-			var response = await client.GetAsync(ApiLinkHelper.CompanyIsUserCanManageApplications + companyUserId + "&" + insUserId);
+			var requestUri = new Uri($"{ApiLinkHelper.CompanyIsUserCanManageApplications}/{companyUserId}&{insUserId}");
+			var response = await client.GetAsync(requestUri);
 			response.EnsureSuccessStatusCode();
 
 			var content = await response.Content.ReadAsStringAsync();
 			return bool.Parse(content);
 		}
 
-		private async Task<List<ApplicationType>> GetApplicationTypeThatIntersectsWithPeriodAsync(CreateApplicationRequestDto dto)
+		private async Task<List<ApplicationType>> GetApplicationTypeThatIntersectsWithPeriodAsync(CreateApplicationRequestDto dto, int companyUserId)
 		{
 			return await dbContext.UserApplications
 				.AsNoTracking()
-				.Where(x => x.CompanyUserId == dto.CompanyUserId)
+				.Where(x => x.CompanyUserId == companyUserId)
 				.Where(x => x.ApplicationStatus != ApplicationStatus.Canceled)
 				.Where(x => x.DateFrom <= dto.PeriodTo && x.DateTo >= dto.PeriodFrom)
 				.Select(x => x.ApplicationType)
@@ -202,11 +255,11 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 			return workingDays;
 		}
 
-		private async Task<UserCompanyDaysOff?> GetUserDaysOffAsync(CreateApplicationRequestDto dto)
+		private async Task<UserCompanyDaysOff?> GetUserDaysOffAsync(CreateApplicationRequestDto dto, int companyUserId)
 		{
 			return await dbContext.UserCompanyDaysOffs
 				.Where(x => x.ApplicationType == dto.ApplicationType)
-				.Where(x => x.CompanyUserId == dto.CompanyUserId)
+				.Where(x => x.CompanyUserId == companyUserId)
 				.SingleOrDefaultAsync();
 		}
 		#endregion Private Methods

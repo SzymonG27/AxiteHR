@@ -2,6 +2,8 @@
 using System.Text;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Services.Cache;
+using AxiteHR.Services.CompanyAPI.Services.Cache.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Employee;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using StackExchange.Redis;
 
 namespace AxiteHR.Services.CompanyAPI.Extensions
 {
@@ -99,6 +102,10 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			var redisConnectionString = builder.Configuration.GetConnectionString("Redis")!;
+			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
 			builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
 			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();

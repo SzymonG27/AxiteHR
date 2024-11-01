@@ -1,9 +1,11 @@
-﻿using AxiteHR.Services.CompanyAPI.Data;
+﻿using AxiteHR.Integration.GlobalClass.RedisKeys;
+using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
@@ -12,7 +14,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 {
 	public class CompanyUserService(
 		AppDbContext dbContext,
-		IHttpClientFactory httpClientFactory) : ICompanyUserService
+		IHttpClientFactory httpClientFactory,
+		IRedisCacheService redisCacheService) : ICompanyUserService
 	{
 		public async Task<IEnumerable<CompanyUserViewDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken)
 		{
@@ -29,6 +32,30 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 			}
 
 			return await CompanyUserViewDtoListApiRequest(companyUserIds, bearerToken);
+		}
+
+		public async Task<int?> GetIdAsync(int companyId, Guid userId)
+		{
+			var companyUserIdFromCache = await redisCacheService.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(companyId, userId));
+			if (companyUserIdFromCache is not default(int))
+			{
+				return companyUserIdFromCache;
+			}
+
+			var companyUserId = await dbContext.CompanyUsers
+				.Where(x => x.CompanyId == companyId && x.UserId == userId)
+				.AsNoTracking()
+				.Select(x => x.Id)
+				.SingleOrDefaultAsync();
+
+			if (companyUserId is default(int))
+			{
+				return null;
+			}
+
+			await redisCacheService.SetObjectAsync(CompanyRedisKeys.CompanyUserGetId(companyId, userId), companyUserId, TimeSpan.FromMinutes(5));
+
+			return companyUserId;
 		}
 
 		public async Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId)

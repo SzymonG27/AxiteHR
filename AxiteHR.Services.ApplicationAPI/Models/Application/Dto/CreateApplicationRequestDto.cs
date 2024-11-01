@@ -9,8 +9,12 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application.Dto
 	public record CreateApplicationRequestDto
 	{
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
-		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_CompanyUserId)]
-		public int CompanyUserId { get; set; }
+		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_CompanyId)]
+		public int CompanyId { get; set; }
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_UserId)]
+		public Guid UserId { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		[Display(ResourceType = typeof(ApplicationResources), Name = ApplicationResourcesKeys.CreateApplication_ApplicationType)]

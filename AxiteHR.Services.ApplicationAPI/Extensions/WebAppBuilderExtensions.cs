@@ -3,11 +3,14 @@ using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
+using AxiteHR.Services.ApplicationAPI.Services.Cache;
+using AxiteHR.Services.ApplicationAPI.Services.Cache.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using StackExchange.Redis;
 using System.Globalization;
 using System.Text;
 
@@ -98,6 +101,10 @@ namespace AxiteHR.Services.ApplicationAPI.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			var redisConnectionString = builder.Configuration.GetConnectionString("Redis")!;
+			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
 			builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();

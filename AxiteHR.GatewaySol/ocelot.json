@@ -32,6 +32,21 @@
 			}
 		},
 		{
+			"DownstreamPathTemplate": "/api/CompanyUser/GetId/{companyId}/{userId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyUser/GetId/{companyId}/{userId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
 			"DownstreamPathTemplate": "/api/CompanyUser/Count/{companyId}/{excludedUserId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [

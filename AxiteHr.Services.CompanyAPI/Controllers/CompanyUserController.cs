@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
-using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 
 namespace AxiteHR.Services.CompanyAPI.Controllers
 {
@@ -26,6 +25,13 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 			}
 
 			return await companyUserService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken);
+		}
+
+		[HttpGet("[action]/{companyId}/{userId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<int?> GetId(int companyId, Guid userId)
+		{
+			return await companyUserService.GetIdAsync(companyId, userId);
 		}
 
 		[HttpGet("[action]/{companyId}/{excludedUserId}")]

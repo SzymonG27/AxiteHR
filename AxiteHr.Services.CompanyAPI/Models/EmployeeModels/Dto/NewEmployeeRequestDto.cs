@@ -2,7 +2,7 @@
 using AxiteHR.GlobalizationResources.Resources;
 using System.ComponentModel.DataAnnotations;
 
-namespace AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto
+namespace AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto
 {
 	public record NewEmployeeRequestDto
 	{

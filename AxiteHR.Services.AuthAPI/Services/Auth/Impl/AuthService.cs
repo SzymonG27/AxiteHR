@@ -1,4 +1,4 @@
-﻿using AxiteHr.Integration.GlobalClass.Auth;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.BrokerMessageSender;

@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto
 {
 	public record CompanyUserDto
 	{

@@ -1,9 +1,9 @@
 ﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Company
+namespace AxiteHR.Services.CompanyAPI.Services.Company
 {
-	public interface ICompanyCreatorService
+	public interface ICompanyManagerService
 	{
 		/// <summary>
 		/// Create new company request

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AxiteHr.Services.CompanyAPI.Migrations
+namespace AxiteHR.Services.CompanyAPI.Migrations
 {
     /// <inheritdoc />
     public partial class IsSupervisorColumnForCompanyUserRole : Migration

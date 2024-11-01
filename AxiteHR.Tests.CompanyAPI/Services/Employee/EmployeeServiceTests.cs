@@ -1,8 +1,8 @@
-﻿using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
-using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
+﻿using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
+using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Services.Employee.Impl;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +12,7 @@ using Moq;
 using Moq.Protected;
 using System.Net;
 using System.Text.Json;
+using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.Employee;
 
@@ -81,7 +82,7 @@ public class EmployeeServiceTests
 	public async Task CreateNewEmployeeAsync_ShouldCreateNewEmployee_WhenUserHasManagerPermission()
 	{
 		// Arrange
-		var existingCompany = new AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company
+		var existingCompany = new AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company
 		{
 			CompanyName = "TEST"
 		};
@@ -89,7 +90,7 @@ public class EmployeeServiceTests
 
 		var insUserId = Guid.NewGuid();
 
-		var existingUser = new CompanyUser
+		var existingUser = new CompanyUserModel
 		{
 			Company = existingCompany,
 			UserId = insUserId
@@ -154,7 +155,7 @@ public class EmployeeServiceTests
 	public async Task CreateNewEmployeeAsync_ShouldRollbackTransaction_OnFailure()
 	{
 		// Arrange
-		var existingCompany = new AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company
+		var existingCompany = new AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company
 		{
 			CompanyName = "TEST"
 		};
@@ -162,7 +163,7 @@ public class EmployeeServiceTests
 
 		var insUserId = Guid.NewGuid();
 
-		var existingUser = new CompanyUser
+		var existingUser = new CompanyUserModel
 		{
 			Company = existingCompany,
 			UserId = insUserId

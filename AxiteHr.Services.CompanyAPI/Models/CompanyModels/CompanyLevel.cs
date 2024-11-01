@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
+namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 {
 	/// <summary>
 	/// Specifies subscription for company

@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
-namespace AxiteHr.Tests.AuthAPI.Services.Auth;
+namespace AxiteHR.Tests.AuthAPI.Services.Auth;
 
 [TestFixture]
 public class AuthServiceTests

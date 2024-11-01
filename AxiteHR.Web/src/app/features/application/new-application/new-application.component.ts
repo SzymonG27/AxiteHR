@@ -18,8 +18,8 @@ import { maxPeriodDifference } from '../../../shared/validators/max-period-diffe
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
 import { Subject, take, takeUntil } from 'rxjs';
-import { NewApplicationForm } from '../../../core/models/application/new-application/NewApplicationForm';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
+import { NewApplicationService } from '../../../core/services/application/new-application.service';
 
 @Component({
 	selector: 'app-new-application',
@@ -85,7 +85,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 	constructor(
 		private router: Router,
 		private blockUI: BlockUIService,
-		private dataService: DataBehaviourService
+		private dataService: DataBehaviourService,
+		private newApplicationService: NewApplicationService
 	) {
 		this.applicationCreatorForm = new FormGroup(
 			{
@@ -161,9 +162,10 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 		this.applicationCreatorForm.updateValueAndValidity();
 
 		this.blockUI.start();
-		this.applicationFormCreatorRequest = this.applicationCreatorForm.value;
 
-		this.mapFormToRequest();
+		this.applicationFormCreatorRequest = this.newApplicationService.mapFormToRequest(
+			this.applicationCreatorForm
+		);
 
 		const periodFrom = this.applicationFormCreatorRequest.newApplicationRequest.periodFrom
 			? new Date(this.applicationFormCreatorRequest.newApplicationRequest.periodFrom)
@@ -233,22 +235,6 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 			hoursFromControl?.setValue(this.hoursFromBeforeFullDayDisabled);
 			hoursToControl?.setValue(this.hoursToBeforeFullDayDisabled);
 		}
-	}
-
-	private mapFormToRequest(): void {
-		const form = this.applicationCreatorForm.value as NewApplicationForm;
-		this.applicationFormCreatorRequest = {
-			newApplicationRequest: {
-				companyUserId: 0,
-				applicationType: form.applicationType,
-				periodFrom: form.periodFrom,
-				periodTo: form.periodTo,
-				reason: form.reason,
-			},
-			isFullDay: form.isFullDay,
-			hoursFrom: form.hoursFrom,
-			hoursTo: form.hoursTo,
-		};
 	}
 
 	ngOnInit(): void {

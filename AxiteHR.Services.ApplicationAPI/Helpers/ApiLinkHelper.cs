@@ -2,6 +2,6 @@
 {
 	public static class ApiLinkHelper
 	{
-		public const string CompanyIsUserCanManageApplications = "/api/Company/IsUserCanManageApplications";
+		public const string CompanyIsUserCanManageApplications = "/api/CompanyUser/CanManageApplications";
 	}
 }

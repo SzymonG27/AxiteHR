@@ -1,8 +1,8 @@
 using AutoMapper;
-using AxiteHr.Services.CompanyAPI;
-using AxiteHr.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI;
+using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Extensions;
-using AxiteHr.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Helpers;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Serilog;

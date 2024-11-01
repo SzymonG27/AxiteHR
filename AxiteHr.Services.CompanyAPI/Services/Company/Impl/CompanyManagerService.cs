@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
+namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 {
-	public class CompanyCreatorService(AppDbContext dbContext,
+	public class CompanyManagerService(AppDbContext dbContext,
 		IMapper mapper,
 		IStringLocalizer<CompanyResources> companyLocalizer,
-		ILogger<CompanyCreatorService> logger) : ICompanyCreatorService
+		ILogger<CompanyManagerService> logger) : ICompanyManagerService
 	{
 		public async Task<NewCompanyReponseDto> NewCompanyCreateAsync(NewCompanyRequestDto newCompanyRequest)
 		{
@@ -55,9 +56,9 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				return newCompany;
 			}
 
-			async Task<CompanyUser> AddCreatorCompanyUser(Models.CompanyModels.Company newCompany)
+			async Task<CompanyUserModel> AddCreatorCompanyUser(Models.CompanyModels.Company newCompany)
 			{
-				CompanyUser newCompanyUser = new()
+				CompanyUserModel newCompanyUser = new()
 				{
 					Company = newCompany,
 					UserId = newCompanyRequest.CreatorId,
@@ -69,7 +70,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				return newCompanyUser;
 			}
 
-			async Task AddCreatorRoleAsync(CompanyUser companyCreator, Guid insUserId)
+			async Task AddCreatorRoleAsync(CompanyUserModel companyCreator, Guid insUserId)
 			{
 				var companyCreatorRole = await dbContext.CompanyRoles.SingleAsync(x => x.Id == (int)CompanyRoleDictionary.CompanyCreator);
 				CompanyUserRole newCompanyUserRole = new()
@@ -82,7 +83,7 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				await dbContext.CompanyUserRoles.AddAsync(newCompanyUserRole);
 			}
 
-			async Task AddCreatorPermission(CompanyUser companyCreator)
+			async Task AddCreatorPermission(CompanyUserModel companyCreator)
 			{
 				var companyManagerPermission = await dbContext.CompanyPermissions.SingleAsync(x => x.Id == (int)PermissionDictionary.CompanyManager);
 				CompanyUserPermission newCompanyUserPermission = new()

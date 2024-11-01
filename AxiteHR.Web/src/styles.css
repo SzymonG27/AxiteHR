@@ -67,3 +67,7 @@ div.block-ui-spinner .message {
 	--tw-bg-opacity: 1;
 	background-color: rgb(101, 122, 179);
 }
+
+input[type="password"]::-ms-reveal {
+	display: none;
+}

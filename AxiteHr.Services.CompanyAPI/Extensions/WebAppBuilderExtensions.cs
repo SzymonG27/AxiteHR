@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Text;
 using AxiteHR.GlobalizationResources.Resources;
-using AxiteHr.Services.CompanyAPI.Helpers;
-using AxiteHr.Services.CompanyAPI.Services.Company;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
-using AxiteHr.Services.CompanyAPI.Services.Employee;
-using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
+using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Services.Company;
+using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Services.Employee;
+using AxiteHR.Services.CompanyAPI.Services.Employee.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
@@ -101,7 +101,7 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 		{
 			builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
-			builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();

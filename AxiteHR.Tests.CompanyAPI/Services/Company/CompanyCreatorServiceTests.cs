@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +16,8 @@ public class CompanyCreatorServiceTests
 	private AppDbContext _dbContext;
 	private Mock<IMapper> _mapperMock;
 	private Mock<IStringLocalizer<CompanyResources>> _localizerMock;
-	private Mock<ILogger<CompanyCreatorService>> _loggerMock;
-	private CompanyCreatorService _companyCreatorService;
+	private Mock<ILogger<CompanyManagerService>> _loggerMock;
+	private CompanyManagerService _companyCreatorService;
 
 	[SetUp]
 	public void SetUp()
@@ -33,9 +33,9 @@ public class CompanyCreatorServiceTests
 
 		_mapperMock = new Mock<IMapper>();
 		_localizerMock = new Mock<IStringLocalizer<CompanyResources>>();
-		_loggerMock = new Mock<ILogger<CompanyCreatorService>>();
+		_loggerMock = new Mock<ILogger<CompanyManagerService>>();
 
-		_companyCreatorService = new CompanyCreatorService(
+		_companyCreatorService = new CompanyManagerService(
 			_dbContext,
 			_mapperMock.Object,
 			_localizerMock.Object,
@@ -59,13 +59,13 @@ public class CompanyCreatorServiceTests
 			CreatorId = Guid.NewGuid()
 		};
 
-		var newCompany = new AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company
+		var newCompany = new AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company
 		{
 			Id = 1,
 			CompanyName = request.CompanyName
 		};
 
-		_mapperMock.Setup(m => m.Map<AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
+		_mapperMock.Setup(m => m.Map<AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
 			.Returns(newCompany);
 
 		// Act
@@ -94,7 +94,7 @@ public class CompanyCreatorServiceTests
 			CreatorId = Guid.NewGuid()
 		};
 
-		_mapperMock.Setup(m => m.Map<AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
+		_mapperMock.Setup(m => m.Map<AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
 			.Throws(new Exception("Test Exception"));
 
 		_localizerMock.Setup(localizer => localizer[It.IsAny<string>()])

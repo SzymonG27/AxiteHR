@@ -1,6 +1,6 @@
 ﻿using AxiteHR.Services.AuthAPI.Services.Auth.Impl;
 
-namespace AxiteHr.Tests.AuthAPI.Services.Auth;
+namespace AxiteHR.Tests.AuthAPI.Services.Auth;
 
 [TestFixture]
 public class TempPasswordGeneratorServiceTests

@@ -1,4 +1,4 @@
-﻿using AxiteHr.Integration.GlobalClass.Auth;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
 using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.AuthAPI.Services.Auth;

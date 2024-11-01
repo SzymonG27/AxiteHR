@@ -1,18 +1,10 @@
-﻿using AxiteHr.Services.CompanyAPI.Infrastructure;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
-using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
+﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Company
+namespace AxiteHR.Services.CompanyAPI.Services.Company
 {
 	public interface ICompanyRepository
 	{
 		IEnumerable<CompanyListDto> GetCompanyList(Guid userId);
-
-		Task<IList<CompanyUserUserRelation>> GetCompanyUserUserRealtionListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo);
-
-		Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId);
 
 		/// <summary>
 		/// Get company for employee. Employee should have one company.
@@ -20,13 +12,5 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company
 		/// <param name="employeeId"></param>
 		/// <returns><see cref="CompanyForEmployeeDto"/></returns>
 		Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId);
-
-		Task<bool> IsUserInCompanyAsync(Guid userId, int companyId);
-
-		Task<CompanyUser?> GetCompanyUserAsync(int companyUserId);
-
-		Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyUserId);
-
-		Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyId, Guid insUserId);
 	}
 }

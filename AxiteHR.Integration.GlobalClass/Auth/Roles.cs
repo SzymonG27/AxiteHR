@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Integration.GlobalClass.Auth
+﻿namespace AxiteHR.Integration.GlobalClass.Auth
 {
 	public static class Roles
 	{

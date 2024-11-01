@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 
-namespace AxiteHr.Tests.AuthAPI.Services.Auth;
+namespace AxiteHR.Tests.AuthAPI.Services.Auth;
 
 [TestFixture]
 public class JwtTokenGeneratorTests

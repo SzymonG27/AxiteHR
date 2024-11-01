@@ -12,4 +12,7 @@ export enum ApiPaths {
 	EmployeeCreator = '/EmployeeManager/CreateNewEmployee',
 	GetCompanyForEmployee = '/Company/GetForEmployee',
 	IsUserInCompany = '/CompanyUser/IsInCompany',
+
+	//Application API
+	NewApplicationCreator = '/Application/CreateNewApplication',
 }

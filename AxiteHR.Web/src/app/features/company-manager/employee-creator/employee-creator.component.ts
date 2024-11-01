@@ -127,7 +127,7 @@ export class EmployeeCreatorComponent {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = '*' + unexpectedErrorTranslation;
+						this.errorMessage = unexpectedErrorTranslation;
 					}
 					this.blockUI.stop();
 				},

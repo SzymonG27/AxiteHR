@@ -30,7 +30,6 @@ export class CompanyService {
 				errorMessage: null,
 			};
 
-			responseError.isSucceeded = false;
 			this.translate
 				.get('Global_UserNotLogged')
 				.pipe(

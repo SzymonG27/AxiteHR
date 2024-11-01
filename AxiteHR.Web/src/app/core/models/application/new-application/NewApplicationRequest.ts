@@ -1,7 +1,8 @@
 import { ApplicationType } from '../ApplicationType';
 
 export interface NewApplicationRequest {
-	companyUserId: number;
+	companyId: number;
+	userId: string;
 	applicationType: ApplicationType;
 	periodFrom: Date | null;
 	periodTo: Date | null;

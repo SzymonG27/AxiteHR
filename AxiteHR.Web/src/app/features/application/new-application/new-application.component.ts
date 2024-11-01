@@ -7,8 +7,8 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApplicationType } from '../../../core/models/application/ApplicationType';
 import { dateGreaterThanOrEqualsTo } from '../../../shared/validators/date-greater-than-or-equals-to.validator';
 import { NewApplicationFormRequest } from '../../../core/models/application/new-application/NewApplicationFormRequest';
@@ -17,9 +17,11 @@ import { greaterThan } from '../../../shared/validators/greater-than.validator';
 import { maxPeriodDifference } from '../../../shared/validators/max-period-difference.validator';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
-import { Subject, take, takeUntil } from 'rxjs';
+import { first, firstValueFrom, Subject, take, takeUntil } from 'rxjs';
 import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { NewApplicationService } from '../../../core/services/application/new-application.service';
+import { NewApplicationResponse } from '../../../core/models/application/new-application/NewApplicationResponse';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
 	selector: 'app-new-application',
@@ -57,7 +59,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 	applicationCreatorForm: FormGroup;
 	applicationFormCreatorRequest: NewApplicationFormRequest = {
 		newApplicationRequest: {
-			companyUserId: 0,
+			companyId: 0,
+			userId: '',
 			applicationType: ApplicationType.Vacation,
 			periodFrom: null,
 			periodTo: null,
@@ -70,6 +73,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 
 	hoursFromBeforeFullDayDisabled: number | null = null;
 	hoursToBeforeFullDayDisabled: number | null = null;
+
+	companyId: number | null = null;
 
 	applicationTypeOptions = Object.values(ApplicationType).filter(
 		value => typeof value === 'number'
@@ -86,8 +91,17 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 		private router: Router,
 		private blockUI: BlockUIService,
 		private dataService: DataBehaviourService,
-		private newApplicationService: NewApplicationService
+		private newApplicationService: NewApplicationService,
+		private route: ActivatedRoute,
+		private translate: TranslateService
 	) {
+		this.companyId = this.route.snapshot.parent?.params['id'];
+		if (this.companyId == undefined || this.companyId == null) {
+			//ToDo client logger
+			this.router.navigate(['Internal-Error']);
+			this.blockUI.stop();
+		}
+
 		this.applicationCreatorForm = new FormGroup(
 			{
 				//Request fields
@@ -161,10 +175,15 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 		this.applicationCreatorForm.markAllAsTouched();
 		this.applicationCreatorForm.updateValueAndValidity();
 
+		if (!this.applicationCreatorForm.valid) {
+			return;
+		}
+
 		this.blockUI.start();
 
 		this.applicationFormCreatorRequest = this.newApplicationService.mapFormToRequest(
-			this.applicationCreatorForm
+			this.applicationCreatorForm,
+			this.companyId!
 		);
 
 		const periodFrom = this.applicationFormCreatorRequest.newApplicationRequest.periodFrom
@@ -186,6 +205,56 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 		}
 		this.applicationFormCreatorRequest.newApplicationRequest.periodFrom = periodFrom;
 		this.applicationFormCreatorRequest.newApplicationRequest.periodTo = periodTo;
+
+		this.newApplicationService
+			.createNewApplication(this.applicationFormCreatorRequest.newApplicationRequest)
+			.pipe(first())
+			.subscribe({
+				next: (response: NewApplicationResponse) => {
+					if (response.isSucceeded) {
+						this.blockUI.stop();
+						this.router.navigate(['/CompanyMenu', this.companyId, 'Calendar']);
+						return;
+					}
+					this.errorMessage = response.errorMessage;
+					this.blockUI.stop();
+				},
+				error: async (error: HttpErrorResponse) => {
+					if (
+						error.status === HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errorMessage
+					) {
+						//Errors from response
+						this.errorMessage = error.error.errorMessage;
+					} else if (
+						error.status == HttpStatusCode.BadRequest &&
+						error.error &&
+						error.error.errors
+					) {
+						let firstError = true;
+
+						for (const key in error.error.errors) {
+							if (Object.prototype.hasOwnProperty.call(error.error.errors, key)) {
+								error.error.errors[key].forEach((errText: string) => {
+									if (firstError) {
+										this.errorMessage = errText;
+										firstError = false;
+									} else {
+										this.errorMessage += `\n*${errText}`;
+									}
+								});
+							}
+						}
+					} else {
+						const unexpectedErrorTranslation: string = await firstValueFrom(
+							this.translate.get('Application_NewApplicationCreator_UnexpectedError')
+						);
+						this.errorMessage = unexpectedErrorTranslation;
+					}
+					this.blockUI.stop();
+				},
+			});
 
 		this.blockUI.stop();
 	}

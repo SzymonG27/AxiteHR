@@ -149,5 +149,6 @@
 	"Application_Hours_GreaterThanError": "Hour to must be greater than Hour from",
 	"Application_Hours_MaxPeriodDifferenceError": "The difference between hours cannot exceed {{maxHours}}",
 	"Application_Reason_MaxLengthError": "The Reason field can contain a maximum of {{maxLength}} characters",
-	"Application_SendApplication": "Send application"
+	"Application_SendApplication": "Send application",
+	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again."
 }

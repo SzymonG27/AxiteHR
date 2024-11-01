@@ -4,16 +4,29 @@ import { NewApplicationFormRequest } from '../../models/application/new-applicat
 import { NewApplicationForm } from '../../models/application/new-application/NewApplicationForm';
 import { NewApplicationRequest } from '../../models/application/new-application/NewApplicationRequest';
 import { NewApplicationResponse } from '../../models/application/new-application/NewApplicationResponse';
+import { AuthStateService } from '../authentication/auth-state.service';
+import { TranslateService } from '@ngx-translate/core';
+import { first, map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Environment } from '../../../environment/Environment';
+import { ApiPaths } from '../../../environment/ApiPaths';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class NewApplicationService {
-	mapFormToRequest(formGroup: FormGroup): NewApplicationFormRequest {
+	constructor(
+		private http: HttpClient,
+		private authStateService: AuthStateService,
+		private translate: TranslateService
+	) {}
+
+	mapFormToRequest(formGroup: FormGroup, companyId: number): NewApplicationFormRequest {
 		const form = formGroup.value as NewApplicationForm;
 		return {
 			newApplicationRequest: {
-				companyUserId: 0,
+				companyId: companyId,
+				userId: '',
 				applicationType: form.applicationType,
 				periodFrom: form.periodFrom,
 				periodTo: form.periodTo,
@@ -25,7 +38,32 @@ export class NewApplicationService {
 		};
 	}
 
-	createNewApplication(newApplicationRequest: NewApplicationRequest): Observable<NewApplicationResponse> {
-		
+	createNewApplication(
+		newApplicationRequest: NewApplicationRequest
+	): Observable<NewApplicationResponse> {
+		const userId = this.authStateService.getLoggedUserId();
+		if (userId.length === 0) {
+			const responseError: NewApplicationResponse = {
+				isSucceeded: false,
+				errorMessage: null,
+			};
+
+			this.translate
+				.get('Global_UserNotLogged')
+				.pipe(
+					first(),
+					map((translation: string) => translation)
+				)
+				.subscribe(message => (responseError.errorMessage = message));
+
+			return of(responseError);
+		}
+
+		newApplicationRequest.userId = userId;
+
+		return this.http.post<NewApplicationResponse>(
+			`${Environment.gatewayApiUrl}${ApiPaths.NewApplicationCreator}`,
+			newApplicationRequest
+		);
 	}
 }

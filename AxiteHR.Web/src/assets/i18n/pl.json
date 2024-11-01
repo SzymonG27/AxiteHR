@@ -149,5 +149,6 @@
 	"Application_Hours_GreaterThanError": "Godzina do musi być większa od godziny od",
 	"Application_Hours_MaxPeriodDifferenceError": "Różnica między godzinami nie może przekraczać {{maxHours}}",
 	"Application_Reason_MaxLengthError": "Pole Powód może zawierać maksymalnie {{maxLength}} znaków",
-	"Application_SendApplication": "Wyślij wniosek"
+	"Application_SendApplication": "Wyślij wniosek",
+	"Application_NewApplicationCreator_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
 }

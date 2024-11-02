@@ -12,7 +12,7 @@ namespace AxiteHR.Integration.JwtTokenHandler
 				return null;
 			}
 
-			return (Guid)jwtSecurityToken.Payload.Single(x => x.Key == JwtRegisteredClaimNames.Sub).Value;
+			return Guid.Parse((string)jwtSecurityToken.Payload.Single(x => x.Key == JwtRegisteredClaimNames.Sub).Value);
 		}
 
 		private static JwtSecurityToken? GetJwtSecurityToken(string token)

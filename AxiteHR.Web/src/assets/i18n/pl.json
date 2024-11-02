@@ -69,6 +69,7 @@
 	"Authentication_TempPasswordChange_InternalError": "Wystąpił błąd wewnętrzny podczas zmiany hasła. Spróbuj ponownie później",
 	"Authentication_TempPasswordChange_Success": "Hasło zostało poprawnie zmienione. Możesz się teraz zalogować",
 	"Authentication_Cancel": "Anuluj",
+	"Authentication_Login_Success": "Zostałeś poprawnie zalogowany.",
 
 	"//Section5": "Company messages",
 	"Company_List_CompanyName": "Nazwa firmy",

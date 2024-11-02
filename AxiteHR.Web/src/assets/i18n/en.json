@@ -69,6 +69,7 @@
 	"Authentication_TempPasswordChange_InternalError": "An internal error occurred while changing the password. Please try again later",
 	"Authentication_TempPasswordChange_Success": "The password has been changed successfully. You can log in now",
 	"Authentication_Cancel": "Cancel",
+	"Authentication_Login_Success": "You have been successfully logged in.",
 
 	"//Section5": "Company messages",
 	"Company_List_CompanyName": "Company name",

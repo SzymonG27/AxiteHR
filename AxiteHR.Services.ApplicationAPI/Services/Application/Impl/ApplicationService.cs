@@ -98,14 +98,19 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var userDaysOff = await GetUserDaysOffAsync(createApplicationRequestDto, companyUserId.Value);
-				if (userDaysOff == null || !IsUserHaveEnoughDaysOff(createApplicationRequestDto, userDaysOff, out decimal workingDaysEquivalent))
+				UserCompanyDaysOff? userDaysOff = null;
+				decimal workingDaysEquivalent = 0;
+				if (!createApplicationRequestDto.ApplicationType.IsTypeThatDontCountDaysOff())
 				{
-					return new CreateApplicationResponseDto
+					userDaysOff = await GetUserDaysOffAsync(createApplicationRequestDto, companyUserId.Value);
+					if (userDaysOff == null || !IsUserHaveEnoughDaysOff(createApplicationRequestDto, userDaysOff, out workingDaysEquivalent))
 					{
-						IsSucceeded = false,
-						ErrorMessage = applicationLocalizer[ApplicationResourcesKeys.CreateApplication_NotEnoughDaysOffError]
-					};
+						return new CreateApplicationResponseDto
+						{
+							IsSucceeded = false,
+							ErrorMessage = applicationLocalizer[ApplicationResourcesKeys.CreateApplication_NotEnoughDaysOffError]
+						};
+					}
 				}
 
 				var createdUserApplication = UserApplicationMap.Map(createApplicationRequestDto, insUserId.Value, companyUserId.Value);
@@ -113,7 +118,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 
 				if (!createApplicationRequestDto.ApplicationType.IsTypeThatDontCountDaysOff())
 				{
-					userDaysOff.DaysOff -= workingDaysEquivalent;
+					userDaysOff!.DaysOff -= workingDaysEquivalent;
 				}
 
 				await dbContext.SaveChangesAsync();

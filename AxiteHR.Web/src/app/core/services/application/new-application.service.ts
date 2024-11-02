@@ -10,6 +10,7 @@ import { first, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
+import { ApplicationType } from '../../models/application/ApplicationType';
 
 @Injectable({
 	providedIn: 'root',
@@ -60,10 +61,23 @@ export class NewApplicationService {
 		}
 
 		newApplicationRequest.userId = userId;
+		newApplicationRequest.applicationType = this.convertToApplicationType(
+			newApplicationRequest.applicationType
+		);
 
 		return this.http.post<NewApplicationResponse>(
 			`${Environment.gatewayApiUrl}${ApiPaths.NewApplicationCreator}`,
 			newApplicationRequest
 		);
+	}
+
+	private convertToApplicationType(value: string | number): ApplicationType {
+		const parsedValue = typeof value === 'string' ? parseInt(value, 10) : value;
+
+		if (Object.values(ApplicationType).includes(parsedValue)) {
+			return parsedValue as ApplicationType;
+		} else {
+			throw new Error(`Invalid ApplicationType: ${value}`);
+		}
 	}
 }

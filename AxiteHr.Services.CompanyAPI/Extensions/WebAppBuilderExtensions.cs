@@ -1,18 +1,23 @@
-﻿using AxiteHr.Services.CompanyAPI.Helpers;
+﻿using System.Globalization;
+using System.Text;
 using AxiteHR.GlobalizationResources.Resources;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
-using AxiteHr.Services.CompanyAPI.Services.Company;
-using AxiteHr.Services.CompanyAPI.Services.Employee.Impl;
-using AxiteHr.Services.CompanyAPI.Services.Employee;
+using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Services.Cache;
+using AxiteHR.Services.CompanyAPI.Services.Cache.Impl;
+using AxiteHR.Services.CompanyAPI.Services.Company;
+using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
+using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
+using AxiteHR.Services.CompanyAPI.Services.Employee;
+using AxiteHR.Services.CompanyAPI.Services.Employee.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Globalization;
-using System.Text;
+using StackExchange.Redis;
 
-namespace AxiteHR.GatewaySol.Extensions
+namespace AxiteHR.Services.CompanyAPI.Extensions
 {
 	public static class WebAppBuilderExtensions
 	{
@@ -99,9 +104,14 @@ namespace AxiteHR.GatewaySol.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
+			var redisConnectionString = builder.Configuration.GetConnectionString("Redis")!;
+			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
+
 			builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
-			builder.Services.AddScoped<ICompanyCreatorService, CompanyCreatorService>();
+			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
+			builder.Services.AddScoped<ICompanyUserService, CompanyUserService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();

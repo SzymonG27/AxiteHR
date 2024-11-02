@@ -1,4 +1,4 @@
-﻿using AxiteHr.Services.EmailAPI.Data;
+﻿using AxiteHR.Services.EmailAPI.Data;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Security.Encryption;

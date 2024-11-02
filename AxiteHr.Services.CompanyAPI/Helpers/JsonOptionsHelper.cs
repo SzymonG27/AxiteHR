@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace AxiteHr.Services.CompanyAPI.Helpers
+namespace AxiteHR.Services.CompanyAPI.Helpers
 {
 	public static class JsonOptionsHelper
 	{

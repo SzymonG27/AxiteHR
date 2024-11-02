@@ -13,6 +13,7 @@
 	"EMPLOYEE_CREATE_TITLE_PAGE": "Kreator pracownika",
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
 	"CALENDAR_TITLE_PAGE": "Kalendarz",
+	"NEW_APPLICATION_TITLE_PAGE": "Nowy wniosek",
 	"defaultTitle": "Moja Aplikacja",
 
 	"//Section2": "Global messages",
@@ -93,6 +94,7 @@
 	"Nav_Manager_Team_Employees": "Pracownicy",
 	"Nav_Manager_Applications": "Wnioski",
 	"Nav_Manager_Applications_Calendar": "Kalendarz",
+	"Nav_Manager_Applications_NewApplication": "Nowy wniosek",
 
 	"//Section7": "Pagination",
 	"Pagination_Previous": " Poprzednia ",
@@ -118,5 +120,35 @@
 		"OCTOBER": "Październik",
 		"NOVEMBER": "Listopad",
 		"DECEMBER": "Grudzień"
-	}
+	},
+	"Calendar_EventModal_Title": "Wybierz typ wydarzenia",
+	"Calendar_Modal_Application": "Wniosek",
+
+	"//Section9": "Application",
+	"Application_NewApplication_Title": "Stwórz nowy wniosek",
+	"Application_ApplicationType": "Typ wniosku",
+	"Application_Types": {
+		"Vacation": "Urlop",
+		"Inaccessibility": "Niedostępność",
+		"UnpaidBreak": "Nieodpłatna przerwa w świadczeniu usług",
+		"HomeWork": "Praca zdalna"
+	},
+	"Application_PeriodFrom": "Okres od",
+	"Application_PeriodTo": "Okres do",
+	"Application_IsFullDay": "Cały dzień",
+	"Application_HoursPeriod": "Okres godzin",
+	"Application_Reason": "Powód",
+	"Application_ApplicationType_RequiredError": "Pole Typ wniosku jest wymagane",
+	"Application_PeriodFrom_RequiredError": "Pole Okres od jest wymagane",
+	"Application_PeriodTo_RequiredError": "Pole Okres do jest wymagane",
+	"Application_Periods_GreaterThanOrEqualTo": "Okres do musi być większy bądź równy okresowi od",
+	"Application_HoursFrom_RequiredError": "Pole Godzina od jest wymagane",
+	"Application_HoursTo_RequiredError": "Pole Godzina do jest wymagane",
+	"Application_HoursFrom_MinMaxError": "Niepoprawna godzina ({{workingHoursFrom}}-{{workingHoursTo}}) w polu Godzina od",
+	"Application_HoursTo_MinMaxError": "Niepoprawna godzina ({{workingHoursFrom}}-{{workingHoursTo}}) w polu Godzina do",
+	"Application_Hours_GreaterThanError": "Godzina do musi być większa od godziny od",
+	"Application_Hours_MaxPeriodDifferenceError": "Różnica między godzinami nie może przekraczać {{maxHours}}",
+	"Application_Reason_MaxLengthError": "Pole Powód może zawierać maksymalnie {{maxLength}} znaków",
+	"Application_SendApplication": "Wyślij wniosek",
+	"Application_NewApplicationCreator_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
 }

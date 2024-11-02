@@ -17,7 +17,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/Company/CompanyUserList/{companyId}/{excludedUserId}",
+			"DownstreamPathTemplate": "/api/CompanyUser/List/{companyId}/{excludedUserId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -25,14 +25,14 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/Company/CompanyUserList/{companyId}/{excludedUserId}",
+			"UpstreamPathTemplate": "/api/CompanyUser/List/{companyId}/{excludedUserId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/Company/CompanyUsersCount/{companyId}/{excludedUserId}",
+			"DownstreamPathTemplate": "/api/CompanyUser/GetId/{companyId}/{userId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -40,7 +40,22 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/Company/CompanyUsersCount/{companyId}/{excludedUserId}",
+			"UpstreamPathTemplate": "/api/CompanyUser/GetId/{companyId}/{userId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyUser/Count/{companyId}/{excludedUserId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyUser/Count/{companyId}/{excludedUserId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
@@ -62,7 +77,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/Company/IsUserInCompany/{userId}/{companyId}",
+			"DownstreamPathTemplate": "/api/CompanyUser/IsInCompany/{userId}/{companyId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -70,7 +85,22 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/Company/IsUserInCompany/{userId}/{companyId}",
+			"UpstreamPathTemplate": "/api/CompanyUser/IsInCompany/{userId}/{companyId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyUser/CanManageApplications/{companyUserId}&{insUserId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyUser/CanManageApplications/{companyUserId}&{insUserId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
@@ -92,7 +122,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyManager/CreateNewEmployee",
+			"DownstreamPathTemplate": "/api/EmployeeManager/CreateNewEmployee",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -100,7 +130,23 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyManager/CreateNewEmployee",
+			"UpstreamPathTemplate": "/api/EmployeeManager/CreateNewEmployee",
+			"UpstreamHttpMethod": [ "Post" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		//ApplicationAPI: 7002
+		{
+			"DownstreamPathTemplate": "/api/Application/CreateNewApplication",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.applicationapi",
+					"Port": 7002
+				}
+			],
+			"UpstreamPathTemplate": "/api/Application/CreateNewApplication",
 			"UpstreamHttpMethod": [ "Post" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"

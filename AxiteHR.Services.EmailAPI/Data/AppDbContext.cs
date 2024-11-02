@@ -1,7 +1,7 @@
 ﻿using AxiteHR.Services.EmailAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AxiteHr.Services.EmailAPI.Data
+namespace AxiteHR.Services.EmailAPI.Data
 {
 	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 	{

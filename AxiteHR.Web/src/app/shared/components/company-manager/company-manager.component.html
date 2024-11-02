@@ -1,5 +1,9 @@
-<div class="w-11/12 flex justify-start">
-	<app-nav-manager />
+<div class="overflow-x-hidden">
+	<div class="absolute">
+		<app-nav-manager #navManager />
+	</div>
 
-	<router-outlet />
+	<div class="w-11/12 md:ml-[20vw] lg:ml-[15vw] flex justify-start">
+		<router-outlet #mainContent />
+	</div>
 </div>

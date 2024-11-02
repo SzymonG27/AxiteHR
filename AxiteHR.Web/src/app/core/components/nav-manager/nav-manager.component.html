@@ -1,25 +1,29 @@
 <div class="flex select-none">
 	<!-- Sidebar -->
-	<div class="w-[20vw] lg:w-[15vw] h-[calc(100vh-82px)] bg-gray-50 shadow-md hidden md:block">
+	<div
+		#sidebar
+		class="w-[20vw] lg:w-[15vw] min-h-[calc(100vh-82px)] bg-gray-50 shadow-md hidden md:block"
+	>
 		<div class="p-4 flex items-center">
 			<span class="font-bold text-xl">{{ 'Nav_Manager_Menu' | translate }}</span>
 		</div>
 		<nav>
 			<ul>
-				<li class="p-4 hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
-					<a class="flex items-center space-x-2">
+				<li class="hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
+					<a class="flex items-center space-x-2 p-4">
 						<span class="material-icons">home</span>
-						<span class="hidden md:inline">{{
-							'Nav_Manager_Dashboard' | translate
-						}}</span>
+						<span class="hidden md:inline">
+							{{ 'Nav_Manager_Dashboard' | translate }}
+						</span>
 					</a>
 				</li>
 				<li
 					*ngIf="!userRoles.includes(UserRole.UserFromCompany)"
-					class="p-4 hover:bg-gray-200 cursor-pointer"
+					class="hover:bg-gray-200 cursor-pointer"
 				>
 					<button
-						class="flex items-center space-x-2 w-full"
+						type="button"
+						class="flex items-center space-x-2 w-full h-full p-4"
 						(click)="toggleDropdown('Teams')"
 					>
 						<span class="material-icons">groups</span>
@@ -31,8 +35,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{ block: isTeamsExpanded, hidden: !isTeamsExpanded }"
@@ -49,10 +54,12 @@
 						</li>
 					</ul>
 				</li>
-				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+				<li class="hover:bg-gray-200 cursor-pointer">
 					<button
-						class="flex items-center space-x-2 w-full"
+						type="button"
+						class="flex items-center space-x-2 w-full h-full p-4"
 						(click)="toggleDropdown('Projects')"
+						(keypress)="toggleDropdown('Projects')"
 					>
 						<span class="material-icons">folder</span>
 						<span class="hidden md:inline">Projects</span>
@@ -63,8 +70,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{ block: isProjectsExpanded, hidden: !isProjectsExpanded }"
@@ -78,15 +86,17 @@
 						</li>
 					</ul>
 				</li>
-				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+				<li class="hover:bg-gray-200 cursor-pointer">
 					<button
-						class="flex items-center space-x-2 w-full"
+						type="button"
+						class="flex items-center space-x-2 w-full h-full p-4"
 						(click)="toggleDropdown('Applications')"
+						(keypress)="toggleDropdown('Applications')"
 					>
 						<span class="material-icons">calendar_today</span>
-						<span class="hidden md:inline">{{
-							'Nav_Manager_Applications' | translate
-						}}</span>
+						<span class="hidden md:inline">
+							{{ 'Nav_Manager_Applications' | translate }}
+						</span>
 						<span
 							class="ml-auto material-icons"
 							[ngClass]="
@@ -94,8 +104,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{
@@ -106,12 +117,15 @@
 					>
 						<li
 							class="p-2 hover:bg-gray-300 cursor-pointer"
+							[routerLink]="['NewApplication']"
+						>
+							<a>{{ 'Nav_Manager_Applications_NewApplication' | translate }}</a>
+						</li>
+						<li
+							class="p-2 hover:bg-gray-300 cursor-pointer"
 							[routerLink]="['Calendar']"
 						>
 							<a>{{ 'Nav_Manager_Applications_Calendar' | translate }}</a>
-						</li>
-						<li class="p-2 hover:bg-gray-300 cursor-pointer">
-							<a href="#">Project 2</a>
 						</li>
 					</ul>
 				</li>
@@ -177,8 +191,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{ block: isTeamsExpanded, hidden: !isTeamsExpanded }"
@@ -209,8 +224,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{ block: isProjectsExpanded, hidden: !isProjectsExpanded }"
@@ -238,8 +254,9 @@
 									? 'rotate-180 transition-all duration-150'
 									: 'rotate-0 transition-all duration-150'
 							"
-							>expand_more</span
 						>
+							expand_more
+						</span>
 					</button>
 					<ul
 						[ngClass]="{

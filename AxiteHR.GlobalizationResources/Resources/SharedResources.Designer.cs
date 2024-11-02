@@ -115,6 +115,24 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Period from.
+        /// </summary>
+        public static string Global_PeriodFrom {
+            get {
+                return ResourceManager.GetString("Global_PeriodFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period to.
+        /// </summary>
+        public static string Global_PeriodTo {
+            get {
+                return ResourceManager.GetString("Global_PeriodTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is required..
         /// </summary>
         public static string Global_RequiredField {

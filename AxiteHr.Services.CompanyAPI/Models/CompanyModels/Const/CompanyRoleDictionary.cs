@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const
 {
 	public enum CompanyRoleDictionary
 	{

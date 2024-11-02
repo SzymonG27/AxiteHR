@@ -1,10 +1,11 @@
 using AutoMapper;
-using AxiteHr.Services.CompanyAPI;
-using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Helpers;
-using AxiteHR.GatewaySol.Extensions;
+using AxiteHR.Services.CompanyAPI;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Extensions;
+using AxiteHR.Services.CompanyAPI.Helpers;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,6 +64,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseAuthentication();
+
+var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(locOptions);
 
 app.MapControllers();
 

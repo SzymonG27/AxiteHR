@@ -12,5 +12,7 @@ namespace AxiteHR.GlobalizationResources
         public const string Global_RequiredField = "Global_RequiredField";
         public const string Global_UserWithoutPermission = "Global_UserWithoutPermission";
         public const string HelloWorld = "HelloWorld";
+        public const string Global_PeriodFrom = "Global_PeriodFrom";
+        public const string Global_PeriodTo = "Global_PeriodTo";
     }
 }

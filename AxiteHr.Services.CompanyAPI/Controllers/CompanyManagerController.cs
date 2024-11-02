@@ -1,25 +1,15 @@
-﻿using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
-using AxiteHr.Services.CompanyAPI.Models.Auth;
-using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
-using AxiteHr.Services.CompanyAPI.Services.Company;
-using AxiteHr.Services.CompanyAPI.Services.Employee;
-using AxiteHR.GlobalizationResources;
-using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Services.CompanyAPI.Helpers;
-using Microsoft.AspNetCore.Authentication;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
+using AxiteHR.Services.CompanyAPI.Services.Company;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
-namespace AxiteHr.Services.CompanyAPI.Controllers
+namespace AxiteHR.Services.CompanyAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class CompanyManagerController(
-		ICompanyCreatorService companyCreatorService,
-		IEmployeeService employeeService,
-		IStringLocalizer<SharedResources> sharedLocalizer) : ControllerBase
+	public class CompanyManagerController(ICompanyManagerService companyCreatorService) : ControllerBase
 	{
 		[HttpPost("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
@@ -31,28 +21,6 @@ namespace AxiteHr.Services.CompanyAPI.Controllers
 				return BadRequest(response);
 			}
 			return Ok();
-		}
-
-		[HttpPost("[action]")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public async Task<IActionResult> CreateNewEmployee(
-			[FromBody] NewEmployeeRequestDto newEmployeeRequestDto,
-			[FromHeader(Name = HeaderNamesHelper.AcceptLanguage)] string acceptLanguage = "en")
-		{
-			acceptLanguage ??= "en";
-
-			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
-			if (string.IsNullOrEmpty(bearerToken))
-			{
-				return Unauthorized(sharedLocalizer[SharedResourcesKeys.Global_MissingToken]);
-			}
-
-			var response = await employeeService.CreateNewEmployeeAsync(newEmployeeRequestDto, bearerToken, acceptLanguage);
-			if (!response.IsSucceeded)
-			{
-				return BadRequest(response);
-			}
-			return Ok(response);
 		}
 	}
 }

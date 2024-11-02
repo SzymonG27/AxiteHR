@@ -2,7 +2,7 @@
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
-const prettier = require('eslint-config-prettier');
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 module.exports = tseslint.config(
 	{
@@ -12,7 +12,7 @@ module.exports = tseslint.config(
 			...tseslint.configs.recommended,
 			...tseslint.configs.stylistic,
 			...angular.configs.tsRecommended,
-			prettier,
+			eslintPluginPrettierRecommended
 		],
 		processor: angular.processInlineTemplates,
 		rules: {
@@ -32,7 +32,7 @@ module.exports = tseslint.config(
 					style: 'kebab-case',
 				},
 			],
-			'prettier/prettier': ['error', { singleQuote: true, semi: true }],
+			"prettier/prettier": ["error"],
 		},
 	},
 	{
@@ -40,8 +40,15 @@ module.exports = tseslint.config(
 		extends: [
 			...angular.configs.templateRecommended,
 			...angular.configs.templateAccessibility,
-			prettier,
+			eslintPluginPrettierRecommended
 		],
-		rules: {},
+		rules: {
+			"prettier/prettier": [
+				"error",
+				{
+					parser: 'html'
+				}
+			],
+		},
 	}
 );

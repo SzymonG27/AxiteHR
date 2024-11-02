@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 
-namespace AxiteHr.Tests.AuthAPI.Services.Auth;
+namespace AxiteHR.Tests.AuthAPI.Services.Auth;
 
 [TestFixture]
 public class JwtTokenGeneratorTests
@@ -83,15 +83,14 @@ public class JwtTokenGeneratorTests
 		});
 
 		var roles = principal.FindAll(ClaimTypes.Role).Select(claim => claim.Value).ToList();
-		CollectionAssert.AreEquivalent(roleList, roles, "Roles in token should match the provided roles");
+		var expectedExpiration = DateTime.UtcNow.AddMinutes(_jwtOptionsMock.Object.Value.ExpiresInMins);
 
 		Assert.Multiple(() =>
 		{
+			Assert.That(roleList, Is.EquivalentTo(roles), "Roles in token should match the provided roles");
 			Assert.That(jwtToken.Issuer, Is.EqualTo(_jwtOptionsMock.Object.Value.Issuer), "Issuer should match");
 			Assert.That(jwtToken.Audiences.First(), Is.EqualTo(_jwtOptionsMock.Object.Value.Audience), "Audience should match");
+			Assert.That(jwtToken.ValidTo, Is.EqualTo(expectedExpiration).Within(1).Minutes, "Token expiration time should be correct");
 		});
-
-		var expectedExpiration = DateTime.UtcNow.AddMinutes(_jwtOptionsMock.Object.Value.ExpiresInMins);
-		Assert.That(jwtToken.ValidTo, Is.EqualTo(expectedExpiration).Within(1).Minutes, "Token expiration time should be correct");
 	}
 }

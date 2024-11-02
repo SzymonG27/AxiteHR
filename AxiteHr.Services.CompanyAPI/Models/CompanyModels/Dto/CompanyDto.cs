@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto
 {
 	public record CompanyDto
 	{
@@ -8,6 +8,6 @@
 
 		public int CompanyLevelId { get; set; }
 
-		public CompanyLevelDto CompanyLevel { get; set; } = new CompanyLevelDto();
+		public CompanyLevelDto CompanyLevel { get; set; } = new();
 	}
 }

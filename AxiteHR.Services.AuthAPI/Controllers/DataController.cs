@@ -1,4 +1,4 @@
-﻿using AxiteHR.Services.AuthAPI.Models.Auth.Const;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
 using AxiteHR.Services.AuthAPI.Models.DataModels.Dto;
 using AxiteHR.Services.AuthAPI.Services.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

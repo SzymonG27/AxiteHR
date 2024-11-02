@@ -7,7 +7,6 @@ import {
 	Validators,
 } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CompanyCreatorRequest } from '../../../core/models/company/company-creator/CompanyCreatorRequest';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
@@ -26,10 +25,7 @@ export class CompanyCreatorComponent {
 	companyStateName = false;
 	companyCreatorForm: FormGroup;
 	errorMessage: string | null = null;
-	companyCreatorModel: CompanyCreatorRequest = {
-		creatorId: '',
-		companyName: '',
-	};
+	companyName = '';
 
 	constructor(
 		private blockUIService: BlockUIService,
@@ -38,7 +34,7 @@ export class CompanyCreatorComponent {
 		private router: Router
 	) {
 		this.companyCreatorForm = new FormGroup({
-			CompanyName: new FormControl(this.companyCreatorModel.companyName, {
+			CompanyName: new FormControl(this.companyName, {
 				validators: [Validators.required],
 			}),
 		});
@@ -49,9 +45,9 @@ export class CompanyCreatorComponent {
 			return;
 		}
 		this.blockUIService.start();
-		this.companyCreatorModel = this.companyCreatorForm.value;
+		this.companyName = this.companyCreatorForm.get('CompanyName')?.value;
 		this.companyService
-			.createNewCompany(this.companyCreatorModel)
+			.createNewCompany(this.companyName)
 			.pipe(take(1))
 			.subscribe({
 				next: () => {

@@ -1,0 +1,329 @@
+<div class="ml-4 mt-4">
+	<button
+		type="button"
+		(click)="goBack()"
+		class="rounded-full button-hover-animation button-full"
+	>
+		<span class="material-icons px-2 py-2">arrow_back</span>
+	</button>
+</div>
+
+<div class="text-[#333]">
+	<div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex flex-col items-center justify-center">
+		<div
+			class="md:mt-8 grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md"
+		>
+			<div class="md:max-w-md w-full sm:px-6 py-4">
+				<form [formGroup]="applicationCreatorForm">
+					<div class="mb-12">
+						<h3 class="text-3xl font-extrabold">
+							{{ 'Application_NewApplication_Title' | translate }}
+						</h3>
+					</div>
+					<div class="mb-4 text-red-600" *ngIf="errorMessage">*{{ errorMessage }}</div>
+					<div>
+						<div class="text-sm block mb-2">
+							{{ 'Application_ApplicationType' | translate }}*
+						</div>
+						<div class="relative flex items-center">
+							<select
+								title="Application type"
+								id="applicationTypeSelect"
+								name="applicationType"
+								formControlName="applicationType"
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition appearance-none"
+								(change)="removeFocus('applicationTypeSelect')"
+							>
+								<option
+									*ngFor="let applicationType of applicationTypeOptions"
+									[value]="applicationType"
+								>
+									{{ getApplicationTypeTranslation(applicationType) | translate }}
+								</option>
+							</select>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="#bbb"
+								stroke="#bbb"
+								class="w-[18px] h-[18px] absolute right-2 pointer-events-none"
+								viewBox="0 0 24 24"
+							>
+								<path d="M12 15l-7-7h14l-7 7z"></path>
+							</svg>
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['applicationType'].invalid
+								&& (applicationCreatorForm.controls['applicationType'].touched
+									|| applicationCreatorForm.controls['applicationType'].dirty)
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['applicationType'].errors?.['required']"
+							@slideDownUp
+						>
+							*{{ 'Application_ApplicationType_RequiredError' | translate }}
+						</div>
+					</div>
+					<div class="mt-8">
+						<div class="text-sm block mb-2">
+							{{ 'Application_PeriodFrom' | translate }}*
+						</div>
+						<div
+							class="relative flex items-center"
+							(click.mouseup)="open('datePickerPeriodFrom')"
+						>
+							<input
+								title="Period from"
+								id="datePickerPeriodFrom"
+								name="periodFrom"
+								type="date"
+								formControlName="periodFrom"
+								required
+								(input)="toggleFullDayDisabled()"
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="#bbb"
+								stroke="#bbb"
+								class="w-[18px] h-[18px] absolute right-2 pointer-events-none"
+								viewBox="0 0 24 24"
+							>
+								<path d="M7 10h10v2H7zm0 4h7v2H7z" />
+								<path
+									d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 20V9h14v11H5z"
+								/>
+							</svg>
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['periodFrom'].invalid
+								&& (applicationCreatorForm.controls['periodFrom'].touched
+									|| applicationCreatorForm.controls['periodFrom'].dirty)
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['periodFrom'].errors?.['required']"
+							@slideDownUp
+						>
+							*{{ 'Application_PeriodFrom_RequiredError' | translate }}
+						</div>
+					</div>
+					<div class="mt-8">
+						<div class="text-sm block mb-2">
+							{{ 'Application_PeriodTo' | translate }}*
+						</div>
+						<div
+							class="relative flex items-center"
+							(click.mouseup)="open('datePickerPeriodTo')"
+						>
+							<input
+								title="Period to"
+								id="datePickerPeriodTo"
+								name="periodTo"
+								type="date"
+								formControlName="periodTo"
+								required
+								(input)="toggleFullDayDisabled()"
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="#bbb"
+								stroke="#bbb"
+								class="w-[18px] h-[18px] absolute right-2 pointer-events-none"
+								viewBox="0 0 24 24"
+							>
+								<path d="M7 10h10v2H7zm0 4h7v2H7z" />
+								<path
+									d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 20V9h14v11H5z"
+								/>
+							</svg>
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['periodTo'].invalid
+								&& (applicationCreatorForm.controls['periodTo'].touched
+									|| applicationCreatorForm.controls['periodTo'].dirty)
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['periodTo'].errors?.['required']"
+							@slideDownUp
+						>
+							*{{ 'Application_PeriodTo_RequiredError' | translate }}
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="applicationCreatorForm.errors?.['dateGreaterThanOrEqualsTo']"
+						@slideDownUp
+					>
+						*{{ 'Application_Periods_GreaterThanOrEqualTo' | translate }}
+					</div>
+					<div class="flex items-center justify-between gap-2 mt-8">
+						<div class="flex items-center">
+							<input
+								id="isFullDay"
+								name="isFullDay"
+								formControlName="isFullDay"
+								type="checkbox"
+								class="h-4 w-4 shrink-0 border-gray-300 rounded"
+							/>
+							<label for="isFullDay" class="ml-3 block text-sm">
+								{{ 'Application_IsFullDay' | translate }}
+							</label>
+						</div>
+					</div>
+					<div
+						class="mt-8"
+						*ngIf="!applicationCreatorForm.get('isFullDay')?.value"
+						@slideDownUp
+					>
+						<div class="text-sm block mb-2">
+							{{ 'Application_HoursPeriod' | translate }}*
+						</div>
+						<div class="relative flex items-center">
+							<input
+								title="Hours from"
+								name="hoursFrom"
+								id="hoursFrom"
+								type="number"
+								formControlName="hoursFrom"
+								min="8"
+								max="16"
+								class="w-[40%] text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+							<p class="w-[20%] text-center">-</p>
+							<input
+								title="Hours to"
+								name="hoursTo"
+								id="hoursTo"
+								type="number"
+								formControlName="hoursTo"
+								min="8"
+								max="16"
+								class="w-[40%] text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['hoursFrom'].invalid
+								&& (applicationCreatorForm.controls['hoursFrom'].touched
+									|| applicationCreatorForm.controls['hoursFrom'].dirty)
+								&& !applicationCreatorForm.get('isFullDay')?.value
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['hoursFrom'].errors?.['requiredIfFalse']"
+							@slideDownUp
+						>
+							*{{ 'Application_HoursFrom_RequiredError' | translate }}
+						</div>
+						<div
+							*ngIf="applicationCreatorForm.controls['hoursFrom'].errors?.['min'] || applicationCreatorForm.controls['hoursFrom'].errors?.['max']"
+							@slideDownUp
+						>
+							*{{ 'Application_HoursFrom_MinMaxError' | translate: { workingHoursFrom:
+							workingHoursFrom, workingHoursTo: workingHoursTo } }}
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['hoursTo'].invalid
+								&& (applicationCreatorForm.controls['hoursTo'].touched
+									|| applicationCreatorForm.controls['hoursTo'].dirty)
+								&& !applicationCreatorForm.get('isFullDay')?.value
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['hoursTo'].errors?.['requiredIfFalse'] && !applicationCreatorForm.get('isFullDay')?.value"
+							@slideDownUp
+						>
+							*{{ 'Application_HoursTo_RequiredError' | translate }}
+						</div>
+						<div
+							*ngIf="(applicationCreatorForm.controls['hoursTo'].errors?.['min'] || applicationCreatorForm.controls['hoursTo'].errors?.['max']) && !applicationCreatorForm.get('isFullDay')?.value"
+							@slideDownUp
+						>
+							*{{ 'Application_HoursTo_MinMaxError' | translate: { workingHoursFrom:
+							workingHoursFrom, workingHoursTo: workingHoursTo } }}
+						</div>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="applicationCreatorForm.errors?.['maxPeriodDifference'] && !applicationCreatorForm.get('isFullDay')?.value"
+						@slideDownUp
+					>
+						*{{ 'Application_Hours_MaxPeriodDifferenceError' | translate: { maxHours:
+						maxHours } }}
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="applicationCreatorForm.errors?.['greaterThan'] && !applicationCreatorForm.get('isFullDay')?.value"
+						@slideDownUp
+					>
+						*{{ 'Application_Hours_GreaterThanError' | translate: { maxHours: maxHours }
+						}}
+					</div>
+					<div class="mt-8">
+						<label for="reasonTextArea" class="text-sm block mb-2"
+							>{{ 'Application_Reason' | translate }}</label
+						>
+						<textarea
+							id="reasonTextArea"
+							name="reason"
+							formControlName="reason"
+							rows="4"
+							cols="50"
+							class="w-full text-sm border border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+						></textarea>
+					</div>
+					<div
+						class="text-red-600 relative items-center"
+						*ngIf="
+								applicationCreatorForm.controls['reason'].invalid
+								&& (applicationCreatorForm.controls['reason'].touched
+									|| applicationCreatorForm.controls['reason'].dirty)
+							"
+					>
+						<div
+							*ngIf="applicationCreatorForm.controls['reason'].errors?.['maxlength']"
+						>
+							*{{ 'Application_Reason_MaxLengthError' | translate: { maxLength:
+							reasonMaxLength } }}
+						</div>
+					</div>
+					<div class="mt-12">
+						<button
+							type="button"
+							(click)="sendApplication()"
+							class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition"
+						>
+							{{ 'Application_SendApplication' | translate }}
+						</button>
+					</div>
+				</form>
+			</div>
+			<div
+				class="hidden md:block md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8"
+			>
+				<img
+					src="../../../../assets/application/application-create.webp"
+					class="w-full h-full object-contain"
+					alt="register-image"
+				/>
+			</div>
+		</div>
+	</div>
+</div>

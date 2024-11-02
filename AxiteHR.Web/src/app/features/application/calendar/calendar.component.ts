@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import {
+	Component,
+	OnDestroy,
+	AfterViewChecked,
+	Renderer2,
+	ViewChild,
+	ElementRef,
+} from '@angular/core';
 import {
 	CalendarModule,
 	CalendarEvent,
@@ -12,16 +19,23 @@ import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-transla
 import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import localeEn from '@angular/common/locales/en';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-calendar',
 	standalone: true,
-	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule],
+	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule, ModalComponent],
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent implements OnDestroy {
+export class CalendarComponent implements OnDestroy, AfterViewChecked {
+	@ViewChild('calendar', { static: false }) calendar!: ElementRef;
+
+	isModalEventOpen = false;
+
 	view: CalendarView = CalendarView.Month;
 	CalendarView = CalendarView;
 	viewDate: Date = new Date();
@@ -29,10 +43,8 @@ export class CalendarComponent implements OnDestroy {
 	currentLang = 'en';
 	langChangeSubscription: Subscription;
 
-	// Zarządzanie aktywnym dniem
 	activeDay: Date | null = null;
 
-	// Przykładowe wydarzenia
 	events: CalendarEvent[] = [
 		{
 			start: subDays(new Date(), 1),
@@ -51,7 +63,14 @@ export class CalendarComponent implements OnDestroy {
 		},
 	];
 
-	constructor(private translate: TranslateService) {
+	constructor(
+		private translate: TranslateService,
+		private renderer: Renderer2,
+		private el: ElementRef,
+		private router: Router,
+		private dataService: DataBehaviourService,
+		private route: ActivatedRoute
+	) {
 		registerLocaleData(localePl);
 		registerLocaleData(localeEn);
 
@@ -59,8 +78,10 @@ export class CalendarComponent implements OnDestroy {
 
 		this.langChangeSubscription = translate.onLangChange.subscribe((event: LangChangeEvent) => {
 			this.currentLang = event.lang;
-			this.updateCalendarLocale();
+			this.setNewApplicationButtonText();
 		});
+		this.updateCalendarLocale();
+		this.setNewApplicationButtonText();
 	}
 
 	prevMonth(): void {
@@ -94,11 +115,16 @@ export class CalendarComponent implements OnDestroy {
 			'DECEMBER',
 		];
 
-		// Pobierz tłumaczoną nazwę miesiąca
 		return this.translate.instant(`Calendar_Months.${monthNames[monthIndex]}`);
 	}
 
-	dayClicked({ day }: { day: CalendarMonthViewDay }): void {
+	dayClicked({
+		day,
+		sourceEvent,
+	}: {
+		day: CalendarMonthViewDay;
+		sourceEvent: MouseEvent | KeyboardEvent;
+	}): void {
 		const date = day.date;
 
 		if (isSameMonth(date, this.viewDate)) {
@@ -108,6 +134,20 @@ export class CalendarComponent implements OnDestroy {
 				this.activeDay = date;
 			}
 			this.viewDate = date;
+		}
+
+		if (this.activeDay && this.calendar) {
+			const activeElements = this.calendar.nativeElement.querySelectorAll('.cal-open');
+			activeElements.forEach((element: HTMLElement) => {
+				this.renderer.removeClass(element, 'cal-open');
+			});
+		}
+
+		const targetElement = sourceEvent.target as HTMLElement;
+		const closestCell = targetElement.closest('.cal-cell');
+		if (closestCell && !closestCell.classList.contains('cal-out-month')) {
+			this.renderer.addClass(targetElement.closest('.cal-cell'), 'cal-open');
+			this.renderer.addClass(targetElement.closest('.cal-cell'), 'cal-has-events');
 		}
 	}
 
@@ -135,6 +175,80 @@ export class CalendarComponent implements OnDestroy {
 
 	updateCalendarLocale(): void {
 		this.viewDate = new Date();
+	}
+
+	//#region Modal
+	getTranslatedModalTitle() {
+		return this.translate.instant('Calendar_EventModal_Title');
+	}
+
+	closeEventModal(): void {
+		this.isModalEventOpen = false;
+	}
+
+	submitApplicationModal(): void {
+		if (!this.activeDay) {
+			this.isModalEventOpen = false;
+			return;
+		}
+
+		this.isModalEventOpen = false;
+
+		this.dataService.setSelectedDate(this.activeDay);
+
+		const currentFullPath = this.router.url.split('/');
+		currentFullPath[currentFullPath.length - 1] = 'NewApplication';
+		this.router.navigate(currentFullPath);
+	}
+	//#endregion Modal
+
+	setNewApplicationButtonText(): void {
+		this.translate
+			.get('Nav_Manager_Applications_NewApplication')
+			.pipe(take(1))
+			.subscribe((translatedText: string) => {
+				const spanElement = this.el.nativeElement.querySelector('.button-new-application');
+				if (spanElement) {
+					this.renderer.setProperty(spanElement, 'textContent', '');
+					const buttonText = this.renderer.createText(translatedText);
+					this.renderer.appendChild(spanElement, buttonText);
+				}
+			});
+	}
+
+	ngAfterViewChecked(): void {
+		const openDayEventsElements = document.querySelectorAll('.cal-open-day-events');
+
+		openDayEventsElements.forEach(element => {
+			if (!element.querySelector('.add-event-button')) {
+				const button = this.renderer.createElement('button');
+				const addIcon = this.renderer.createElement('span');
+				const buttonTextSpan = this.renderer.createElement('span');
+
+				const buttonText = this.renderer.createText('Dodaj wydarzenie');
+				const iconText = this.renderer.createText('add');
+
+				this.renderer.addClass(button, 'add-event-button');
+				this.renderer.addClass(button, 'add-event-button-container');
+				this.renderer.addClass(addIcon, 'material-icons');
+				this.renderer.addClass(buttonTextSpan, 'textbutton-line-hover');
+				this.renderer.addClass(buttonTextSpan, 'button-new-application');
+
+				this.renderer.appendChild(addIcon, iconText);
+				this.renderer.appendChild(button, addIcon);
+
+				this.renderer.appendChild(buttonTextSpan, buttonText);
+				this.renderer.appendChild(button, buttonTextSpan);
+
+				this.renderer.listen(button, 'click', () => {
+					this.isModalEventOpen = true;
+					this.addEvent();
+				});
+
+				const firstChild = element.firstChild;
+				this.renderer.insertBefore(element, button, firstChild);
+			}
+		});
 	}
 
 	ngOnDestroy(): void {

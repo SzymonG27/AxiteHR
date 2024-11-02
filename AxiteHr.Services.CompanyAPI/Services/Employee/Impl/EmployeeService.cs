@@ -1,15 +1,16 @@
-﻿using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Helpers;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
+﻿using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
+using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Text.Json;
+using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
+namespace AxiteHR.Services.CompanyAPI.Services.Employee.Impl
 {
 	public class EmployeeService(
 		IHttpClientFactory httpClientFactory,
@@ -89,9 +90,9 @@ namespace AxiteHr.Services.CompanyAPI.Services.Employee.Impl
 			var companyUser = await CreateCompanyUserForEmployeeAsync();
 			await AddEmployeePermission();
 
-			async Task<CompanyUser> CreateCompanyUserForEmployeeAsync()
+			async Task<CompanyUserModel> CreateCompanyUserForEmployeeAsync()
 			{
-				CompanyUser newCompanyUser = new()
+				CompanyUserModel newCompanyUser = new()
 				{
 					Company = company,
 					UserId = Guid.Parse(employeeId),

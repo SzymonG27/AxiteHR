@@ -64,7 +64,7 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 
 			var consumer = new EventingBasicConsumer(_channel);
 
-			consumer.Received += (ch, ea) =>
+			consumer.Received += (_, ea) =>
 			{
 				Task.Run(async () =>
 				{
@@ -89,15 +89,15 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 						_logger.LogError(ex, "Error processing message with ID {MessageId}", messageId);
 						_channel.BasicNack(ea.DeliveryTag, false, requeue: true);
 					}
-				});
+				}, stoppingToken);
 			};
 
 			_channel.BasicConsume(queue: _queueName, autoAck: false, consumer: consumer);
 
 			stoppingToken.Register(() =>
 			{
-				_channel?.Close();
-				_connection?.Close();
+				_channel.Close();
+				_connection.Close();
 			});
 
 			return Task.CompletedTask;
@@ -112,8 +112,8 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 
 			if (disposing)
 			{
-				_channel?.Dispose();
-				_connection?.Dispose();
+				_channel.Dispose();
+				_connection.Dispose();
 			}
 
 			_disposed = true;

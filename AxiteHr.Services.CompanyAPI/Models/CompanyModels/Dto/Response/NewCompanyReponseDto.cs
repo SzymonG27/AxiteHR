@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto.Response
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response
 {
 	public record NewCompanyReponseDto
 	{

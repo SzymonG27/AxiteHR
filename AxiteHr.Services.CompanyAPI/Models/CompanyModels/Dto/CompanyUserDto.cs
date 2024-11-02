@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto
 {
 	public record CompanyUserDto
 	{
@@ -6,7 +6,7 @@
 
 		public int CompanyId { get; set; }
 
-		public CompanyDto Company { get; set; } = new CompanyDto();
+		public CompanyDto Company { get; set; } = new();
 
 		public Guid UserId { get; set; }
 	}

@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace AxiteHr.Services.CompanyAPI.Migrations
+namespace AxiteHR.Services.CompanyAPI.Migrations
 {
 	/// <inheritdoc />
 	public partial class CompanyLevelSeed : Migration

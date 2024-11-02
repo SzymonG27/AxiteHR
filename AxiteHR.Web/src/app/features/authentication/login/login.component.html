@@ -17,13 +17,12 @@
 							<a
 								[routerLink]="['/Register']"
 								class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap"
-								>{{ 'Authentication_RegisterHere' | translate }}</a
 							>
+								{{ 'Authentication_RegisterHere' | translate }}
+							</a>
 						</p>
 					</div>
-					<div class="mb-4 text-red-600" *ngIf="errorMessage">
-						{{ errorMessage }}
-					</div>
+					<div class="mb-4 text-red-600" *ngIf="errorMessage">{{ errorMessage }}</div>
 					<div>
 						<div class="text-sm block mb-2">
 							{{ 'Authentication_Email' | translate }}
@@ -133,7 +132,7 @@
 				</form>
 			</div>
 			<div
-				class="md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8"
+				class="hidden md:block md:h-full max-md:mt-10 bg-gradient-to-t from-[#8697C4] to-[#a3b4e2] rounded-xl lg:p-12 p-8"
 			>
 				<img
 					src="../../../../assets/auth/login.webp"

@@ -3,6 +3,7 @@ using AxiteHR.Services.ApplicationAPI.Extensions;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 	opt.UseSqlServer(
 		builder.Configuration.GetConnectionString(ConfigurationHelper.DefaultConnectionString)
 	)
+);
+
+builder.Services.AddHttpClient(
+	HttpClientNameHelper.Company,
+	configureClient => configureClient.BaseAddress = new Uri(builder.Configuration[ConfigurationHelper.CompanyApiUrl]!)
 );
 
 builder.Services.AddControllers()
@@ -50,6 +56,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseAuthentication();
+
+var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(locOptions);
 
 app.MapControllers();
 

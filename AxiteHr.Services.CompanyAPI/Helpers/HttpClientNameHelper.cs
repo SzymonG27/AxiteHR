@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Helpers
+﻿namespace AxiteHR.Services.CompanyAPI.Helpers
 {
 	public static class HttpClientNameHelper
 	{

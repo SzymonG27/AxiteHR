@@ -1,6 +1,6 @@
-﻿using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
+﻿using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Employee
+namespace AxiteHR.Services.CompanyAPI.Services.Employee
 {
 	public interface IEmployeeService
 	{

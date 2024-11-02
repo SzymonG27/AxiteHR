@@ -147,4 +147,7 @@
   <data name="RegisterUserNameExistsInDb" xml:space="preserve">
     <value>A user with the specified username already exists in the application.</value>
   </data>
+  <data name="NewCompanyCreate_InternalError" xml:space="preserve">
+    <value>An error occurred while creating a new company. Please try again later.</value>
+  </data>
 </root>

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request;
-using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -13,8 +15,9 @@ public class CompanyCreatorServiceTests
 {
 	private AppDbContext _dbContext;
 	private Mock<IMapper> _mapperMock;
-	private Mock<ILogger<CompanyCreatorService>> _loggerMock;
-	private CompanyCreatorService _companyCreatorService;
+	private Mock<IStringLocalizer<CompanyResources>> _localizerMock;
+	private Mock<ILogger<CompanyManagerService>> _loggerMock;
+	private CompanyManagerService _companyCreatorService;
 
 	[SetUp]
 	public void SetUp()
@@ -29,11 +32,13 @@ public class CompanyCreatorServiceTests
 		_dbContext.Database.EnsureCreated();
 
 		_mapperMock = new Mock<IMapper>();
-		_loggerMock = new Mock<ILogger<CompanyCreatorService>>();
+		_localizerMock = new Mock<IStringLocalizer<CompanyResources>>();
+		_loggerMock = new Mock<ILogger<CompanyManagerService>>();
 
-		_companyCreatorService = new CompanyCreatorService(
+		_companyCreatorService = new CompanyManagerService(
 			_dbContext,
 			_mapperMock.Object,
+			_localizerMock.Object,
 			_loggerMock.Object);
 	}
 
@@ -54,20 +59,20 @@ public class CompanyCreatorServiceTests
 			CreatorId = Guid.NewGuid()
 		};
 
-		var newCompany = new AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company
+		var newCompany = new AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company
 		{
 			Id = 1,
 			CompanyName = request.CompanyName
 		};
 
-		_mapperMock.Setup(m => m.Map<AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
+		_mapperMock.Setup(m => m.Map<AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
 			.Returns(newCompany);
 
 		// Act
 		var result = await _companyCreatorService.NewCompanyCreateAsync(request);
 
 		// Assert
-		Assert.Multiple(async () =>
+		await Assert.MultipleAsync(async () =>
 		{
 			Assert.That(result.IsSucceeded, Is.True);
 			Assert.That(result.ErrorMessage, Is.Empty);
@@ -89,17 +94,20 @@ public class CompanyCreatorServiceTests
 			CreatorId = Guid.NewGuid()
 		};
 
-		_mapperMock.Setup(m => m.Map<AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
+		_mapperMock.Setup(m => m.Map<AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company>(It.IsAny<NewCompanyRequestDto>()))
 			.Throws(new Exception("Test Exception"));
+
+		_localizerMock.Setup(localizer => localizer[It.IsAny<string>()])
+				.Returns(new LocalizedString("Error", "Internal error."));
 
 		// Act
 		var result = await _companyCreatorService.NewCompanyCreateAsync(request);
 
 		// Assert
-		Assert.Multiple(async () =>
+		await Assert.MultipleAsync(async () =>
 		{
 			Assert.That(result.IsSucceeded, Is.False);
-			Assert.That(result.ErrorMessage, Is.EqualTo("Test Exception"));
+			Assert.That(result.ErrorMessage, Is.EqualTo("Internal error."));
 
 			Assert.That(await _dbContext.Companies.CountAsync(), Is.EqualTo(0));
 			Assert.That(await _dbContext.CompanyUsers.CountAsync(), Is.EqualTo(0));

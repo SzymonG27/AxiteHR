@@ -1,8 +1,8 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto
+﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto
 {
 	public record CompanyUserPermissionsDto
 	{
-		public CompanyUserDto CompanyUser { get; set; } = new CompanyUserDto();
+		public CompanyUserDto CompanyUser { get; set; } = new();
 		public IList<CompanyPermissionDto> CompanyUserPermissionList { get; set; } = [];
 	}
 }

@@ -6,10 +6,13 @@ export enum ApiPaths {
 
 	//Company API
 	CompanyList = '/Company/List',
-	EmployeeList = '/Company/CompanyUserList',
-	EmployeeListCount = '/Company/CompanyUsersCount',
+	EmployeeList = '/CompanyUser/List',
+	EmployeeListCount = '/CompanyUser/Count',
 	CompanyCreator = '/CompanyManager/CreateNewCompany',
-	EmployeeCreator = '/CompanyManager/CreateNewEmployee',
+	EmployeeCreator = '/EmployeeManager/CreateNewEmployee',
 	GetCompanyForEmployee = '/Company/GetForEmployee',
-	IsUserInCompany = '/Company/IsUserInCompany',
+	IsUserInCompany = '/CompanyUser/IsInCompany',
+
+	//Application API
+	NewApplicationCreator = '/Application/CreateNewApplication',
 }

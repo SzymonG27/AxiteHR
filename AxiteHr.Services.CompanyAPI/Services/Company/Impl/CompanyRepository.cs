@@ -1,12 +1,9 @@
-﻿using AxiteHr.Services.CompanyAPI.Data;
-using AxiteHr.Services.CompanyAPI.Infrastructure;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHr.Services.CompanyAPI.Models.CompanyModels.Dto;
-using AxiteHr.Services.CompanyAPI.Models.EmployeeModels.Dto;
+﻿using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using Microsoft.EntityFrameworkCore;
 
-namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
+namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 {
 	public class CompanyRepository(AppDbContext dbContext) : ICompanyRepository
 	{
@@ -33,26 +30,6 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 				.AsNoTracking()];
 		}
 
-		public async Task<IList<CompanyUserUserRelation>> GetCompanyUserUserRealtionListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo)
-		{
-			return await dbContext.CompanyUsers
-				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
-				.OrderBy(x => x.Id)
-				.Skip(paginationInfo.Page * paginationInfo.ItemsPerPage)
-				.Take(paginationInfo.ItemsPerPage)
-				.AsNoTracking()
-				.Select(x => new CompanyUserUserRelation { CompanyUserId = x.Id, UserId = x.UserId })
-				.ToListAsync();
-		}
-
-		public async Task<int> GetCompanyUsersCountAsync(int companyId, Guid excludedUserId)
-		{
-			return await dbContext.CompanyUsers
-				.Where(x => x.CompanyId == companyId && x.UserId != excludedUserId)
-				.AsNoTracking()
-				.CountAsync();
-		}
-
 		public async Task<CompanyForEmployeeDto> GetCompanyForEmployeeDtoAsync(Guid employeeId)
 		{
 			return await dbContext.CompanyUsers
@@ -64,13 +41,6 @@ namespace AxiteHr.Services.CompanyAPI.Services.Company.Impl
 					CompanyName = cu.Company.CompanyName
 				})
 				.SingleAsync();
-		}
-
-		public async Task<bool> IsUserInCompanyAsync(Guid userId, int companyId)
-		{
-			return await dbContext.CompanyUsers
-				.AsNoTracking()
-				.AnyAsync(cu => cu.UserId == userId && cu.CompanyId == companyId);
 		}
 	}
 }

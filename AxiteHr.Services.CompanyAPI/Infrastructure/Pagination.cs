@@ -1,4 +1,4 @@
-﻿namespace AxiteHr.Services.CompanyAPI.Infrastructure
+﻿namespace AxiteHR.Services.CompanyAPI.Infrastructure
 {
 	public record Pagination
 	{

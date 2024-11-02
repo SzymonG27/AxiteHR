@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Global_CompareField" xml:space="preserve">
-    <value>Pole {0} musi mieć tą samą wartość co pole {1}.</value>
+    <value>Pole {0} musi mieć tę samą wartość co pole {1}.</value>
   </data>
   <data name="Global_InsUserId" xml:space="preserve">
     <value>ID użytkownika insertującego</value>
@@ -143,5 +143,11 @@
   </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>Cześć świecie!</value>
+  </data>
+  <data name="Global_PeriodFrom" xml:space="preserve">
+    <value>Okres od</value>
+  </data>
+  <data name="Global_PeriodTo" xml:space="preserve">
+    <value>Okres do</value>
   </data>
 </root>

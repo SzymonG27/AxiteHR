@@ -147,4 +147,7 @@
   <data name="RegisterUserNameExistsInDb" xml:space="preserve">
     <value>Użytkownik z podaną nazwą użytkownika istnieje już w aplikacji.</value>
   </data>
+  <data name="NewCompanyCreate_InternalError" xml:space="preserve">
+    <value>Wystąpił błąd podczas tworzenia nowej firmy. Spróbuj ponownie później.</value>
+  </data>
 </root>

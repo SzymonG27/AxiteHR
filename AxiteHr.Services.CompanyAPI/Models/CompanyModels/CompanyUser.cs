@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
+namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 {
 	public class CompanyUser
 	{
@@ -11,7 +11,7 @@ namespace AxiteHr.Services.CompanyAPI.Models.CompanyModels
 		[ForeignKey(nameof(Company))]
 		public virtual int CompanyId { get; set; }
 
-		public virtual Company Company { get; set; } = new Company();
+		public virtual Company Company { get; set; } = new();
 
 		public virtual Guid UserId { get; set; }
 

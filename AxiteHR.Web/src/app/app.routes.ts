@@ -20,6 +20,7 @@ import { TempPasswordLeaveGuard } from './core/guards/auth/temp-password-leave-g
 import { TempPasswordEnterGuard } from './core/guards/auth/temp-password-enter-guard.service';
 import { IsInCompanyGuard } from './core/guards/company/is-in-company-guard.service';
 import { CalendarComponent } from './features/application/calendar/calendar.component';
+import { NewApplicationComponent } from './features/application/new-application/new-application.component';
 
 export const routes: Routes = [
 	//Home
@@ -104,6 +105,11 @@ export const routes: Routes = [
 				path: 'Calendar',
 				component: CalendarComponent,
 				data: { title: 'CALENDAR_TITLE_PAGE' },
+			},
+			{
+				path: 'NewApplication',
+				component: NewApplicationComponent,
+				data: { title: 'NEW_APPLICATION_TITLE_PAGE' },
 			},
 		],
 	},

@@ -1,4 +1,4 @@
-﻿using AxiteHR.Services.AuthAPI.Models.Auth.Const;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
 using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.AuthAPI.Services.Auth;
@@ -27,7 +27,7 @@ namespace AxiteHR.Services.AuthAPI.Controllers
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
 		{
 			var response = await authService.LoginAsync(loginRequest);
-			if (!response.IsLoggedSuccessful && !response.IsTempPasswordToChange)
+			if (response is { IsLoggedSuccessful: false, IsTempPasswordToChange: false })
 			{
 				return BadRequest(response);
 			}

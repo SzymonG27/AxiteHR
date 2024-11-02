@@ -1,4 +1,4 @@
-using AxiteHr.Services.EmailAPI.Data;
+using AxiteHR.Services.EmailAPI.Data;
 using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Services.EmailAPI.Extensions;
 using AxiteHR.Services.EmailAPI.Helpers;

@@ -1,7 +1,7 @@
-﻿using AxiteHr.Services.CompanyAPI.Models.CompanyModels;
+﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace AxiteHr.Services.CompanyAPI.Data
+namespace AxiteHR.Services.CompanyAPI.Data
 {
 	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 	{

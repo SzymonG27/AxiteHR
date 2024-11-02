@@ -1,8 +1,8 @@
-﻿using AxiteHR.GlobalizationResources;
+﻿using System.ComponentModel.DataAnnotations;
+using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
-using System.ComponentModel.DataAnnotations;
 
-namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
+namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request
 {
 	public record NewCompanyRequestDto
 	{
@@ -16,8 +16,8 @@ namespace AxiteHr.Services.CompanyAPI.CompanyModels.Dto.Request
 
 		public Guid UpdUserId => CreatorId;
 
-		public DateTime InsDate => DateTime.UtcNow;
+		public static DateTime InsDate => DateTime.UtcNow;
 
-		public DateTime UpdDate => DateTime.UtcNow;
+		public static DateTime UpdDate => DateTime.UtcNow;
 	}
 }

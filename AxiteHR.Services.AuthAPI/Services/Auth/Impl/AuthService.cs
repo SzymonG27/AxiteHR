@@ -1,4 +1,5 @@
-﻿using AxiteHR.GlobalizationResources;
+﻿using AxiteHR.Integration.GlobalClass.Auth;
+using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Integration.BrokerMessageSender.Models;
@@ -7,7 +8,6 @@ using AxiteHR.Services.AuthAPI.Data;
 using AxiteHR.Services.AuthAPI.Helpers;
 using AxiteHR.Services.AuthAPI.Helpers.MapHelpers;
 using AxiteHR.Services.AuthAPI.Models.Auth;
-using AxiteHR.Services.AuthAPI.Models.Auth.Const;
 using AxiteHR.Services.AuthAPI.Models.Auth.Dto;
 using AxiteHR.Services.AuthAPI.Models.EmployeeModels.Dto;
 using Microsoft.AspNetCore.Identity;

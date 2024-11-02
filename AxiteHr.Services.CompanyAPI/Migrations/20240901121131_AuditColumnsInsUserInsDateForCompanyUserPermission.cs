@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AxiteHr.Services.CompanyAPI.Migrations
+namespace AxiteHR.Services.CompanyAPI.Migrations
 {
     /// <inheritdoc />
     public partial class AuditColumnsInsUserInsDateForCompanyUserPermission : Migration

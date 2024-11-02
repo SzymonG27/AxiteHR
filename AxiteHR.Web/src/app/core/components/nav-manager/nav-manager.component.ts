@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,6 +14,7 @@ import { UserRole } from '../../models/authentication/UserRole';
 	styleUrl: './nav-manager.component.css',
 })
 export class NavManagerComponent implements OnInit, OnDestroy {
+	@ViewChild('sidebar', { static: true }) sidebar!: ElementRef;
 	private destroy$ = new Subject<void>();
 
 	isMenuOpen = false;
@@ -59,6 +60,12 @@ export class NavManagerComponent implements OnInit, OnDestroy {
 			case 'Applications':
 				this.isApplicationsExpanded = !this.isApplicationsExpanded;
 				break;
+		}
+	}
+
+	setHeight(height: number) {
+		if (this.sidebar) {
+			this.sidebar.nativeElement.style.height = `${height}px`;
 		}
 	}
 }

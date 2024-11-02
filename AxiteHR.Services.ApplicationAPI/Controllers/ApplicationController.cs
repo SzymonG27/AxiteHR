@@ -1,5 +1,4 @@
-﻿using AxiteHR.Integration.GlobalClass.Auth;
-using AxiteHR.GlobalizationResources;
+﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;

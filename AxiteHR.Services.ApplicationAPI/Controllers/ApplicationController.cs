@@ -36,7 +36,7 @@ namespace AxiteHR.Services.ApplicationAPI.Controllers
 		/// This method interacts with the <c>applicationService</c> to process the creation logic and responds with the appropriate HTTP status code based on the result of the operation.
 		/// </remarks>
 		[HttpPost("[action]")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<IActionResult> CreateNewApplication(
 			[FromBody] CreateApplicationRequestDto createApplicationRequestDto,
 			[FromHeader(Name = HeaderNamesHelper.AcceptLanguage)] string acceptLanguage = "en")

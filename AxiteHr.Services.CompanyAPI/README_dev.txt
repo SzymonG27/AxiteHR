@@ -13,8 +13,18 @@ openssl pkcs12 -export -out axitehr.services.authapi.pfx -inkey axitehr.services
 Then copy certificates to AuthAPI/Certs folder
 
 --CompanyAPI
-openssl req -newkey rsa:2048 -nodes -keyout axitehr.services.companyapi.key -x509 -days 365 -out axitehr.services.companyapi.crt -subj "/CN=axitehr.services.companyapi"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout axitehr.services.companyapi.key -out axitehr.services.companyapi.crt -config Path/To/AuthApiOpenSslConfig/openssl.cnf
 openssl pkcs12 -export -out axitehr.services.companyapi.pfx -inkey axitehr.services.companyapi.key -in axitehr.services.companyapi.crt -passout pass:Password123
+
+Then copy certificates to CompanyAPI/Certs folder
+
+--ApplicationAPI
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout axitehr.services.applicationapi.key -out axitehr.services.applicationapi.crt -config Path/To/AuthApiOpenSslConfig/openssl.cnf
+openssl pkcs12 -export -out axitehr.services.applicationapi.pfx -inkey axitehr.services.applicationapi.key -in axitehr.services.applicationapi.crt -passout pass:Password123
+
+Then copy certificates to ApplicationAPI/Certs folder
+
+Install all .crt in the CA cert folder on local PC
 
 Then run application via docker-compose
 

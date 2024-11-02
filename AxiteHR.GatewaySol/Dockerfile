@@ -7,6 +7,7 @@ EXPOSE 8080
 EXPOSE 8081
 
 USER root
+COPY AxiteHR.Services.ApplicationAPI/Certs/axitehr.services.applicationapi.crt /usr/local/share/ca-certificates/axitehr.services.applicationapi.crt
 COPY AxiteHr.Services.CompanyAPI/Certs/axitehr.services.companyapi.crt /usr/local/share/ca-certificates/axitehr.services.companyapi.crt
 RUN update-ca-certificates
 

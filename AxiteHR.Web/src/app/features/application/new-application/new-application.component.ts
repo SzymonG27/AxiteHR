@@ -255,8 +255,6 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 					this.blockUI.stop();
 				},
 			});
-
-		this.blockUI.stop();
 	}
 
 	removeFocus(elementId: string): void {

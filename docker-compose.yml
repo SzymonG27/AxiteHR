@@ -52,6 +52,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "https://+:7002;http://+:5176"
+      Kestrel__Endpoints__Https__Url: "https://+:7002"
+      Kestrel__Endpoints__Https__Certificate__Path: "Certs/axitehr.services.applicationapi.pfx"
+      Kestrel__Endpoints__Https__Certificate__Password: "Password123"
       IsDbFromDocker: true
       ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Application;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
       ConnectionStrings__Redis: "redis:6379"

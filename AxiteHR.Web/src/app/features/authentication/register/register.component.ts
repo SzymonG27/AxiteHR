@@ -18,6 +18,7 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
 import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
 import { Environment } from '../../../environment/Environment';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-register',
@@ -54,7 +55,8 @@ export class RegisterComponent {
 		private router: Router,
 		private dataService: DataBehaviourService,
 		private blockUI: BlockUIService,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private alertService: AlertService
 	) {
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.email, {
@@ -129,9 +131,11 @@ export class RegisterComponent {
 							}
 						}
 					} else {
-						this.errorMessage = await firstValueFrom(
+						const unexpectedErrorMessage = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorMessage, 'error');
 					}
 					this.blockUI.stop();
 				},

@@ -18,12 +18,6 @@ export class DataBehaviourService {
 		this.isTokenExpiredSource.next(value);
 	}
 
-	private newEmployeeCreatedSource = new BehaviorSubject<boolean>(false);
-	newEmployeeCreated = this.newEmployeeCreatedSource.asObservable();
-	setNewEmployeeCreated(value: boolean) {
-		this.newEmployeeCreatedSource.next(value);
-	}
-
 	private tempPasswordErrorSource = new BehaviorSubject<string>('');
 	tempPasswordError = this.tempPasswordErrorSource.asObservable();
 	setTempPasswordError(value: string) {

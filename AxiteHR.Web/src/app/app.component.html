@@ -2,4 +2,10 @@
 	<app-nav-bar />
 
 	<router-outlet />
+
+	<div class="fixed bottom-4 right-4 w-80 max-h-[50vh] overflow-y-auto space-y-4">
+		<ng-container *ngFor="let alert of alerts">
+			<app-alert [alert]="alert"></app-alert>
+		</ng-container>
+	</div>
 </block-ui>

@@ -13,6 +13,7 @@ import { AuthStateService } from '../../../core/services/authentication/auth-sta
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
 import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-login',
@@ -43,7 +44,8 @@ export class LoginComponent implements OnInit {
 		private authState: AuthStateService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private alertService: AlertService
 	) {
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
 	}
@@ -85,10 +87,14 @@ export class LoginComponent implements OnInit {
 			.Login(loginModel)
 			.pipe(first())
 			.subscribe({
-				next: (response: LoginResponse) => {
+				next: async (response: LoginResponse) => {
 					if (response.isLoggedSuccessful && response.token) {
 						localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
 						this.authState.setLoggedIn(true);
+						const successLoginAlert = await firstValueFrom(
+							this.translate.get('Authentication_Login_Success')
+						);
+						this.alertService.showAlert(successLoginAlert);
 						this.blockUIService.stop();
 						this.router.navigateByUrl(this.returnUrl);
 					} else if (response.isTempPasswordToChange && response.userId) {
@@ -133,7 +139,8 @@ export class LoginComponent implements OnInit {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = '*' + unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.authState.setLoggedIn(false);
 					this.blockUIService.stop();

@@ -84,6 +84,7 @@
 	"Company_Creator_CompanyName": "Nazwa firmy",
 	"Company_Creator_Cancel": "Anuluj",
 	"Company_Creator_Confirm": "Zatwierdź",
+	"Company_Creator_Success": "Firma została pomyślnie utworzona",
 	"Company_EmployeeList_CreateEmployeeBtn": "Stwórz nowego pracownika",
 	"Company_EmployeeList_Empty": "Brak pracowników",
 	"Company_EmployeeList_EmployeeCreated": "Użytkownik został poprawnie stworzony.",
@@ -151,5 +152,6 @@
 	"Application_Hours_MaxPeriodDifferenceError": "Różnica między godzinami nie może przekraczać {{maxHours}}",
 	"Application_Reason_MaxLengthError": "Pole Powód może zawierać maksymalnie {{maxLength}} znaków",
 	"Application_SendApplication": "Wyślij wniosek",
-	"Application_NewApplicationCreator_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie."
+	"Application_NewApplicationCreator_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie.",
+	"Application_SendApplication_Success": "Wniosek został poprawnie złożony."
 }

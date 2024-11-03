@@ -84,6 +84,7 @@
 	"Company_Creator_CompanyName": "Company name",
 	"Company_Creator_Cancel": "Cancel",
 	"Company_Creator_Confirm": "Confirm",
+	"Company_Creator_Success": "The company has been successfully created",
 	"Company_EmployeeList_CreateEmployeeBtn": "Create new employee",
 	"Company_EmployeeList_Empty": "No employees",
 	"Company_EmployeeList_EmployeeCreated": "The employee was successfully created.",
@@ -151,5 +152,6 @@
 	"Application_Hours_MaxPeriodDifferenceError": "The difference between hours cannot exceed {{maxHours}}",
 	"Application_Reason_MaxLengthError": "The Reason field can contain a maximum of {{maxLength}} characters",
 	"Application_SendApplication": "Send application",
-	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again."
+	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again.",
+	"Application_SendApplication_Success": "The application has been submitted correctly."
 }

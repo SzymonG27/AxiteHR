@@ -22,6 +22,7 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 import { NewApplicationService } from '../../../core/services/application/new-application.service';
 import { NewApplicationResponse } from '../../../core/models/application/new-application/NewApplicationResponse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-new-application',
@@ -93,7 +94,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 		private dataService: DataBehaviourService,
 		private newApplicationService: NewApplicationService,
 		private route: ActivatedRoute,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private alertService: AlertService
 	) {
 		this.companyId = this.route.snapshot.parent?.params['id'];
 		if (this.companyId == undefined || this.companyId == null) {
@@ -210,8 +212,12 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 			.createNewApplication(this.applicationFormCreatorRequest.newApplicationRequest)
 			.pipe(first())
 			.subscribe({
-				next: (response: NewApplicationResponse) => {
+				next: async (response: NewApplicationResponse) => {
 					if (response.isSucceeded) {
+						const newApplicationCreatedSuccessfully = await firstValueFrom(
+							this.translate.get('Application_SendApplication_Success')
+						);
+						this.alertService.showAlert(newApplicationCreatedSuccessfully);
 						this.blockUI.stop();
 						this.router.navigate(['/CompanyMenu', this.companyId, 'Calendar']);
 						return;
@@ -250,7 +256,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Application_NewApplicationCreator_UnexpectedError')
 						);
-						this.errorMessage = unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.blockUI.stop();
 				},

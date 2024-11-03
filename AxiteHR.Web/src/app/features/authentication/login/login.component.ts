@@ -139,7 +139,8 @@ export class LoginComponent implements OnInit {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = '*' + unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.authState.setLoggedIn(false);
 					this.blockUIService.stop();

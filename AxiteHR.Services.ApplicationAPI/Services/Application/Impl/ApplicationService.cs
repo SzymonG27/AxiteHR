@@ -194,14 +194,14 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 		}
 
 		/// <summary>
-		/// This method checks whether a given application type can intersect with any of the application types specified 
-		/// in the provided list of intersecting types. The method returns true if the application type is allowed to intersect 
+		/// This method checks whether a given application type can intersect with any of the application types specified
+		/// in the provided list of intersecting types. The method returns true if the application type is allowed to intersect
 		/// based on predefined rules.
 		/// </summary>
 		/// <param name="applicationType">The application type to check for intersections.</param>
 		/// <param name="applicationTypesThatIntersects">A list of application types that are considered intersectable.</param>
 		/// <returns>
-		/// Returns <c>true</c> if the specified <paramref name="applicationType"/> can intersect with any type in 
+		/// Returns <c>true</c> if the specified <paramref name="applicationType"/> can intersect with any type in
 		/// <paramref name="applicationTypesThatIntersects"/>. Returns <c>false</c> otherwise, including if no intersection
 		/// rules apply for the provided application type.
 		/// </returns>

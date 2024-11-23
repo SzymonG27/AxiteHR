@@ -1,52 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanyManagerListService } from '../../../core/services/company-manager/company-manager-list.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { EmployeeListItem } from '../../../core/models/company-manager/employee-list/EmployeeListItem';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Pagination } from '../../../shared/models/Pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { JobStationListItem } from '../../../core/models/company-manager/job-station/JobStationListItem';
+import { JobStationService } from '../../../core/services/company-manager/job-station.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { Pagination } from '../../../shared/models/Pagination';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-	selector: 'app-employee-list',
+	selector: 'app-job-station-list',
 	standalone: true,
-	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
-	templateUrl: './employee-list.component.html',
-	styleUrl: './employee-list.component.css',
+	imports: [CommonModule, TranslateModule, NgxPaginationModule],
+	templateUrl: './job-station-list.component.html',
+	styleUrl: './job-station-list.component.css',
 })
-export class EmployeeListComponent implements OnInit {
-	errorMessage: string | null = null;
-	employeeList: EmployeeListItem[] = [];
-	companyId: number | null = null;
-	errorPage: string | null = null;
-	forkHelper: unknown[] = [];
-
+export class JobStationListComponent implements OnInit {
 	//Pagination
 	pagination: Pagination = new Pagination();
+	jobStationList: JobStationListItem[] = [];
+	companyId: number | null = null;
+	errorMessage: string | null = null;
 
 	constructor(
-		private companyManagerListService: CompanyManagerListService,
+		private jobStationService: JobStationService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute,
 		private router: Router
 	) {}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.blockUIService.start();
 
 		this.companyId = this.route.snapshot.parent?.params['id'];
 		if (this.companyId == undefined || this.companyId == null) {
-			//ToDo client logger
 			this.router.navigate(['Internal-Error']);
 			this.blockUIService.stop();
 		}
 
 		zip(
-			this.getEmployeeListCount(this.companyId!),
-			this.getEmployeeListViewPage(
+			this.getJobStationListCount(this.companyId!),
+			this.getJobStationList(
 				this.companyId!,
 				this.pagination.pageNumber - 1,
 				this.pagination.pageSize
@@ -72,7 +68,7 @@ export class EmployeeListComponent implements OnInit {
 		this.pagination.pageNumber = event;
 
 		zip(
-			this.getEmployeeListViewPage(
+			this.getJobStationList(
 				this.companyId!,
 				this.pagination.pageNumber - 1,
 				this.pagination.pageSize
@@ -92,28 +88,26 @@ export class EmployeeListComponent implements OnInit {
 			});
 	}
 
-	private getEmployeeListViewPage(
+	private getJobStationList(
 		passedCompanyId: number,
 		currentPage: number,
 		pageSize: number
 	): Observable<void> {
-		return this.companyManagerListService
-			.getEmployeeListView(passedCompanyId, currentPage, pageSize)
-			.pipe(
-				take(1),
-				switchMap(response => {
-					if (!response.isSucceed) {
-						//ToDo error handler
-						this.errorMessage = response.errorMessage;
-					}
-					this.employeeList = response.employeeList;
-					return of(void 0);
-				})
-			);
+		return this.jobStationService.getList(passedCompanyId, currentPage, pageSize).pipe(
+			take(1),
+			switchMap(response => {
+				if (!response.isSucceed) {
+					//ToDo error handler
+					this.errorMessage = response.errorMessage;
+				}
+				this.jobStationList = response.jobStationList;
+				return of(void 0);
+			})
+		);
 	}
 
-	private getEmployeeListCount(passedCompanyId: number): Observable<void> {
-		return this.companyManagerListService.getEmployeeListCount(passedCompanyId).pipe(
+	private getJobStationListCount(passedCompanyId: number): Observable<void> {
+		return this.jobStationService.getCountList(passedCompanyId).pipe(
 			take(1),
 			switchMap(response => {
 				this.pagination.totalItems = response;

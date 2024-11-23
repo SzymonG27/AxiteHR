@@ -22,8 +22,6 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders
 
 			return Task.CompletedTask;
 		}
-
-
 		private void CreateConnectionIfNotExists(RabbitMqMessageSenderConfig rabbitMqConfig)
 		{
 			try

@@ -14,6 +14,7 @@
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Zmień hasło tymczasowe",
 	"CALENDAR_TITLE_PAGE": "Kalendarz",
 	"NEW_APPLICATION_TITLE_PAGE": "Nowy wniosek",
+	"WORKSTATION_LIST_TITLE_PAGE": "Lista stanowisk pracy",
 	"defaultTitle": "Moja Aplikacja",
 
 	"//Section2": "Global messages",
@@ -74,7 +75,7 @@
 	"//Section5": "Company messages",
 	"Company_List_CompanyName": "Nazwa firmy",
 	"Company_List_CreatedDate": "Data stworzenia",
-	"Company_List_EmployeeCount": "Ilość pracowników",
+	"Company_List_EmployeeCount": "Liczba pracowników",
 	"Company_List_Action": "Akcja",
 	"Company_List_Manage": "Zarządzaj",
 	"Company_List_Empty": "Brak firm",
@@ -94,6 +95,7 @@
 	"Nav_Manager_Dashboard": "Panel główny",
 	"Nav_Manager_Team": "Zespół",
 	"Nav_Manager_Team_Employees": "Pracownicy",
+	"Nav_Manager_Team_Workstations": "Stanowiska pracy",
 	"Nav_Manager_Applications": "Wnioski",
 	"Nav_Manager_Applications_Calendar": "Kalendarz",
 	"Nav_Manager_Applications_NewApplication": "Nowy wniosek",
@@ -153,5 +155,10 @@
 	"Application_Reason_MaxLengthError": "Pole Powód może zawierać maksymalnie {{maxLength}} znaków",
 	"Application_SendApplication": "Wyślij wniosek",
 	"Application_NewApplicationCreator_UnexpectedError": "Wystąpił nieoczekiwany błąd. Proszę spróbuj ponownie.",
-	"Application_SendApplication_Success": "Wniosek został poprawnie złożony."
+	"Application_SendApplication_Success": "Wniosek został poprawnie złożony.",
+
+	"//Section10": "Job station",
+	"Job_Station_Name": "Nazwa stanowiska pracy",
+	"Job_Station_WorkersCount": "Liczba pracowników",
+	"Job_Station_Action": "Akcja"
 }

@@ -14,6 +14,7 @@
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
 	"CALENDAR_TITLE_PAGE": "Calendar",
 	"NEW_APPLICATION_TITLE_PAGE": "New application",
+	"WORKSTATION_LIST_TITLE_PAGE": "Workstation list",
 	"defaultTitle": "My Application",
 
 	"//Section2": "Global messages",
@@ -94,6 +95,7 @@
 	"Nav_Manager_Dashboard": "Dashboard",
 	"Nav_Manager_Team": "Team",
 	"Nav_Manager_Team_Employees": "Employees",
+	"Nav_Manager_Team_Workstations": "Workstations",
 	"Nav_Manager_Applications": "Applications",
 	"Nav_Manager_Applications_Calendar": "Calendar",
 	"Nav_Manager_Applications_NewApplication": "New application",
@@ -153,5 +155,10 @@
 	"Application_Reason_MaxLengthError": "The Reason field can contain a maximum of {{maxLength}} characters",
 	"Application_SendApplication": "Send application",
 	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again.",
-	"Application_SendApplication_Success": "The application has been submitted correctly."
+	"Application_SendApplication_Success": "The application has been submitted correctly.",
+
+	"//Section10": "Workstation",
+	"Job_Station_Name": "Job station name",
+	"Job_Station_WorkersCount": "Count of employees",
+	"Job_Station_Action": "Action"
 }

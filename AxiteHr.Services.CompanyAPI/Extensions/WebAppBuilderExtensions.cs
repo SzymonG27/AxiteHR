@@ -6,6 +6,8 @@ using AxiteHR.Services.CompanyAPI.Services.Cache;
 using AxiteHR.Services.CompanyAPI.Services.Cache.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Services.CompanyRole;
+using AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Employee;
@@ -112,6 +114,7 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
 			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
 			builder.Services.AddScoped<ICompanyUserService, CompanyUserService>();
+			builder.Services.AddScoped<ICompanyRoleService, CompanyRoleService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();

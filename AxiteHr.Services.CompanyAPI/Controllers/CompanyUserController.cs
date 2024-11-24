@@ -14,6 +14,7 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 	[ApiController]
 	public class CompanyUserController(ICompanyUserService companyUserService) : ControllerBase
 	{
+		//TODO CompanyPermissionsValidator like CompanyRole>ListAsync
 		[HttpGet("[action]/{companyId}/{excludedUserId}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
 		public async Task<IEnumerable<CompanyUserViewDto>> List(int companyId, Guid excludedUserId, [FromQuery] Pagination paginationInfo)

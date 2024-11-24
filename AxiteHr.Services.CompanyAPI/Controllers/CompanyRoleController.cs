@@ -22,9 +22,9 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 
 		[HttpGet("[action]")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public Task<int> CountAsync([FromQuery] CompanyRoleListRequestDto requestDto)
+		public async Task<int> CountAsync([FromQuery] CompanyRoleListRequestDto requestDto)
 		{
-			return companyRoleService.GetCountListAsync(requestDto);
+			return await companyRoleService.GetCountListAsync(requestDto);
 		}
 	}
 }

@@ -11,7 +11,6 @@ import { Pagination } from '../../../shared/models/Pagination';
 
 @Component({
 	selector: 'app-employee-list',
-	standalone: true,
 	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
 	templateUrl: './employee-list.component.html',
 	styleUrl: './employee-list.component.css',

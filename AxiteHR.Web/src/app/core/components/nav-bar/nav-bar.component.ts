@@ -13,7 +13,6 @@ import { BlockUIService } from '../../services/block-ui.service';
 
 @Component({
 	selector: 'app-nav-bar',
-	standalone: true,
 	imports: [CommonModule, RouterModule, TranslateModule],
 	templateUrl: './nav-bar.component.html',
 	styleUrl: './nav-bar.component.css',

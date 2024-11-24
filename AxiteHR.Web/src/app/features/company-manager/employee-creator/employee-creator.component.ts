@@ -19,7 +19,6 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-employee-creator',
-	standalone: true,
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, TranslateModule],
 	templateUrl: './employee-creator.component.html',
 	styleUrl: './employee-creator.component.css',

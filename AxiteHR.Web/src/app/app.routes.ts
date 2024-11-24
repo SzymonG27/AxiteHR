@@ -21,6 +21,7 @@ import { TempPasswordEnterGuard } from './core/guards/auth/temp-password-enter-g
 import { IsInCompanyGuard } from './core/guards/company/is-in-company-guard.service';
 import { CalendarComponent } from './features/application/calendar/calendar.component';
 import { NewApplicationComponent } from './features/application/new-application/new-application.component';
+import { JobStationListComponent } from './features/company-manager/job-station-list/job-station-list.component';
 
 export const routes: Routes = [
 	//Home
@@ -85,11 +86,13 @@ export const routes: Routes = [
 		canActivate: [IsLoggedInGuard, IsInRoleGuard, IsInCompanyGuard],
 		data: { requiredRoles: [UserRole.Admin, UserRole.User, UserRole.UserFromCompany] },
 		children: [
+			//Main
 			{
 				path: 'Dashboard',
 				component: MainComponent,
 				data: { title: 'MANAGER_MAIN_TITLE_PAGE' },
 			},
+			//Company
 			{
 				path: 'EmployeeList',
 				component: EmployeeListComponent,
@@ -99,6 +102,11 @@ export const routes: Routes = [
 				path: 'EmployeeCreator',
 				component: EmployeeCreatorComponent,
 				data: { title: 'EMPLOYEE_CREATE_TITLE_PAGE' },
+			},
+			{
+				path: 'WorkstationList',
+				component: JobStationListComponent,
+				data: { title: 'WORKSTATION_LIST_TITLE_PAGE' },
 			},
 			//Application
 			{

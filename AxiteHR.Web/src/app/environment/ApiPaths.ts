@@ -12,6 +12,8 @@ export enum ApiPaths {
 	EmployeeCreator = '/EmployeeManager/CreateNewEmployee',
 	GetCompanyForEmployee = '/Company/GetForEmployee',
 	IsUserInCompany = '/CompanyUser/IsInCompany',
+	JobStationList = '/CompanyRole/List',
+	JobStationListCount = '/CompanyRole/Count',
 
 	//Application API
 	NewApplicationCreator = '/Application/CreateNewApplication',

@@ -136,6 +136,36 @@
 				"AuthenticationProviderKey": "Bearer"
 			}
 		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyRole/List",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyRole/List",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyRole/CountAsync",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyRole/CountAsync",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
 		//ApplicationAPI: 7002
 		{
 			"DownstreamPathTemplate": "/api/Application/CreateNewApplication",

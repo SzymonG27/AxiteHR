@@ -106,7 +106,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 			}
 
 			//InsUser is supervisor and main roles are the same, return true, else false
-			return companyUserRole.CompanyRoleId == insUserRole.CompanyRoleId;
+			return companyUserRole.CompanyRoleCompanyId == insUserRole.CompanyRoleCompanyId;
 		}
 
 		#region Private Methods
@@ -150,14 +150,15 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 				.AsNoTracking()
 				.SingleOrDefaultAsync(x => x.Id == companyUserId);
 		}
+
 		private async Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyUserId)
 		{
 			return await dbContext.CompanyUserRoles
 				.AsNoTracking()
-				.Join(dbContext.CompanyRoles,
-					cur => cur.CompanyRoleId,
-					cr => cr.Id,
-					(cur, cr) => new { cur, cr.IsMain })
+				.Join(dbContext.CompanyRoleCompanies,
+					cur => cur.CompanyRoleCompanyId,
+					crc => crc.Id,
+					(cur, crc) => new { cur, crc.IsMain })
 				.Where(x => x.cur.CompanyUserId == companyUserId && x.IsMain)
 				.Select(x => x.cur)
 				.SingleOrDefaultAsync();
@@ -167,16 +168,16 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 		{
 			return await dbContext.CompanyUserRoles
 				.AsNoTracking()
-				.Join(dbContext.CompanyRoles,
-					cur => cur.CompanyRoleId,
-					cr => cr.Id,
-					(cur, cr) => new { cur, cr.IsMain })
-				.Where(x => x.IsMain)
+				.Join(dbContext.CompanyRoleCompanies,
+					cur => cur.CompanyRoleCompanyId,
+					crc => crc.Id,
+					(cur, crc) => new { cur, crc.IsMain, crc.CompanyId })
+				.Where(x => x.IsMain && x.CompanyId == companyId)
 				.Join(dbContext.CompanyUsers,
 					x => x.cur.CompanyUserId,
 					cu => cu.Id,
 					(x, cu) => new { x.cur, cu })
-				.Where(x => x.cu.CompanyId == companyId && x.cu.UserId == insUserId)
+				.Where(x => x.cu.UserId == insUserId)
 				.Select(x => x.cur)
 				.SingleOrDefaultAsync();
 		}

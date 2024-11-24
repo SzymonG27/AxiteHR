@@ -40,4 +40,10 @@
     <ProjectReference Include="..\AxiteHR.Integration.JwtTokenHandler\AxiteHR.Integration.JwtTokenHandler.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

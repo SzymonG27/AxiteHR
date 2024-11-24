@@ -30,9 +30,12 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 			_redisCacheServiceMock = new Mock<IRedisCacheService>();
 
 			var options = new DbContextOptionsBuilder<AppDbContext>()
-			.UseSqlite("DataSource=:memory:")
-			.Options;
-			_dbContext = new AppDbContext(options);
+				.UseSqlite("DataSource=:memory:")
+				.Options;
+			_dbContext = new AppDbContext(options)
+			{
+				SkipSeedData = true
+			};
 			_dbContext.Database.OpenConnection();
 			_dbContext.Database.EnsureCreated();
 

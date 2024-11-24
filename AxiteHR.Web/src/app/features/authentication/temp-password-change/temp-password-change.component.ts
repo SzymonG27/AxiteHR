@@ -23,7 +23,6 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
 	selector: 'app-temp-password-change',
-	standalone: true,
 	imports: [CommonModule, TranslateModule, ReactiveFormsModule, RouterModule, FormsModule],
 	templateUrl: './temp-password-change.component.html',
 	styleUrl: './temp-password-change.component.css',

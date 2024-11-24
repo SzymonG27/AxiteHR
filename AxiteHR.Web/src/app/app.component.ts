@@ -7,7 +7,6 @@ import { TitleService } from './core/services/title-translate.service';
 
 @Component({
 	selector: 'app-root',
-	standalone: true,
 	imports: [
 		//Components
 		NavBarComponent,

@@ -12,7 +12,6 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 
 @Component({
 	selector: 'app-employee-list',
-	standalone: true,
 	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
 	templateUrl: './employee-list.component.html',
 	styleUrl: './employee-list.component.css',

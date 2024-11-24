@@ -16,7 +16,6 @@ import { firstValueFrom, take } from 'rxjs';
 
 @Component({
 	selector: 'app-company-creator',
-	standalone: true,
 	imports: [CommonModule, TranslateModule, ReactiveFormsModule, RouterModule, FormsModule],
 	templateUrl: './company-creator.component.html',
 	styleUrl: './company-creator.component.css',

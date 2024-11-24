@@ -10,7 +10,6 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 
 @Component({
 	selector: 'app-company-list',
-	standalone: true,
 	imports: [CommonModule, RouterModule, TranslateModule],
 	templateUrl: './company-list.component.html',
 	styleUrl: './company-list.component.css',

@@ -21,7 +21,6 @@ import { Environment } from '../../../environment/Environment';
 
 @Component({
 	selector: 'app-register',
-	standalone: true,
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, TranslateModule],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.css',

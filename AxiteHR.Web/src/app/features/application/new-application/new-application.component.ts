@@ -25,7 +25,6 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
 	selector: 'app-new-application',
-	standalone: true,
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
 	animations: [
 		trigger('slideDownUp', [

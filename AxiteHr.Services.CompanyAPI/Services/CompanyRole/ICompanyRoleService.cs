@@ -6,7 +6,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 {
 	public interface ICompanyRoleService
 	{
-		IEnumerable<CompanyRoleListResponseDto> GetList(CompanyRoleListRequestDto requestDto, Pagination pagination);
+		Task<IEnumerable<CompanyRoleListResponseDto>> GetListAsync(CompanyRoleListRequestDto requestDto, Pagination pagination);
 
 		Task<int> GetCountListAsync(CompanyRoleListRequestDto requestDto);
 	}

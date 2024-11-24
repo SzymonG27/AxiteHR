@@ -3,5 +3,7 @@
 	public record CompanyRoleListRequestDto
 	{
 		public int CompanyId { get; set; }
+
+		public Guid UserRequestedId { get; set; }
 	}
 }

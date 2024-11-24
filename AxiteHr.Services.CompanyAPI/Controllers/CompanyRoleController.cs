@@ -14,17 +14,17 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 	public class CompanyRoleController(ICompanyRoleService companyRoleService) : ControllerBase
 	{
 		[HttpGet("[action]")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public IEnumerable<CompanyRoleListResponseDto> List([FromQuery] CompanyRoleListRequestDto requestDto, [FromQuery] Pagination pagination)
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IEnumerable<CompanyRoleListResponseDto>> ListAsync([FromQuery] CompanyRoleListRequestDto requestDto, [FromQuery] Pagination pagination)
 		{
-			return companyRoleService.GetList(requestDto, pagination);
+			return await companyRoleService.GetListAsync(requestDto, pagination);
 		}
 
 		[HttpGet("[action]")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public Task<int> CountAsync([FromQuery] CompanyRoleListRequestDto requestDto)
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<int> CountAsync([FromQuery] CompanyRoleListRequestDto requestDto)
 		{
-			return companyRoleService.GetCountListAsync(requestDto);
+			return await companyRoleService.GetCountListAsync(requestDto);
 		}
 	}
 }

@@ -1,11 +1,11 @@
-﻿using System.Globalization;
-using System.Text;
-using AxiteHR.GlobalizationResources.Resources;
+﻿using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Services.Cache;
 using AxiteHR.Services.CompanyAPI.Services.Cache.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
@@ -18,6 +18,8 @@ using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using StackExchange.Redis;
+using System.Globalization;
+using System.Text;
 
 namespace AxiteHR.Services.CompanyAPI.Extensions
 {
@@ -115,6 +117,7 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
 			builder.Services.AddScoped<ICompanyUserService, CompanyUserService>();
 			builder.Services.AddScoped<ICompanyRoleService, CompanyRoleService>();
+			builder.Services.AddScoped<ICompanyPermissionService, CompanyPermissionService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();

@@ -9,5 +9,8 @@ namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 
 		[MaxLength(100)]
 		public virtual string RoleName { get; set; } = string.Empty;
+
+		[MaxLength(100)]
+		public virtual string RoleNameEng { get; set; } = string.Empty;
 	}
 }

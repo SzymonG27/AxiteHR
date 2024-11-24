@@ -26,7 +26,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 			{
 				var newCompany = await AddNewCompany();
 				var newCompanyUser = await AddCreatorCompanyUser(newCompany);
-				await AddCreatorRoleAsync(newCompanyUser, newCompanyRequest.CreatorId);
+				await AddCreatorRoleAsync(newCompany, newCompanyUser, newCompanyRequest.CreatorId);
 				await AddCreatorPermission(newCompanyUser);
 
 				await dbContext.SaveChangesAsync();
@@ -70,13 +70,24 @@ namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 				return newCompanyUser;
 			}
 
-			async Task AddCreatorRoleAsync(CompanyUserModel companyCreator, Guid insUserId)
+			async Task AddCreatorRoleAsync(Models.CompanyModels.Company newCompany, CompanyUserModel companyCreator, Guid insUserId)
 			{
 				var companyCreatorRole = await dbContext.CompanyRoles.SingleAsync(x => x.Id == (int)CompanyRoleDictionary.CompanyCreator);
+
+				CompanyRoleCompany newCompanyRoleCompany = new()
+				{
+					Company = newCompany,
+					CompanyRole = companyCreatorRole,
+					IsMain = false,
+					IsVisible = false
+				};
+
+				await dbContext.CompanyRoleCompanies.AddAsync(newCompanyRoleCompany);
+
 				CompanyUserRole newCompanyUserRole = new()
 				{
 					CompanyUser = companyCreator,
-					CompanyRole = companyCreatorRole,
+					CompanyRoleCompany = newCompanyRoleCompany,
 					InsDate = DateTime.UtcNow,
 					InsUserId = insUserId
 				};

@@ -26,7 +26,6 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-new-application',
-	standalone: true,
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
 	animations: [
 		trigger('slideDownUp', [

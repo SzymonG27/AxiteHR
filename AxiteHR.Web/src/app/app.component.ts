@@ -12,7 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-root',
-	standalone: true,
 	imports: [
 		//Components
 		CommonModule,

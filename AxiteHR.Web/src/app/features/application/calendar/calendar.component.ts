@@ -26,7 +26,6 @@ import { DataBehaviourService } from '../../../core/services/data/data-behaviour
 
 @Component({
 	selector: 'app-calendar',
-	standalone: true,
 	imports: [CommonModule, CalendarModule, FormsModule, TranslateModule, ModalComponent],
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.css'],

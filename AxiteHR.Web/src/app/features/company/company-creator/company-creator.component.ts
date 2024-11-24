@@ -17,7 +17,6 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-company-creator',
-	standalone: true,
 	imports: [CommonModule, TranslateModule, ReactiveFormsModule, RouterModule, FormsModule],
 	templateUrl: './company-creator.component.html',
 	styleUrl: './company-creator.component.css',

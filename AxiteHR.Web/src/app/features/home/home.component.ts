@@ -4,7 +4,6 @@ import { AuthStateService } from '../../core/services/authentication/auth-state.
 
 @Component({
 	selector: 'app-home',
-	standalone: true,
 	imports: [TranslateModule],
 	templateUrl: './home.component.html',
 	styleUrl: './home.component.css',

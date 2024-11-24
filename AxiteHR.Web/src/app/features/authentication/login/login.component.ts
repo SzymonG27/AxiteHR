@@ -17,7 +17,6 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-login',
-	standalone: true,
 	imports: [CommonModule, RouterModule, FormsModule, TranslateModule],
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.css',

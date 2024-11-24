@@ -37,7 +37,8 @@ namespace AxiteHR.Services.CompanyAPI.Data
 						new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
 						new CompanyPermission { Id = 2, PermissionName = "Employee" },
 						new CompanyPermission { Id = 3, PermissionName = "CompanyRoleSeeEntireList" },
-						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" }
+						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" },
+						new CompanyPermission { Id = 5, PermissionName = "CompanyRoleCreator" }
 					);
 			}
 

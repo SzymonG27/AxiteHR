@@ -1,19 +1,23 @@
-﻿using AxiteHR.Services.CompanyAPI.Data;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Localization;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 {
 	public class CompanyRoleService(
 		AppDbContext dbContext,
 		ICompanyUserService companyUserService,
-		ICompanyPermissionService companyPermissionService) : ICompanyRoleService
+		ICompanyPermissionService companyPermissionService,
+		IStringLocalizer<CompanyResources> companyLocalizer,
+		ILogger<CompanyRoleService> logger) : ICompanyRoleService
 	{
 		public async Task<IEnumerable<CompanyRoleListResponseDto>> GetListAsync(CompanyRoleListRequestDto requestDto, Pagination pagination)
 		{
@@ -26,6 +30,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 
 			if (companyUserId == null)
 			{
+				logger.LogWarning("User was not in the company, but tried to get list of roles, UserId: {UserId}, CompanyId: {CompanyId}", requestDto.UserRequestedId, requestDto.CompanyId);
 				return [];
 			}
 
@@ -71,6 +76,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 
 			if (companyUserId == null)
 			{
+				logger.LogWarning("User was not in the company, but tried to get count of roles, UserId: {UserId}, CompanyId: {CompanyId}", requestDto.UserRequestedId, requestDto.CompanyId);
 				return 0;
 			}
 
@@ -98,15 +104,40 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return await query.CountAsync();
 		}
 
+		public async Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto)
+		{
+			CompanyRoleCreatorResponseDto responseDto = new();
+
+			await using var transaction = await dbContext.Database.BeginTransactionAsync();
+			try
+			{
+				var companyUserId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+
+				if (companyUserId == null)
+				{
+					throw new UnauthorizedAccessException("User was not in the company, but tried to create new role");
+				}
+
+				//ToDo
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex, "Error while creating new company, params: {Params}", requestDto);
+
+				await transaction.RollbackAsync();
+
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.NewCompanyCreate_InternalError];
+			}
+
+			return responseDto;
+		}
+
+		#region Private Methods
 		private async Task<bool> IsUserCanSeeEntireListAsync(int companyUserId)
 		{
-			var permissionThatCanSeeEntireList = new List<int>
-			{
-				(int)PermissionDictionary.CompanyManager,
-				(int)PermissionDictionary.CompanyRoleSeeEntireList
-			};
-
-			return await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId, permissionThatCanSeeEntireList);
+			return await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId, CompanyPermissionsHelper.CompanyRoleSeeEntireListPermissions);
 		}
+		#endregion
 	}
 }

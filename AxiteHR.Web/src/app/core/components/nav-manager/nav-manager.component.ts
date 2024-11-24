@@ -8,7 +8,6 @@ import { UserRole } from '../../models/authentication/UserRole';
 
 @Component({
 	selector: 'app-nav-manager',
-	standalone: true,
 	imports: [CommonModule, TranslateModule, RouterModule],
 	templateUrl: './nav-manager.component.html',
 	styleUrl: './nav-manager.component.css',

@@ -5,7 +5,12 @@ namespace AxiteHR.Services.CompanyAPI.Data
 {
 	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 	{
-		// DbSety
+		/// <summary>
+		/// Used for tests to not seed data
+		/// </summary>
+		public bool SkipSeedData { get; set; } = false;
+
+		// DbSets
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<CompanyLevel> CompanyLevels { get; set; }
 		public DbSet<CompanyUser> CompanyUsers { get; set; }
@@ -15,43 +20,52 @@ namespace AxiteHR.Services.CompanyAPI.Data
 		public DbSet<CompanyPermission> CompanyPermissions { get; set; }
 		public DbSet<CompanyUserPermission> CompanyUserPermissions { get; set; }
 
-		// Konfiguracja modeli
+		// Model configuration
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
-			// Konfiguracja dla CompanyPermission
+			// Configuration for CompanyPermission
 			modelBuilder.Entity<CompanyPermission>()
 				.Property(x => x.Id)
 				.ValueGeneratedNever();
 
-			modelBuilder.Entity<CompanyPermission>()
-				.HasData(
-					new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
-					new CompanyPermission { Id = 2, PermissionName = "Employee" }
-				);
+			if (!SkipSeedData)
+			{
+				modelBuilder.Entity<CompanyPermission>()
+					.HasData(
+						new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
+						new CompanyPermission { Id = 2, PermissionName = "Employee" }
+					);
+			}
 
-			// Konfiguracja dla CompanyRole
-			modelBuilder.Entity<CompanyRole>()
+			// Configuration for CompanyRole
+			if (!SkipSeedData)
+			{
+				modelBuilder.Entity<CompanyRole>()
 				.HasData(
 					new CompanyRole { Id = 1, RoleName = "Company creator" },
 					new CompanyRole { Id = 2, RoleName = "Software department" }
 				);
+			}
 
-			// Konfiguracja dla CompanyRoleCompany
+			// Configuration for CompanyRoleCompany
 			modelBuilder.Entity<CompanyRoleCompany>()
 				.HasIndex(crc => new { crc.CompanyRoleId, crc.CompanyId })
 				.IsUnique();
 
-			// Konfiguracja dla CompanyLevel
-			modelBuilder.Entity<CompanyLevel>()
-				.HasData(
-					new CompanyLevel { Id = 1, MaxNumberOfWorkers = 10 },
-					new CompanyLevel { Id = 2, MaxNumberOfWorkers = 25 },
-					new CompanyLevel { Id = 3, MaxNumberOfWorkers = 50 },
-					new CompanyLevel { Id = 4, MaxNumberOfWorkers = 100 },
-					new CompanyLevel { Id = 5, MaxNumberOfWorkers = int.MaxValue }
-				);
+			// Configuration for CompanyLevel
+			if (!SkipSeedData)
+			{
+				modelBuilder.Entity<CompanyLevel>()
+					.HasData(
+						new CompanyLevel { Id = 1, MaxNumberOfWorkers = 10 },
+						new CompanyLevel { Id = 2, MaxNumberOfWorkers = 25 },
+						new CompanyLevel { Id = 3, MaxNumberOfWorkers = 50 },
+						new CompanyLevel { Id = 4, MaxNumberOfWorkers = 100 },
+						new CompanyLevel { Id = 5, MaxNumberOfWorkers = int.MaxValue }
+					);
+			}
 		}
 	}
 }

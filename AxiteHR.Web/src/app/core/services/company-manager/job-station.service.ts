@@ -5,28 +5,38 @@ import { JobStationListViewModel } from '../../models/company-manager/job-statio
 import { JobStationListItem } from '../../models/company-manager/job-station/JobStationListItem';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
+import { AuthStateService } from '../authentication/auth-state.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class JobStationService {
-	constructor(private http: HttpClient) {}
+	constructor(
+		private http: HttpClient,
+		private authStateService: AuthStateService
+	) {}
 
 	getList(
 		companyId: number,
 		page: number,
 		itemsPerPage: number
 	): Observable<JobStationListViewModel> {
+		const userId = this.authStateService.getLoggedUserId();
+
 		const jobStationListViewModel: JobStationListViewModel = {
 			isSucceed: false,
 			errorMessage: '',
 			jobStationList: [],
 		};
 
+		if (userId.length === 0) {
+			return of(jobStationListViewModel);
+		}
+
 		return this.http
 			.get<
 				JobStationListItem[]
-			>(`${Environment.gatewayApiUrl}${ApiPaths.JobStationList}?CompanyId=${companyId}&Page=${page}&ItemsPerPage=${itemsPerPage}`)
+			>(`${Environment.gatewayApiUrl}${ApiPaths.JobStationList}?CompanyId=${companyId}&UserRequestedId=${userId}&Page=${page}&ItemsPerPage=${itemsPerPage}`)
 			.pipe(
 				map(data => {
 					jobStationListViewModel.isSucceed = true;
@@ -43,10 +53,15 @@ export class JobStationService {
 
 	getCountList(companyId: number) {
 		let employeeListCount = 0;
+		const userId = this.authStateService.getLoggedUserId();
+
+		if (userId.length === 0) {
+			return of(0);
+		}
 
 		return this.http
 			.get<number>(
-				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}`
+				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&RequestedUserId=${userId}`
 			)
 			.pipe(
 				map(data => {

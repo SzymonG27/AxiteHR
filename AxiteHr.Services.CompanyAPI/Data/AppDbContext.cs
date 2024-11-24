@@ -35,7 +35,9 @@ namespace AxiteHR.Services.CompanyAPI.Data
 				modelBuilder.Entity<CompanyPermission>()
 					.HasData(
 						new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
-						new CompanyPermission { Id = 2, PermissionName = "Employee" }
+						new CompanyPermission { Id = 2, PermissionName = "Employee" },
+						new CompanyPermission { Id = 3, PermissionName = "CompanyRoleSeeEntireList" },
+						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" }
 					);
 			}
 

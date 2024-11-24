@@ -21,4 +21,4 @@ app.MapGet("/", () => "Hello World!");
 
 app.UseOcelot().Wait();
 
-app.Run();
+await app.RunAsync();

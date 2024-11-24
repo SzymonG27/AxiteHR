@@ -137,7 +137,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyRole/List",
+			"DownstreamPathTemplate": "/api/CompanyRole/ListAsync",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -145,7 +145,7 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyRole/List",
+			"UpstreamPathTemplate": "/api/CompanyRole/ListAsync",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"

@@ -3,12 +3,14 @@ using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 {
@@ -34,7 +36,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				return [];
 			}
 
-			var isUserCanSeeEntireList = await IsUserCanSeeEntireListAsync(companyUserId.Value);
+			var isUserCanSeeEntireList = await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId.Value, CompanyPermissionsHelper.CompanyRoleSeeEntireListPermissions);
 
 			var query = dbContext.CompanyRoles
 				.Join(dbContext.CompanyRoleCompanies,
@@ -80,7 +82,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				return 0;
 			}
 
-			var isUserCanSeeEntireList = await IsUserCanSeeEntireListAsync(companyUserId.Value);
+			var isUserCanSeeEntireList = await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId.Value, CompanyPermissionsHelper.CompanyRoleSeeEntireListPermissions);
 
 			var query = dbContext.CompanyRoles
 				.Join(dbContext.CompanyRoleCompanies,
@@ -111,14 +113,38 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 			try
 			{
-				var companyUserId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+				var companyUserId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId)
+					?? throw new UnauthorizedAccessException("User was not in the company, but tried to create new role");
 
-				if (companyUserId == null)
+				if (!await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId, CompanyPermissionsHelper.CompanyRoleCreatePermissions))
 				{
-					throw new UnauthorizedAccessException("User was not in the company, but tried to create new role");
+					responseDto.IsSucceeded = false;
+					responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.CompanyRoleCreate_UserDoesntHavePermissions];
+					return responseDto;
 				}
 
-				//ToDo
+				var companyRoleFromDb = await dbContext.CompanyRoles
+					.FirstOrDefaultAsync(x => x.RoleName == requestDto.RoleNameTrimmed && x.RoleNameEng == requestDto.RoleNameEngTrimmed);
+
+				if (companyRoleFromDb == null)
+				{
+					var companyRole = CreateCompanyRole(requestDto);
+					var companyRoleCompany = CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRole);
+
+					responseDto.CompanyRoleId = companyRole.Id;
+					responseDto.CompanyRoleCompanyId = companyRoleCompany.Id;
+				}
+				else
+				{
+					var companyRoleCompany = CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRoleFromDb);
+
+					responseDto.CompanyRoleId = companyRoleFromDb.Id;
+					responseDto.CompanyRoleCompanyId = companyRoleCompany.Id;
+				}
+
+				responseDto.IsSucceeded = true;
+
+				return responseDto;
 			}
 			catch (Exception ex)
 			{
@@ -134,9 +160,28 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 		}
 
 		#region Private Methods
-		private async Task<bool> IsUserCanSeeEntireListAsync(int companyUserId)
+		private CompanyRoleModel CreateCompanyRole(CompanyRoleCreatorRequestDto requestDto)
 		{
-			return await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(companyUserId, CompanyPermissionsHelper.CompanyRoleSeeEntireListPermissions);
+			var companyRole = new CompanyRoleModel
+			{
+				RoleName = requestDto.RoleNameTrimmed,
+				RoleNameEng = requestDto.RoleNameEngTrimmed
+			};
+
+			dbContext.CompanyRoles.Add(companyRole);
+
+			return companyRole;
+		}
+
+		private async Task<CompanyRoleCompany> CreateCompanyRoleCompanyAsync(int companyId, CompanyRoleModel companyRole)
+		{
+			var companyRoleCompany = new CompanyRoleCompany
+			{
+				Company = await dbContext.Companies.SingleAsync(x => x.Id == companyId),
+				CompanyRole = companyRole
+			};
+
+			return companyRoleCompany;
 		}
 		#endregion
 	}

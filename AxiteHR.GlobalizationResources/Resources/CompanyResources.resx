@@ -150,4 +150,7 @@
   <data name="NewCompanyCreate_InternalError" xml:space="preserve">
     <value>An error occurred while creating a new company. Please try again later.</value>
   </data>
+  <data name="CompanyRoleCreate_UserDoesntHavePermissions" xml:space="preserve">
+    <value>User doesn't have permission to create a new role.</value>
+  </data>
 </root>

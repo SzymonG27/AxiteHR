@@ -52,6 +52,20 @@ namespace AxiteHR.Services.CompanyAPI.Data
 				);
 			}
 
+			modelBuilder.Entity<CompanyRole>()
+				.Property(x => x.RoleName)
+				.HasMaxLength(100)
+				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+			modelBuilder.Entity<CompanyRole>()
+				.Property(x => x.RoleNameEng)
+				.HasMaxLength(100)
+				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+			modelBuilder.Entity<CompanyRole>()
+				.HasIndex(x => new { x.RoleName, x.RoleNameEng })
+				.IsUnique();
+
 			// Configuration for CompanyRoleCompany
 			modelBuilder.Entity<CompanyRoleCompany>()
 				.HasIndex(crc => new { crc.CompanyRoleId, crc.CompanyId })

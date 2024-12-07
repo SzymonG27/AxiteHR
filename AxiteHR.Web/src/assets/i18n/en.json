@@ -165,5 +165,6 @@
 	"JobStation_Creator_Title": "New jobstation",
 	"JobStation_RoleNamePl": "Job station in Polish",
 	"JobStation_RoleNameEng": "Job station in English",
-	"JobStation_JobStationCreate_ButtonTitle": "Create a new job station"
+	"JobStation_JobStationCreate_ButtonTitle": "Create a new job station",
+	"JobStation_JobStationCreate_Created": "The job station has been successfully created"
 }

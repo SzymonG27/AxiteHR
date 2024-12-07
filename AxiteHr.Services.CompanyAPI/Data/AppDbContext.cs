@@ -47,8 +47,8 @@ namespace AxiteHR.Services.CompanyAPI.Data
 			{
 				modelBuilder.Entity<CompanyRole>()
 				.HasData(
-					new CompanyRole { Id = 1, RoleName = "Company creator" },
-					new CompanyRole { Id = 2, RoleName = "Software department" }
+					new CompanyRole { Id = 1, RoleName = "Twórca firmy", RoleNameEng = "Company creator" },
+					new CompanyRole { Id = 2, RoleName = "Dział oprogramowania", RoleNameEng = "Software department" }
 				);
 
 				modelBuilder.Entity<CompanyRole>()

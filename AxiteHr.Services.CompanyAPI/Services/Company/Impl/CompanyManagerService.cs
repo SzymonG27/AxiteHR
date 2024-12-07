@@ -50,6 +50,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 			async Task<Models.CompanyModels.Company> AddNewCompany()
 			{
 				var newCompany = mapper.Map<Models.CompanyModels.Company>(newCompanyRequest);
+				newCompany.UpdDate = DateTime.UtcNow;
+				newCompany.InsDate = DateTime.UtcNow;
 				newCompany.CompanyLevel = await dbContext.CompanyLevels.SingleAsync(x => x.Id == (int)CompanyLevelDictionary.Max10Emplyees);
 				await dbContext.Companies.AddAsync(newCompany);
 

@@ -165,5 +165,6 @@
 	"JobStation_Creator_Title": "Nowe stanowisko pracy",
 	"JobStation_RoleNamePl": "Nazwa stanowiska pracy w języku polskim",
 	"JobStation_RoleNameEng": "Nazwa stanowiska pracy w jezyku angielskim",
-	"JobStation_JobStationCreate_ButtonTitle": "Stwórz nowe stanowisko pracy"
+	"JobStation_JobStationCreate_ButtonTitle": "Stwórz nowe stanowisko pracy",
+	"JobStation_JobStationCreate_Created": "Stanowisko pracy zostało pomyślnie utworzone"
 }

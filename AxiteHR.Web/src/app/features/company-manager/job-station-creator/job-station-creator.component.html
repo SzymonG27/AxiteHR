@@ -1,0 +1,115 @@
+<div class="ml-4 mt-4">
+	<button
+		type="button"
+		(click)="goBack()"
+		class="rounded-full button-hover-animation button-full"
+	>
+		<span class="material-icons px-2 py-2">arrow_back</span>
+	</button>
+</div>
+
+<div class="text-[#333]">
+	<div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex flex-col items-center justify-center">
+		<div
+			class="md:mt-8 grid md:grid-cols-1 items-center max-w-lg gap-4 w-full p-4 m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md"
+		>
+			<div class="md:max-w-md w-full sm:px-6 py-4 mx-auto">
+				<form [formGroup]="jobStationCreatorForm">
+					<div class="mb-12">
+						<h3 class="text-3xl font-extrabold">
+							{{ 'JobStation_Creator_Title' | translate }}
+						</h3>
+					</div>
+					<div class="mb-4 text-red-600" *ngIf="errorMessage">*{{ errorMessage }}</div>
+					<div>
+						<div class="text-sm block mb-2">
+							{{ 'JobStation_RoleNamePl' | translate }}*
+						</div>
+						<div class="relative flex items-center">
+							<input
+								title="{{ 'JobStation_RoleNamePl' | translate }}"
+								formControlName="roleName"
+								(focus)="focusRoleName = true"
+								(blur)="focusRoleName = false"
+								type="text"
+								required
+								name="roleName"
+								#roleName
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								[class.focus-color]="focusRoleName"
+								fill="#bbb"
+								stroke="#bbb"
+								class="w-[18px] h-[18px] absolute right-2"
+								viewBox="0 0 24 24"
+							>
+								<circle
+									cx="12"
+									cy="12"
+									r="10"
+									fill="none"
+									stroke="#bbb"
+									stroke-width="2"
+								></circle>
+								<circle cx="12" cy="8" r="3" fill="#bbb"></circle>
+								<path d="M9 12c0 3 6 3 6 0v-1h-6v1z" fill="#bbb"></path>
+								<path d="M7 16c0 0 2-1 5-1s5 1 5 1v1H7v-1z" fill="#bbb"></path>
+								<path d="M9 16h2v4H9v-4zm4 0h2v4h-2v-4z" fill="#bbb"></path>
+							</svg>
+						</div>
+					</div>
+					<div class="mt-8">
+						<div class="text-sm block mb-2">
+							{{ 'JobStation_RoleNameEng' | translate }}*
+						</div>
+						<div class="relative flex items-center">
+							<input
+								title="{{ 'JobStation_RoleNameEng' | translate }}"
+								formControlName="roleNameEng"
+								(focus)="focusRoleNameEng = true"
+								(blur)="focusRoleNameEng = false"
+								type="text"
+								required
+								name="roleNameEng"
+								#roleNameEng
+								class="w-full text-sm border-b border-gray-300 focus:border-[#8697C4] px-2 py-3 outline-none transition"
+							/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								[class.focus-color]="focusRoleNameEng"
+								fill="#bbb"
+								stroke="#bbb"
+								class="w-[18px] h-[18px] absolute right-2"
+								viewBox="0 0 24 24"
+							>
+								<circle
+									cx="12"
+									cy="12"
+									r="10"
+									fill="none"
+									stroke="#bbb"
+									stroke-width="2"
+								></circle>
+								<circle cx="12" cy="8" r="3" fill="#bbb"></circle>
+								<path d="M9 12c0 3 6 3 6 0v-1h-6v1z" fill="#bbb"></path>
+								<path d="M7 16c0 0 2-1 5-1s5 1 5 1v1H7v-1z" fill="#bbb"></path>
+								<path d="M9 16h2v4H9v-4zm4 0h2v4h-2v-4z" fill="#bbb"></path>
+							</svg>
+						</div>
+					</div>
+					<div class="mt-12">
+						<button
+							type="button"
+							(click)="sendCreator()"
+							class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-full text-white bg-[#8697C4] hover:bg-[#6b789c] focus:outline-none transition"
+						>
+							{{ 'Application_SendApplication' | translate }}
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

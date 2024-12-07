@@ -15,6 +15,7 @@
 	"CALENDAR_TITLE_PAGE": "Kalendarz",
 	"NEW_APPLICATION_TITLE_PAGE": "Nowy wniosek",
 	"WORKSTATION_LIST_TITLE_PAGE": "Lista stanowisk pracy",
+	"NEW_JOBSTATION_TITLE_PAGE": "Nowe stanowisko pracy",
 	"defaultTitle": "Moja Aplikacja",
 
 	"//Section2": "Global messages",
@@ -160,5 +161,9 @@
 	"//Section10": "Job station",
 	"Job_Station_Name": "Nazwa stanowiska pracy",
 	"Job_Station_WorkersCount": "Liczba pracowników",
-	"Job_Station_Action": "Akcja"
+	"Job_Station_Action": "Akcja",
+	"JobStation_Creator_Title": "Nowe stanowisko pracy",
+	"JobStation_RoleNamePl": "Nazwa stanowiska pracy w języku polskim",
+	"JobStation_RoleNameEng": "Nazwa stanowiska pracy w jezyku angielskim",
+	"JobStation_JobStationCreate_ButtonTitle": "Stwórz nowe stanowisko pracy"
 }

@@ -61,7 +61,7 @@ export class JobStationService {
 
 		return this.http
 			.get<number>(
-				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&RequestedUserId=${userId}`
+				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&UserRequestedId=${userId}`
 			)
 			.pipe(
 				map(data => {

@@ -22,6 +22,7 @@ import { IsInCompanyGuard } from './core/guards/company/is-in-company-guard.serv
 import { CalendarComponent } from './features/application/calendar/calendar.component';
 import { NewApplicationComponent } from './features/application/new-application/new-application.component';
 import { JobStationListComponent } from './features/company-manager/job-station-list/job-station-list.component';
+import { JobStationCreatorComponent } from './features/company-manager/job-station-creator/job-station-creator.component';
 
 export const routes: Routes = [
 	//Home
@@ -104,9 +105,14 @@ export const routes: Routes = [
 				data: { title: 'EMPLOYEE_CREATE_TITLE_PAGE' },
 			},
 			{
-				path: 'WorkstationList',
+				path: 'JobStationList',
 				component: JobStationListComponent,
 				data: { title: 'WORKSTATION_LIST_TITLE_PAGE' },
+			},
+			{
+				path: 'JobStationCreator',
+				component: JobStationCreatorComponent,
+				data: { title: 'NEW_JOBSTATION_TITLE_PAGE' },
 			},
 			//Application
 			{

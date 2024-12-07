@@ -35,7 +35,10 @@ namespace AxiteHR.Services.CompanyAPI.Services.Cache.Impl
 
 		private static bool IsPrimitiveOrString(Type type)
 		{
-			return type.IsPrimitive || type == typeof(string) || type == typeof(decimal);
+			return type.IsPrimitive
+				|| type == typeof(string)
+				|| type == typeof(decimal)
+				|| type == typeof(bool);
 		}
 	}
 }

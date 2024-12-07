@@ -164,4 +164,12 @@ export class EmployeeCreatorComponent {
 	onBlurLastName() {
 		this.focusLastName = false;
 	}
+
+	goBack(): void {
+		if (window.history.length > 1) {
+			window.history.back();
+		} else {
+			this.router.navigateByUrl('/Dashboard');
+		}
+	}
 }

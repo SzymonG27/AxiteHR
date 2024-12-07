@@ -1,4 +1,6 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request
 {
 	public record CompanyRoleCreatorRequestDto
 	{
@@ -6,8 +8,10 @@
 
 		public Guid UserRequestedId { get; set; }
 
+		[MaxLength(100)]
 		public string RoleName { get; set; } = string.Empty;
 
+		[MaxLength(100)]
 		public string RoleNameEng { get; set; } = string.Empty;
 
 		public string RoleNameTrimmed => RoleName.Trim();

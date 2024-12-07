@@ -38,7 +38,10 @@ public class EmployeeServiceTests
 		var options = new DbContextOptionsBuilder<AppDbContext>()
 			.UseSqlite("DataSource=:memory:")
 			.Options;
-		_dbContext = new AppDbContext(options);
+		_dbContext = new AppDbContext(options)
+		{
+			SkipSeedData = true
+		};
 		_dbContext.Database.OpenConnection();
 		_dbContext.Database.EnsureCreated();
 
@@ -97,7 +100,19 @@ public class EmployeeServiceTests
 		};
 		_dbContext.CompanyUsers.Add(existingUser);
 
-		var existingPermission = await _dbContext.CompanyPermissions.SingleAsync(x => x.Id == (int)PermissionDictionary.CompanyManager);
+		CompanyPermission existingPermission = new()
+		{
+			Id = (int)PermissionDictionary.CompanyManager,
+			PermissionName = "Company manager"
+		};
+		await _dbContext.CompanyPermissions.AddAsync(existingPermission);
+
+		CompanyPermission existingEmployeePermission = new()
+		{
+			Id = (int)PermissionDictionary.Employee,
+			PermissionName = "Employee"
+		};
+		await _dbContext.CompanyPermissions.AddAsync(existingEmployeePermission);
 
 		var userPermission = new CompanyUserPermission
 		{
@@ -110,7 +125,7 @@ public class EmployeeServiceTests
 		var requestDto = new NewEmployeeRequestDto
 		{
 			CompanyId = existingCompany.Id,
-			InsUserId = insUserId.ToString() // Przekazujemy identyfikator użytkownika jako string
+			InsUserId = insUserId.ToString()
 		};
 		const string token = "fakeToken";
 
@@ -170,7 +185,19 @@ public class EmployeeServiceTests
 		};
 		_dbContext.CompanyUsers.Add(existingUser);
 
-		var existingPermission = await _dbContext.CompanyPermissions.SingleAsync(x => x.Id == (int)PermissionDictionary.CompanyManager);
+		CompanyPermission existingPermission = new()
+		{
+			Id = (int)PermissionDictionary.CompanyManager,
+			PermissionName = "Company manager"
+		};
+		await _dbContext.CompanyPermissions.AddAsync(existingPermission);
+
+		CompanyPermission existingEmployeePermission = new()
+		{
+			Id = (int)PermissionDictionary.Employee,
+			PermissionName = "Employee"
+		};
+		await _dbContext.CompanyPermissions.AddAsync(existingEmployeePermission);
 
 		var userPermission = new CompanyUserPermission
 		{
@@ -183,7 +210,7 @@ public class EmployeeServiceTests
 		var requestDto = new NewEmployeeRequestDto
 		{
 			CompanyId = existingCompany.Id,
-			InsUserId = insUserId.ToString() // Przekazujemy identyfikator użytkownika jako string
+			InsUserId = insUserId.ToString()
 		};
 		const string token = "fakeToken";
 

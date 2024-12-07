@@ -50,17 +50,17 @@ namespace AxiteHR.Services.CompanyAPI.Data
 					new CompanyRole { Id = 1, RoleName = "Company creator" },
 					new CompanyRole { Id = 2, RoleName = "Software department" }
 				);
-			}
 
-			modelBuilder.Entity<CompanyRole>()
+				modelBuilder.Entity<CompanyRole>()
 				.Property(x => x.RoleName)
 				.HasMaxLength(100)
 				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-			modelBuilder.Entity<CompanyRole>()
-				.Property(x => x.RoleNameEng)
-				.HasMaxLength(100)
-				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+				modelBuilder.Entity<CompanyRole>()
+					.Property(x => x.RoleNameEng)
+					.HasMaxLength(100)
+					.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+			}
 
 			modelBuilder.Entity<CompanyRole>()
 				.HasIndex(x => new { x.RoleName, x.RoleNameEng })

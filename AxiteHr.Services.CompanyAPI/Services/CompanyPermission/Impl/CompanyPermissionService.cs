@@ -11,11 +11,11 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 	{
 		public async Task<bool> IsCompanyUserHasPermissionAsync(int companyUserId, int permissionId)
 		{
-			var valueFromRedis = await redisCacheService.GetObjectAsync<bool?>(CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId));
+			var valueFromRedis = await redisCacheService.GetObjectAsync<string?>(CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId));
 
 			if (valueFromRedis is not null)
 			{
-				return valueFromRedis.Value;
+				return bool.Parse(valueFromRedis);
 			}
 
 			var isCompanyUserHasPermission = await dbContext.CompanyUserPermissions
@@ -24,7 +24,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 			await redisCacheService.SetObjectAsync(
 				CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId),
-				isCompanyUserHasPermission,
+				isCompanyUserHasPermission? "true" : "false",
 				TimeSpan.FromMinutes(5));
 
 			return isCompanyUserHasPermission;
@@ -34,11 +34,11 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 		{
 			var permissionIdListOrderedString = string.Join(",", permissionIdList.Order().ToList());
 
-			var valueFromRedis = await redisCacheService.GetObjectAsync<bool?>(CompanyRedisKeys.IsCompanyUserHasAnyPermission(companyUserId, permissionIdListOrderedString));
+			var valueFromRedis = await redisCacheService.GetObjectAsync<string?>(CompanyRedisKeys.IsCompanyUserHasAnyPermission(companyUserId, permissionIdListOrderedString));
 
 			if (valueFromRedis is not null)
 			{
-				return valueFromRedis.Value;
+				return bool.Parse(valueFromRedis);
 			}
 
 			var isCompanyUserHasAnyPermission = await dbContext.CompanyUserPermissions
@@ -47,7 +47,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 			await redisCacheService.SetObjectAsync(
 				CompanyRedisKeys.IsCompanyUserHasAnyPermission(companyUserId, permissionIdListOrderedString),
-				isCompanyUserHasAnyPermission,
+				isCompanyUserHasAnyPermission ? "true" : "false",
 				TimeSpan.FromMinutes(5));
 
 			return isCompanyUserHasAnyPermission;

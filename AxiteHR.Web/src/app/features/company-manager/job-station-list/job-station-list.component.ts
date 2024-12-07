@@ -7,12 +7,12 @@ import { JobStationListItem } from '../../../core/models/company-manager/job-sta
 import { JobStationService } from '../../../core/services/company-manager/job-station.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-job-station-list',
 	standalone: true,
-	imports: [CommonModule, TranslateModule, NgxPaginationModule],
+	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
 	templateUrl: './job-station-list.component.html',
 	styleUrl: './job-station-list.component.css',
 })

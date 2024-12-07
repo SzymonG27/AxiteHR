@@ -14,7 +14,8 @@
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
 	"CALENDAR_TITLE_PAGE": "Calendar",
 	"NEW_APPLICATION_TITLE_PAGE": "New application",
-	"WORKSTATION_LIST_TITLE_PAGE": "Workstation list",
+	"WORKSTATION_LIST_TITLE_PAGE": "Jobstation list",
+	"NEW_JOBSTATION_TITLE_PAGE": "New jobstation",
 	"defaultTitle": "My Application",
 
 	"//Section2": "Global messages",
@@ -160,5 +161,10 @@
 	"//Section10": "Workstation",
 	"Job_Station_Name": "Job station name",
 	"Job_Station_WorkersCount": "Count of employees",
-	"Job_Station_Action": "Action"
+	"Job_Station_Action": "Action",
+	"JobStation_Creator_Title": "New jobstation",
+	"JobStation_RoleNamePl": "Job station in Polish",
+	"JobStation_RoleNameEng": "Job station in English",
+	"JobStation_JobStationCreate_ButtonTitle": "Create a new job station",
+	"JobStation_JobStationCreate_Created": "The job station has been successfully created"
 }

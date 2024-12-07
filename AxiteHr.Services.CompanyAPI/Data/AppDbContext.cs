@@ -37,7 +37,8 @@ namespace AxiteHR.Services.CompanyAPI.Data
 						new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },
 						new CompanyPermission { Id = 2, PermissionName = "Employee" },
 						new CompanyPermission { Id = 3, PermissionName = "CompanyRoleSeeEntireList" },
-						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" }
+						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" },
+						new CompanyPermission { Id = 5, PermissionName = "CompanyRoleCreator" }
 					);
 			}
 
@@ -46,10 +47,24 @@ namespace AxiteHR.Services.CompanyAPI.Data
 			{
 				modelBuilder.Entity<CompanyRole>()
 				.HasData(
-					new CompanyRole { Id = 1, RoleName = "Company creator" },
-					new CompanyRole { Id = 2, RoleName = "Software department" }
+					new CompanyRole { Id = 1, RoleName = "Twórca firmy", RoleNameEng = "Company creator" },
+					new CompanyRole { Id = 2, RoleName = "Dział oprogramowania", RoleNameEng = "Software department" }
 				);
+
+				modelBuilder.Entity<CompanyRole>()
+				.Property(x => x.RoleName)
+				.HasMaxLength(100)
+				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+				modelBuilder.Entity<CompanyRole>()
+					.Property(x => x.RoleNameEng)
+					.HasMaxLength(100)
+					.UseCollation("SQL_Latin1_General_CP1_CI_AS");
 			}
+
+			modelBuilder.Entity<CompanyRole>()
+				.HasIndex(x => new { x.RoleName, x.RoleNameEng })
+				.IsUnique();
 
 			// Configuration for CompanyRoleCompany
 			modelBuilder.Entity<CompanyRoleCompany>()

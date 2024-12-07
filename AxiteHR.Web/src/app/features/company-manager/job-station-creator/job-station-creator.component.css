@@ -1,0 +1,14 @@
+.button-hover-animation {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke,
+		opacity, box-shadow, transform, filter, backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+.focus-color {
+	fill: #8697c4;
+	stroke: #8697c4;
+	transition:
+		fill 150ms ease-in-out,
+		stroke 150ms ease-in-out;
+}

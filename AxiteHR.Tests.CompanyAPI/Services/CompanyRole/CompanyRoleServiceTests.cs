@@ -1,4 +1,5 @@
-﻿using AxiteHR.Services.CompanyAPI.Data;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
@@ -6,6 +7,8 @@ using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Moq;
 using CompanyModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company;
 using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole;
@@ -21,6 +24,8 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyRole
 		private CompanyRoleService _service;
 		private Mock<ICompanyUserService> _companyUserService;
 		private Mock<ICompanyPermissionService> _companyPermissionService;
+		private Mock<IStringLocalizer<CompanyResources>> _companyLocalizer;
+		private Mock<ILogger<CompanyRoleService>> _logger;
 
 		[SetUp]
 		public async Task Setup()
@@ -41,8 +46,10 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyRole
 
 			_companyUserService = new Mock<ICompanyUserService>();
 			_companyPermissionService = new Mock<ICompanyPermissionService>();
+			_companyLocalizer = new Mock<IStringLocalizer<CompanyResources>>();
+			_logger = new Mock<ILogger<CompanyRoleService>>();
 
-			_service = new CompanyRoleService(_dbContext, _companyUserService.Object, _companyPermissionService.Object);
+			_service = new CompanyRoleService(_dbContext, _companyUserService.Object, _companyPermissionService.Object, _companyLocalizer.Object, _logger.Object);
 		}
 
 		[TearDown]

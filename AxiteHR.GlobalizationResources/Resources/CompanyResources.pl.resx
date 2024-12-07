@@ -150,4 +150,10 @@
   <data name="NewCompanyCreate_InternalError" xml:space="preserve">
     <value>Wystąpił błąd podczas tworzenia nowej firmy. Spróbuj ponownie później.</value>
   </data>
+  <data name="CompanyRoleCreate_UserDoesntHavePermissions" xml:space="preserve">
+    <value>Użytkownik nie ma uprawnień do utworzenia nowej roli.</value>
+  </data>
+  <data name="CompanyRoleCreate_CompanyRoleCompanyExists" xml:space="preserve">
+    <value>The job station already exists for the company</value>
+  </data>
 </root>

@@ -14,5 +14,7 @@ namespace AxiteHR.GlobalizationResources
         public const string RegisterGlobalError = "RegisterGlobalError";
         public const string RegisterUserNameExistsInDb = "RegisterUserNameExistsInDb";
         public const string NewCompanyCreate_InternalError = "NewCompanyCreate_InternalError";
+        public const string CompanyRoleCreate_UserDoesntHavePermissions = "CompanyRoleCreate_UserDoesntHavePermissions";
+        public const string CompanyRoleCreate_CompanyRoleCompanyExists = "CompanyRoleCreate_CompanyRoleCompanyExists";
     }
 }

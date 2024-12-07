@@ -14,6 +14,7 @@ export enum ApiPaths {
 	IsUserInCompany = '/CompanyUser/IsInCompany',
 	JobStationList = '/CompanyRole/ListAsync',
 	JobStationListCount = '/CompanyRole/CountAsync',
+	JobStationCreate = '/CompanyRole/CreateAsync',
 
 	//Application API
 	NewApplicationCreator = '/Application/CreateNewApplication',

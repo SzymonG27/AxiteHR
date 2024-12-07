@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, first, map, Observable, of, take } from 'rxjs';
 import { JobStationListViewModel } from '../../models/company-manager/job-station/JobStationListViewModel';
 import { JobStationListItem } from '../../models/company-manager/job-station/JobStationListItem';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
 import { AuthStateService } from '../authentication/auth-state.service';
+import { JobStationCreatorRequest } from '../../models/company-manager/job-station/JobStationCreatorRequest';
+import { JobStationCreatorResponse } from '../../models/company-manager/job-station/JobStationCreatorResponse';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,7 +16,8 @@ import { AuthStateService } from '../authentication/auth-state.service';
 export class JobStationService {
 	constructor(
 		private http: HttpClient,
-		private authStateService: AuthStateService
+		private authStateService: AuthStateService,
+		private translate: TranslateService
 	) {}
 
 	getList(
@@ -61,7 +65,7 @@ export class JobStationService {
 
 		return this.http
 			.get<number>(
-				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&RequestedUserId=${userId}`
+				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&UserRequestedId=${userId}`
 			)
 			.pipe(
 				map(data => {
@@ -72,5 +76,35 @@ export class JobStationService {
 					return of(employeeListCount);
 				})
 			);
+	}
+
+	create(request: JobStationCreatorRequest): Observable<JobStationCreatorResponse> {
+		request.userRequestedId = this.authStateService.getLoggedUserId();
+
+		const jobStationCreatorResponse: JobStationCreatorResponse = {
+			isSucceeded: false,
+			errorMessage: '',
+			companyRoleId: 0,
+			companyRoleCompanyId: 0,
+		};
+
+		if (request.userRequestedId.length === 0) {
+			this.translate
+				.get('Global_UserNotLogged')
+				.pipe(
+					first(),
+					map((translation: string) => translation)
+				)
+				.subscribe(message => (jobStationCreatorResponse.errorMessage = message));
+
+			return of(jobStationCreatorResponse);
+		}
+
+		return this.http
+			.post<JobStationCreatorResponse>(
+				`${Environment.gatewayApiUrl}${ApiPaths.JobStationCreate}`,
+				request
+			)
+			.pipe(take(1));
 	}
 }

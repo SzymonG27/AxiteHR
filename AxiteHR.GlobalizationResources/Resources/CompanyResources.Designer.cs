@@ -61,6 +61,33 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stanowisko pracy już istnieje dla firmy.
+        /// </summary>
+        public static string CompanyRoleCreate_CompanyRoleCompanyExists {
+            get {
+                return ResourceManager.GetString("CompanyRoleCreate_CompanyRoleCompanyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User doesn&apos;t have permission to create a new role..
+        /// </summary>
+        public static string CompanyRoleCreate_UserDoesntHavePermissions {
+            get {
+                return ResourceManager.GetString("CompanyRoleCreate_UserDoesntHavePermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while creating a new company. Please try again later..
+        /// </summary>
+        public static string NewCompanyCreate_InternalError {
+            get {
+                return ResourceManager.GetString("NewCompanyCreate_InternalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company ID.
         /// </summary>
         public static string NewEmployeeRequestDto_CompanyId {

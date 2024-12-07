@@ -153,4 +153,7 @@
   <data name="CompanyRoleCreate_UserDoesntHavePermissions" xml:space="preserve">
     <value>User doesn't have permission to create a new role.</value>
   </data>
+  <data name="CompanyRoleCreate_CompanyRoleCompanyExists" xml:space="preserve">
+    <value>Stanowisko pracy już istnieje dla firmy</value>
+  </data>
 </root>

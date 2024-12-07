@@ -123,26 +123,35 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 					return responseDto;
 				}
 
-				var companyRoleFromDb = await dbContext.CompanyRoles
+				var companyRole = await dbContext.CompanyRoles
 					.FirstOrDefaultAsync(x => x.RoleName == requestDto.RoleNameTrimmed && x.RoleNameEng == requestDto.RoleNameEngTrimmed);
 
-				if (companyRoleFromDb == null)
-				{
-					var companyRole = CreateCompanyRole(requestDto);
-					var companyRoleCompany = CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRole);
+				CompanyRoleCompany? companyRoleCompany;
 
-					responseDto.CompanyRoleId = companyRole.Id;
-					responseDto.CompanyRoleCompanyId = companyRoleCompany.Id;
+				if (companyRole == null)
+				{
+					companyRole = await CreateCompanyRoleAsync(requestDto);
+					companyRoleCompany = await CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRole);
 				}
 				else
 				{
-					var companyRoleCompany = CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRoleFromDb);
+					if (await IsCompanyRoleHasRelationToCompanyAsync(requestDto.CompanyId, companyRole.Id))
+					{
+						responseDto.IsSucceeded = false;
+						responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.CompanyRoleCreate_CompanyRoleCompanyExists];
+						return responseDto;
+					}
 
-					responseDto.CompanyRoleId = companyRoleFromDb.Id;
-					responseDto.CompanyRoleCompanyId = companyRoleCompany.Id;
+					companyRoleCompany = await CreateCompanyRoleCompanyAsync(requestDto.CompanyId, companyRole);
 				}
 
 				responseDto.IsSucceeded = true;
+
+				await dbContext.SaveChangesAsync();
+				await transaction.CommitAsync();
+
+				responseDto.CompanyRoleId = companyRole.Id;
+				responseDto.CompanyRoleCompanyId = companyRoleCompany.Id;
 
 				return responseDto;
 			}
@@ -160,15 +169,14 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 		}
 
 		#region Private Methods
-		private CompanyRoleModel CreateCompanyRole(CompanyRoleCreatorRequestDto requestDto)
+		private async Task<CompanyRoleModel> CreateCompanyRoleAsync(CompanyRoleCreatorRequestDto requestDto)
 		{
 			var companyRole = new CompanyRoleModel
 			{
 				RoleName = requestDto.RoleNameTrimmed,
 				RoleNameEng = requestDto.RoleNameEngTrimmed
 			};
-
-			dbContext.CompanyRoles.Add(companyRole);
+			await dbContext.CompanyRoles.AddAsync(companyRole);
 
 			return companyRole;
 		}
@@ -178,10 +186,19 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			var companyRoleCompany = new CompanyRoleCompany
 			{
 				Company = await dbContext.Companies.SingleAsync(x => x.Id == companyId),
-				CompanyRole = companyRole
+				CompanyRole = companyRole,
+				IsVisible = true
 			};
+			await dbContext.CompanyRoleCompanies.AddAsync(companyRoleCompany);
 
 			return companyRoleCompany;
+		}
+
+		private async Task<bool> IsCompanyRoleHasRelationToCompanyAsync(int companyId, int companyRoleId)
+		{
+			return await dbContext.CompanyRoleCompanies
+				.Where(x => x.CompanyRoleId == companyRoleId && x.CompanyId == companyId)
+				.AnyAsync();
 		}
 		#endregion
 	}

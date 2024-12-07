@@ -27,7 +27,7 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 			return await companyRoleService.GetCountListAsync(requestDto);
 		}
 
-		[HttpPost("[action]")]
+		[HttpPost("CreateAsync")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<IActionResult> CreateAsync([FromBody] CompanyRoleCreatorRequestDto requestDto)
 		{

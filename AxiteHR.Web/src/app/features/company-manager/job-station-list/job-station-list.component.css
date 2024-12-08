@@ -1,4 +1,4 @@
-.button-job-station-creator {
+.button-job-secondary {
 	--tw-border-opacity: 1;
 	border-color: rgb(134 151 196 / var(--tw-border-opacity));
 
@@ -19,7 +19,7 @@
 	transition-duration: 200ms;
 }
 
-.button-job-station-creator:hover {
+.button-job-secondary:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgb(134 151 196 / var(--tw-bg-opacity));
 

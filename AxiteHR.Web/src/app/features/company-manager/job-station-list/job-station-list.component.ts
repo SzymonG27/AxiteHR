@@ -8,20 +8,37 @@ import { JobStationService } from '../../../core/services/company-manager/job-st
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { JobStationListRequest } from '../../../core/models/company-manager/job-station/JobStationListRequest';
+import { FormsModule } from '@angular/forms';
+import { ListFilterComponent } from '../../../shared/components/list-filter/list-filter.component';
 
 @Component({
 	selector: 'app-job-station-list',
 	standalone: true,
-	imports: [CommonModule, RouterModule, TranslateModule, NgxPaginationModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		TranslateModule,
+		NgxPaginationModule,
+		FormsModule,
+		ListFilterComponent,
+	],
 	templateUrl: './job-station-list.component.html',
 	styleUrl: './job-station-list.component.css',
 })
 export class JobStationListComponent implements OnInit {
 	//Pagination
 	pagination: Pagination = new Pagination();
+
 	jobStationList: JobStationListItem[] = [];
 	companyId: number | null = null;
 	errorMessage: string | null = null;
+	isFilterVisible = false;
+
+	jobStationListRequest: JobStationListRequest = {
+		companyId: 0,
+		roleName: '',
+	};
 
 	constructor(
 		private jobStationService: JobStationService,
@@ -40,10 +57,12 @@ export class JobStationListComponent implements OnInit {
 			this.blockUIService.stop();
 		}
 
+		this.jobStationListRequest.companyId = this.companyId!;
+
 		zip(
-			this.getJobStationListCount(this.companyId!),
+			this.getJobStationListCount(this.jobStationListRequest),
 			this.getJobStationList(
-				this.companyId!,
+				this.jobStationListRequest,
 				this.pagination.pageNumber - 1,
 				this.pagination.pageSize
 			)
@@ -66,10 +85,11 @@ export class JobStationListComponent implements OnInit {
 		this.blockUIService.start();
 
 		this.pagination.pageNumber = event;
+		this.jobStationListRequest.companyId = this.companyId!;
 
 		zip(
 			this.getJobStationList(
-				this.companyId!,
+				this.jobStationListRequest,
 				this.pagination.pageNumber - 1,
 				this.pagination.pageSize
 			)
@@ -88,12 +108,24 @@ export class JobStationListComponent implements OnInit {
 			});
 	}
 
+	toggleFilter() {
+		this.isFilterVisible = !this.isFilterVisible;
+	}
+
+	searchByFilter() {
+		this.isFilterVisible = true;
+	}
+
+	clearFilter() {
+		this.isFilterVisible = true;
+	}
+
 	private getJobStationList(
-		passedCompanyId: number,
+		requestModel: JobStationListRequest,
 		currentPage: number,
 		pageSize: number
 	): Observable<void> {
-		return this.jobStationService.getList(passedCompanyId, currentPage, pageSize).pipe(
+		return this.jobStationService.getList(requestModel, currentPage, pageSize).pipe(
 			take(1),
 			switchMap(response => {
 				if (!response.isSucceed) {
@@ -106,8 +138,8 @@ export class JobStationListComponent implements OnInit {
 		);
 	}
 
-	private getJobStationListCount(passedCompanyId: number): Observable<void> {
-		return this.jobStationService.getCountList(passedCompanyId).pipe(
+	private getJobStationListCount(requestModel: JobStationListRequest): Observable<void> {
+		return this.jobStationService.getCountList(requestModel).pipe(
 			take(1),
 			switchMap(response => {
 				this.pagination.totalItems = response;

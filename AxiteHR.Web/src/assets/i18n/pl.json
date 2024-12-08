@@ -166,5 +166,10 @@
 	"JobStation_RoleNamePl": "Nazwa stanowiska pracy w języku polskim",
 	"JobStation_RoleNameEng": "Nazwa stanowiska pracy w jezyku angielskim",
 	"JobStation_JobStationCreate_ButtonTitle": "Stwórz nowe stanowisko pracy",
-	"JobStation_JobStationCreate_Created": "Stanowisko pracy zostało pomyślnie utworzone"
+	"JobStation_JobStationCreate_Created": "Stanowisko pracy zostało pomyślnie utworzone",
+
+	"//Section11": "List filter",
+	"List_Filter_Title": "Filtracja",
+	"List_Filter_Search_Button": "Szukaj",
+	"List_Filter_Clear_Button": "Wyczyść"
 }

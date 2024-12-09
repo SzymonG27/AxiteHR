@@ -3,21 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListFilterComponent } from './list-filter.component';
 
 describe('ListFilterComponent', () => {
-  let component: ListFilterComponent;
-  let fixture: ComponentFixture<ListFilterComponent>;
+	let component: ListFilterComponent;
+	let fixture: ComponentFixture<ListFilterComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ListFilterComponent]
-    })
-    .compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [ListFilterComponent],
+		}).compileComponents();
 
-    fixture = TestBed.createComponent(ListFilterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(ListFilterComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

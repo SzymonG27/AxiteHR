@@ -59,26 +59,7 @@ export class JobStationListComponent implements OnInit {
 
 		this.jobStationListRequest.companyId = this.companyId!;
 
-		zip(
-			this.getJobStationListCount(this.jobStationListRequest),
-			this.getJobStationList(
-				this.jobStationListRequest,
-				this.pagination.pageNumber - 1,
-				this.pagination.pageSize
-			)
-		)
-			.pipe(take(1))
-			.subscribe({
-				next: () => {
-					this.blockUIService.stop();
-				},
-				error: async err => {
-					this.errorMessage =
-						err.message ||
-						(await firstValueFrom(this.translate.get('Global_UnknownError')));
-					this.blockUIService.stop();
-				},
-			});
+		this.searchJobStation();
 	}
 
 	pageChanged(event: number) {
@@ -113,11 +94,37 @@ export class JobStationListComponent implements OnInit {
 	}
 
 	searchByFilter() {
-		this.isFilterVisible = true;
+		this.blockUIService.start();
+		this.searchJobStation();
 	}
 
 	clearFilter() {
-		this.isFilterVisible = true;
+		this.blockUIService.start();
+		this.jobStationListRequest.roleName = '';
+		this.searchJobStation();
+	}
+
+	private searchJobStation() {
+		zip(
+			this.getJobStationListCount(this.jobStationListRequest),
+			this.getJobStationList(
+				this.jobStationListRequest,
+				this.pagination.pageNumber - 1,
+				this.pagination.pageSize
+			)
+		)
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.errorMessage =
+						err.message ||
+						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+					this.blockUIService.stop();
+				},
+			});
 	}
 
 	private getJobStationList(

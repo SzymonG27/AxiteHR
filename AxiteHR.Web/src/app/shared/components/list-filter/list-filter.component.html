@@ -26,7 +26,11 @@
 		<div class="p-5">
 			<ng-content></ng-content>
 			<div class="flex justify-end gap-4 mt-4">
-				<button type="button" class="button button-full flex items-center justify-center">
+				<button
+					type="button"
+					class="button button-full flex items-center justify-center"
+					(click)="onSearch()"
+				>
 					<span class="material-icons mr-2 leading-none flex-shrink-0 align-middle"
 						>search</span
 					>
@@ -35,7 +39,11 @@
 					</span>
 				</button>
 
-				<button type="button" class="button button-border flex items-center justify-center">
+				<button
+					type="button"
+					class="button button-border flex items-center justify-center"
+					(click)="onClear()"
+				>
 					<span class="material-icons mr-2 leading-none flex-shrink-0 align-middle"
 						>clear</span
 					>

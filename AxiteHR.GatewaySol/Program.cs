@@ -19,6 +19,7 @@ app.UseCors("NgOrigins");
 
 app.MapGet("/", () => "Hello World!");
 
+app.UseWebSockets();
 app.UseOcelot().Wait();
 
-app.Run();
+await app.RunAsync();

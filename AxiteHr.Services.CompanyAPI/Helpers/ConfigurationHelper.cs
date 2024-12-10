@@ -3,6 +3,7 @@
 	public static class ConfigurationHelper
 	{
 		public const string DefaultConnectionString = "DefaultConnection";
+		public const string RedisConnectionString = "Redis";
 		public const string AuthApiUrl = "ServiceUrls:AuthAPI";
 		public const string IsDbFromDocker = "IsDbFromDocker";
 		public const string LogStashUrl = "LogstashConfig:LogStashUrl";

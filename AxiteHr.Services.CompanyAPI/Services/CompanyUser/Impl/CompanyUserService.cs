@@ -1,11 +1,11 @@
-﻿using AxiteHR.Integration.GlobalClass.RedisKeys;
+﻿using AxiteHR.Integration.Cache.Redis;
+using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
-using AxiteHR.Services.CompanyAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;

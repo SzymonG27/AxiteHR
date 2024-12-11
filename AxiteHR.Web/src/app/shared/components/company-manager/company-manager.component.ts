@@ -5,6 +5,7 @@ import { first, Subject, takeUntil } from 'rxjs';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 import { CompanyService } from '../../../core/services/company/company.service';
 import { NotificationService } from '../../../core/services/signalr/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-company-manager',
@@ -32,20 +33,19 @@ export class CompanyManagerComponent implements AfterViewInit, OnDestroy, OnInit
 			this.companyId = Number.parseInt(params.get('id') ?? '0');
 		});
 
-		let companyUserId = 0;
-
 		this.companyService
 			.getCompanyUserId(this.authState.getLoggedUserId(), this.companyId!)
 			.pipe(first())
 			.subscribe({
 				next: (companyUserIdResponse: number) => {
-					companyUserId = companyUserIdResponse;
+					if (companyUserIdResponse !== 0) {
+						this.notificationService.startConnection(companyUserIdResponse.toString());
+					}
+				},
+				error: async (error: HttpErrorResponse) => {
+					console.log(error);
 				},
 			});
-
-		if (companyUserId !== 0) {
-			this.notificationService.startConnection(companyUserId.toString());
-		}
 	}
 
 	ngAfterViewInit() {

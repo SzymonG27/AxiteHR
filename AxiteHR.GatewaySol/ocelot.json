@@ -169,23 +169,25 @@
 		},
 		//SignalRAPI: 7006
 		{
-			"DownstreamPathTemplate": "/hubs/notification",
+			"DownstreamPathTemplate": "/api/Hubs/Notification/{everything}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
-					"Host": "localhost",
+					"Host": "axitehr.services.signalrapi",
 					"Port": 7006
 				}
 			],
-			"UpstreamPathTemplate": "/hubs/notification",
-			"UpstreamHttpMethod": [ "GET", "POST" ],
-			"RouteIsCaseSensitive": false,
+			"UpstreamPathTemplate": "/api/Hubs/Notification/{everything}",
+			"UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}
 		}
 	],
 	"GlobalConfiguration": {
-		"BaseUrl": "https://localhost:7777"
+		"BaseUrl": "https://localhost:7777",
+		"UseProxy": true,
+		"AllowAutoRedirect": false,
+		"AllowConnectionHeader": true
 	}
 }

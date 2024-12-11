@@ -15,4 +15,8 @@ export class JWTTokenService {
 
 		return jwtDecode<JwtPayloadClient>(token);
 	}
+
+	getToken(): string {
+		return localStorage.getItem(AuthDictionary.Token) ?? '';
+	}
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
+import { JWTTokenService } from '../authentication/jwttoken.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,11 +10,17 @@ import { ApiPaths } from '../../../environment/ApiPaths';
 export class NotificationService {
 	private hubConnection: signalR.HubConnection | null = null;
 
+	constructor(private jwtTokenService: JWTTokenService) {}
+
 	public startConnection(userCompanyId: string) {
 		this.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl(
-				`${Environment.gatewayApiUrl}${ApiPaths.NotificationHub}?userId=${userCompanyId}`
-			)
+			.withUrl(`${Environment.gatewayApiUrl}${ApiPaths.NotificationHub}`, {
+				transport: signalR.HttpTransportType.WebSockets,
+				withCredentials: true,
+				accessTokenFactory: () => {
+					return this.jwtTokenService.getToken();
+				},
+			})
 			.withAutomaticReconnect()
 			.build();
 

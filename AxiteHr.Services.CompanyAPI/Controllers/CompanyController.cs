@@ -20,7 +20,7 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 		}
 
 		[HttpGet("[action]/{userId}/{companyId}")]
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.UserFromCompany)]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<int> CompanyUserId(Guid userId, int companyId)
 		{
 			return await companyService.GetCompanyUserIdAsync(userId, companyId);

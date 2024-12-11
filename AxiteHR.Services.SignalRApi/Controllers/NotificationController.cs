@@ -1,11 +1,14 @@
 ﻿using AxiteHR.Services.SignalRApi.Models;
 using AxiteHR.Services.SignalRApi.Services.Notification;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AxiteHR.Services.SignalRApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class NotificationController(INotificationService notificationService) : ControllerBase
 	{
 		[HttpGet("[action]/{userId}")]

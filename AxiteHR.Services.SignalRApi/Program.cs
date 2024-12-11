@@ -12,14 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Cors
+builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
+	policy => policy.WithOrigins("http://localhost:4200")
+		.AllowAnyMethod()
+		.AllowAnyHeader()
+		.AllowCredentials())
+);
+
 builder.Services.AddSignalR();
 
 builder.RegisterServices();
-
-//Cors
-builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
-	policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader())
-);
 
 var app = builder.Build();
 
@@ -30,15 +33,19 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseWebSockets();
+
 app.UseCors("NgOrigins");
 
 app.UseHttpsRedirection();
 
+app.MapControllers();
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
-app.MapHub<NotificationHub>("/hubs/notification");
+app.MapHub<NotificationHub>("/api/Hubs/Notification");
 
 await app.RunAsync();

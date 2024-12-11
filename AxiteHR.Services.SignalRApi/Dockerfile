@@ -7,6 +7,11 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+USER root
+COPY AxiteHR.Services.SignalRApi/Certs/axitehr.services.signalrapi.crt /usr/local/share/ca-certificates/axitehr.services.signalrapi.crt
+RUN update-ca-certificates
+
+USER app
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build

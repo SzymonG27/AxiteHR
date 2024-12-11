@@ -1,8 +1,10 @@
 ﻿using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Services.SignalRApi.Helpers;
+using AxiteHR.Services.SignalRApi.Services.CustomUser.Impl;
 using AxiteHR.Services.SignalRApi.Services.Notification;
 using AxiteHR.Services.SignalRApi.Services.Notification.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
@@ -43,7 +45,9 @@ namespace AxiteHR.Services.SignalRApi.Extensions
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
 			var redisConnectionString = builder.Configuration.GetConnectionString(ConfigurationHelper.RedisConnectionString)!;
+
 			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+			builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 			builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 			builder.Services.AddScoped<INotificationService, NotificationService>();

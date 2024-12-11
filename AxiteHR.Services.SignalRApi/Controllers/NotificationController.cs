@@ -8,22 +8,29 @@ namespace AxiteHR.Services.SignalRApi.Controllers
 	[ApiController]
 	public class NotificationController(INotificationService notificationService) : ControllerBase
 	{
-		[HttpGet("{userId}")]
-		public async Task<IActionResult> GetNotifications(string userId)
+		[HttpGet("[action]/{userId}")]
+		public async Task<IActionResult> GetNotificationListAsync(string userId)
 		{
 			var notifications = await notificationService.GetNotificationListAsync(userId);
 			return Ok(notifications);
 		}
 
-		[HttpPost("{userId}")]
-		public async Task<IActionResult> AddNotification(string userId, [FromBody] NotificationDto notification)
+		[HttpPost("[action]/{userId}")]
+		public async Task<IActionResult> AddNotificationAsync(string userId, [FromBody] NotificationDto notification)
 		{
 			await notificationService.AddNotificationAsync(userId, notification);
 			return Ok();
 		}
 
-		[HttpDelete("{userId}/{notificationId}")]
-		public async Task<IActionResult> DeleteNotification(string userId, string notificationId)
+		[HttpPost("[action]/{userId}")]
+		public async Task<IActionResult> AddNotificationWithHubSendAsync(string userId, [FromBody] NotificationDto notification)
+		{
+			await notificationService.AddNotificationWithHubSendAsync(userId, notification);
+			return Ok();
+		}
+
+		[HttpDelete("[action]/{userId}/{notificationId}")]
+		public async Task<IActionResult> DeleteNotificationAsync(string userId, string notificationId)
 		{
 			await notificationService.RemoveNotificationAsync(userId, notificationId);
 			return Ok();

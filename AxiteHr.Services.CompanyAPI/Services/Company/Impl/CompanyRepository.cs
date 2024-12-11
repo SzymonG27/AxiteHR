@@ -42,5 +42,14 @@ namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 				})
 				.SingleAsync();
 		}
+
+		public async Task<int> GetCompanyUserIdAsync(Guid userId, int companyId)
+		{
+			return await dbContext.CompanyUsers
+				.AsNoTracking()
+				.Where(x => x.CompanyId == companyId && x.UserId == userId)
+				.Select(x => x.Id)
+				.SingleAsync();
+		}
 	}
 }

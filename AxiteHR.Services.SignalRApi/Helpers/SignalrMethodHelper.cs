@@ -3,5 +3,6 @@
 	public static class SignalrMethodHelper
 	{
 		public const string NotificationReceive = "ReceiveNotification";
+		public const string NotificationGlobalReceive = "ReceiveGlobalNotification";
 	}
 }

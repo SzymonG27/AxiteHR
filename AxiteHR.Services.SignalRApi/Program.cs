@@ -4,6 +4,8 @@ using AxiteHR.Services.SignalRApi.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,8 +30,11 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseCors("NgOrigins");
+
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

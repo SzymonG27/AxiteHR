@@ -35,11 +35,13 @@ namespace AxiteHR.Integration.Cache.Redis
 		}
 
 		public async Task PushRightObjectAsync<T>(string key, T value)
+			where T : RedisObjectList
 		{
 			await _database.ListRightPushAsync(key, JsonSerializer.Serialize(value));
 		}
 
 		public async Task<List<T?>> GetObjectListAsync<T>(string key)
+			where T : RedisObjectList
 		{
 			var objectList = await _database.ListRangeAsync(key);
 			return objectList

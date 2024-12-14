@@ -14,20 +14,30 @@ export class NotificationService {
 
 	public startConnection(userCompanyId: string) {
 		this.hubConnection = new signalR.HubConnectionBuilder()
-			.withUrl(`${Environment.gatewayApiUrl}${ApiPaths.NotificationHub}`, {
-				transport: signalR.HttpTransportType.WebSockets,
-				withCredentials: true,
-				accessTokenFactory: () => {
-					return this.jwtTokenService.getToken();
-				},
-			})
+			.withUrl(
+				`${Environment.gatewayApiUrl}${ApiPaths.NotificationHub}?userCompanyId=${userCompanyId}`,
+				{
+					transport: signalR.HttpTransportType.WebSockets,
+					withCredentials: true,
+					accessTokenFactory: () => {
+						return this.jwtTokenService.getToken();
+					},
+				}
+			)
 			.withAutomaticReconnect()
 			.build();
 
 		this.hubConnection
-			.start() //ToDo console log delete
-			.then(() => console.log('Connection active with SignalR'))
+			.start()
 			.catch(err => console.log('Error with connection to SignalR: ', err));
+	}
+
+	public stopConnection(): void {
+		if (this.hubConnection) {
+			this.hubConnection
+				.stop()
+				.catch(err => console.log('Error while stopping connection to signalr: ', err));
+		}
 	}
 
 	public addNotificationListener() {
@@ -43,11 +53,11 @@ export class NotificationService {
 		);
 	}
 
-	public sendMessage(userId: string, header: string, message: string) {
+	public sendMessage(userCompanyId: string, header: string, message: string) {
 		if (!this.hubConnection) {
 			return;
 		}
 
-		this.hubConnection.invoke('SendMessage', userId, header, message);
+		this.hubConnection.invoke('SendMessage', userCompanyId, header, message);
 	}
 }

@@ -63,6 +63,8 @@ export class CompanyManagerComponent implements AfterViewInit, OnDestroy, OnInit
 			this.resizeObserver.disconnect();
 		}
 
+		this.notificationService.stopConnection();
+
 		this.destroy$.next();
 		this.destroy$.complete();
 	}

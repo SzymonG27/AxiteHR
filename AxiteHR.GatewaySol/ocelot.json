@@ -178,16 +178,30 @@
 				}
 			],
 			"UpstreamPathTemplate": "/api/Hubs/Notification/{everything}",
-			"UpstreamHttpMethod": [ "GET", "POST", "OPTIONS" ],
+			"UpstreamHttpMethod": [ "GET", "POST", "OPTIONS", "CONNECT" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
+			},
+			"RouteIsCaseSensitive": false,
+			"UpstreamHeaderTransform": {
+				"Connection": "Upgrade",
+				"Upgrade": "websocket",
+				"Authorization": "Authorization"
+			},
+			"DownstreamHeaderTransform": {
+				"Connection": "Upgrade",
+				"Upgrade": "websocket",
+				"Authorization": "Authorization"
+			},
+			"HttpHandlerOptions": {
+				"UseProxy": true,
+				"AllowAutoRedirect": false,
+				"UseTracing": true
 			}
 		}
 	],
 	"GlobalConfiguration": {
 		"BaseUrl": "https://localhost:7777",
-		"UseProxy": true,
-		"AllowAutoRedirect": false,
 		"AllowConnectionHeader": true
 	}
 }

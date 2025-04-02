@@ -75,4 +75,16 @@ export class CompanyService {
 			)
 			.pipe(take(1));
 	}
+
+	public getCompanyUserId(userId: string, companyId: number): Observable<number> {
+		if (companyId === 0) {
+			return of(0);
+		}
+
+		return this.http
+			.get<number>(
+				`${Environment.gatewayApiUrl}${ApiPaths.CompanyGetCompanyUserId}/${userId}/${companyId}`
+			)
+			.pipe(take(1));
+	}
 }

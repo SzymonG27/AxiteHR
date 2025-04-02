@@ -9,7 +9,8 @@
         "axitehr.services.authapi": "StartDebugging",
         "axitehr.services.companyapi": "StartDebugging",
         "axitehr.services.documentapi": "StartDebugging",
-        "axitehr.services.emailapi": "StartDebugging"
+        "axitehr.services.emailapi": "StartDebugging",
+        "axitehr.services.signalrapi": "StartDebugging"
       }
     }
   }

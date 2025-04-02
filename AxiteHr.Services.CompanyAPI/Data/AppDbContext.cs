@@ -20,6 +20,11 @@ namespace AxiteHR.Services.CompanyAPI.Data
 			modelBuilder.Entity<CompanyPermission>()
 				.Property(x => x.Id)
 				.ValueGeneratedNever();
+
+			modelBuilder.Entity<CompanyUser>()
+				.HasIndex(x => new { x.UserId, x.CompanyId })
+				.IsUnique();
+
 			modelBuilder.Entity<CompanyPermission>()
 				.HasData(
 					new CompanyPermission { Id = 1, PermissionName = "CompanyManager" },

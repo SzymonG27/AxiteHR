@@ -361,3 +361,17 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#Service APIs Certs
+AxiteHR.Services.ApplicationAPI/Certs/*.key
+AxiteHR.Services.ApplicationAPI/Certs/*.pfx
+AxiteHR.Services.ApplicationAPI/Certs/*.crt
+AxiteHR.Services.AuthAPI/Certs/*.key
+AxiteHR.Services.AuthAPI/Certs/*.pfx
+AxiteHR.Services.AuthAPI/Certs/*.crt
+AxiteHR.Services.CompanyAPI/Certs/*.key
+AxiteHR.Services.CompanyAPI/Certs/*.pfx
+AxiteHR.Services.CompanyAPI/Certs/*.crt
+AxiteHR.Services.SignalRApi/Certs/*.key
+AxiteHR.Services.SignalRApi/Certs/*.pfx
+AxiteHR.Services.SignalRApi/Certs/*.crt

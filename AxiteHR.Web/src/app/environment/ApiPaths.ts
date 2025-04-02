@@ -6,6 +6,7 @@ export enum ApiPaths {
 
 	//Company API
 	CompanyList = '/Company/List',
+	CompanyGetCompanyUserId = '/Company/CompanyUserId',
 	EmployeeList = '/CompanyUser/List',
 	EmployeeListCount = '/CompanyUser/Count',
 	CompanyCreator = '/CompanyManager/CreateNewCompany',
@@ -15,4 +16,7 @@ export enum ApiPaths {
 
 	//Application API
 	NewApplicationCreator = '/Application/CreateNewApplication',
+
+	//SignalR API
+	NotificationHub = '/Hubs/Notification',
 }

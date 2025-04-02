@@ -16,6 +16,9 @@ export class NavManagerComponent implements OnInit, OnDestroy {
 	@ViewChild('sidebar', { static: true }) sidebar!: ElementRef;
 	private destroy$ = new Subject<void>();
 
+	unreadNotificationsCount = 3;
+	isNotificationPanelVisible = false;
+
 	isMenuOpen = false;
 	isTeamsExpanded = false;
 	isProjectsExpanded = false;
@@ -60,6 +63,10 @@ export class NavManagerComponent implements OnInit, OnDestroy {
 				this.isApplicationsExpanded = !this.isApplicationsExpanded;
 				break;
 		}
+	}
+
+	toggleNotificationPanelVisible() {
+		this.isNotificationPanelVisible = !this.isNotificationPanelVisible;
 	}
 
 	setHeight(height: number) {

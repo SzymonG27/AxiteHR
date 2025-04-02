@@ -9,6 +9,7 @@ import { AuthStateService } from '../authentication/auth-state.service';
 import { JobStationCreatorRequest } from '../../models/company-manager/job-station/JobStationCreatorRequest';
 import { JobStationCreatorResponse } from '../../models/company-manager/job-station/JobStationCreatorResponse';
 import { TranslateService } from '@ngx-translate/core';
+import { JobStationListRequest } from '../../models/company-manager/job-station/JobStationListRequest';
 
 @Injectable({
 	providedIn: 'root',
@@ -21,7 +22,7 @@ export class JobStationService {
 	) {}
 
 	getList(
-		companyId: number,
+		requestModel: JobStationListRequest,
 		page: number,
 		itemsPerPage: number
 	): Observable<JobStationListViewModel> {
@@ -40,7 +41,7 @@ export class JobStationService {
 		return this.http
 			.get<
 				JobStationListItem[]
-			>(`${Environment.gatewayApiUrl}${ApiPaths.JobStationList}?CompanyId=${companyId}&UserRequestedId=${userId}&Page=${page}&ItemsPerPage=${itemsPerPage}`)
+			>(`${Environment.gatewayApiUrl}${ApiPaths.JobStationList}?CompanyId=${requestModel.companyId}&RoleName=${requestModel.roleName}&UserRequestedId=${userId}&Page=${page}&ItemsPerPage=${itemsPerPage}`)
 			.pipe(
 				map(data => {
 					jobStationListViewModel.isSucceed = true;
@@ -55,7 +56,7 @@ export class JobStationService {
 			);
 	}
 
-	getCountList(companyId: number) {
+	getCountList(requestModel: JobStationListRequest) {
 		let employeeListCount = 0;
 		const userId = this.authStateService.getLoggedUserId();
 
@@ -65,7 +66,7 @@ export class JobStationService {
 
 		return this.http
 			.get<number>(
-				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${companyId}&UserRequestedId=${userId}`
+				`${Environment.gatewayApiUrl}${ApiPaths.JobStationListCount}?CompanyId=${requestModel.companyId}&RoleName=${requestModel.roleName}&UserRequestedId=${userId}`
 			)
 			.pipe(
 				map(data => {

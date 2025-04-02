@@ -57,6 +57,11 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				query = query.Where(x => x.CompanyUser != null && x.CompanyUser.Id == companyUserId);
 			}
 
+			if (!string.IsNullOrEmpty(requestDto.RoleName))
+			{
+				query = query.Where(x => x.cr.RoleName.Contains(requestDto.RoleName) || x.cr.RoleNameEng.Contains(requestDto.RoleName));
+			}
+
 			return await query.GroupBy(x => new { x.cr.Id, x.cr.RoleName, x.crc.IsMain })
 				.OrderBy(x => x.Key.Id)
 				.Skip(pagination.Page * pagination.ItemsPerPage)
@@ -90,6 +95,11 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 					crc => crc.CompanyRoleId,
 					(cr, crc) => new { cr, crc })
 				.Where(x => x.crc.IsVisible && x.crc.CompanyId == requestDto.CompanyId);
+
+			if (!string.IsNullOrEmpty(requestDto.RoleName))
+			{
+				query = query.Where(x => x.cr.RoleName.Contains(requestDto.RoleName) || x.cr.RoleNameEng.Contains(requestDto.RoleName));
+			}
 
 			if (!isUserCanSeeEntireList)
 			{

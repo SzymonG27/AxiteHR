@@ -10,10 +10,15 @@ builder.Services.AddOcelot(builder.Configuration);
 
 //Cors
 builder.Services.AddCors(opt => opt.AddPolicy("NgOrigins",
-	policy => policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader())
+	policy => policy.WithOrigins("http://localhost:4200")
+		.AllowAnyMethod()
+		.AllowAnyHeader()
+		.AllowCredentials())
 );
 
 var app = builder.Build();
+
+app.UseWebSockets();
 
 app.UseCors("NgOrigins");
 

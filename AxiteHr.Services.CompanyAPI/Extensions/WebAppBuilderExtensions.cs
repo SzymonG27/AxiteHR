@@ -1,7 +1,6 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Services.CompanyAPI.Helpers;
-using AxiteHR.Services.CompanyAPI.Services.Cache;
-using AxiteHR.Services.CompanyAPI.Services.Cache.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
@@ -27,6 +26,7 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 	{
 		public static WebApplicationBuilder AddAuthentication(this WebApplicationBuilder builder)
 		{
+			//ToDo IOptions
 			var settingsSection = builder.Configuration.GetSection("ApiSettings:JwtOptions");
 			string secret = settingsSection.GetValue<string>("Secret")!;
 			string issuer = settingsSection.GetValue<string>("Issuer")!;
@@ -108,7 +108,7 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 
 		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
 		{
-			var redisConnectionString = builder.Configuration.GetConnectionString("Redis")!;
+			var redisConnectionString = builder.Configuration.GetConnectionString(ConfigurationHelper.RedisConnectionString)!;
 			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
 			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 

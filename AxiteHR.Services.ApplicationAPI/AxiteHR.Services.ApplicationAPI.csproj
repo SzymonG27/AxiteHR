@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj" />
     <ProjectReference Include="..\AxiteHR.Integration.GlobalClass\AxiteHR.Integration.GlobalClass.csproj" />
     <ProjectReference Include="..\AxiteHR.Integration.JwtTokenHandler\AxiteHR.Integration.JwtTokenHandler.csproj" />
   </ItemGroup>

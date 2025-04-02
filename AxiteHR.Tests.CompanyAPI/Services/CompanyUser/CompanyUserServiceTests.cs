@@ -1,16 +1,16 @@
-﻿using Moq;
-using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
+﻿using AxiteHR.Integration.Cache.Redis;
+using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using Moq.Protected;
 using System.Net;
 using System.Text.Json;
-using AxiteHR.Services.CompanyAPI.Data;
-using Microsoft.EntityFrameworkCore;
-using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 using CompanyModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company;
-using AxiteHR.Services.CompanyAPI.Services.Cache;
+using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 {

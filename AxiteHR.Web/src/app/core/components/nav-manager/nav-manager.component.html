@@ -9,7 +9,10 @@
 		</div>
 		<nav>
 			<ul>
-				<li class="hover:bg-gray-200 cursor-pointer" [routerLink]="['Dashboard']">
+				<li
+					class="hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+					[routerLink]="['Dashboard']"
+				>
 					<a class="flex items-center space-x-2 p-4">
 						<span class="material-icons">home</span>
 						<span class="hidden md:inline">
@@ -19,7 +22,7 @@
 				</li>
 				<li
 					*ngIf="!userRoles.includes(UserRole.UserFromCompany)"
-					class="hover:bg-gray-200 cursor-pointer"
+					class="hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
 				>
 					<button
 						type="button"
@@ -57,7 +60,9 @@
 						</li>
 					</ul>
 				</li>
-				<li class="hover:bg-gray-200 cursor-pointer">
+				<li
+					class="hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+				>
 					<button
 						type="button"
 						class="flex items-center space-x-2 w-full h-full p-4"
@@ -89,7 +94,9 @@
 						</li>
 					</ul>
 				</li>
-				<li class="hover:bg-gray-200 cursor-pointer">
+				<li
+					class="hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+				>
 					<button
 						type="button"
 						class="flex items-center space-x-2 w-full h-full p-4"
@@ -132,17 +139,55 @@
 						</li>
 					</ul>
 				</li>
-				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+				<li
+					class="p-4 hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+				>
 					<a href="#" class="flex items-center space-x-2">
 						<span class="material-icons">description</span>
 						<span class="hidden md:inline">Documents</span>
 					</a>
 				</li>
-				<li class="p-4 hover:bg-gray-200 cursor-pointer">
+				<li
+					class="p-4 hover:bg-gray-200 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap"
+				>
 					<a href="#" class="flex items-center space-x-2">
 						<span class="material-icons">bar_chart</span>
 						<span class="hidden md:inline">Reports</span>
 					</a>
+				</li>
+				<li class="absolute bottom-4 w-full text-ellipsis whitespace-nowrap">
+					<a
+						(mouseup)="toggleNotificationPanelVisible()"
+						class="flex items-center space-x-2 p-4 hover:bg-gray-200 cursor-pointer"
+					>
+						<div class="relative flex items-center">
+							<span class="material-icons align-middle"> notifications </span>
+							<span
+								*ngIf="unreadNotificationsCount > 0"
+								class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold"
+							>
+								{{ unreadNotificationsCount }}
+							</span>
+						</div>
+						<span class="hidden md:inline">
+							{{ 'Nav_Manager_Notifications' | translate }}
+						</span>
+					</a>
+
+					<div
+						[hidden]="!isNotificationPanelVisible"
+						class="absolute bottom-0 left-full ml-2 w-80 bg-white shadow-lg rounded-md z-[9999] p-0 max-h-[50vh] border-yellow-500"
+					>
+						<h3 class="font-bold w-full text-lg p-4 mb-4 bg-gray-50">Powiadomienia</h3>
+						<ul class="p-4">
+							<li class="mb-2">Powiadomienie 1</li>
+							<li class="mb-2">Powiadomienie 2</li>
+							<li class="mb-2">Powiadomienie 3</li>
+						</ul>
+						<button type="button" class="ml-4 text-sm text-blue-600 hover:underline">
+							Wyczyść wszystkie
+						</button>
+					</div>
 				</li>
 			</ul>
 		</nav>
@@ -296,5 +341,18 @@
 				</li>
 			</ul>
 		</nav>
+		<div class="fixed bottom-4 w-full flex justify-center">
+			<a href="#" class="flex items-center space-x-2 p-4 hover:bg-gray-200 cursor-pointer">
+				<div class="relative">
+					<span class="material-icons"> notifications </span>
+					<span
+						*ngIf="unreadNotificationsCount > 0"
+						class="absolute -top-2 -right-2 text-[10px] md:text-xs bg-red-600 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center"
+					>
+						{{ unreadNotificationsCount }}
+					</span>
+				</div>
+			</a>
+		</div>
 	</div>
 </div>

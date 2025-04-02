@@ -1,12 +1,12 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.GlobalClass.RedisKeys;
+using AxiteHR.Integration.Cache.Redis;
+using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
-using AxiteHR.Services.ApplicationAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Moq;

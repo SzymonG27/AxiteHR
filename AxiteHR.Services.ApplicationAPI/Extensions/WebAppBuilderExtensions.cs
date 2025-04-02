@@ -1,10 +1,9 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Helpers;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
-using AxiteHR.Services.ApplicationAPI.Services.Cache;
-using AxiteHR.Services.ApplicationAPI.Services.Cache.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;

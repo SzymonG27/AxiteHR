@@ -196,6 +196,21 @@
 				"AuthenticationProviderKey": "Bearer"
 			}
 		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyRole/AttachUserAsync",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyRole/AttachUserAsync",
+			"UpstreamHttpMethod": [ "Post" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
 		//ApplicationAPI: 7002
 		{
 			"DownstreamPathTemplate": "/api/Application/CreateNewApplication",

@@ -66,6 +66,18 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// </summary>
 		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
 
+		/// <summary>
+		/// <para>Attaches a user to a role within a company, checking the appropriate permissions and conditions.</para>
+		/// <para>
+		/// The method performs the following steps:
+		/// <para>1. Checks if the requesting user (requestDto.CompanyUserRequestedId) is a supervisor in the given role or has the necessary permissions to attach a user to the role.</para>
+		/// <para>2. Verifies that the user to be attached (requestDto.CompanyUserToAttachId) is not already assigned to the main role within the company.</para>
+		/// <para>3. If all conditions are met, adds the user to the role in the company by creating a new record in the CompanyUserRoles table.</para>
+		/// <para>4. Returns a response with the result of the operation and any error messages if applicable.</para>
+		/// </para>
+		/// </summary>
+		/// <param name="requestDto">An object containing the data for attaching the user to the role.</param>
+		/// <returns>A response object containing the result of the operation and any error messages.</returns>
 		Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto);
 	}
 }

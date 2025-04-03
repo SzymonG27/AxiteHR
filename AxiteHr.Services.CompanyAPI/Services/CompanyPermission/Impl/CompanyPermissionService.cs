@@ -1,6 +1,6 @@
-﻿using AxiteHR.Integration.GlobalClass.RedisKeys;
+﻿using AxiteHR.Integration.Cache.Redis;
+using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl

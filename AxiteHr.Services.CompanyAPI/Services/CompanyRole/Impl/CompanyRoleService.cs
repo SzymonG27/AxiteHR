@@ -178,6 +178,55 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return responseDto;
 		}
 
+		public async Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto)
+		{
+			CompanyRoleAttachUserResponseDto responseDto = new();
+
+			var isRequestedUserSupervisor = await dbContext.CompanyUserRoles
+				.Where(x => x.CompanyRoleCompanyId == requestDto.CompanyRoleCompanyId
+							&& x.CompanyUserId == requestDto.CompanyUserRequestedId
+							&& x.IsSupervisor)
+				.AnyAsync();
+
+			var isRequestedUserHasAttachUserPermission = await companyPermissionService
+				.IsCompanyUserHasAnyPermissionAsync(requestDto.CompanyUserRequestedId, CompanyPermissionsHelper.CompanyRoleAttachUserPermissions);
+
+			if (!isRequestedUserSupervisor && !isRequestedUserHasAttachUserPermission)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.AttachUserAsync_NoPermissionError];
+				return responseDto;
+			}
+
+			//At the moment, one user = one main role in the company
+			var isUserAttachedAsync = await dbContext.CompanyUserRoles
+				.Include(x => x.CompanyRoleCompany)
+				.AnyAsync(x => x.CompanyRoleCompanyId == requestDto.CompanyRoleCompanyId
+							&& x.CompanyUserId == requestDto.CompanyUserToAttachId
+							&& x.CompanyRoleCompany.IsMain);
+
+			if (isUserAttachedAsync)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.AttachUserAsync_UserAlreadyAttached];
+				return responseDto;
+			}
+
+			var companyUserRole = new CompanyUserRole
+			{
+				CompanyRoleCompany = await dbContext.CompanyRoleCompanies.SingleAsync(x => x.Id == requestDto.CompanyRoleCompanyId),
+				CompanyUser = await dbContext.CompanyUsers.SingleAsync(x => x.Id == requestDto.CompanyUserToAttachId),
+				InsDate = DateTime.UtcNow,
+				InsUserId = requestDto.UserRequestedId
+			};
+
+			await dbContext.CompanyUserRoles.AddAsync(companyUserRole);
+
+			responseDto.IsSucceeded = true;
+			responseDto.UserRoleId = companyUserRole.Id;
+			return responseDto;
+		}
+
 		#region Private Methods
 		private async Task<CompanyRoleModel> CreateCompanyRoleAsync(CompanyRoleCreatorRequestDto requestDto)
 		{

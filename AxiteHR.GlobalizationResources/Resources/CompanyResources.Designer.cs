@@ -61,6 +61,24 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User does not have permission to add another user to role..
+        /// </summary>
+        public static string AttachUserAsync_NoPermissionError {
+            get {
+                return ResourceManager.GetString("AttachUserAsync_NoPermissionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Użytkownik ma już przypisaną główną rolę w firmie.
+        /// </summary>
+        public static string AttachUserAsync_UserAlreadyAttached {
+            get {
+                return ResourceManager.GetString("AttachUserAsync_UserAlreadyAttached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stanowisko pracy już istnieje dla firmy.
         /// </summary>
         public static string CompanyRoleCreate_CompanyRoleCompanyExists {

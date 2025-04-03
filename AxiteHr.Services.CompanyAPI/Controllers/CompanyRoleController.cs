@@ -39,5 +39,19 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 
 			return Ok(response);
 		}
+
+		[HttpPost("AttachUserAsync")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> AttachUserAsync([FromBody] CompanyRoleAttachUserRequestDto requestDto)
+		{
+			var response = await companyRoleService.AttachUserAsync(requestDto);
+
+			if (!response.IsSucceeded)
+			{
+				return BadRequest(response);
+			}
+
+			return Ok(response);
+		}
 	}
 }

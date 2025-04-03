@@ -65,5 +65,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// </para>
 		/// </summary>
 		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
+
+		Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto);
 	}
 }

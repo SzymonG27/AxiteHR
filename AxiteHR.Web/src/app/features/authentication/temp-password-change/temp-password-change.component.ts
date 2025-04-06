@@ -16,7 +16,6 @@ import { Environment } from '../../../environment/Environment';
 import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { firstValueFrom, take } from 'rxjs';
 import { TempPasswordChangeResponse } from '../../../core/models/authentication/TempPasswordChangeResponse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
@@ -47,7 +46,6 @@ export class TempPasswordChangeComponent {
 		private blockUI: BlockUIService,
 		private authService: AuthenticationService,
 		private authStateService: AuthStateService,
-		private dataService: DataBehaviourService,
 		private translate: TranslateService,
 		private router: Router
 	) {
@@ -79,7 +77,7 @@ export class TempPasswordChangeComponent {
 
 		const tempPasswordUserId = this.authStateService.getTempPasswordUserId();
 		if (!tempPasswordUserId) {
-			this.dataService.setTempPasswordError(
+			this.authStateService.setTempPasswordError(
 				await firstValueFrom(
 					this.translate.get('Authentication_TempPasswordChange_InternalError')
 				)
@@ -98,7 +96,7 @@ export class TempPasswordChangeComponent {
 			.subscribe({
 				next: async (response: TempPasswordChangeResponse) => {
 					if (response.isSucceeded) {
-						this.dataService.setTempPasswordSuccess(
+						this.authStateService.setTempPasswordSuccess(
 							await firstValueFrom(
 								this.translate.get('Authentication_TempPasswordChange_Success')
 							)

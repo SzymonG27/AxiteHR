@@ -62,13 +62,20 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				query = query.Where(x => x.cr.RoleName.Contains(requestDto.RoleName) || x.cr.RoleNameEng.Contains(requestDto.RoleName));
 			}
 
-			return await query.GroupBy(x => new { x.cr.Id, x.cr.RoleName, x.crc.IsMain })
+			return await query.GroupBy(x => new
+				{
+					x.cr.Id,
+					CompanyRoleCompanyId = x.crc.Id,
+					x.cr.RoleName,
+					x.crc.IsMain
+				})
 				.OrderBy(x => x.Key.Id)
 				.Skip(pagination.Page * pagination.ItemsPerPage)
 				.Take(pagination.ItemsPerPage)
 				.Select(x => new CompanyRoleListResponseDto
 				{
 					CompanyRoleId = x.Key.Id,
+					CompanyRoleCompanyId = x.Key.CompanyRoleCompanyId,
 					Name = x.Key.RoleName,
 					IsMain = x.Key.IsMain,
 					EmployeesCount = dbContext.CompanyUserRoles.Count(cu => cu.CompanyRoleCompanyId == x.Key.Id)

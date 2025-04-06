@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { JobStationListRequest } from '../../../core/models/company-manager/job-station/JobStationListRequest';
 import { FormsModule } from '@angular/forms';
 import { ListFilterComponent } from '../../../shared/components/list-filter/list-filter.component';
+import { CompanyManagerStateService } from '../../../core/services/company-manager/company-manager-state.service';
 
 @Component({
 	selector: 'app-job-station-list',
@@ -45,7 +46,8 @@ export class JobStationListComponent implements OnInit {
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private companyManagerStateService: CompanyManagerStateService
 	) {}
 
 	ngOnInit(): void {
@@ -102,6 +104,15 @@ export class JobStationListComponent implements OnInit {
 		this.blockUIService.start();
 		this.jobStationListRequest.roleName = '';
 		this.searchJobStation();
+	}
+
+	goToJobStationManager(jobStation: JobStationListItem) {
+		this.companyManagerStateService.setStateJobStationManager({
+			roleId: jobStation.companyRoleId,
+			roleCompanyId: jobStation.companyRoleCompanyId,
+		});
+
+		this.router.navigate(['/CompanyMenu', this.companyId, 'JobStationManager']);
 	}
 
 	private searchJobStation() {

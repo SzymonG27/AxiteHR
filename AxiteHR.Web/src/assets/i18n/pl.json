@@ -16,6 +16,7 @@
 	"NEW_APPLICATION_TITLE_PAGE": "Nowy wniosek",
 	"WORKSTATION_LIST_TITLE_PAGE": "Lista stanowisk pracy",
 	"NEW_JOBSTATION_TITLE_PAGE": "Nowe stanowisko pracy",
+	"JOBSTATION_MANAGER_TITLE_PAGE" : "Zarządzaj stanowiskiem pracy",
 	"defaultTitle": "Moja Aplikacja",
 
 	"//Section2": "Global messages",
@@ -169,6 +170,7 @@
 	"JobStation_JobStationCreate_ButtonTitle": "Stwórz nowe stanowisko pracy",
 	"JobStation_JobStationCreate_Created": "Stanowisko pracy zostało pomyślnie utworzone",
 	"JobStationFilter_Name" : "Nazwa stanowiska pracy",
+	"JobStation_List_Manager": "Zarządzaj",
 
 	"//Section11": "List filter",
 	"List_Filter_Title": "Filtracja",

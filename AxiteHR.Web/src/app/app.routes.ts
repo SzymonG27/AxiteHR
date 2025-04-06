@@ -23,6 +23,7 @@ import { CalendarComponent } from './features/application/calendar/calendar.comp
 import { NewApplicationComponent } from './features/application/new-application/new-application.component';
 import { JobStationListComponent } from './features/company-manager/job-station-list/job-station-list.component';
 import { JobStationCreatorComponent } from './features/company-manager/job-station-creator/job-station-creator.component';
+import { JobStationManagerComponent } from './features/company-manager/job-station-manager/job-station-manager.component';
 
 export const routes: Routes = [
 	//Home
@@ -113,6 +114,11 @@ export const routes: Routes = [
 				path: 'JobStationCreator',
 				component: JobStationCreatorComponent,
 				data: { title: 'NEW_JOBSTATION_TITLE_PAGE' },
+			},
+			{
+				path: 'JobStationManager',
+				component: JobStationManagerComponent,
+				data: { title: 'JOBSTATION_MANAGER_TITLE_PAGE' },
 			},
 			//Application
 			{

@@ -55,15 +55,9 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// <para>2. **Role Check**: If the role exists, it links it to the company. If not, it creates a new role and links it to the company.</para>
 		/// <para>3. **Transaction**: All changes are made in a database transaction. If an error occurs, the transaction is rolled back.</para>
 		/// </para>
-		/// <para>
-		/// **Parameters**
-		/// <param name="requestDto">Data for creating the role and linking it to the company.</param>
-		/// </para>
-		/// <para>
-		/// **Returns**
-		/// <returns>A response with the result of the operation, including role and link IDs if successful.</returns>
-		/// </para>
 		/// </summary>
+		/// <param name="requestDto">Data for creating the role and linking it to the company.</param>
+		/// <returns>A response with the result of the operation, including role and link IDs if successful.</returns>
 		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
 
 		/// <summary>

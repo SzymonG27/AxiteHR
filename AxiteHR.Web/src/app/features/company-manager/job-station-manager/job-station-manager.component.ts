@@ -3,10 +3,12 @@ import { JobStationState } from '../../../core/models/company-manager/job-statio
 import { CompanyManagerStateService } from '../../../core/services/company-manager/company-manager-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { DropListComponent } from '../../../shared/components/drop-list/drop-list.component';
 
 @Component({
 	selector: 'app-job-station-manager',
-	imports: [],
+	imports: [DropListComponent],
 	templateUrl: './job-station-manager.component.html',
 	styleUrl: './job-station-manager.component.css',
 })
@@ -16,6 +18,7 @@ export class JobStationManagerComponent implements OnInit {
 	constructor(
 		private companyManagerStateService: CompanyManagerStateService,
 		private blockUIService: BlockUIService,
+		private translate: TranslateService,
 		private router: Router
 	) {}
 
@@ -30,5 +33,13 @@ export class JobStationManagerComponent implements OnInit {
 		}
 
 		this.blockUIService.stop();
+	}
+
+	getTranslatedCompanyRoleSettingsTitle() {
+		return this.translate.instant('JobStation_Manager_CompanyRoleSettingsTitle');
+	}
+
+	getTranslatedCompanyRoleUserSettingsTitle() {
+		return this.translate.instant('JobStation_Manager_CompanyRoleUserSettingsTitle');
 	}
 }

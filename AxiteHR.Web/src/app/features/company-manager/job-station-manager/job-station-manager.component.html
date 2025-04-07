@@ -1,1 +1,13 @@
-<p>job-station-manager works!</p>
+<div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex justify-start mb-10">
+	<div class="w-11/12 mx-auto">
+		<app-drop-list
+			class="mt-5"
+			[title]="getTranslatedCompanyRoleSettingsTitle()"
+		></app-drop-list>
+
+		<app-drop-list
+			class="mt-5"
+			[title]="getTranslatedCompanyRoleUserSettingsTitle()"
+		></app-drop-list>
+	</div>
+</div>

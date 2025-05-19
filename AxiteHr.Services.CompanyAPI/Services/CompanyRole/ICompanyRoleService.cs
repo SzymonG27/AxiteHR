@@ -60,6 +60,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// <returns>A response with the result of the operation, including role and link IDs if successful.</returns>
 		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
 
+		Task<IEnumerable<CompanyRoleUserToAttachResponseDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination);
+
 		/// <summary>
 		/// <para>Attaches a user to a role within a company, checking the appropriate permissions and conditions.</para>
 		/// <para>

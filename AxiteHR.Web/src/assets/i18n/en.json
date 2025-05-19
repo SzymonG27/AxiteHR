@@ -173,6 +173,7 @@
 	"JobStation_List_Manager": "Manage",
 	"JobStation_Manager_CompanyRoleSettingsTitle": "Job station settings",
 	"JobStation_Manager_CompanyRoleUserSettingsTitle": "Manage employees",
+	"JobStation_Manager_AddEmployeeToCompanyRole": "Add employee to workstation",
 
 	"//Section11": "List filter",
 	"List_Filter_Title": "Filtering",

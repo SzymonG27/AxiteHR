@@ -173,6 +173,7 @@
 	"JobStation_List_Manager": "Zarządzaj",
 	"JobStation_Manager_CompanyRoleSettingsTitle": "Ustawienia stanowiska pracy",
 	"JobStation_Manager_CompanyRoleUserSettingsTitle": "Zarządzaj pracownikami",
+	"JobStation_Manager_AddEmployeeToCompanyRole": "Dodaj pracownika do stanowiska",
 
 	"//Section11": "List filter",
 	"List_Filter_Title": "Filtracja",

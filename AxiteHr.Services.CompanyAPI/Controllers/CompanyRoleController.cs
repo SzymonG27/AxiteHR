@@ -1,5 +1,4 @@
-﻿using AxiteHR.Integration.GlobalClass.Auth;
-using AxiteHR.Services.CompanyAPI.Infrastructure;
+﻿using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole;
@@ -38,6 +37,13 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 			}
 
 			return Ok(response);
+		}
+
+		[HttpPost("ListEmployeesToAttachAsync")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IEnumerable<CompanyRoleUserToAttachResponseDto>> ListEmployeesToAttachAsync([FromBody] CompanyRoleUserToAttachRequestDto requestDto, [FromQuery] Pagination pagination)
+		{
+			return await companyRoleService.GetListOfEmployeesToAttachAsync(requestDto, pagination);
 		}
 
 		[HttpPost("AttachUserAsync")]

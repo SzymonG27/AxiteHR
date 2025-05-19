@@ -2,18 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { JobStationState } from '../../../core/models/company-manager/job-station/JobStationState';
 import { CompanyManagerStateService } from '../../../core/services/company-manager/company-manager-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DropListComponent } from '../../../shared/components/drop-list/drop-list.component';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
 	selector: 'app-job-station-manager',
-	imports: [DropListComponent],
+	imports: [DropListComponent, TranslateModule, RouterModule, ModalComponent],
 	templateUrl: './job-station-manager.component.html',
 	styleUrl: './job-station-manager.component.css',
 })
 export class JobStationManagerComponent implements OnInit {
 	jobStationState: JobStationState | null = null;
+	isModalAddEmployeeOpen = false;
 
 	constructor(
 		private companyManagerStateService: CompanyManagerStateService,
@@ -42,4 +44,14 @@ export class JobStationManagerComponent implements OnInit {
 	getTranslatedCompanyRoleUserSettingsTitle() {
 		return this.translate.instant('JobStation_Manager_CompanyRoleUserSettingsTitle');
 	}
+
+	//#region Modal
+	getTranslatedModalAddEmployeeTitle() {
+		return this.translate.instant('JobStation_Manager_AddEmployeeToCompanyRole');
+	}
+
+	closeModalAddEmployee() {
+		this.isModalAddEmployeeOpen = false;
+	}
+	//#endregion Modal
 }

@@ -6,6 +6,7 @@ using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using Microsoft.EntityFrameworkCore;
@@ -63,12 +64,12 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			}
 
 			return await query.GroupBy(x => new
-				{
-					x.cr.Id,
-					CompanyRoleCompanyId = x.crc.Id,
-					x.cr.RoleName,
-					x.crc.IsMain
-				})
+			{
+				x.cr.Id,
+				CompanyRoleCompanyId = x.crc.Id,
+				x.cr.RoleName,
+				x.crc.IsMain
+			})
 				.OrderBy(x => x.Key.Id)
 				.Skip(pagination.Page * pagination.ItemsPerPage)
 				.Take(pagination.ItemsPerPage)
@@ -183,6 +184,46 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			}
 
 			return responseDto;
+		}
+
+		public async Task<IEnumerable<CompanyRoleUserToAttachResponseDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination)
+		{
+			if (pagination.ItemsPerPage <= 0)
+			{
+				pagination.ItemsPerPage = 10;
+			}
+
+			var companyUserId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", requestDto.UserRequestedId, requestDto.CompanyId);
+				return [];
+			}
+
+			var companyUserRelationList = await dbContext.CompanyUsers
+				.Where(user => !dbContext.CompanyUserRoles
+					.Where(role => role.CompanyUserId == user.Id)
+					.Any(role =>
+						dbContext.CompanyRoleCompanies
+							.Any(crc => crc.Id == role.CompanyRoleCompanyId && crc.IsMain)))
+				.OrderBy(x => x.Id)
+				.Skip(pagination.Page * pagination.ItemsPerPage)
+				.Take(pagination.ItemsPerPage)
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.ToListAsync();
+
+			if (companyUserRelationList.Count == 0)
+			{
+				return [];
+			}
+
+			return []; //ToDo response with AuthAPI Data
 		}
 
 		public async Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto)

@@ -4,8 +4,8 @@ using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
-using AxiteHR.Services.ApplicationAPI.Extensions;
 using AxiteHR.Services.ApplicationAPI.Helpers;
+using AxiteHR.Services.ApplicationAPI.Infrastructure.CompanyApi;
 using AxiteHR.Services.ApplicationAPI.Maps;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
@@ -16,12 +16,12 @@ using Serilog;
 
 namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 {
-    public class ApplicationService(
+	public class ApplicationService(
 		AppDbContext dbContext,
-		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<ApplicationResources> applicationLocalizer,
 		IJwtDecode jwtDecode,
-		IRedisCacheService redisCacheService) : IApplicationService
+		IRedisCacheService redisCacheService,
+		ICompanyApiClient companyApiClient) : IApplicationService
 	{
 		private const double WorkHoursPerDay = 8.0; //TODO Can be configured for user
 
@@ -71,11 +71,12 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 					};
 				}
 
-				var isUserCanManageApplication = await IsUserCanManageApplicationForCompanyUserAsync(
+				var isUserCanManageApplication = await companyApiClient.IsUserCanManageApplicationForCompanyUserAsync(
 					bearerToken,
 					acceptLanguage,
 					companyUserId.Value,
 					insUserId.Value);
+
 				if (!isUserCanManageApplication)
 				{
 					return new CreateApplicationResponseDto
@@ -151,35 +152,7 @@ namespace AxiteHR.Services.ApplicationAPI.Services.Application.Impl
 				return companyUserIdFromCache;
 			}
 
-			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
-
-			var requestUri = $"{ApiLinkHelper.CompanyGetCompanyUserId}/{companyId}/{userId}";
-			var response = await client.GetAsync(requestUri);
-			response.EnsureSuccessStatusCode();
-
-			var content = await response.Content.ReadAsStringAsync();
-			if (string.IsNullOrEmpty(content))
-			{
-				return null;
-			}
-
-			return int.Parse(content);
-		}
-
-		private async Task<bool> IsUserCanManageApplicationForCompanyUserAsync(string token, string acceptLanguage, int companyUserId, Guid insUserId)
-		{
-			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);
-
-			var requestUri = $"{ApiLinkHelper.CompanyIsUserCanManageApplications}/{companyUserId}&{insUserId}";
-			var response = await client.GetAsync(requestUri);
-			response.EnsureSuccessStatusCode();
-
-			var content = await response.Content.ReadAsStringAsync();
-			return bool.Parse(content);
+			return await companyApiClient.GetCompanyUserIdAsync(companyId, userId, token, acceptLanguage);
 		}
 
 		private async Task<List<ApplicationType>> GetApplicationTypeThatIntersectsWithPeriodAsync(CreateApplicationRequestDto dto, int companyUserId)

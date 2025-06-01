@@ -3,7 +3,9 @@ using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
@@ -19,6 +21,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 		AppDbContext dbContext,
 		ICompanyUserService companyUserService,
 		ICompanyPermissionService companyPermissionService,
+		IAuthApiClient authApiClient,
 		IStringLocalizer<CompanyResources> companyLocalizer,
 		ILogger<CompanyRoleService> logger) : ICompanyRoleService
 	{
@@ -186,7 +189,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return responseDto;
 		}
 
-		public async Task<IEnumerable<CompanyRoleUserToAttachResponseDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination)
+		public async Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination, string bearerToken)
 		{
 			if (pagination.ItemsPerPage <= 0)
 			{
@@ -223,7 +226,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				return [];
 			}
 
-			return []; //ToDo response with AuthAPI Data
+			return await authApiClient.GetUserDataListDtoAsync(companyUserRelationList, bearerToken);
 		}
 
 		public async Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto)

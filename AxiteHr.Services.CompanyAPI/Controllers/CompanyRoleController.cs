@@ -1,7 +1,10 @@
-﻿using AxiteHR.Services.CompanyAPI.Infrastructure;
+﻿using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,9 +44,15 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 
 		[HttpPost("ListEmployeesToAttachAsync")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-		public async Task<IEnumerable<CompanyRoleUserToAttachResponseDto>> ListEmployeesToAttachAsync([FromBody] CompanyRoleUserToAttachRequestDto requestDto, [FromQuery] Pagination pagination)
+		public async Task<IEnumerable<CompanyUserDataDto>> ListEmployeesToAttachAsync([FromBody] CompanyRoleUserToAttachRequestDto requestDto, [FromQuery] Pagination pagination)
 		{
-			return await companyRoleService.GetListOfEmployeesToAttachAsync(requestDto, pagination);
+			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
+			if (string.IsNullOrEmpty(bearerToken))
+			{
+				return [];
+			}
+
+			return await companyRoleService.GetListOfEmployeesToAttachAsync(requestDto, pagination, bearerToken);
 		}
 
 		[HttpPost("AttachUserAsync")]

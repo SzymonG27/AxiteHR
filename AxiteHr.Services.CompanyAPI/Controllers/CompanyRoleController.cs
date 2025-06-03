@@ -42,9 +42,16 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 			return Ok(response);
 		}
 
-		[HttpPost("ListEmployeesToAttachAsync")]
+		[HttpGet("CountEmployeesToAttachAsync/{companyId}/{userRequestedId}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-		public async Task<IEnumerable<CompanyUserDataDto>> ListEmployeesToAttachAsync([FromBody] CompanyRoleUserToAttachRequestDto requestDto, [FromQuery] Pagination pagination)
+		public async Task<int> CountEmployeesToAttachAsync(int companyId, Guid userRequestedId)
+		{
+			return await companyRoleService.GetCountOfEmployeesToAttachAsync(companyId, userRequestedId);
+		}
+
+		[HttpGet("ListEmployeesToAttachAsync/{companyId}/{userRequestedId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IEnumerable<CompanyUserDataDto>> ListEmployeesToAttachAsync(int companyId, Guid userRequestedId, [FromQuery] Pagination pagination)
 		{
 			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
 			if (string.IsNullOrEmpty(bearerToken))
@@ -52,7 +59,7 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 				return [];
 			}
 
-			return await companyRoleService.GetListOfEmployeesToAttachAsync(requestDto, pagination, bearerToken);
+			return await companyRoleService.GetListOfEmployeesToAttachAsync(companyId, userRequestedId, pagination, bearerToken);
 		}
 
 		[HttpPost("AttachUserAsync")]

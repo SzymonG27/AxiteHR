@@ -61,7 +61,25 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// <returns>A response with the result of the operation, including role and link IDs if successful.</returns>
 		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
 
-		Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination, string bearerToken);
+		/// <summary>
+		/// Returns the total number of employees eligible to be assigned to a role,
+		/// excluding those with a main role in the company. Used for pagination.
+		/// </summary>
+		/// <param name="companyId">Id of company</param>
+		/// <param name="userRequestedId">Id of requesting user</param>
+		/// <returns>Total count of eligible employees.</returns>
+		Task<int> GetCountOfEmployeesToAttachAsync(int companyId, Guid userRequestedId);
+
+		/// <summary>
+		/// Returns a paginated list of employees eligible to be assigned to a role,
+		/// excluding those with a main role in the company.
+		/// </summary>
+		/// <param name="companyId">Id of company</param>
+		/// <param name="userRequestedId">Id of requesting user</param>
+		/// <param name="pagination">Pagination settings.</param>
+		/// <param name="bearerToken">Authorization token for the Auth API.</param>
+		/// <returns>List of user data eligible for role assignment.</returns>
+		Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken);
 
 		/// <summary>
 		/// <para>Attaches a user to a role within a company, checking the appropriate permissions and conditions.</para>

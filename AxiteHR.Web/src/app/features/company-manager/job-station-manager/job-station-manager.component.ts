@@ -6,6 +6,10 @@ import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DropListComponent } from '../../../shared/components/drop-list/drop-list.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { Pagination } from '../../../shared/models/Pagination';
+import { JobStationManagerService } from '../../../core/services/company-manager/job-station-manager.service';
+import { Observable, of, switchMap, take } from 'rxjs';
+import { EmployeeListItem } from '../../../core/models/company-manager/employee-list/EmployeeListItem';
 
 @Component({
 	selector: 'app-job-station-manager',
@@ -15,10 +19,16 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 })
 export class JobStationManagerComponent implements OnInit {
 	jobStationState: JobStationState | null = null;
+	companyId: number | null = null;
+	employeeList: EmployeeListItem[] = [];
+	errorMessage: string | null = null;
 	isModalAddEmployeeOpen = false;
+
+	paginationAddEmployee: Pagination = new Pagination();
 
 	constructor(
 		private companyManagerStateService: CompanyManagerStateService,
+		private jobStationManagerService: JobStationManagerService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private router: Router
@@ -50,8 +60,46 @@ export class JobStationManagerComponent implements OnInit {
 		return this.translate.instant('JobStation_Manager_AddEmployeeToCompanyRole');
 	}
 
+	openModalAddEmployee() {
+		this.blockUIService.start();
+
+		this.isModalAddEmployeeOpen = true;
+
+		this.blockUIService.stop();
+	}
+
 	closeModalAddEmployee() {
 		this.isModalAddEmployeeOpen = false;
 	}
 	//#endregion Modal
+
+	private getListOfEmployeesToAdd(
+		companyId: number,
+		currentPage: number,
+		pageSize: number
+	): Observable<void> {
+		return this.jobStationManagerService
+			.getListOfEmployeesToAdd(companyId, currentPage, pageSize)
+			.pipe(
+				take(1),
+				switchMap(response => {
+					if (!response.isSucceed) {
+						//ToDo error handler
+						this.errorMessage = response.errorMessage;
+					}
+					this.employeeList = response.employeeList;
+					return of(void 0);
+				})
+			);
+	}
+
+	private getCountOfEmployeesToAdd(companyId: number): Observable<void> {
+		return this.jobStationManagerService.getCountOfEmployeesToAdd(companyId).pipe(
+			take(1),
+			switchMap(response => {
+				this.paginationAddEmployee.totalItems = response;
+				return of(void 0);
+			})
+		);
+	}
 }

@@ -110,6 +110,7 @@ export class JobStationListComponent implements OnInit {
 		this.companyManagerStateService.setStateJobStationManager({
 			roleId: jobStation.companyRoleId,
 			roleCompanyId: jobStation.companyRoleCompanyId,
+			companyId: this.companyId!,
 		});
 
 		this.router.navigate(['/CompanyMenu', this.companyId, 'JobStationManager']);

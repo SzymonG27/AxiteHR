@@ -189,22 +189,49 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return responseDto;
 		}
 
-		public async Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(CompanyRoleUserToAttachRequestDto requestDto, Pagination pagination, string bearerToken)
+		public async Task<int> GetCountOfEmployeesToAttachAsync(int companyId, Guid userRequestedId)
+		{
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
+				return 0;
+			}
+
+			return await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
+				.Where(user => !dbContext.CompanyUserRoles
+					.Where(role => role.CompanyUserId == user.Id)
+					.Any(role =>
+						dbContext.CompanyRoleCompanies
+							.Any(crc => crc.Id == role.CompanyRoleCompanyId && crc.IsMain)))
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.CountAsync();
+		}
+
+		public async Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken)
 		{
 			if (pagination.ItemsPerPage <= 0)
 			{
 				pagination.ItemsPerPage = 10;
 			}
 
-			var companyUserId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
 
 			if (companyUserId == null)
 			{
-				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", requestDto.UserRequestedId, requestDto.CompanyId);
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
 				return [];
 			}
 
 			var companyUserRelationList = await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
 				.Where(user => !dbContext.CompanyUserRoles
 					.Where(role => role.CompanyUserId == user.Id)
 					.Any(role =>

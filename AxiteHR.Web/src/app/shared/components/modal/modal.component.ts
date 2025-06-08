@@ -27,6 +27,7 @@ export class ModalComponent implements OnChanges {
 	@Input() title = 'Modal Title';
 	@Input() closeButtonTitle = 'Close';
 	@Input() submitButtonTitle = 'Submit';
+	@Input() modalClass = '';
 	@Output() closeModalEmitter = new EventEmitter<void>();
 	@Output() submitModalEmitter = new EventEmitter<void>();
 

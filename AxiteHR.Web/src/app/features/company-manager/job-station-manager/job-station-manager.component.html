@@ -19,6 +19,12 @@
 			</div>
 
 			<hr />
+
+			<div class="mt-5">
+				<h2 class="mt-5 text-lg font-semibold">
+					{{ 'JobStation_Manager_ListOfEmployees' | translate }}
+				</h2>
+			</div>
 		</app-drop-list>
 	</div>
 </div>
@@ -28,6 +34,7 @@
 	[isForm]="false"
 	[title]="getTranslatedModalAddEmployeeTitle()"
 	(closeModalEmitter)="closeModalAddEmployee()"
+	[modalClass]="'max-w-4xl'"
 >
 	<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
 		<table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -43,6 +50,54 @@
 					<th scope="col" class="px-6 py-3">{{ 'Company_List_Action' | translate }}</th>
 				</tr>
 			</thead>
+			<tbody>
+				<tr
+					*ngFor="let employee of employeeList | paginate : {
+						id: 'job-station-manager-pagination',
+						itemsPerPage: paginationAddEmployee.pageSize,
+						currentPage: paginationAddEmployee.pageNumber,
+						totalItems: paginationAddEmployee.totalItems,
+					}"
+				>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.firstName }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.lastName }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.userEmail }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						<button
+							type="button"
+							class="button button-full flex items-center justify-center"
+							(click)="addEmployeeToJobStation(employee)"
+						>
+							{{ 'JobStation_Manager_AddEmployee' | translate }}
+						</button>
+					</td>
+				</tr>
+				<tr *ngIf="employeeList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
+					<td
+						colspan="4"
+						class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+					>
+						{{ 'Company_EmployeeList_Empty' | translate }}
+					</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
+
+	<pagination-controls
+		class="mt-5 block"
+		id="job-station-manager-pagination"
+		(pageChange)="pageChangedAddEmployee($event)"
+		previousLabel="{{ 'Pagination_Previous' | translate }}"
+		nextLabel="{{ 'Pagination_Next' | translate }}"
+		screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
+		screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
+		screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}"
+	></pagination-controls>
 </app-modal>

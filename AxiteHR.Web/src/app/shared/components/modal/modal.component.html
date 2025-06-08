@@ -3,9 +3,10 @@
 	[class.hidden]="!isVisible"
 >
 	<div
-		class="bg-white p-8 rounded shadow-lg w-full max-w-lg"
+		class="bg-white p-8 rounded shadow-lg w-full"
 		[@fadeInOut]="isOpen ? 'open' : 'closed'"
 		(@fadeInOut.done)="onAnimationDone($event)"
+		[ngClass]="modalClass"
 	>
 		<div class="flex justify-between items-center">
 			<h2 class="text-2xl font-semibold">{{ title }}</h2>

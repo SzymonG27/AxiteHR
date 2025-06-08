@@ -8,18 +8,26 @@ import { DropListComponent } from '../../../shared/components/drop-list/drop-lis
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { Pagination } from '../../../shared/models/Pagination';
 import { JobStationManagerService } from '../../../core/services/company-manager/job-station-manager.service';
-import { Observable, of, switchMap, take } from 'rxjs';
+import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { EmployeeListItem } from '../../../core/models/company-manager/employee-list/EmployeeListItem';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-job-station-manager',
-	imports: [DropListComponent, TranslateModule, RouterModule, ModalComponent],
+	imports: [
+		CommonModule,
+		DropListComponent,
+		TranslateModule,
+		RouterModule,
+		ModalComponent,
+		NgxPaginationModule,
+	],
 	templateUrl: './job-station-manager.component.html',
 	styleUrl: './job-station-manager.component.css',
 })
 export class JobStationManagerComponent implements OnInit {
 	jobStationState: JobStationState | null = null;
-	companyId: number | null = null;
 	employeeList: EmployeeListItem[] = [];
 	errorMessage: string | null = null;
 	isModalAddEmployeeOpen = false;
@@ -55,7 +63,7 @@ export class JobStationManagerComponent implements OnInit {
 		return this.translate.instant('JobStation_Manager_CompanyRoleUserSettingsTitle');
 	}
 
-	//#region Modal
+	//#region Modal Add Employee
 	getTranslatedModalAddEmployeeTitle() {
 		return this.translate.instant('JobStation_Manager_AddEmployeeToCompanyRole');
 	}
@@ -64,6 +72,7 @@ export class JobStationManagerComponent implements OnInit {
 		this.blockUIService.start();
 
 		this.isModalAddEmployeeOpen = true;
+		this.searchEmployeesToAdd();
 
 		this.blockUIService.stop();
 	}
@@ -71,7 +80,59 @@ export class JobStationManagerComponent implements OnInit {
 	closeModalAddEmployee() {
 		this.isModalAddEmployeeOpen = false;
 	}
-	//#endregion Modal
+
+	pageChangedAddEmployee(event: number) {
+		this.paginationAddEmployee.pageNumber = event;
+
+		this.searchEmployeesToAdd();
+	}
+
+	addEmployeeToJobStation(employee: EmployeeListItem) {
+		this.blockUIService.start();
+
+		this.jobStationManagerService
+			.addEmployeeToJobStation(
+				this.jobStationState!.companyId,
+				this.jobStationState!.roleCompanyId,
+				employee.companyUserId
+			)
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					//ToDo notification and router to manage page of employee
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.errorMessage =
+						err.message ||
+						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+					this.blockUIService.stop();
+				},
+			});
+	}
+
+	private searchEmployeesToAdd() {
+		zip(
+			this.getCountOfEmployeesToAdd(this.jobStationState!.companyId),
+			this.getListOfEmployeesToAdd(
+				this.jobStationState!.companyId,
+				this.paginationAddEmployee.pageNumber - 1,
+				this.paginationAddEmployee.pageSize
+			)
+		)
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.errorMessage =
+						err.message ||
+						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+					this.blockUIService.stop();
+				},
+			});
+	}
 
 	private getListOfEmployeesToAdd(
 		companyId: number,
@@ -102,4 +163,5 @@ export class JobStationManagerComponent implements OnInit {
 			})
 		);
 	}
+	//#endregion Modal Add Employee
 }

@@ -18,5 +18,6 @@ namespace AxiteHR.GlobalizationResources
         public const string CompanyRoleCreate_CompanyRoleCompanyExists = "CompanyRoleCreate_CompanyRoleCompanyExists";
         public const string AttachUserAsync_UserAlreadyAttached = "AttachUserAsync_UserAlreadyAttached";
         public const string AttachUserAsync_NoPermissionError = "AttachUserAsync_NoPermissionError";
+        public const string Global_RequestedUserDoesNotExistsInDb = "Global_RequestedUserDoesNotExistsInDb";
     }
 }

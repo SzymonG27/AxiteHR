@@ -212,7 +212,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyRole/CountEmployeesToAttachAsync",
+			"DownstreamPathTemplate": "/api/CompanyRole/CountEmployeesToAttachAsync/{companyId}/{userRequestedId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -220,14 +220,14 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyRole/CountEmployeesToAttachAsync",
+			"UpstreamPathTemplate": "/api/CompanyRole/CountEmployeesToAttachAsync/{companyId}/{userRequestedId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyRole/ListEmployeesToAttachAsync",
+			"DownstreamPathTemplate": "/api/CompanyRole/ListEmployeesToAttachAsync/{companyId}/{userRequestedId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -235,7 +235,7 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyRole/ListEmployeesToAttachAsync",
+			"UpstreamPathTemplate": "/api/CompanyRole/ListEmployeesToAttachAsync/{companyId}/{userRequestedId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"

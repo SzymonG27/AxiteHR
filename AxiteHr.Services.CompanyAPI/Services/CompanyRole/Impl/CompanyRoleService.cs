@@ -260,14 +260,23 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 		{
 			CompanyRoleAttachUserResponseDto responseDto = new();
 
+			var companyUserRequestedId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+
+			if (companyUserRequestedId == null)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[SharedResourcesKeys.Global_RequestedUserDoesNotExistsInDb];
+				return responseDto;
+			}
+
 			var isRequestedUserSupervisor = await dbContext.CompanyUserRoles
 				.Where(x => x.CompanyRoleCompanyId == requestDto.CompanyRoleCompanyId
-							&& x.CompanyUserId == requestDto.CompanyUserRequestedId
+							&& x.CompanyUserId == companyUserRequestedId
 							&& x.IsSupervisor)
 				.AnyAsync();
 
 			var isRequestedUserHasAttachUserPermission = await companyPermissionService
-				.IsCompanyUserHasAnyPermissionAsync(requestDto.CompanyUserRequestedId, CompanyPermissionsHelper.CompanyRoleAttachUserPermissions);
+				.IsCompanyUserHasAnyPermissionAsync(companyUserRequestedId.Value, CompanyPermissionsHelper.CompanyRoleAttachUserPermissions);
 
 			if (!isRequestedUserSupervisor && !isRequestedUserHasAttachUserPermission)
 			{

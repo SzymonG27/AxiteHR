@@ -6,6 +6,8 @@ import { AuthStateService } from '../authentication/auth-state.service';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
 import { EmployeeListItem } from '../../models/company-manager/employee-list/EmployeeListItem';
+import { JobStationAddEmployeeResponse } from '../../models/company-manager/job-station/JobStationAddEmployeeResponse';
+import { JobStationAddEmployeeRequest } from '../../models/company-manager/job-station/JobStationAddEmployeeRequest';
 
 @Injectable({
 	providedIn: 'root',
@@ -72,5 +74,36 @@ export class JobStationManagerService {
 					return of(listOfEmployeesCount);
 				})
 			);
+	}
+
+	addEmployeeToJobStation(
+		companyId: number,
+		roleCompanyId: number,
+		companyUserToAttachId: number
+	): Observable<JobStationAddEmployeeResponse> {
+		const userId = this.authStateService.getLoggedUserId();
+
+		const jobStationAddEmployeeResponse: JobStationAddEmployeeResponse = {
+			isSucceeded: false,
+			errorMessage: '',
+			jobStationName: '',
+			employeeName: '',
+		};
+
+		if (userId.length === 0) {
+			return of(jobStationAddEmployeeResponse);
+		}
+
+		const jobStationAddEmployeeRequest: JobStationAddEmployeeRequest = {
+			companyId: companyId,
+			companyRoleCompanyId: roleCompanyId,
+			companyUserToAttachId: companyUserToAttachId,
+			userRequestedId: userId,
+		};
+
+		return this.http.post<JobStationAddEmployeeResponse>(
+			`${Environment.gatewayApiUrl}${ApiPaths.AttachUserAsync}`,
+			jobStationAddEmployeeRequest
+		);
 	}
 }

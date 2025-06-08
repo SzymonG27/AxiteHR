@@ -163,4 +163,7 @@
     <value>Użytkownik nie posiada uprawnień do dodawania 
 innego użytkownika do roli.</value>
   </data>
+  <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
+    <value>Żądany użytkownik nie istnieje w aplikacji.</value>
+  </data>
 </root>

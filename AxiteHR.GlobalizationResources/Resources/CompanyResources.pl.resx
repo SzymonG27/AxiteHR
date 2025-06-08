@@ -156,4 +156,14 @@
   <data name="CompanyRoleCreate_CompanyRoleCompanyExists" xml:space="preserve">
     <value>The job station already exists for the company</value>
   </data>
+  <data name="AttachUserAsync_UserAlreadyAttached" xml:space="preserve">
+    <value>The user already has a main role in the company</value>
+  </data>
+  <data name="AttachUserAsync_NoPermissionError" xml:space="preserve">
+    <value>Użytkownik nie posiada uprawnień do dodawania 
+innego użytkownika do roli.</value>
+  </data>
+  <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
+    <value>Żądany użytkownik nie istnieje w aplikacji.</value>
+  </data>
 </root>

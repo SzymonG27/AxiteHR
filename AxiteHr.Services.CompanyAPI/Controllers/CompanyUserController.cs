@@ -17,7 +17,7 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 		//TODO CompanyPermissionsValidator like CompanyRole>ListAsync
 		[HttpGet("[action]/{companyId}/{excludedUserId}")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.Admin},{Roles.User}")]
-		public async Task<IEnumerable<CompanyUserViewDto>> List(int companyId, Guid excludedUserId, [FromQuery] Pagination paginationInfo)
+		public async Task<IEnumerable<CompanyUserDataDto>> List(int companyId, Guid excludedUserId, [FromQuery] Pagination paginationInfo)
 		{
 			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
 			if (string.IsNullOrEmpty(bearerToken))

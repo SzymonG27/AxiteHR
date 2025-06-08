@@ -3,9 +3,12 @@ using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +21,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 		AppDbContext dbContext,
 		ICompanyUserService companyUserService,
 		ICompanyPermissionService companyPermissionService,
+		IAuthApiClient authApiClient,
 		IStringLocalizer<CompanyResources> companyLocalizer,
 		ILogger<CompanyRoleService> logger) : ICompanyRoleService
 	{
@@ -62,16 +66,23 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 				query = query.Where(x => x.cr.RoleName.Contains(requestDto.RoleName) || x.cr.RoleNameEng.Contains(requestDto.RoleName));
 			}
 
-			return await query.GroupBy(x => new { x.cr.Id, x.cr.RoleName, x.crc.IsMain })
+			return await query.GroupBy(x => new
+			{
+				x.cr.Id,
+				CompanyRoleCompanyId = x.crc.Id,
+				x.cr.RoleName,
+				x.crc.IsMain
+			})
 				.OrderBy(x => x.Key.Id)
 				.Skip(pagination.Page * pagination.ItemsPerPage)
 				.Take(pagination.ItemsPerPage)
 				.Select(x => new CompanyRoleListResponseDto
 				{
 					CompanyRoleId = x.Key.Id,
+					CompanyRoleCompanyId = x.Key.CompanyRoleCompanyId,
 					Name = x.Key.RoleName,
 					IsMain = x.Key.IsMain,
-					EmployeesCount = dbContext.CompanyUserRoles.Count(cu => cu.CompanyRoleCompanyId == x.Key.Id)
+					EmployeesCount = dbContext.CompanyUserRoles.Count(cu => cu.CompanyRoleCompanyId == x.Key.CompanyRoleCompanyId)
 				})
 				.AsNoTracking()
 				.ToListAsync();
@@ -178,6 +189,132 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return responseDto;
 		}
 
+		public async Task<int> GetCountOfEmployeesToAttachAsync(int companyId, Guid userRequestedId)
+		{
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
+				return 0;
+			}
+
+			return await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
+				.Where(user => !dbContext.CompanyUserRoles
+					.Where(role => role.CompanyUserId == user.Id)
+					.Any(role =>
+						dbContext.CompanyRoleCompanies
+							.Any(crc => crc.Id == role.CompanyRoleCompanyId && crc.IsMain)))
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.CountAsync();
+		}
+
+		public async Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken)
+		{
+			if (pagination.ItemsPerPage <= 0)
+			{
+				pagination.ItemsPerPage = 10;
+			}
+
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
+				return [];
+			}
+
+			var companyUserRelationList = await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
+				.Where(user => !dbContext.CompanyUserRoles
+					.Where(role => role.CompanyUserId == user.Id)
+					.Any(role =>
+						dbContext.CompanyRoleCompanies
+							.Any(crc => crc.Id == role.CompanyRoleCompanyId && crc.IsMain)))
+				.OrderBy(x => x.Id)
+				.Skip(pagination.Page * pagination.ItemsPerPage)
+				.Take(pagination.ItemsPerPage)
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.ToListAsync();
+
+			if (companyUserRelationList.Count == 0)
+			{
+				return [];
+			}
+
+			return await authApiClient.GetUserDataListDtoAsync(companyUserRelationList, bearerToken);
+		}
+
+		public async Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto)
+		{
+			CompanyRoleAttachUserResponseDto responseDto = new();
+
+			var companyUserRequestedId = await companyUserService.GetIdAsync(requestDto.CompanyId, requestDto.UserRequestedId);
+
+			if (companyUserRequestedId == null)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[SharedResourcesKeys.Global_RequestedUserDoesNotExistsInDb];
+				return responseDto;
+			}
+
+			var isRequestedUserSupervisor = await dbContext.CompanyUserRoles
+				.Where(x => x.CompanyRoleCompanyId == requestDto.CompanyRoleCompanyId
+							&& x.CompanyUserId == companyUserRequestedId
+							&& x.IsSupervisor)
+				.AnyAsync();
+
+			var isRequestedUserHasAttachUserPermission = await companyPermissionService
+				.IsCompanyUserHasAnyPermissionAsync(companyUserRequestedId.Value, CompanyPermissionsHelper.CompanyRoleAttachUserPermissions);
+
+			if (!isRequestedUserSupervisor && !isRequestedUserHasAttachUserPermission)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.AttachUserAsync_NoPermissionError];
+				return responseDto;
+			}
+
+			//At the moment, one user = one main role in the company
+			var isUserAttachedAsync = await dbContext.CompanyUserRoles
+				.Include(x => x.CompanyRoleCompany)
+				.AnyAsync(x => x.CompanyRoleCompanyId == requestDto.CompanyRoleCompanyId
+							&& x.CompanyUserId == requestDto.CompanyUserToAttachId
+							&& x.CompanyRoleCompany.IsMain);
+
+			if (isUserAttachedAsync)
+			{
+				responseDto.IsSucceeded = false;
+				responseDto.ErrorMessage = companyLocalizer[CompanyResourcesKeys.AttachUserAsync_UserAlreadyAttached];
+				return responseDto;
+			}
+
+			var companyUserRole = new CompanyUserRole
+			{
+				CompanyRoleCompany = await dbContext.CompanyRoleCompanies.SingleAsync(x => x.Id == requestDto.CompanyRoleCompanyId),
+				CompanyUser = await dbContext.CompanyUsers.SingleAsync(x => x.Id == requestDto.CompanyUserToAttachId),
+				InsDate = DateTime.UtcNow,
+				InsUserId = requestDto.UserRequestedId
+			};
+
+			await dbContext.CompanyUserRoles.AddAsync(companyUserRole);
+			await dbContext.SaveChangesAsync();
+
+			responseDto.IsSucceeded = true;
+			responseDto.UserRoleId = companyUserRole.Id;
+			return responseDto;
+		}
+
 		#region Private Methods
 		private async Task<CompanyRoleModel> CreateCompanyRoleAsync(CompanyRoleCreatorRequestDto requestDto)
 		{
@@ -197,7 +334,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			{
 				Company = await dbContext.Companies.SingleAsync(x => x.Id == companyId),
 				CompanyRole = companyRole,
-				IsVisible = true
+				IsVisible = true,
+				IsMain = true,
 			};
 			await dbContext.CompanyRoleCompanies.AddAsync(companyRoleCompany);
 

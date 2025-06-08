@@ -1,23 +1,22 @@
 ﻿using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 {
 	public class CompanyUserService(
 		AppDbContext dbContext,
-		IHttpClientFactory httpClientFactory,
-		IRedisCacheService redisCacheService) : ICompanyUserService
+		IRedisCacheService redisCacheService,
+		IAuthApiClient authApiClient) : ICompanyUserService
 	{
-		public async Task<IEnumerable<CompanyUserViewDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken)
+		public async Task<IEnumerable<CompanyUserDataDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken)
 		{
 			if (paginationInfo.ItemsPerPage <= 0)
 			{
@@ -31,7 +30,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 				return [];
 			}
 
-			return await CompanyUserViewDtoListApiRequest(companyUserIds, bearerToken);
+			return await authApiClient.GetUserDataListDtoAsync(companyUserIds, bearerToken);
 		}
 
 		public async Task<int?> GetIdAsync(int companyId, Guid userId)
@@ -120,28 +119,6 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 				.AsNoTracking()
 				.Select(x => new CompanyUserUserRelation { CompanyUserId = x.Id, UserId = x.UserId })
 				.ToListAsync();
-		}
-
-		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<CompanyUserUserRelation> companyUserRelations, string bearerToken)
-		{
-			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Auth);
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
-
-			var jsonRequestDto = JsonSerializer.Serialize(companyUserRelations.Select(x => x.UserId));
-			var stringContent = new StringContent(jsonRequestDto, System.Text.Encoding.UTF8, "application/json");
-
-			var response = await client.PostAsync(ApiLinkHelper.GetUserDataListViews, stringContent);
-
-			var responseBody = await response.Content.ReadAsStringAsync();
-
-			var companyUserViewDtos = JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions) ?? [];
-
-			foreach (var companyUserViewDto in companyUserViewDtos)
-			{
-				companyUserViewDto.CompanyUserId = companyUserRelations.Single(x => x.UserId.ToString() == companyUserViewDto.UserId).CompanyUserId;
-			}
-
-			return companyUserViewDtos.OrderBy(x => x.CompanyUserId);
 		}
 
 		private async Task<CompanyUserModel?> GetCompanyUserAsync(int companyUserId)

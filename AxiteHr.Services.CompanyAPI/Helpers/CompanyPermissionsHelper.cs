@@ -19,6 +19,11 @@ namespace AxiteHR.Services.CompanyAPI.Helpers
 			(int)PermissionDictionary.CompanyManager,
 			(int)PermissionDictionary.CompanyRoleCreator
 		];
+
+		public static readonly List<int> CompanyRoleAttachUserPermissions = [
+			(int)PermissionDictionary.CompanyManager,
+			(int)PermissionDictionary.CompanyRoleCreator
+		];
 		#endregion
 	}
 }

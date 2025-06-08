@@ -56,7 +56,7 @@ export class JobStationService {
 			);
 	}
 
-	getCountList(requestModel: JobStationListRequest) {
+	getCountList(requestModel: JobStationListRequest): Observable<number> {
 		let employeeListCount = 0;
 		const userId = this.authStateService.getLoggedUserId();
 

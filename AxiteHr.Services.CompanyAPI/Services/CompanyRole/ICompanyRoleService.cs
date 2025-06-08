@@ -1,4 +1,5 @@
 ﻿using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 
@@ -55,15 +56,43 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// <para>2. **Role Check**: If the role exists, it links it to the company. If not, it creates a new role and links it to the company.</para>
 		/// <para>3. **Transaction**: All changes are made in a database transaction. If an error occurs, the transaction is rolled back.</para>
 		/// </para>
-		/// <para>
-		/// **Parameters**
+		/// </summary>
 		/// <param name="requestDto">Data for creating the role and linking it to the company.</param>
-		/// </para>
-		/// <para>
-		/// **Returns**
 		/// <returns>A response with the result of the operation, including role and link IDs if successful.</returns>
+		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
+
+		/// <summary>
+		/// Returns the total number of employees eligible to be assigned to a role,
+		/// excluding those with a main role in the company. Used for pagination.
+		/// </summary>
+		/// <param name="companyId">Id of company</param>
+		/// <param name="userRequestedId">Id of requesting user</param>
+		/// <returns>Total count of eligible employees.</returns>
+		Task<int> GetCountOfEmployeesToAttachAsync(int companyId, Guid userRequestedId);
+
+		/// <summary>
+		/// Returns a paginated list of employees eligible to be assigned to a role,
+		/// excluding those with a main role in the company.
+		/// </summary>
+		/// <param name="companyId">Id of company</param>
+		/// <param name="userRequestedId">Id of requesting user</param>
+		/// <param name="pagination">Pagination settings.</param>
+		/// <param name="bearerToken">Authorization token for the Auth API.</param>
+		/// <returns>List of user data eligible for role assignment.</returns>
+		Task<IEnumerable<CompanyUserDataDto>> GetListOfEmployeesToAttachAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken);
+
+		/// <summary>
+		/// <para>Attaches a user to a role within a company, checking the appropriate permissions and conditions.</para>
+		/// <para>
+		/// The method performs the following steps:
+		/// <para>1. Checks if the requesting user (requestDto.CompanyUserRequestedId) is a supervisor in the given role or has the necessary permissions to attach a user to the role.</para>
+		/// <para>2. Verifies that the user to be attached (requestDto.CompanyUserToAttachId) is not already assigned to the main role within the company.</para>
+		/// <para>3. If all conditions are met, adds the user to the role in the company by creating a new record in the CompanyUserRoles table.</para>
+		/// <para>4. Returns a response with the result of the operation and any error messages if applicable.</para>
 		/// </para>
 		/// </summary>
-		Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto);
+		/// <param name="requestDto">An object containing the data for attaching the user to the role.</param>
+		/// <returns>A response object containing the result of the operation and any error messages.</returns>
+		Task<CompanyRoleAttachUserResponseDto> AttachUserAsync(CompanyRoleAttachUserRequestDto requestDto);
 	}
 }

@@ -11,7 +11,11 @@ export class AlertService {
 
 	alerts$ = this.alertsSubject.asObservable();
 
-	showAlert(message: string, type: 'success' | 'error' | 'warning' = 'success', duration = 5000) {
+	showAlert(
+		message: string,
+		type: 'success' | 'error' | 'warning' = 'success',
+		duration = 5000
+	): number {
 		const id = this.alertId++;
 		const alert: Alert = { id, message, type, duration };
 		const currentAlerts = this.alertsSubject.value;
@@ -19,6 +23,8 @@ export class AlertService {
 		this.alertsSubject.next([...currentAlerts, alert]);
 
 		setTimeout(() => this.removeAlert(id), duration);
+
+		return id;
 	}
 
 	removeAlert(id: number) {

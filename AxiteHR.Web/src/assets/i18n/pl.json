@@ -176,6 +176,7 @@
 	"JobStation_Manager_AddEmployeeToCompanyRole": "Dodaj pracownika do stanowiska",
 	"JobStation_Manager_ListOfEmployees": "Lista pracowników",
 	"JobStation_Manager_AddEmployee": "Dodaj pracownika",
+	"JobStation_Manager_AddEmployeeToJobStationSuccess": "Użytkownik został pomyślnie dodany do stanowiska pracy.",
 
 	"//Section11": "List filter",
 	"List_Filter_Title": "Filtracja",

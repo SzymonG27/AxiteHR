@@ -82,7 +82,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 					CompanyRoleCompanyId = x.Key.CompanyRoleCompanyId,
 					Name = x.Key.RoleName,
 					IsMain = x.Key.IsMain,
-					EmployeesCount = dbContext.CompanyUserRoles.Count(cu => cu.CompanyRoleCompanyId == x.Key.Id)
+					EmployeesCount = dbContext.CompanyUserRoles.Count(cu => cu.CompanyRoleCompanyId == x.Key.CompanyRoleCompanyId)
 				})
 				.AsNoTracking()
 				.ToListAsync();
@@ -308,6 +308,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			};
 
 			await dbContext.CompanyUserRoles.AddAsync(companyUserRole);
+			await dbContext.SaveChangesAsync();
 
 			responseDto.IsSucceeded = true;
 			responseDto.UserRoleId = companyUserRole.Id;
@@ -333,7 +334,8 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			{
 				Company = await dbContext.Companies.SingleAsync(x => x.Id == companyId),
 				CompanyRole = companyRole,
-				IsVisible = true
+				IsVisible = true,
+				IsMain = true,
 			};
 			await dbContext.CompanyRoleCompanies.AddAsync(companyRoleCompany);
 

@@ -12,6 +12,7 @@ import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { EmployeeListItem } from '../../../core/models/company-manager/employee-list/EmployeeListItem';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-job-station-manager',
@@ -39,7 +40,8 @@ export class JobStationManagerComponent implements OnInit {
 		private jobStationManagerService: JobStationManagerService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
-		private router: Router
+		private router: Router,
+		private alertService: AlertService
 	) {}
 
 	ngOnInit(): void {
@@ -73,8 +75,6 @@ export class JobStationManagerComponent implements OnInit {
 
 		this.isModalAddEmployeeOpen = true;
 		this.searchEmployeesToAdd();
-
-		this.blockUIService.stop();
 	}
 
 	closeModalAddEmployee() {
@@ -82,6 +82,8 @@ export class JobStationManagerComponent implements OnInit {
 	}
 
 	pageChangedAddEmployee(event: number) {
+		this.blockUIService.start();
+
 		this.paginationAddEmployee.pageNumber = event;
 
 		this.searchEmployeesToAdd();
@@ -99,13 +101,21 @@ export class JobStationManagerComponent implements OnInit {
 			.pipe(take(1))
 			.subscribe({
 				next: () => {
-					//ToDo notification and router to manage page of employee
+					//ToDo Router to manage page of employee
+					const employeeSuccessfullyAddedMessage = this.translate.instant(
+						'JobStation_Manager_AddEmployeeToJobStationSuccess'
+					);
+					this.alertService.showAlert(employeeSuccessfullyAddedMessage);
+					this.closeModalAddEmployee();
+
 					this.blockUIService.stop();
 				},
 				error: async err => {
-					this.errorMessage =
+					this.alertService.showAlert(
 						err.message ||
-						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+							(await firstValueFrom(this.translate.get('Global_UnknownError')),
+							'error')
+					);
 					this.blockUIService.stop();
 				},
 			});
@@ -126,9 +136,11 @@ export class JobStationManagerComponent implements OnInit {
 					this.blockUIService.stop();
 				},
 				error: async err => {
-					this.errorMessage =
+					this.alertService.showAlert(
 						err.message ||
-						(await firstValueFrom(this.translate.get('Global_UnknownError')));
+							(await firstValueFrom(this.translate.get('Global_UnknownError')),
+							'error')
+					);
 					this.blockUIService.stop();
 				},
 			});
@@ -145,8 +157,7 @@ export class JobStationManagerComponent implements OnInit {
 				take(1),
 				switchMap(response => {
 					if (!response.isSucceed) {
-						//ToDo error handler
-						this.errorMessage = response.errorMessage;
+						this.alertService.showAlert(response.errorMessage, 'error');
 					}
 					this.employeeList = response.employeeList;
 					return of(void 0);

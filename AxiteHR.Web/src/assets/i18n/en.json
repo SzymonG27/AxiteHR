@@ -176,6 +176,7 @@
 	"JobStation_Manager_AddEmployeeToCompanyRole": "Add employee to workstation",
 	"JobStation_Manager_ListOfEmployees": "List of employees",
 	"JobStation_Manager_AddEmployee": "Add employee",
+	"JobStation_Manager_AddEmployeeToJobStationSuccess": "Employee successfully added to job station.",
 
 	"//Section11": "List filter",
 	"List_Filter_Title": "Filtering",

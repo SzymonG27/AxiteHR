@@ -29,6 +29,26 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 			return await companyRoleService.GetCountListAsync(requestDto);
 		}
 
+		[HttpGet("ListEmployeesAsync/{companyId}/{userRequestedId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IEnumerable<CompanyUserDataDto>> ListEmployeesAsync(int companyId, Guid userRequestedId, [FromQuery] Pagination pagination)
+		{
+			var bearerToken = await HttpContext.GetTokenAsync(HeaderNamesHelper.AccessTokenContext);
+			if (string.IsNullOrEmpty(bearerToken))
+			{
+				return [];
+			}
+
+			return await companyRoleService.GetEmployeeListAsync(companyId, userRequestedId, pagination, bearerToken);
+		}
+
+		[HttpGet("CountEmployeesAsync/{companyId}/{userRequestedId}")]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<int> CountEmployeesAsync(int companyId, Guid userRequestedId)
+		{
+			return await companyRoleService.GetCountEmployeesAsync(companyId, userRequestedId);
+		}
+
 		[HttpPost("CreateAsync")]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<IActionResult> CreateAsync([FromBody] CompanyRoleCreatorRequestDto requestDto)

@@ -48,6 +48,10 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		/// </remarks>
 		Task<int> GetCountListAsync(CompanyRoleListRequestDto requestDto);
 
+		Task<IEnumerable<CompanyUserDataDto>> GetEmployeeListAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken);
+
+		Task<int> GetCountEmployeesAsync(int companyId, Guid userRequestedId);
+
 		/// <summary>
 		/// <para>Creates a new role for a company or links an existing role to the company.</para>
 		/// <para>

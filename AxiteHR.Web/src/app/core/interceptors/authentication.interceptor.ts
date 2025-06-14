@@ -25,6 +25,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 			if (isExpired) {
 				localStorage.removeItem(AuthDictionary.Token);
 				this.authStateService.setIsTokenExpired(true);
+				this.authStateService.setLoggedIn(false);
 				this.router.navigate(['/Login']);
 			}
 

@@ -49,6 +49,30 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 		Task<int> GetCountListAsync(CompanyRoleListRequestDto requestDto);
 
 		/// <summary>
+		/// Retrieves a paginated list of employees for the given company.
+		/// <para>Validates that the requesting user belongs to the company.</para>
+		/// <para>Fetches users with assigned roles and returns their data from the auth API.</para>
+		/// </summary>
+		/// <param name="companyId">ID of the company.</param>
+		/// <param name="companyRoleCompanyId">Id of the company role for company ID</param>
+		/// <param name="userRequestedId">ID of the requesting user.</param>
+		/// <param name="pagination">Pagination settings (page and items per page).</param>
+		/// <param name="bearerToken">Bearer token for external API authorization.</param>
+		/// <returns>List of employee data or an empty list if unauthorized or no users found.</returns>
+		Task<IEnumerable<CompanyUserDataDto>> GetEmployeeListAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId, Pagination pagination, string bearerToken);
+
+		/// <summary>
+		/// Retrieves the total count of employees in the given company for pagination.
+		/// <para>Validates that the requesting user is assigned to the company.</para>
+		/// <para>Counts only users with at least one assigned role.</para>
+		/// </summary>
+		/// <param name="companyId">ID of the company.</param>
+		/// <param name="companyRoleCompanyId">Id of the company role for company ID</param>
+		/// <param name="userRequestedId">ID of the requesting user.</param>
+		/// <returns>Number of matching employees, or 0 if unauthorized.</returns>
+		Task<int> GetCountEmployeesAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId);
+
+		/// <summary>
 		/// <para>Creates a new role for a company or links an existing role to the company.</para>
 		/// <para>
 		/// **Steps**

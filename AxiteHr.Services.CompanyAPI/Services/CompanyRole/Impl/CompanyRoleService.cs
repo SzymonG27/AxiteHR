@@ -127,6 +127,67 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return await query.CountAsync();
 		}
 
+		public async Task<IEnumerable<CompanyUserDataDto>> GetEmployeeListAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId, Pagination pagination, string bearerToken)
+		{
+			if (pagination.ItemsPerPage <= 0)
+			{
+				pagination.ItemsPerPage = 10;
+			}
+
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
+				return [];
+			}
+
+			var companyUserRelationList = await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
+				.Where(user => dbContext.CompanyUserRoles
+					.Any(role => role.CompanyUserId == user.Id && role.CompanyRoleCompanyId == companyRoleCompanyId))
+				.OrderBy(x => x.Id)
+				.Skip(pagination.Page * pagination.ItemsPerPage)
+				.Take(pagination.ItemsPerPage)
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.ToListAsync();
+
+			if (companyUserRelationList.Count == 0)
+			{
+				return [];
+			}
+
+			return await authApiClient.GetUserDataListDtoAsync(companyUserRelationList, bearerToken);
+		}
+
+		public async Task<int> GetCountEmployeesAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId)
+		{
+			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
+
+			if (companyUserId == null)
+			{
+				logger.LogWarning("User was not in the company, but tried to get list of employees to attach, UserId: {UserId}, CompanyId: {CompanyId}", userRequestedId, companyId);
+				return 0;
+			}
+
+			return await dbContext.CompanyUsers
+				.Where(user => user.CompanyId == companyId)
+				.Where(user => dbContext.CompanyUserRoles
+					.Any(role => role.CompanyUserId == user.Id && role.CompanyRoleCompanyId == companyRoleCompanyId))
+				.Select(x => new CompanyUserUserRelation
+				{
+					CompanyUserId = x.Id,
+					UserId = x.UserId
+				})
+				.AsNoTracking()
+				.CountAsync();
+		}
+
 		public async Task<CompanyRoleCreatorResponseDto> CreateAsync(CompanyRoleCreatorRequestDto requestDto)
 		{
 			CompanyRoleCreatorResponseDto responseDto = new();

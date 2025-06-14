@@ -182,6 +182,36 @@
 			}
 		},
 		{
+			"DownstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
+			"DownstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.companyapi",
+					"Port": 7004
+				}
+			],
+			"UpstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
+			"UpstreamHttpMethod": [ "Get" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
+		},
+		{
 			"DownstreamPathTemplate": "/api/CompanyRole/CreateAsync",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [

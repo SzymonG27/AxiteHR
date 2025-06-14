@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
-using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
+using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Moq;
+using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.Company;
 
@@ -20,16 +23,22 @@ public class CompanyCreatorServiceTests
 	private CompanyManagerService _companyCreatorService;
 
 	[SetUp]
-	public void SetUp()
+	public async Task SetUp()
 	{
 		// Konfiguracja DbContext dla SQLite InMemory
 		var options = new DbContextOptionsBuilder<AppDbContext>()
 			.UseSqlite("DataSource=:memory:")
 			.Options;
 
-		_dbContext = new AppDbContext(options);
-		_dbContext.Database.OpenConnection();
-		_dbContext.Database.EnsureCreated();
+		_dbContext = new AppDbContext(options)
+		{
+			SkipSeedData = true
+		};
+		await _dbContext.Database.OpenConnectionAsync();
+		await _dbContext.Database.EnsureCreatedAsync();
+
+		// Seed data
+		await SeedDatabase();
 
 		_mapperMock = new Mock<IMapper>();
 		_localizerMock = new Mock<IStringLocalizer<CompanyResources>>();
@@ -47,6 +56,33 @@ public class CompanyCreatorServiceTests
 	{
 		_dbContext.Database.EnsureDeleted();
 		_dbContext.Dispose();
+	}
+
+	private async Task SeedDatabase()
+	{
+		CompanyLevel companyLevel = new()
+		{
+			Id = (int)CompanyLevelDictionary.Max10Emplyees,
+			MaxNumberOfWorkers = 10
+		};
+		await _dbContext.CompanyLevels.AddAsync(companyLevel);
+
+		CompanyRoleModel companyRoleCreator = new()
+		{
+			Id = (int)CompanyRoleDictionary.CompanyCreator,
+			RoleName = "Założyciel firmy",
+			RoleNameEng = "Company creator"
+		};
+		await _dbContext.CompanyRoles.AddAsync(companyRoleCreator);
+
+		CompanyPermission companyPermissionCreator = new()
+		{
+			Id = (int)PermissionDictionary.CompanyManager,
+			PermissionName = "Company manager"
+		};
+		await _dbContext.CompanyPermissions.AddAsync(companyPermissionCreator);
+
+		await _dbContext.SaveChangesAsync();
 	}
 
 	[Test]

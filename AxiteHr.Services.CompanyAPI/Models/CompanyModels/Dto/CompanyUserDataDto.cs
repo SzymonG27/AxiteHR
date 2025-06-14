@@ -1,6 +1,6 @@
 ﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto
 {
-	public class CompanyUserViewDto
+	public class CompanyUserDataDto
 	{
 		public int CompanyUserId { get; set; }
 		public string UserId { get; set; } = string.Empty;

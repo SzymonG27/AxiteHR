@@ -1,14 +1,12 @@
 ﻿using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Moq.Protected;
-using System.Net;
-using System.Text.Json;
 using CompanyModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
@@ -18,7 +16,7 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 	public class CompanyUserServiceTests
 	{
 		private AppDbContext _dbContext;
-		private Mock<IHttpClientFactory> _httpClientFactoryMock;
+		private Mock<IAuthApiClient> _authApiClientMock;
 		private Mock<IRedisCacheService> _redisCacheServiceMock;
 
 		private CompanyUserService _companyUserService;
@@ -26,20 +24,23 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 		[SetUp]
 		public void SetUp()
 		{
-			_httpClientFactoryMock = new Mock<IHttpClientFactory>();
+			_authApiClientMock = new Mock<IAuthApiClient>();
 			_redisCacheServiceMock = new Mock<IRedisCacheService>();
 
 			var options = new DbContextOptionsBuilder<AppDbContext>()
-			.UseSqlite("DataSource=:memory:")
-			.Options;
-			_dbContext = new AppDbContext(options);
+				.UseSqlite("DataSource=:memory:")
+				.Options;
+			_dbContext = new AppDbContext(options)
+			{
+				SkipSeedData = true
+			};
 			_dbContext.Database.OpenConnection();
 			_dbContext.Database.EnsureCreated();
 
 			_companyUserService = new CompanyUserService(
 				_dbContext,
-				_httpClientFactoryMock.Object,
-				_redisCacheServiceMock.Object);
+				_redisCacheServiceMock.Object,
+				_authApiClientMock.Object);
 		}
 
 		[TearDown]
@@ -85,31 +86,16 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 				new() { CompanyUserId = 1, UserId = userId }
 			];
 
-			string expectedResponseContent = JsonSerializer.Serialize(new List<CompanyUserViewDto>
-			{
+			IEnumerable<CompanyUserDataDto> expectedResponseContent =
+			[
 				new() { UserId = companyUserRelations[0].UserId.ToString(), CompanyUserId = 1 }
-			});
+			];
 
-			Mock<HttpMessageHandler> httpClientHandlerMock = new();
-			httpClientHandlerMock.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.IsAny<HttpRequestMessage>(),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent(expectedResponseContent)
-				});
-
-			var httpClient = new HttpClient(httpClientHandlerMock.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")  // Ustawienie BaseAddress
-			};
-			_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_authApiClientMock.Setup(client => client.GetUserDataListDtoAsync(companyUserRelations, bearerToken))
+				.Returns(Task.FromResult(expectedResponseContent));
 
 			// Act
-			List<CompanyUserViewDto> result = (await _companyUserService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken)).ToList();
+			List<CompanyUserDataDto> result = (await _companyUserService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken)).ToList();
 
 			// Assert
 			Assert.Multiple(() =>
@@ -155,31 +141,16 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyUser
 				new() { CompanyUserId = 1, UserId = userId }
 			];
 
-			string expectedResponseContent = JsonSerializer.Serialize(new List<CompanyUserViewDto>
-			{
+			IEnumerable<CompanyUserDataDto> expectedResponseContent =
+			[
 				new() { UserId = companyUserRelations[0].UserId.ToString(), CompanyUserId = 1 }
-			});
+			];
 
-			Mock<HttpMessageHandler> httpClientHandlerMock = new();
-			httpClientHandlerMock.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.IsAny<HttpRequestMessage>(),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent(expectedResponseContent)
-				});
-
-			var httpClient = new HttpClient(httpClientHandlerMock.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")  // Ustawienie BaseAddress
-			};
-			_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_authApiClientMock.Setup(client => client.GetUserDataListDtoAsync(companyUserRelations, bearerToken))
+				.Returns(Task.FromResult(expectedResponseContent));
 
 			// Act
-			List<CompanyUserViewDto> result = (await _companyUserService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken)).ToList();
+			List<CompanyUserDataDto> result = (await _companyUserService.GetCompanyUserViewDtoListAsync(companyId, excludedUserId, paginationInfo, bearerToken)).ToList();
 
 			// Assert
 			Assert.That(result, Is.Empty);

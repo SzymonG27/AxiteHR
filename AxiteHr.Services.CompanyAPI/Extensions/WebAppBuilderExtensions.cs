@@ -1,8 +1,13 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Services.Company;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl;
+using AxiteHR.Services.CompanyAPI.Services.CompanyRole;
+using AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl;
 using AxiteHR.Services.CompanyAPI.Services.Employee;
@@ -112,7 +117,10 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 			builder.Services.AddScoped<ICompanyService, CompanyService>();
 			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
 			builder.Services.AddScoped<ICompanyUserService, CompanyUserService>();
+			builder.Services.AddScoped<ICompanyRoleService, CompanyRoleService>();
+			builder.Services.AddScoped<ICompanyPermissionService, CompanyPermissionService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+			builder.Services.AddScoped<IAuthApiClient, AuthApiClient>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

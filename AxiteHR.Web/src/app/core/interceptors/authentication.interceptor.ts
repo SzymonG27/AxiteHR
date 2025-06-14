@@ -5,12 +5,12 @@ import { jwtDecode } from 'jwt-decode';
 import { JwtPayloadClient } from '../../core/models/authentication/JwtPayloadClient';
 import { Router } from '@angular/router';
 import { AuthDictionary } from '../../shared/dictionary/AuthDictionary';
-import { DataBehaviourService } from '../services/data/data-behaviour.service';
+import { AuthStateService } from '../services/authentication/auth-state.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 	constructor(
-		private dataService: DataBehaviourService,
+		private authStateService: AuthStateService,
 		private router: Router
 	) {}
 
@@ -24,7 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
 			if (isExpired) {
 				localStorage.removeItem(AuthDictionary.Token);
-				this.dataService.setIsTokenExpired(true);
+				this.authStateService.setIsTokenExpired(true);
 				this.router.navigate(['/Login']);
 			}
 

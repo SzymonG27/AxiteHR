@@ -2,6 +2,7 @@
 using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Helpers;
+using AxiteHR.Services.ApplicationAPI.Infrastructure.CompanyApi;
 using AxiteHR.Services.ApplicationAPI.Services.Application;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -105,6 +106,7 @@ namespace AxiteHR.Services.ApplicationAPI.Extensions
 			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
 			builder.Services.AddScoped<IApplicationService, ApplicationService>();
+			builder.Services.AddScoped<ICompanyApiClient, CompanyApiClient>();
 
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();

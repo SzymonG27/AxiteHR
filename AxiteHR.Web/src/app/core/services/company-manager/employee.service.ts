@@ -29,7 +29,6 @@ export class EmployeeService {
 				employeeId: '',
 			};
 
-			responseError.isSucceeded = false;
 			this.translate
 				.get('Global_UserNotLogged')
 				.pipe(

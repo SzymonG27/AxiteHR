@@ -8,7 +8,6 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Pagination } from '../../../shared/models/Pagination';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-employee-list',
@@ -31,8 +30,7 @@ export class EmployeeListComponent implements OnInit {
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute,
-		private router: Router,
-		private dataService: DataBehaviourService
+		private router: Router
 	) {}
 
 	ngOnInit() {

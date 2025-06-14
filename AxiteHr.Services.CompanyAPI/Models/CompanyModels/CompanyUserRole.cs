@@ -13,10 +13,10 @@ namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 
 		public virtual CompanyUser CompanyUser { get; set; } = new();
 
-		[ForeignKey(nameof(CompanyRole))]
-		public virtual int CompanyRoleId { get; set; }
+		[ForeignKey(nameof(CompanyRoleCompany))]
+		public virtual int CompanyRoleCompanyId { get; set; }
 
-		public virtual CompanyRole CompanyRole { get; set; } = new();
+		public virtual CompanyRoleCompany CompanyRoleCompany { get; set; } = new();
 
 		public virtual bool IsSupervisor { get; set; }
 

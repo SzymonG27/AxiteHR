@@ -1,23 +1,22 @@
 ﻿using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Helpers;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
+using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 {
 	public class CompanyUserService(
 		AppDbContext dbContext,
-		IHttpClientFactory httpClientFactory,
-		IRedisCacheService redisCacheService) : ICompanyUserService
+		IRedisCacheService redisCacheService,
+		IAuthApiClient authApiClient) : ICompanyUserService
 	{
-		public async Task<IEnumerable<CompanyUserViewDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken)
+		public async Task<IEnumerable<CompanyUserDataDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken)
 		{
 			if (paginationInfo.ItemsPerPage <= 0)
 			{
@@ -31,7 +30,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 				return [];
 			}
 
-			return await CompanyUserViewDtoListApiRequest(companyUserIds, bearerToken);
+			return await authApiClient.GetUserDataListDtoAsync(companyUserIds, bearerToken);
 		}
 
 		public async Task<int?> GetIdAsync(int companyId, Guid userId)
@@ -106,7 +105,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 			}
 
 			//InsUser is supervisor and main roles are the same, return true, else false
-			return companyUserRole.CompanyRoleId == insUserRole.CompanyRoleId;
+			return companyUserRole.CompanyRoleCompanyId == insUserRole.CompanyRoleCompanyId;
 		}
 
 		#region Private Methods
@@ -122,42 +121,21 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 				.ToListAsync();
 		}
 
-		private async Task<IEnumerable<CompanyUserViewDto>> CompanyUserViewDtoListApiRequest(IList<CompanyUserUserRelation> companyUserRelations, string bearerToken)
-		{
-			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Auth);
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", bearerToken);
-
-			var jsonRequestDto = JsonSerializer.Serialize(companyUserRelations.Select(x => x.UserId));
-			var stringContent = new StringContent(jsonRequestDto, System.Text.Encoding.UTF8, "application/json");
-
-			var response = await client.PostAsync(ApiLinkHelper.GetUserDataListViews, stringContent);
-
-			var responseBody = await response.Content.ReadAsStringAsync();
-
-			var companyUserViewDtos = JsonSerializer.Deserialize<IEnumerable<CompanyUserViewDto>>(responseBody, JsonOptionsHelper.DefaultJsonSerializerOptions) ?? [];
-
-			foreach (var companyUserViewDto in companyUserViewDtos)
-			{
-				companyUserViewDto.CompanyUserId = companyUserRelations.Single(x => x.UserId.ToString() == companyUserViewDto.UserId).CompanyUserId;
-			}
-
-			return companyUserViewDtos.OrderBy(x => x.CompanyUserId);
-		}
-
 		private async Task<CompanyUserModel?> GetCompanyUserAsync(int companyUserId)
 		{
 			return await dbContext.CompanyUsers
 				.AsNoTracking()
 				.SingleOrDefaultAsync(x => x.Id == companyUserId);
 		}
+
 		private async Task<CompanyUserRole?> GetCompanyUserMainRoleAsync(int companyUserId)
 		{
 			return await dbContext.CompanyUserRoles
 				.AsNoTracking()
-				.Join(dbContext.CompanyRoles,
-					cur => cur.CompanyRoleId,
-					cr => cr.Id,
-					(cur, cr) => new { cur, cr.IsMain })
+				.Join(dbContext.CompanyRoleCompanies,
+					cur => cur.CompanyRoleCompanyId,
+					crc => crc.Id,
+					(cur, crc) => new { cur, crc.IsMain })
 				.Where(x => x.cur.CompanyUserId == companyUserId && x.IsMain)
 				.Select(x => x.cur)
 				.SingleOrDefaultAsync();
@@ -167,16 +145,16 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser.Impl
 		{
 			return await dbContext.CompanyUserRoles
 				.AsNoTracking()
-				.Join(dbContext.CompanyRoles,
-					cur => cur.CompanyRoleId,
-					cr => cr.Id,
-					(cur, cr) => new { cur, cr.IsMain })
-				.Where(x => x.IsMain)
+				.Join(dbContext.CompanyRoleCompanies,
+					cur => cur.CompanyRoleCompanyId,
+					crc => crc.Id,
+					(cur, crc) => new { cur, crc.IsMain, crc.CompanyId })
+				.Where(x => x.IsMain && x.CompanyId == companyId)
 				.Join(dbContext.CompanyUsers,
 					x => x.cur.CompanyUserId,
 					cu => cu.Id,
 					(x, cu) => new { x.cur, cu })
-				.Where(x => x.cu.CompanyId == companyId && x.cu.UserId == insUserId)
+				.Where(x => x.cu.UserId == insUserId)
 				.Select(x => x.cur)
 				.SingleOrDefaultAsync();
 		}

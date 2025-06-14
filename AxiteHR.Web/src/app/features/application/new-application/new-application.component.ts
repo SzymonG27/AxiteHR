@@ -18,10 +18,11 @@ import { maxPeriodDifference } from '../../../shared/validators/max-period-diffe
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { requiredIfFalse } from '../../../shared/validators/required-if-false.validator';
 import { first, firstValueFrom, Subject, take, takeUntil } from 'rxjs';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { NewApplicationService } from '../../../core/services/application/new-application.service';
 import { NewApplicationResponse } from '../../../core/models/application/new-application/NewApplicationResponse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { AlertService } from '../../../core/services/alert/alert.service';
+import { CalendarStateService } from '../../../core/services/calendar/calendar-state.service';
 
 @Component({
 	selector: 'app-new-application',
@@ -89,10 +90,11 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 	constructor(
 		private router: Router,
 		private blockUI: BlockUIService,
-		private dataService: DataBehaviourService,
+		private calendarStateService: CalendarStateService,
 		private newApplicationService: NewApplicationService,
 		private route: ActivatedRoute,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private alertService: AlertService
 	) {
 		this.companyId = this.route.snapshot.parent?.params['id'];
 		if (this.companyId == undefined || this.companyId == null) {
@@ -209,8 +211,12 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 			.createNewApplication(this.applicationFormCreatorRequest.newApplicationRequest)
 			.pipe(first())
 			.subscribe({
-				next: (response: NewApplicationResponse) => {
+				next: async (response: NewApplicationResponse) => {
 					if (response.isSucceeded) {
+						const newApplicationCreatedSuccessfully = await firstValueFrom(
+							this.translate.get('Application_SendApplication_Success')
+						);
+						this.alertService.showAlert(newApplicationCreatedSuccessfully);
 						this.blockUI.stop();
 						this.router.navigate(['/CompanyMenu', this.companyId, 'Calendar']);
 						return;
@@ -249,7 +255,8 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Application_NewApplicationCreator_UnexpectedError')
 						);
-						this.errorMessage = unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.blockUI.stop();
 				},
@@ -336,17 +343,19 @@ export class NewApplicationComponent implements OnDestroy, OnInit, AfterViewInit
 	}
 
 	ngAfterViewInit(): void {
-		this.dataService.selectedDate.pipe(take(1)).subscribe(async (value: Date | null) => {
-			if (value) {
-				const year = value.getFullYear();
-				const month = String(value.getMonth() + 1).padStart(2, '0');
-				const day = String(value.getDate()).padStart(2, '0');
+		this.calendarStateService.selectedDate
+			.pipe(take(1))
+			.subscribe(async (value: Date | null) => {
+				if (value) {
+					const year = value.getFullYear();
+					const month = String(value.getMonth() + 1).padStart(2, '0');
+					const day = String(value.getDate()).padStart(2, '0');
 
-				const formattedDate = `${year}-${month}-${day}`;
-				this.applicationCreatorForm.get('periodFrom')?.setValue(formattedDate);
-				this.applicationCreatorForm.get('periodTo')?.setValue(formattedDate);
-			}
-		});
+					const formattedDate = `${year}-${month}-${day}`;
+					this.applicationCreatorForm.get('periodFrom')?.setValue(formattedDate);
+					this.applicationCreatorForm.get('periodTo')?.setValue(formattedDate);
+				}
+			});
 		this.toggleFullDayDisabled();
 	}
 

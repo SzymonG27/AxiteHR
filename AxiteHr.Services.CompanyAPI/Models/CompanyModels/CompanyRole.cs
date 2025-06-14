@@ -10,8 +10,7 @@ namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 		[MaxLength(100)]
 		public virtual string RoleName { get; set; } = string.Empty;
 
-		public virtual bool IsMain { get; set; }
-
-		public virtual bool IsVisible { get; set; }
+		[MaxLength(100)]
+		public virtual string RoleNameEng { get; set; } = string.Empty;
 	}
 }

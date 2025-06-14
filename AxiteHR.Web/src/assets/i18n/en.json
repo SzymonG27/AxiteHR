@@ -14,6 +14,9 @@
 	"CHANGE_TEMP_PASSWORD_PAGE_TITLE": "Change temp password",
 	"CALENDAR_TITLE_PAGE": "Calendar",
 	"NEW_APPLICATION_TITLE_PAGE": "New application",
+	"WORKSTATION_LIST_TITLE_PAGE": "Jobstation list",
+	"NEW_JOBSTATION_TITLE_PAGE": "New jobstation",
+	"JOBSTATION_MANAGER_TITLE_PAGE": "Jobstation manager",
 	"defaultTitle": "My Application",
 
 	"//Section2": "Global messages",
@@ -69,6 +72,7 @@
 	"Authentication_TempPasswordChange_InternalError": "An internal error occurred while changing the password. Please try again later",
 	"Authentication_TempPasswordChange_Success": "The password has been changed successfully. You can log in now",
 	"Authentication_Cancel": "Cancel",
+	"Authentication_Login_Success": "You have been successfully logged in.",
 
 	"//Section5": "Company messages",
 	"Company_List_CompanyName": "Company name",
@@ -83,6 +87,7 @@
 	"Company_Creator_CompanyName": "Company name",
 	"Company_Creator_Cancel": "Cancel",
 	"Company_Creator_Confirm": "Confirm",
+	"Company_Creator_Success": "The company has been successfully created",
 	"Company_EmployeeList_CreateEmployeeBtn": "Create new employee",
 	"Company_EmployeeList_Empty": "No employees",
 	"Company_EmployeeList_EmployeeCreated": "The employee was successfully created.",
@@ -92,9 +97,11 @@
 	"Nav_Manager_Dashboard": "Dashboard",
 	"Nav_Manager_Team": "Team",
 	"Nav_Manager_Team_Employees": "Employees",
+	"Nav_Manager_Team_Workstations": "Workstations",
 	"Nav_Manager_Applications": "Applications",
 	"Nav_Manager_Applications_Calendar": "Calendar",
 	"Nav_Manager_Applications_NewApplication": "New application",
+	"Nav_Manager_Notifications": "Notifications",
 
 	"//Section7": "Pagination",
 	"Pagination_Previous": " Previous ",
@@ -150,5 +157,29 @@
 	"Application_Hours_MaxPeriodDifferenceError": "The difference between hours cannot exceed {{maxHours}}",
 	"Application_Reason_MaxLengthError": "The Reason field can contain a maximum of {{maxLength}} characters",
 	"Application_SendApplication": "Send application",
-	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again."
+	"Application_NewApplicationCreator_UnexpectedError": "An unexpected error occurred. Please try again.",
+	"Application_SendApplication_Success": "The application has been submitted correctly.",
+
+	"//Section10": "Workstation",
+	"Job_Station_Name": "Job station name",
+	"Job_Station_WorkersCount": "Count of employees",
+	"Job_Station_Action": "Action",
+	"JobStation_Creator_Title": "New jobstation",
+	"JobStation_RoleNamePl": "Job station in Polish",
+	"JobStation_RoleNameEng": "Job station in English",
+	"JobStation_JobStationCreate_ButtonTitle": "Create a new job station",
+	"JobStation_JobStationCreate_Created": "The job station has been successfully created",
+	"JobStationFilter_Name" : "Job station name",
+	"JobStation_List_Manager": "Manage",
+	"JobStation_Manager_CompanyRoleSettingsTitle": "Job station settings",
+	"JobStation_Manager_CompanyRoleUserSettingsTitle": "Manage employees",
+	"JobStation_Manager_AddEmployeeToCompanyRole": "Add employee to workstation",
+	"JobStation_Manager_ListOfEmployees": "List of employees",
+	"JobStation_Manager_AddEmployee": "Add employee",
+	"JobStation_Manager_AddEmployeeToJobStationSuccess": "Employee successfully added to job station.",
+
+	"//Section11": "List filter",
+	"List_Filter_Title": "Filtering",
+	"List_Filter_Search_Button": "Search",
+	"List_Filter_Clear_Button": "Clear"
 }

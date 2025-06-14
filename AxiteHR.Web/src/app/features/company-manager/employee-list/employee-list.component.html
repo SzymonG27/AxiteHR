@@ -2,12 +2,12 @@
 	<div class="w-11/12 mx-auto">
 		<div *ngIf="errorMessage" class="w-full text-red-500 mt-3">{{ this.errorMessage }}</div>
 
-		<div *ngIf="employeeCreatedMessage" class="w-full text-green-600 mt-3">
-			{{ this.employeeCreatedMessage }}
-		</div>
-
 		<div class="mt-10">
-			<button class="button-employee ml-1" [routerLink]="['../EmployeeCreator']">
+			<button
+				type="button"
+				class="button-employee ml-1"
+				[routerLink]="['../EmployeeCreator']"
+			>
 				{{ 'Company_EmployeeList_CreateEmployeeBtn' | translate }}
 			</button>
 		</div>

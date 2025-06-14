@@ -164,6 +164,25 @@ services:
       - axitehr.gatewaysol
       - logstash
       - rabbitmq
+
+  axitehr.services.signalrapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicessignalrapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.SignalRApi/Dockerfile
+    ports:
+      - "5234:5234" # HTTP
+      - "7006:7006" # HTTPS
+    environment:
+      ConnectionStrings__Redis: "redis:6379"
+      Kestrel__Endpoints__Https__Url: "https://+:7006"
+      Kestrel__Endpoints__Https__Certificate__Path: "Certs/axitehr.services.signalrapi.pfx"
+      Kestrel__Endpoints__Https__Certificate__Password: "Password123"
+    networks:
+      - axitehr-network
+    depends_on:
+      - axitehr.gatewaysol
+      - redis
   #END OF MY SERVICES
 
   #ELK STACK

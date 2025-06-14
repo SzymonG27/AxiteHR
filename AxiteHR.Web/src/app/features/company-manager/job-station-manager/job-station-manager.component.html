@@ -1,0 +1,169 @@
+<div class="w-[100vw] md:w-[80vw] lg:w-[85vw] flex justify-start mb-10">
+	<div class="w-11/12 mx-auto">
+		<app-drop-list
+			class="mt-5"
+			[title]="getTranslatedCompanyRoleSettingsTitle()"
+		></app-drop-list>
+
+		<app-drop-list [title]="getTranslatedCompanyRoleUserSettingsTitle()">
+			<hr />
+
+			<div class="mt-8 mb-8">
+				<button
+					type="button"
+					class="button button-border flex items-center justify-center"
+					(click)="openModalAddEmployee()"
+				>
+					{{ 'JobStation_Manager_AddEmployeeToCompanyRole' | translate }}
+				</button>
+			</div>
+
+			<hr />
+
+			<div class="mt-5">
+				<h2 class="mt-5 text-lg font-semibold">
+					{{ 'JobStation_Manager_ListOfEmployees' | translate }}
+				</h2>
+
+				<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+					<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+						<thead class="text-xs text-gray-800 uppercase bg-[#d2d9e7]">
+							<tr>
+								<th scope="col" class="px-6 py-3">
+									{{ 'Authentication_FirstName' | translate }}
+								</th>
+								<th scope="col" class="px-6 py-3">
+									{{ 'Authentication_LastName' | translate }}
+								</th>
+								<th scope="col" class="px-6 py-3">
+									{{ 'Authentication_Email' | translate }}
+								</th>
+								<th scope="col" class="px-6 py-3">
+									{{ 'Company_List_Action' | translate }}
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let employee of employeeInJobStationList | paginate : {
+									id: 'employee-list-pagination',
+									itemsPerPage: paginationEmployeesInJobStation.pageSize,
+									currentPage: paginationEmployeesInJobStation.pageNumber,
+									totalItems: paginationEmployeesInJobStation.totalItems,
+								}"
+								class="odd:bg-white even:bg-[#f2f4f9]"
+							>
+								<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+									{{ employee.firstName }}
+								</td>
+								<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+									{{ employee.lastName }}
+								</td>
+								<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+									{{ employee.userEmail }}
+								</td>
+								<td></td>
+							</tr>
+							<tr
+								*ngIf="employeeInJobStationList.length === 0"
+								class="odd:bg-white even:bg-[#f2f4f9]"
+							>
+								<td
+									colspan="4"
+									class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+								>
+									{{ 'Company_EmployeeList_Empty' | translate }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<pagination-controls
+					class="mt-5 block"
+					id="employee-list-pagination"
+					(pageChange)="pageChangedEmployeeListInJobStation($event)"
+					previousLabel="{{ 'Pagination_Previous' | translate }}"
+					nextLabel="{{ 'Pagination_Next' | translate }}"
+					screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
+					screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
+					screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}"
+				></pagination-controls>
+			</div>
+		</app-drop-list>
+	</div>
+</div>
+
+<app-modal
+	[isOpen]="isModalAddEmployeeOpen"
+	[isForm]="false"
+	[title]="getTranslatedModalAddEmployeeTitle()"
+	(closeModalEmitter)="closeModalAddEmployee()"
+	[modalClass]="'max-w-4xl'"
+>
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
+		<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+			<thead class="text-xs text-gray-700 uppercase bg-[#f2f4f9]">
+				<tr>
+					<th scope="col" class="px-6 py-3">
+						{{ 'Authentication_FirstName' | translate }}
+					</th>
+					<th scope="col" class="px-6 py-3">
+						{{ 'Authentication_LastName' | translate }}
+					</th>
+					<th scope="col" class="px-6 py-3">{{ 'Authentication_Email' | translate }}</th>
+					<th scope="col" class="px-6 py-3">{{ 'Company_List_Action' | translate }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					*ngFor="let employee of employeeList | paginate : {
+						id: 'add-employee-pagination',
+						itemsPerPage: paginationAddEmployee.pageSize,
+						currentPage: paginationAddEmployee.pageNumber,
+						totalItems: paginationAddEmployee.totalItems,
+					}"
+					class="odd:bg-white even:bg-[#f2f4f9]"
+				>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.firstName }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.lastName }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						{{ employee.userEmail }}
+					</td>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+						<button
+							type="button"
+							class="button button-full flex items-center justify-center"
+							(click)="addEmployeeToJobStation(employee)"
+						>
+							{{ 'JobStation_Manager_AddEmployee' | translate }}
+						</button>
+					</td>
+				</tr>
+				<tr *ngIf="employeeList.length === 0" class="odd:bg-white even:bg-[#f2f4f9]">
+					<td
+						colspan="4"
+						class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center"
+					>
+						{{ 'Company_EmployeeList_Empty' | translate }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<pagination-controls
+		class="mt-5 block"
+		id="add-employee-pagination"
+		(pageChange)="pageChangedAddEmployee($event)"
+		previousLabel="{{ 'Pagination_Previous' | translate }}"
+		nextLabel="{{ 'Pagination_Next' | translate }}"
+		screenReaderPaginationLabel="{{ 'Pagination_Label' | translate }}"
+		screenReaderPageLabel="{{ 'Pagination_PageLabel' | translate }}"
+		screenReaderCurrentLabel="{{ 'Pagination_CurrentPageLabel' | translate }}"
+	></pagination-controls>
+</app-modal>

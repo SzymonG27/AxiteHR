@@ -5,10 +5,9 @@ import { EmployeeListItem } from '../../../core/models/company-manager/employee-
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BlockUIService } from '../../../core/services/block-ui.service';
-import { first, firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
+import { firstValueFrom, Observable, of, switchMap, take, zip } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Pagination } from '../../../shared/models/Pagination';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 
 @Component({
 	selector: 'app-employee-list',
@@ -22,7 +21,6 @@ export class EmployeeListComponent implements OnInit {
 	companyId: number | null = null;
 	errorPage: string | null = null;
 	forkHelper: unknown[] = [];
-	employeeCreatedMessage: string | null = null;
 
 	//Pagination
 	pagination: Pagination = new Pagination();
@@ -32,21 +30,11 @@ export class EmployeeListComponent implements OnInit {
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
 		private route: ActivatedRoute,
-		private router: Router,
-		private dataService: DataBehaviourService
+		private router: Router
 	) {}
 
 	ngOnInit() {
 		this.blockUIService.start();
-
-		this.dataService.newEmployeeCreated.pipe(first()).subscribe(async (value: boolean) => {
-			if (value === true) {
-				this.employeeCreatedMessage = await firstValueFrom(
-					this.translate.get('Company_EmployeeList_EmployeeCreated')
-				);
-				this.dataService.setNewEmployeeCreated(false);
-			}
-		});
 
 		this.companyId = this.route.snapshot.parent?.params['id'];
 		if (this.companyId == undefined || this.companyId == null) {

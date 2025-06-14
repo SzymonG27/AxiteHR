@@ -22,6 +22,10 @@ Then copy certificates to CompanyAPI/Certs folder
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout axitehr.services.applicationapi.key -out axitehr.services.applicationapi.crt -config Path/To/AuthApiOpenSslConfig/openssl.cnf
 openssl pkcs12 -export -out axitehr.services.applicationapi.pfx -inkey axitehr.services.applicationapi.key -in axitehr.services.applicationapi.crt -passout pass:Password123
 
+--SignalRAPI
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout axitehr.services.signalrapi.key -out axitehr.services.signalrapi.crt -config Path/To/AuthApiOpenSslConfig/openssl.cnf
+openssl pkcs12 -export -out axitehr.services.signalrapi.pfx -inkey axitehr.services.signalrapi.key -in axitehr.services.signalrapi.crt -passout pass:Password123
+
 Then copy certificates to ApplicationAPI/Certs folder
 
 Install all .crt in the CA cert folder on local PC

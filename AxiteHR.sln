@@ -49,6 +49,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.GlobalC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.JwtTokenHandler", "AxiteHR.Integration.JwtTokenHandler\AxiteHR.Integration.JwtTokenHandler.csproj", "{C19DDC75-4BC0-4978-8157-C6599AF73DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Services.SignalRApi", "AxiteHR.Services.SignalRApi\AxiteHR.Services.SignalRApi.csproj", "{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Integration.Cache", "AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj", "{B158E609-879C-49DC-9A6F-BA9C4922468D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +125,14 @@ Global
 		{C19DDC75-4BC0-4978-8157-C6599AF73DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C19DDC75-4BC0-4978-8157-C6599AF73DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C19DDC75-4BC0-4978-8157-C6599AF73DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +152,8 @@ Global
 		{0DB25931-A5D9-4ECF-AFDA-29402BF10FDD} = {1F89D37B-85B8-4F2C-98B4-B3D99E10B4CD}
 		{96A4777F-334C-4D8E-A678-AE8C0D99E6D0} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
 		{C19DDC75-4BC0-4978-8157-C6599AF73DCE} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
+		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D} = {F0523BC7-A44A-41BD-B1D4-ECD75E9F2A50}
+		{B158E609-879C-49DC-9A6F-BA9C4922468D} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {339B3C41-1206-4D05-A93F-ECA428BBFD67}

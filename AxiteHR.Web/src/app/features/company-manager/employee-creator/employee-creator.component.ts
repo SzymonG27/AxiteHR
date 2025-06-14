@@ -15,7 +15,7 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
 import { EmployeeCreatorResponse } from '../../../core/models/company-manager/employee-creator/EmployeeCreatorResponse';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-employee-creator',
@@ -44,7 +44,7 @@ export class EmployeeCreatorComponent {
 
 	constructor(
 		private employeeService: EmployeeService,
-		private dataBehaviourService: DataBehaviourService,
+		private alertService: AlertService,
 		private router: Router,
 		private blockUI: BlockUIService,
 		private translate: TranslateService,
@@ -85,9 +85,12 @@ export class EmployeeCreatorComponent {
 			.createNewEmployee(this.employeeCreatorModel)
 			.pipe(first())
 			.subscribe({
-				next: (response: EmployeeCreatorResponse) => {
+				next: async (response: EmployeeCreatorResponse) => {
 					if (response.isSucceeded) {
-						this.dataBehaviourService.setNewEmployeeCreated(true);
+						const employeeCreatedMessage = await firstValueFrom(
+							this.translate.get('Company_EmployeeList_EmployeeCreated')
+						);
+						this.alertService.showAlert(employeeCreatedMessage);
 						this.blockUI.stop();
 						this.router.navigate(['/CompanyMenu', this.companyId, 'EmployeeList']);
 						return;
@@ -126,7 +129,8 @@ export class EmployeeCreatorComponent {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.blockUI.stop();
 				},
@@ -159,5 +163,13 @@ export class EmployeeCreatorComponent {
 	}
 	onBlurLastName() {
 		this.focusLastName = false;
+	}
+
+	goBack(): void {
+		if (window.history.length > 1) {
+			window.history.back();
+		} else {
+			this.router.navigateByUrl('/Dashboard');
+		}
 	}
 }

@@ -9,6 +9,7 @@ EXPOSE 8081
 USER root
 COPY AxiteHR.Services.ApplicationAPI/Certs/axitehr.services.applicationapi.crt /usr/local/share/ca-certificates/axitehr.services.applicationapi.crt
 COPY AxiteHr.Services.CompanyAPI/Certs/axitehr.services.companyapi.crt /usr/local/share/ca-certificates/axitehr.services.companyapi.crt
+COPY AxiteHR.Services.SignalRApi/Certs/axitehr.services.signalrapi.crt /usr/local/share/ca-certificates/axitehr.services.signalrapi.crt
 RUN update-ca-certificates
 
 USER app

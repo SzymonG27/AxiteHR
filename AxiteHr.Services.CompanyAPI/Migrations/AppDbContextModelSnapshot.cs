@@ -17,12 +17,12 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,8 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("InsDate")
                         .HasColumnType("datetime2");
@@ -56,7 +57,7 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyLevel", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyLevel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,14 +100,15 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyPermission", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyPermission", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("PermissionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -122,10 +124,25 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                         {
                             Id = 2,
                             PermissionName = "Employee"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            PermissionName = "CompanyRoleSeeEntireList"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            PermissionName = "CompanyUserSeeEntireList"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            PermissionName = "CompanyRoleCreator"
                         });
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyRole", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,17 +150,22 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVisible")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+                    b.Property<string>("RoleNameEng")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleName", "RoleNameEng")
+                        .IsUnique();
 
                     b.ToTable("CompanyRoles");
 
@@ -151,20 +173,48 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                         new
                         {
                             Id = 1,
-                            IsMain = false,
-                            IsVisible = false,
-                            RoleName = "Company creator"
+                            RoleName = "Twórca firmy",
+                            RoleNameEng = "Company creator"
                         },
                         new
                         {
                             Id = 2,
-                            IsMain = true,
-                            IsVisible = true,
-                            RoleName = "Software department"
+                            RoleName = "Dział oprogramowania",
+                            RoleNameEng = "Software department"
                         });
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUser", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRoleCompany", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanyRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CompanyRoleId", "CompanyId")
+                        .IsUnique();
+
+                    b.ToTable("CompanyRoleCompanies");
+                });
+
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +241,7 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.ToTable("CompanyUsers");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserPermission", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUserPermission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -220,7 +270,7 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.ToTable("CompanyUserPermissions");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserRole", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,7 +278,7 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyRoleId")
+                    b.Property<int>("CompanyRoleCompanyId")
                         .HasColumnType("int");
 
                     b.Property<int>("CompanyUserId")
@@ -245,16 +295,16 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyRoleId");
+                    b.HasIndex("CompanyRoleCompanyId");
 
                     b.HasIndex("CompanyUserId");
 
                     b.ToTable("CompanyUserRoles");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company", b =>
                 {
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyLevel", "CompanyLevel")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyLevel", "CompanyLevel")
                         .WithMany()
                         .HasForeignKey("CompanyLevelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -263,9 +313,28 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.Navigation("CompanyLevel");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUser", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRoleCompany", b =>
                 {
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.Company", "Company")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole", "CompanyRole")
+                        .WithMany()
+                        .HasForeignKey("CompanyRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CompanyRole");
+                });
+
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser", b =>
+                {
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -274,15 +343,15 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserPermission", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUserPermission", b =>
                 {
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyPermission", "CompanyPermission")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyPermission", "CompanyPermission")
                         .WithMany()
                         .HasForeignKey("CompanyPermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUser", "CompanyUser")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser", "CompanyUser")
                         .WithMany()
                         .HasForeignKey("CompanyUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,21 +362,21 @@ namespace AxiteHR.Services.CompanyAPI.Migrations
                     b.Navigation("CompanyUser");
                 });
 
-            modelBuilder.Entity("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUserRole", b =>
+            modelBuilder.Entity("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUserRole", b =>
                 {
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyRole", "CompanyRole")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRoleCompany", "CompanyRoleCompany")
                         .WithMany()
-                        .HasForeignKey("CompanyRoleId")
+                        .HasForeignKey("CompanyRoleCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AxiteHr.Services.CompanyAPI.Models.CompanyModels.CompanyUser", "CompanyUser")
+                    b.HasOne("AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser", "CompanyUser")
                         .WithMany()
                         .HasForeignKey("CompanyUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CompanyRole");
+                    b.Navigation("CompanyRoleCompany");
 
                     b.Navigation("CompanyUser");
                 });

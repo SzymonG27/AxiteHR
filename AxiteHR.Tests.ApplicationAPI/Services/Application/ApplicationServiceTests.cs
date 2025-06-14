@@ -1,17 +1,16 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.Integration.GlobalClass.RedisKeys;
+using AxiteHR.Integration.Cache.Redis;
+using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Integration.JwtTokenHandler;
 using AxiteHR.Services.ApplicationAPI.Data;
+using AxiteHR.Services.ApplicationAPI.Infrastructure.CompanyApi;
 using AxiteHR.Services.ApplicationAPI.Models.Application;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Dto;
 using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
 using AxiteHR.Services.ApplicationAPI.Services.Application.Impl;
-using AxiteHR.Services.ApplicationAPI.Services.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Moq;
-using Moq.Protected;
-using System.Net;
 
 namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 {
@@ -23,7 +22,7 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 
 		private AppDbContext _dbContext;
 		private Mock<IStringLocalizer<ApplicationResources>> _localizerMock;
-		private Mock<IHttpClientFactory> _httpClientFactoryMock;
+		private Mock<ICompanyApiClient> _companyApiClientMock;
 		private Mock<IJwtDecode> _jwtDecodeMock;
 		private Mock<IRedisCacheService> _redisCacheService;
 
@@ -41,16 +40,16 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_dbContext.Database.EnsureCreated();
 
 			_localizerMock = new Mock<IStringLocalizer<ApplicationResources>>();
-			_httpClientFactoryMock = new Mock<IHttpClientFactory>();
+			_companyApiClientMock = new Mock<ICompanyApiClient>();
 			_jwtDecodeMock = new Mock<IJwtDecode>();
 			_redisCacheService = new Mock<IRedisCacheService>();
 
 			_applicationService = new ApplicationService(
 				_dbContext,
-				_httpClientFactoryMock.Object,
 				_localizerMock.Object,
 				_jwtDecodeMock.Object,
-				_redisCacheService.Object);
+				_redisCacheService.Object,
+				_companyApiClientMock.Object);
 		}
 
 		[Test]
@@ -98,24 +97,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("true")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(true));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);
@@ -173,24 +156,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("true")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(true));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);
@@ -248,24 +215,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("true")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(true));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);
@@ -323,24 +274,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("true")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(true));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);
@@ -397,24 +332,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("false")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(false));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);
@@ -485,24 +404,8 @@ namespace AxiteHR.Tests.ApplicationAPI.Services.Application
 			_redisCacheService.Setup(cache => cache.GetObjectAsync<int>(CompanyRedisKeys.CompanyUserGetId(1, userId)))
 				.Returns(Task.FromResult(1));
 
-			var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-			mockHttpMessageHandler
-				.Protected()
-				.Setup<Task<HttpResponseMessage>>(
-					"SendAsync",
-					ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-					ItExpr.IsAny<CancellationToken>())
-				.ReturnsAsync(new HttpResponseMessage
-				{
-					StatusCode = HttpStatusCode.OK,
-					Content = new StringContent("true")
-				});
-
-			var httpClient = new HttpClient(mockHttpMessageHandler.Object)
-			{
-				BaseAddress = new Uri("https://api.example.com/")
-			};
-			_httpClientFactoryMock.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(httpClient);
+			_companyApiClientMock.Setup(client => client.IsUserCanManageApplicationForCompanyUserAsync(BearerToken, AcceptLanguage, 1, userId))
+				.Returns(Task.FromResult(true));
 
 			// Act
 			var result = await _applicationService.CreateNewUserApplicationAsync(dto, BearerToken, AcceptLanguage);

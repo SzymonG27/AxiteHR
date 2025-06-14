@@ -13,6 +13,7 @@ import { BlockUIService } from '../../../core/services/block-ui.service';
 import { CompanyService } from '../../../core/services/company/company.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { firstValueFrom, take } from 'rxjs';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-company-creator',
@@ -30,7 +31,8 @@ export class CompanyCreatorComponent {
 		private blockUIService: BlockUIService,
 		private companyService: CompanyService,
 		private translate: TranslateService,
-		private router: Router
+		private router: Router,
+		private alertService: AlertService
 	) {
 		this.companyCreatorForm = new FormGroup({
 			CompanyName: new FormControl(this.companyName, {
@@ -49,7 +51,11 @@ export class CompanyCreatorComponent {
 			.createNewCompany(this.companyName)
 			.pipe(take(1))
 			.subscribe({
-				next: () => {
+				next: async () => {
+					const companyCreatorSuccess: string = await firstValueFrom(
+						this.translate.get('Company_Creator_Success')
+					);
+					this.alertService.showAlert(companyCreatorSuccess);
 					this.router.navigate(['/Company/List']);
 					this.blockUIService.stop();
 				},
@@ -84,7 +90,8 @@ export class CompanyCreatorComponent {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = '*' + unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
 					this.blockUIService.stop();
 				},

@@ -13,11 +13,12 @@ import { mustMatch } from '../../../shared/validators/password-match.validator';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
 import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
 import { Environment } from '../../../environment/Environment';
+import { AlertService } from '../../../core/services/alert/alert.service';
+import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 
 @Component({
 	selector: 'app-register',
@@ -50,10 +51,11 @@ export class RegisterComponent {
 
 	constructor(
 		private authService: AuthenticationService,
+		private authStateService: AuthStateService,
 		private router: Router,
-		private dataService: DataBehaviourService,
 		private blockUI: BlockUIService,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private alertService: AlertService
 	) {
 		this.registerForm = new FormGroup({
 			Email: new FormControl(this.registerModel.email, {
@@ -97,7 +99,7 @@ export class RegisterComponent {
 			.pipe(first())
 			.subscribe({
 				next: () => {
-					this.dataService.setRegistered(true);
+					this.authStateService.setRegistered(true);
 					this.blockUI.stop();
 					this.router.navigate(['/Login']);
 				},
@@ -128,9 +130,11 @@ export class RegisterComponent {
 							}
 						}
 					} else {
-						this.errorMessage = await firstValueFrom(
+						const unexpectedErrorMessage = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorMessage, 'error');
 					}
 					this.blockUI.stop();
 				},

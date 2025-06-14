@@ -13,5 +13,10 @@ namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 		{
 			return await companyRepository.GetCompanyForEmployeeDtoAsync(employeeId);
 		}
+
+		public async Task<int> GetCompanyUserIdAsync(Guid userId, int companyId)
+		{
+			return await companyRepository.GetCompanyUserIdAsync(userId, companyId);
+		}
 	}
 }

@@ -150,4 +150,7 @@
   <data name="Global_PeriodTo" xml:space="preserve">
     <value>Okres do</value>
   </data>
+  <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
+    <value>Żądany użytkownik nie istnieje w aplikacji.</value>
+  </data>
 </root>

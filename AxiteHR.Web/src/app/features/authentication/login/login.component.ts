@@ -8,11 +8,11 @@ import { LoginResponse } from '../../../core/models/authentication/LoginResponse
 import { AuthDictionary } from '../../../shared/dictionary/AuthDictionary';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
 import { AuthStateService } from '../../../core/services/authentication/auth-state.service';
 import { BlockUIService } from '../../../core/services/block-ui.service';
 import { first, firstValueFrom } from 'rxjs';
 import { routeAnimationState } from '../../../shared/animations/routeAnimationState';
+import { AlertService } from '../../../core/services/alert/alert.service';
 
 @Component({
 	selector: 'app-login',
@@ -37,43 +37,43 @@ export class LoginComponent implements OnInit {
 
 	constructor(
 		private authService: AuthenticationService,
-		private dataService: DataBehaviourService,
 		private router: Router,
-		private authState: AuthStateService,
+		private authStateService: AuthStateService,
 		private blockUIService: BlockUIService,
 		private translate: TranslateService,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private alertService: AlertService
 	) {
 		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
 	}
 
 	ngOnInit(): void {
-		this.dataService.currentRegistered.pipe(first()).subscribe(async (value: boolean) => {
+		this.authStateService.currentRegistered.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
 				this.loginMessage = await firstValueFrom(
 					this.translate.get('Authentication_Login_RegistrationSuccessful')
 				);
-				this.dataService.setRegistered(false);
+				this.authStateService.setRegistered(false);
 			}
 		});
-		this.dataService.isTokenExpired.pipe(first()).subscribe(async (value: boolean) => {
+		this.authStateService.isTokenExpired.pipe(first()).subscribe(async (value: boolean) => {
 			if (value === true) {
 				this.errorMessage = await firstValueFrom(
 					this.translate.get('Authentication_Login_SessionExpired')
 				);
-				this.dataService.setIsTokenExpired(false);
+				this.authStateService.setIsTokenExpired(false);
 			}
 		});
-		this.dataService.tempPasswordError.pipe(first()).subscribe(async (value: string) => {
+		this.authStateService.tempPasswordError.pipe(first()).subscribe(async (value: string) => {
 			if (value.length > 0) {
 				this.errorMessage = value;
-				this.dataService.setTempPasswordError('');
+				this.authStateService.setTempPasswordError('');
 			}
 		});
-		this.dataService.tempPasswordSuccess.pipe(first()).subscribe(async (value: string) => {
+		this.authStateService.tempPasswordSuccess.pipe(first()).subscribe(async (value: string) => {
 			if (value.length > 0) {
 				this.loginMessage = value;
-				this.dataService.setTempPasswordSuccess('');
+				this.authStateService.setTempPasswordSuccess('');
 			}
 		});
 	}
@@ -84,19 +84,23 @@ export class LoginComponent implements OnInit {
 			.Login(loginModel)
 			.pipe(first())
 			.subscribe({
-				next: (response: LoginResponse) => {
+				next: async (response: LoginResponse) => {
 					if (response.isLoggedSuccessful && response.token) {
 						localStorage.setItem(AuthDictionary.Token, response.token); //ToDo HttpOnly cookie
-						this.authState.setLoggedIn(true);
+						this.authStateService.setLoggedIn(true);
+						const successLoginAlert = await firstValueFrom(
+							this.translate.get('Authentication_Login_Success')
+						);
+						this.alertService.showAlert(successLoginAlert);
 						this.blockUIService.stop();
 						this.router.navigateByUrl(this.returnUrl);
 					} else if (response.isTempPasswordToChange && response.userId) {
-						this.authState.setLoggedIn(false);
-						this.authState.setTempPasswordUserId(response.userId);
+						this.authStateService.setLoggedIn(false);
+						this.authStateService.setTempPasswordUserId(response.userId);
 						this.blockUIService.stop();
 						this.router.navigate(['/ChangeTempPassword']);
 					} else if (!response.isLoggedSuccessful) {
-						this.authState.setLoggedIn(false);
+						this.authStateService.setLoggedIn(false);
 						this.errorMessage = response.errorMessage;
 					}
 					this.blockUIService.stop();
@@ -132,9 +136,10 @@ export class LoginComponent implements OnInit {
 						const unexpectedErrorTranslation: string = await firstValueFrom(
 							this.translate.get('Authentication_Login_UnexpectedError')
 						);
-						this.errorMessage = '*' + unexpectedErrorTranslation;
+						this.errorMessage = null;
+						this.alertService.showAlert(unexpectedErrorTranslation, 'error');
 					}
-					this.authState.setLoggedIn(false);
+					this.authStateService.setLoggedIn(false);
 					this.blockUIService.stop();
 				},
 			});

@@ -13,7 +13,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyUser
 		/// <param name="paginationInfo">Pagination info</param>
 		/// <param name="bearerToken">Token for auth data request</param>
 		/// <returns>IEnumerable of CompanyUserViewDto</returns>
-		Task<IEnumerable<CompanyUserViewDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken);
+		Task<IEnumerable<CompanyUserDataDto>> GetCompanyUserViewDtoListAsync(int companyId, Guid excludedUserId, Pagination paginationInfo, string bearerToken);
 
 		Task<int?> GetIdAsync(int companyId, Guid userId);
 

@@ -21,8 +21,8 @@ import localePl from '@angular/common/locales/pl';
 import localeEn from '@angular/common/locales/en';
 import { Subscription, take } from 'rxjs';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataBehaviourService } from '../../../core/services/data/data-behaviour.service';
+import { Router } from '@angular/router';
+import { CalendarStateService } from '../../../core/services/calendar/calendar-state.service';
 
 @Component({
 	selector: 'app-calendar',
@@ -67,8 +67,7 @@ export class CalendarComponent implements OnDestroy, AfterViewChecked {
 		private renderer: Renderer2,
 		private el: ElementRef,
 		private router: Router,
-		private dataService: DataBehaviourService,
-		private route: ActivatedRoute
+		private calendarStateService: CalendarStateService
 	) {
 		registerLocaleData(localePl);
 		registerLocaleData(localeEn);
@@ -193,7 +192,7 @@ export class CalendarComponent implements OnDestroy, AfterViewChecked {
 
 		this.isModalEventOpen = false;
 
-		this.dataService.setSelectedDate(this.activeDay);
+		this.calendarStateService.setSelectedDate(this.activeDay);
 
 		const currentFullPath = this.router.url.split('/');
 		currentFullPath[currentFullPath.length - 1] = 'NewApplication';

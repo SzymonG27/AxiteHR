@@ -19,6 +19,8 @@ export enum ApiPaths {
 	ListEmployeesToAttach = '/CompanyRole/ListEmployeesToAttachAsync',
 	CountEmployeesToAttach = '/CompanyRole/CountEmployeesToAttachAsync',
 	AttachUserAsync = '/CompanyRole/AttachUserAsync',
+	CompanyRoleEmployeeList = '/CompanyRole/ListEmployeesAsync',
+	CompanyRoleEmployeeCount = '/CompanyRole/CountEmployeesAsync',
 
 	//Application API
 	NewApplicationCreator = '/Application/CreateNewApplication',

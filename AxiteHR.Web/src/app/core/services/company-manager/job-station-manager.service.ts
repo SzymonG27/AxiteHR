@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
-import { JobStationAttachUserViewModel } from '../../models/company-manager/job-station-manager/JobStationAttachUserViewModel';
+import { JobStationListUserViewModel } from '../../models/company-manager/job-station-manager/JobStationListUserViewModel';
 import { AuthStateService } from '../authentication/auth-state.service';
 import { Environment } from '../../../environment/Environment';
 import { ApiPaths } from '../../../environment/ApiPaths';
@@ -18,14 +18,76 @@ export class JobStationManagerService {
 		private authStateService: AuthStateService
 	) {}
 
+	getListOfEmployeesInJobStation(
+		companyId: number,
+		companyRoleCompanyId: number,
+		currentPage: number,
+		pageSize: number
+	): Observable<JobStationListUserViewModel> {
+		const userId = this.authStateService.getLoggedUserId();
+
+		const jobStationAttachUserViewModel: JobStationListUserViewModel = {
+			isSucceed: false,
+			errorMessage: '',
+			employeeList: [],
+		};
+
+		if (userId.length === 0) {
+			return of(jobStationAttachUserViewModel);
+		}
+
+		return this.http
+			.get<
+				EmployeeListItem[]
+			>(`${Environment.gatewayApiUrl}${ApiPaths.CompanyRoleEmployeeList}/${companyId}/${companyRoleCompanyId}/${userId}?Page=${currentPage}&ItemsPerPage=${pageSize}`)
+			.pipe(
+				map(data => {
+					jobStationAttachUserViewModel.isSucceed = true;
+					jobStationAttachUserViewModel.employeeList = data;
+					return jobStationAttachUserViewModel;
+				}),
+				catchError(error => {
+					jobStationAttachUserViewModel.isSucceed = false;
+					jobStationAttachUserViewModel.errorMessage = error.message;
+					return of(jobStationAttachUserViewModel);
+				})
+			);
+	}
+
+	getCountOfEmployeesInJobStation(
+		companyId: number,
+		companyRoleCompanyId: number
+	): Observable<number> {
+		let listOfEmployeesCount = 0;
+		const userId = this.authStateService.getLoggedUserId();
+
+		if (userId.length === 0) {
+			return of(0);
+		}
+
+		return this.http
+			.get<number>(
+				`${Environment.gatewayApiUrl}${ApiPaths.CompanyRoleEmployeeCount}/${companyId}/${companyRoleCompanyId}/${userId}`
+			)
+			.pipe(
+				map(data => {
+					listOfEmployeesCount = data;
+					return listOfEmployeesCount;
+				}),
+				catchError(() => {
+					return of(listOfEmployeesCount);
+				})
+			);
+	}
+
 	getListOfEmployeesToAdd(
 		companyId: number,
 		currentPage: number,
 		pageSize: number
-	): Observable<JobStationAttachUserViewModel> {
+	): Observable<JobStationListUserViewModel> {
 		const userId = this.authStateService.getLoggedUserId();
 
-		const jobStationAttachUserViewModel: JobStationAttachUserViewModel = {
+		const jobStationAttachUserViewModel: JobStationListUserViewModel = {
 			isSucceed: false,
 			errorMessage: '',
 			employeeList: [],

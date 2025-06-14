@@ -182,7 +182,7 @@
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{userRequestedId}",
+			"DownstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -190,14 +190,14 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{userRequestedId}",
+			"UpstreamPathTemplate": "/api/CompanyRole/ListEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"
 			}
 		},
 		{
-			"DownstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{userRequestedId}",
+			"DownstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
 				{
@@ -205,7 +205,7 @@
 					"Port": 7004
 				}
 			],
-			"UpstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{userRequestedId}",
+			"UpstreamPathTemplate": "/api/CompanyRole/CountEmployeesAsync/{companyId}/{companyRoleCompanyId}/{userRequestedId}",
 			"UpstreamHttpMethod": [ "Get" ],
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "Bearer"

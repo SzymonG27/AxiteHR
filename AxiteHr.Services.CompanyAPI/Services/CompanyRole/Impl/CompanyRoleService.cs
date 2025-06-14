@@ -127,7 +127,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return await query.CountAsync();
 		}
 
-		public async Task<IEnumerable<CompanyUserDataDto>> GetEmployeeListAsync(int companyId, Guid userRequestedId, Pagination pagination, string bearerToken)
+		public async Task<IEnumerable<CompanyUserDataDto>> GetEmployeeListAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId, Pagination pagination, string bearerToken)
 		{
 			if (pagination.ItemsPerPage <= 0)
 			{
@@ -145,10 +145,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			var companyUserRelationList = await dbContext.CompanyUsers
 				.Where(user => user.CompanyId == companyId)
 				.Where(user => dbContext.CompanyUserRoles
-					.Where(role => role.CompanyUserId == user.Id)
-					.Any(role =>
-						dbContext.CompanyRoleCompanies
-							.Any(crc => crc.Id == role.CompanyRoleCompanyId)))
+					.Any(role => role.CompanyUserId == user.Id && role.CompanyRoleCompanyId == companyRoleCompanyId))
 				.OrderBy(x => x.Id)
 				.Skip(pagination.Page * pagination.ItemsPerPage)
 				.Take(pagination.ItemsPerPage)
@@ -168,7 +165,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return await authApiClient.GetUserDataListDtoAsync(companyUserRelationList, bearerToken);
 		}
 
-		public async Task<int> GetCountEmployeesAsync(int companyId, Guid userRequestedId)
+		public async Task<int> GetCountEmployeesAsync(int companyId, int companyRoleCompanyId, Guid userRequestedId)
 		{
 			var companyUserId = await companyUserService.GetIdAsync(companyId, userRequestedId);
 
@@ -181,10 +178,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 			return await dbContext.CompanyUsers
 				.Where(user => user.CompanyId == companyId)
 				.Where(user => dbContext.CompanyUserRoles
-					.Where(role => role.CompanyUserId == user.Id)
-					.Any(role =>
-						dbContext.CompanyRoleCompanies
-							.Any(crc => crc.Id == role.CompanyRoleCompanyId)))
+					.Any(role => role.CompanyUserId == user.Id && role.CompanyRoleCompanyId == companyRoleCompanyId))
 				.Select(x => new CompanyUserUserRelation
 				{
 					CompanyUserId = x.Id,

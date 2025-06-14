@@ -1,6 +1,6 @@
 import { EmployeeListItem } from '../employee-list/EmployeeListItem';
 
-export interface JobStationAttachUserViewModel {
+export interface JobStationListUserViewModel {
 	isSucceed: boolean;
 	errorMessage: string;
 	employeeList: EmployeeListItem[];

@@ -29,10 +29,12 @@ import { AlertService } from '../../../core/services/alert/alert.service';
 })
 export class JobStationManagerComponent implements OnInit {
 	jobStationState: JobStationState | null = null;
+	employeeInJobStationList: EmployeeListItem[] = [];
 	employeeList: EmployeeListItem[] = [];
 	errorMessage: string | null = null;
 	isModalAddEmployeeOpen = false;
 
+	paginationEmployeesInJobStation: Pagination = new Pagination();
 	paginationAddEmployee: Pagination = new Pagination();
 
 	constructor(
@@ -54,7 +56,7 @@ export class JobStationManagerComponent implements OnInit {
 			this.router.navigate(['Internal-Error']);
 		}
 
-		this.blockUIService.stop();
+		this.searchEmployeeListInJobStation();
 	}
 
 	getTranslatedCompanyRoleSettingsTitle() {
@@ -64,6 +66,80 @@ export class JobStationManagerComponent implements OnInit {
 	getTranslatedCompanyRoleUserSettingsTitle() {
 		return this.translate.instant('JobStation_Manager_CompanyRoleUserSettingsTitle');
 	}
+
+	//#region Employee list
+	pageChangedEmployeeListInJobStation(event: number) {
+		this.blockUIService.start();
+
+		this.paginationEmployeesInJobStation.pageNumber = event;
+
+		this.searchEmployeeListInJobStation();
+	}
+
+	private searchEmployeeListInJobStation() {
+		zip(
+			this.getCountOfEmployeesInJobStation(
+				this.jobStationState!.companyId,
+				this.jobStationState!.roleCompanyId
+			),
+			this.getListOfEmployeesInJobStation(
+				this.jobStationState!.companyId,
+				this.jobStationState!.roleCompanyId,
+				this.paginationEmployeesInJobStation.pageNumber - 1,
+				this.paginationEmployeesInJobStation.pageSize
+			)
+		)
+			.pipe(take(1))
+			.subscribe({
+				next: () => {
+					this.blockUIService.stop();
+				},
+				error: async err => {
+					this.alertService.showAlert(
+						err.message ||
+							(await firstValueFrom(this.translate.get('Global_UnknownError')),
+							'error')
+					);
+					this.blockUIService.stop();
+				},
+			});
+	}
+
+	private getListOfEmployeesInJobStation(
+		companyId: number,
+		companyRoleCompanyId: number,
+		currentPage: number,
+		pageSize: number
+	): Observable<void> {
+		return this.jobStationManagerService
+			.getListOfEmployeesInJobStation(companyId, companyRoleCompanyId, currentPage, pageSize)
+			.pipe(
+				take(1),
+				switchMap(response => {
+					if (!response.isSucceed) {
+						this.alertService.showAlert(response.errorMessage, 'error');
+					}
+					this.employeeInJobStationList = response.employeeList;
+					return of(void 0);
+				})
+			);
+	}
+
+	private getCountOfEmployeesInJobStation(
+		companyId: number,
+		companyRoleCompanyId: number
+	): Observable<void> {
+		return this.jobStationManagerService
+			.getCountOfEmployeesInJobStation(companyId, companyRoleCompanyId)
+			.pipe(
+				take(1),
+				switchMap(response => {
+					this.paginationEmployeesInJobStation.totalItems = response;
+					return of(void 0);
+				})
+			);
+	}
+	//#endregion
 
 	//#region Modal Add Employee
 	getTranslatedModalAddEmployeeTitle() {
@@ -119,6 +195,8 @@ export class JobStationManagerComponent implements OnInit {
 					this.blockUIService.stop();
 				},
 			});
+
+		this.searchEmployeeListInJobStation();
 	}
 
 	private searchEmployeesToAdd() {

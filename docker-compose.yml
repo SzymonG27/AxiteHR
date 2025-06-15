@@ -183,6 +183,25 @@ services:
     depends_on:
       - axitehr.gatewaysol
       - redis
+
+  axitehr.services.invoiceapi:
+    image: ${DOCKER_REGISTRY-}axitehrservicesinvoiceapi
+    build:
+      context: .
+      dockerfile: AxiteHR.Services.InvoiceAPI/Dockerfile
+    ports:
+      - "5050:5050" # HTTP
+      - "7007:7007" # HTTPS
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:7007;http://+:5050"
+    networks:
+      - axitehr-network
+    depends_on:
+      - sqlserverdb
+      - axitehr.gatewaysol
+      - logstash
+      - redis
   #END OF MY SERVICES
 
   #ELK STACK
@@ -300,3 +319,4 @@ volumes:
 networks:
   axitehr-network:
     driver: bridge
+

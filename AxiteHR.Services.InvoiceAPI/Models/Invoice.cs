@@ -1,0 +1,61 @@
+﻿using AxiteHR.Services.InvoiceAPI.Models.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace AxiteHR.Services.InvoiceAPI.Models
+{
+	public class Invoice
+	{
+		[Key]
+		public virtual int Id { get; set; }
+
+		public virtual InvoiceStatus Status { get; set; }
+
+		[MaxLength(100)]
+		public virtual string BlobFileName { get; set; } = string.Empty;
+
+		[MaxLength(100)]
+		public virtual string ClientName { get; set; } = string.Empty;
+
+		[MaxLength(10)]
+		[MinLength(10)]
+		public virtual string ClientNip { get; set; } = string.Empty;
+
+		[MaxLength(100)]
+		public virtual string ClientStreet { get; set; } = string.Empty;
+
+		[MaxLength(50)]
+		public virtual string ClientHouseNumber { get; set; } = string.Empty;
+
+		[MaxLength(6)]
+		public virtual string ClientZipCode { get; set; } = string.Empty;
+
+		[MaxLength(100)]
+		public virtual string ClientCity { get; set; } = string.Empty;
+
+		public virtual DateTime IssueDate { get; set; }
+
+		public virtual DateTime SaleDate { get; set; }
+
+		public virtual PaymentMethod PaymentMethod { get; set; }
+
+		public virtual string? BankAccountNumber { get; set; }
+
+		public virtual DateTime PaymentDeadline { get; set; }
+
+		public virtual Currency Currency { get; set; }
+
+		public virtual bool IsSplitPayment { get; set; }
+
+		public virtual decimal NetAmount { get; set; }
+
+		public virtual decimal GrossAmount { get; set; }
+
+		public virtual Guid InsUserId { get; set; }
+
+		public virtual DateTime InsDate { get; set; }
+
+		public virtual Guid UpdUserId { get; set; }
+
+		public virtual DateTime UpdDate { get; set; }
+	}
+}

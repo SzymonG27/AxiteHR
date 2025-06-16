@@ -6,15 +6,12 @@ namespace AxiteHR.Services.InvoiceAPI.Models
 {
 	public class InvoicePosition
 	{
-		[Key]
 		public virtual int Id { get; set; }
 
-		[ForeignKey(nameof(Invoice))]
 		public virtual int InvoiceId { get; set; }
 
 		public virtual Invoice Invoice { get; set; } = new();
 
-		[MaxLength(500)]
 		public virtual string ProductName { get; set; } = string.Empty;
 
 		public virtual Unit Unit { get; set; }

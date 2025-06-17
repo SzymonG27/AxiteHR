@@ -9,6 +9,10 @@ namespace AxiteHR.Services.InvoiceAPI.Models
 
 		public virtual InvoiceStatus Status { get; set; }
 
+		public virtual int CompanyId { get; set; }
+
+		public virtual int CompanyUserId { get; set; }
+
 		public virtual string BlobFileName { get; set; } = string.Empty;
 
 		public virtual string ClientName { get; set; } = string.Empty;

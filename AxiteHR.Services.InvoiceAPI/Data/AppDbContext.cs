@@ -19,22 +19,22 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 			{
 				entity.HasKey(e => e.Id);
 
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Status_Enum", EnumCheckConstraint<InvoiceStatus>(nameof(Invoice.Status)))
+				);
+
 				entity.Property(e => e.BlobFileName)
 					.IsRequired()
 					.HasMaxLength(100)
-					.IsFixedLength()
 					.IsUnicode(false);
 
 				entity.Property(e => e.ClientName)
 					.IsRequired()
-					.HasMaxLength(100)
-					.IsFixedLength()
-					.IsUnicode(false);
+					.HasMaxLength(100);
 
 				entity.Property(e => e.ClientNip)
 					.IsRequired()
 					.HasMaxLength(10)
-					.IsFixedLength()
 					.IsUnicode(false);
 
 				entity.ToTable(t =>
@@ -43,20 +43,16 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 
 				entity.Property(e => e.ClientStreet)
 					.IsRequired()
-					.HasMaxLength(100)
-					.IsFixedLength()
-					.IsUnicode(false);
+					.HasMaxLength(100);
 
 				entity.Property(e => e.ClientHouseNumber)
 					.IsRequired()
 					.HasMaxLength(30)
-					.IsFixedLength()
 					.IsUnicode(false);
 
 				entity.Property(e => e.ClientPostalCode)
 					.IsRequired()
 					.HasMaxLength(6)
-					.IsFixedLength()
 					.IsUnicode(false);
 
 				entity.ToTable(t =>
@@ -65,12 +61,26 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 
 				entity.Property(e => e.ClientCity)
 					.IsRequired()
-					.HasMaxLength(100)
-					.IsFixedLength()
+					.HasMaxLength(100);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_PaymentMethod_Enum", EnumCheckConstraint<PaymentMethod>(nameof(Invoice.PaymentMethod)))
+				);
+
+				entity.Property(e => e.BankAccountNumber)
+					.HasMaxLength(26)
 					.IsUnicode(false);
 
 				entity.ToTable(t =>
-					t.HasCheckConstraint("CK_BankAccountNumber_RequiredIfPaymentByTransfer", $"([PaymentMethod] <> {PaymentMethod.Transfer}) OR ([BankAccountNumber] IS NOT NULL AND LTRIM(RTRIM([BankAccountNumber])) <> '')")
+					t.HasCheckConstraint("CK_BankAccountNumber_Format", "[BankAccountNumber] IS NULL OR (LEN([BankAccountNumber]) = 26 AND [BankAccountNumber] NOT LIKE '%[^0-9]%')")
+				);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_BankAccountNumber_RequiredIfPaymentByTransfer", $"([PaymentMethod] <> {(int)PaymentMethod.Transfer}) OR ([BankAccountNumber] IS NOT NULL AND LTRIM(RTRIM([BankAccountNumber])) <> '')")
+				);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Currency_Enum", EnumCheckConstraint<Currency>(nameof(Invoice.Currency)))
 				);
 
 				entity.Property(e => e.NetAmount)
@@ -93,9 +103,11 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 
 				entity.Property(e => e.ProductName)
 					.IsRequired()
-					.HasMaxLength(100)
-					.IsFixedLength()
-					.IsUnicode(false);
+					.HasMaxLength(100);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Unit_Enum", EnumCheckConstraint<Unit>(nameof(InvoicePosition.Unit)))
+				);
 
 				entity.Property(e => e.Quantity)
 					.IsRequired()
@@ -124,6 +136,12 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 					.IsRequired()
 					.HasColumnType("decimal(18,2)");
 			});
+		}
+
+		private static string EnumCheckConstraint<TEnum>(string columnName) where TEnum : Enum
+		{
+			var values = string.Join(", ", Enum.GetValues(typeof(TEnum)).Cast<int>());
+			return $"[{columnName}] IN ({values})";
 		}
 	}
 }

@@ -195,6 +195,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "https://+:7007;http://+:5050"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Invoice;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
     networks:
       - axitehr-network
     depends_on:

@@ -117,43 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Global_CompareField" xml:space="preserve">
-    <value>Pole {0} musi mieć tę samą wartość co pole {1}.</value>
+  <data name="Invoice_InvalidNip" xml:space="preserve">
+    <value>The NIP number is invalid.</value>
   </data>
-  <data name="Global_InsUserId" xml:space="preserve">
-    <value>ID użytkownika insertującego</value>
+  <data name="Invoice_InvalidPostalCode" xml:space="preserve">
+    <value>The postal code is invalid.</value>
   </data>
-  <data name="Global_InvalidEmailAddress" xml:space="preserve">
-    <value>Pole {0} nie jest prawidłowym adresem e-mail.</value>
+  <data name="Invoice_BankNumberRequiredPaymentMethod" xml:space="preserve">
+    <value>The bank account number is required when the payment method is bank transfer.</value>
   </data>
-  <data name="Global_MinLengthField" xml:space="preserve">
-    <value>Pole {0} musi mieć co najmniej {1} znaków.</value>
-  </data>
-  <data name="Global_MissingToken" xml:space="preserve">
-    <value>Token nie został dostarczony w requeście</value>
-  </data>
-  <data name="Global_NotAuthorizedError" xml:space="preserve">
-    <value>Użytkownik nie został uwierzytelniony</value>
-  </data>
-  <data name="Global_RequiredField" xml:space="preserve">
-    <value>Pole {0} jest wymagane.</value>
-  </data>
-  <data name="Global_UserWithoutPermission" xml:space="preserve">
-    <value>Zalogowany użytkownik nie ma uprawnień do wykonania tej operacji.</value>
-  </data>
-  <data name="HelloWorld" xml:space="preserve">
-    <value>Cześć świecie!</value>
-  </data>
-  <data name="Global_PeriodFrom" xml:space="preserve">
-    <value>Okres od</value>
-  </data>
-  <data name="Global_PeriodTo" xml:space="preserve">
-    <value>Okres do</value>
-  </data>
-  <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
-    <value>Żądany użytkownik nie istnieje w aplikacji.</value>
-  </data>
-  <data name="Global_MaxLengthField" xml:space="preserve">
-    <value>Pole {0} musi mieć maksymalnie {1} znaków.</value>
+  <data name="Invoice_InvalidDecimalPrecision" xml:space="preserve">
+    <value>{0} must have no more than {1} decimal places.</value>
   </data>
 </root>

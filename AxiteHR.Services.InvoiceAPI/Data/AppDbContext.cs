@@ -10,6 +10,8 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 
 		public DbSet<InvoicePosition> InvoicePositions { get; set; }
 
+		public DbSet<InvoiceSequence> InvoiceSequences { get; set; }
+
 		// Model configuration
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -22,6 +24,15 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 				entity.ToTable(t =>
 					t.HasCheckConstraint("CK_Status_Enum", EnumCheckConstraint<InvoiceStatus>(nameof(Invoice.Status)))
 				);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Type_Enum", EnumCheckConstraint<InvoiceType>(nameof(Invoice.Type)))
+				);
+
+				entity.Property(e => e.Number)
+					.IsRequired()
+					.HasMaxLength(50)
+					.IsUnicode(false);
 
 				entity.Property(e => e.BlobFileName)
 					.IsRequired()
@@ -135,6 +146,21 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 				entity.Property(e => e.GrossAmount)
 					.IsRequired()
 					.HasColumnType("decimal(18,2)");
+			});
+
+			modelBuilder.Entity<InvoiceSequence>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Type_Enum", EnumCheckConstraint<InvoiceType>(nameof(InvoiceSequence.Type)))
+				);
+
+				entity.HasIndex(e => new { e.CompanyUserId, e.Type, e.Year, e.Month })
+					.IsUnique();
+
+				entity.Property(e => e.CurrentNumber)
+					.IsRequired();
 			});
 		}
 

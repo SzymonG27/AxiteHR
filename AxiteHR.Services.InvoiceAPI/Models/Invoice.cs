@@ -1,5 +1,4 @@
 ﻿using AxiteHR.Services.InvoiceAPI.Models.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.InvoiceAPI.Models
 {
@@ -8,6 +7,10 @@ namespace AxiteHR.Services.InvoiceAPI.Models
 		public virtual int Id { get; set; }
 
 		public virtual InvoiceStatus Status { get; set; }
+
+		public virtual InvoiceType Type { get; set; }
+
+		public virtual string Number { get; set; } = string.Empty;
 
 		public virtual int CompanyId { get; set; }
 

@@ -62,6 +62,16 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public Guid InsUserId { get; set; }
 
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public virtual decimal? NetAmount { get; set; }
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public virtual decimal? GrossAmount { get; set; }
+
 		public IList<InvoicePositionGeneratorRequestDto> InvoicePositions { get; set; } = [];
 	}
 }

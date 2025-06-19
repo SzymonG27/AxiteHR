@@ -25,5 +25,20 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public int VatRate { get; set; }
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public virtual decimal? VatAmount { get; set; }
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public virtual decimal? NetAmount { get; set; }
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public virtual decimal? GrossAmount { get; set; }
 	}
 }

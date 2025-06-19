@@ -1,4 +1,8 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.BrokerMessageSender.Senders.Factory;
+using AxiteHR.Integration.BrokerMessageSender.Senders;
+using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Services.InvoiceAPI.Helpers;
 using AxiteHR.Services.InvoiceAPI.Services.Generator;
 using AxiteHR.Services.InvoiceAPI.Services.Generator.Impl;
@@ -102,6 +106,12 @@ namespace AxiteHR.Services.InvoiceAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<InvoiceResources>, StringLocalizer<InvoiceResources>>();
+
+			//BrokerMessageSender
+			builder.Services.AddSingleton<IBrokerMessageSender<RabbitMqMessageSenderConfig>, RabbitMqMessageSender>();
+			builder.Services.AddSingleton<IBrokerMessageSender<ServiceBusMessageSenderConfig>, ServiceBusMessageSender>();
+			builder.Services.AddSingleton<IBrokerMessageSenderFactory, BrokerMessageSenderFactory>();
+			builder.Services.AddTransient<MessagePublisher>();
 
 			return builder;
 		}

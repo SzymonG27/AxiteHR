@@ -1,14 +1,24 @@
-﻿using AxiteHR.Services.InvoiceAPI.Data;
+﻿using AxiteHR.Integration.BrokerMessageSender;
+using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Services.InvoiceAPI.Data;
+using AxiteHR.Services.InvoiceAPI.Helpers;
 using AxiteHR.Services.InvoiceAPI.Models;
 using AxiteHR.Services.InvoiceAPI.Models.Dto.Generator;
 using AxiteHR.Services.InvoiceAPI.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 {
-	public class InvoiceGenerator(AppDbContext dbContext) : IInvoiceGenerator
+	public class InvoiceGenerator(
+		AppDbContext dbContext,
+		IConfiguration configuration,
+		IServiceProvider serviceProvider,
+		IOptions<RabbitMqMessageSenderConfig> rabbitMqMessageSenderConfig) : IInvoiceGenerator
 	{
+		private readonly RabbitMqMessageSenderConfig _rabbitMqMessageSenderConfig = rabbitMqMessageSenderConfig.Value;
+
 		public async Task<InvoiceGeneratorResponseDto> GenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto)
 		{
 			//New invoice is always Invoice type
@@ -19,9 +29,11 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			await using var transaction = await dbContext.Database.BeginTransactionAsync();
 
-			var invoice = MapInvoiceFromRequest(requestDto, invoiceType, invoiceNumber);
+			var invoice = MapInvoiceFromRequest(ref requestDto, invoiceType, invoiceNumber);
 
 			dbContext.Invoices.Add(invoice);
+
+			await PublishGenerateInvoiceAsync(requestDto);
 
 			await dbContext.SaveChangesAsync();
 			await transaction.CommitAsync();
@@ -67,7 +79,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 			return sequence.CurrentNumber;
 		}
 
-		private static Invoice MapInvoiceFromRequest(InvoiceGeneratorRequestDto requestDto, InvoiceType invoiceType, string invoiceNumber)
+		private static Invoice MapInvoiceFromRequest(ref InvoiceGeneratorRequestDto requestDto, InvoiceType invoiceType, string invoiceNumber)
 		{
 			var invoice = new Invoice
 			{
@@ -116,6 +128,10 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 				invoicePosition.VatAmount = invoicePosition.NetAmount * (invoicePosition.VatRate / 100m);
 				invoicePosition.GrossAmount = invoicePosition.NetAmount + invoicePosition.VatAmount;
 
+				positionRequestDto.NetAmount = invoicePosition.NetAmount;
+				positionRequestDto.VatAmount = invoicePosition.VatAmount;
+				positionRequestDto.GrossAmount = invoicePosition.GrossAmount;
+
 				netAmonut += invoicePosition.NetAmount;
 				grossAmount += invoicePosition.GrossAmount;
 
@@ -125,7 +141,23 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 			invoice.NetAmount = netAmonut;
 			invoice.GrossAmount = grossAmount;
 
+			requestDto.NetAmount = invoice.NetAmount;
+			requestDto.GrossAmount = invoice.GrossAmount;
+
 			return invoice;
+		}
+
+		public async Task PublishGenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto)
+		{
+			MessageSenderModel<RabbitMqMessageSenderConfig, InvoiceGeneratorRequestDto> messageSenderModel = new()
+			{
+				Message = requestDto,
+				Config = _rabbitMqMessageSenderConfig
+			};
+			messageSenderModel.Config.QueueName = configuration.GetValue<string>(ConfigurationHelper.InvoiceGeneratorQueue)!;
+
+			var messagePublisher = serviceProvider.GetService<MessagePublisher>() ?? throw new NotSupportedException("No such service for MessagePublisher");
+			await messagePublisher.PublishMessageAsync(messageSenderModel);
 		}
 	}
 }

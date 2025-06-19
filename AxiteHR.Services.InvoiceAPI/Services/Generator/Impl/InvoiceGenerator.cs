@@ -34,7 +34,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 		private async Task<int> ReserveNumberAsync(InvoiceType type, int companyUserId, int year, int month)
 		{
-			using var transaction = await dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+			await using var transaction = await dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
 			var sequence = await dbContext.InvoiceSequences
 				.FromSqlRaw(@"

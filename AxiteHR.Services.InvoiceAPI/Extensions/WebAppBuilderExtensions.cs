@@ -1,6 +1,10 @@
-﻿using AxiteHR.Services.InvoiceAPI.Helpers;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.InvoiceAPI.Helpers;
+using AxiteHR.Services.InvoiceAPI.Services.Generator;
+using AxiteHR.Services.InvoiceAPI.Services.Generator.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Globalization;
@@ -87,6 +91,17 @@ namespace AxiteHR.Services.InvoiceAPI.Extensions
 				.CreateLogger();
 
 			builder.Host.UseSerilog();
+
+			return builder;
+		}
+
+		public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
+		{
+			builder.Services.AddScoped<IInvoiceGenerator, InvoiceGenerator>();
+
+			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
+			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+			builder.Services.AddSingleton<IStringLocalizer<InvoiceResources>, StringLocalizer<InvoiceResources>>();
 
 			return builder;
 		}

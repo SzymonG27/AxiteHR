@@ -39,6 +39,9 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 					.HasMaxLength(100)
 					.IsUnicode(false);
 
+				entity.HasIndex(e => e.BlobFileName)
+					.IsUnique();
+
 				entity.Property(e => e.ClientName)
 					.IsRequired()
 					.HasMaxLength(100);
@@ -101,6 +104,11 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 				entity.Property(e => e.GrossAmount)
 					.IsRequired()
 					.HasColumnType("decimal(18,2)");
+
+				entity.HasMany(i => i.InvoicePositions)
+					.WithOne(p => p.Invoice)
+					.HasForeignKey(p => p.InvoiceId)
+					.OnDelete(DeleteBehavior.Cascade);
 			});
 
 			modelBuilder.Entity<InvoicePosition>(entity =>

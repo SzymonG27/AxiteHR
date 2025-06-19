@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />
   </ItemGroup>
 
 </Project>

@@ -115,11 +115,6 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 			{
 				entity.HasKey(e => e.Id);
 
-				entity.HasOne(e => e.Invoice)
-					.WithMany()
-					.HasForeignKey(e => e.InvoiceId)
-					.OnDelete(DeleteBehavior.Restrict);
-
 				entity.Property(e => e.ProductName)
 					.IsRequired()
 					.HasMaxLength(100);

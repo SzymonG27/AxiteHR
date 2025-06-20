@@ -33,10 +33,10 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			dbContext.Invoices.Add(invoice);
 
-			await PublishGenerateInvoiceAsync(requestDto);
-
 			await dbContext.SaveChangesAsync();
 			await transaction.CommitAsync();
+
+			await PublishGenerateInvoiceAsync(requestDto);
 
 			return new InvoiceGeneratorResponseDto
 			{

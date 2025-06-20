@@ -128,11 +128,20 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "https://+:7003;http://+:5187"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Document;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+      ConnectionStrings__ServiceBusConnectionString: ""
+      BrokerMessageSenderConfigs__RabbitMq__HostName: "rabbitmq"
+      BrokerMessageSenderConfigs__RabbitMq__UserName: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Password: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Port: 5672
     networks:
       - axitehr-network
     depends_on:
       - sqlserverdb
       - axitehr.gatewaysol
+      - logstash
+      - rabbitmq
 
   axitehr.services.emailapi:
     image: ${DOCKER_REGISTRY-}axitehrservicesemailapi
@@ -153,10 +162,10 @@ services:
       EmailSenderSettings__Port: 587
       EmailSenderSettings__Username: "joelle.howe@ethereal.email"
       EmailSenderSettings__Password: "6fZ5gyrjrDDURYv24p"
-      BrokerMessageSenderConfigs_RabbitMq_HostName: "rabbitmq"
-      BrokerMessageSenderConfigs_RabbitMq_UserName: "guest"
-      BrokerMessageSenderConfigs_RabbitMq_Password: "guest"
-      BrokerMessageSenderConfigs_RabbitMq_Port: 5672
+      BrokerMessageSenderConfigs__RabbitMq__HostName: "rabbitmq"
+      BrokerMessageSenderConfigs__RabbitMq__UserName: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Password: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Port: 5672
     networks:
       - axitehr-network
     depends_on:

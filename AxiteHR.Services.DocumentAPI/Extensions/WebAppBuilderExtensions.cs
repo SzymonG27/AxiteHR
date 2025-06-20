@@ -1,5 +1,6 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
 using AxiteHR.Services.DocumentAPI.Helpers;
+using AxiteHR.Services.DocumentAPI.Messaging;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Serilog;
@@ -65,6 +66,8 @@ namespace AxiteHR.Services.DocumentAPI.Extensions
 		{
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
+
+			builder.Services.AddHostedService<RabbitMqInvoiceGeneratorConsumer>();
 
 			return builder;
 		}

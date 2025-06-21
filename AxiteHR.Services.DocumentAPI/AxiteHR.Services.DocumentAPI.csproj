@@ -21,7 +21,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="PuppeteerSharp" Version="20.1.3" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+    <PackageReference Include="RazorLight" Version="2.3.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -34,8 +36,12 @@
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
   </ItemGroup>
 
+  <Target Name="DownloadChromium" BeforeTargets="Build">
+    <Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)Chromium.ps1" />
+  </Target>
+
   <ItemGroup>
-    <Folder Include="Templates\" />
+    <Folder Include="Chromium\" />
   </ItemGroup>
 
 </Project>

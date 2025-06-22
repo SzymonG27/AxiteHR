@@ -2,5 +2,6 @@
 {
 	public record InvoiceGeneratorDto
 	{
+		public string BlobFileName { get; set; } = string.Empty;
 	}
 }

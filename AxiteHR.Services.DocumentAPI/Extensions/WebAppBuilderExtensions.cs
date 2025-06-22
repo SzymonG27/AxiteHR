@@ -1,4 +1,7 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.Storage.Abstractions;
+using AxiteHR.Integration.Storage.Factory;
+using AxiteHR.Integration.Storage.Providers.Minio;
 using AxiteHR.Services.DocumentAPI.Helpers;
 using AxiteHR.Services.DocumentAPI.Messaging;
 using AxiteHR.Services.DocumentAPI.Services.Invoice;
@@ -10,7 +13,7 @@ using System.Globalization;
 
 namespace AxiteHR.Services.DocumentAPI.Extensions
 {
-	public static class WebAppBuilderExtensions
+    public static class WebAppBuilderExtensions
 	{
 		public static WebApplicationBuilder AddGlobalization(this WebApplicationBuilder builder)
 		{
@@ -70,7 +73,10 @@ namespace AxiteHR.Services.DocumentAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<DocumentResources>, StringLocalizer<DocumentResources>>();
 
-			builder.Services.AddScoped<IInvoiceGeneratorService, InvoiceGeneratorService>();
+			builder.Services.AddSingleton<MinioService>();
+			builder.Services.AddSingleton<IStorageFactory, StorageFactory>();
+
+			builder.Services.AddSingleton<IInvoiceGeneratorService, InvoiceGeneratorService>();
 
 			builder.Services.AddHostedService<RabbitMqInvoiceGeneratorConsumer>();
 

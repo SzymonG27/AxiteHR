@@ -88,7 +88,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 				Number = invoiceNumber,
 				CompanyId = requestDto.CompanyId,
 				CompanyUserId = requestDto.CompanyUserId,
-				BlobFileName = Guid.NewGuid().ToString(),
+				BlobFileName = Guid.NewGuid().ToString() + ".pdf",
 				ClientName = requestDto.ClientName,
 				ClientNip = requestDto.ClientNip,
 				ClientStreet = requestDto.ClientStreet,
@@ -143,6 +143,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			requestDto.NetAmount = invoice.NetAmount;
 			requestDto.GrossAmount = invoice.GrossAmount;
+			requestDto.BlobFileName = invoice.BlobFileName;
 
 			return invoice;
 		}

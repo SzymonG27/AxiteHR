@@ -1,4 +1,7 @@
-﻿using AxiteHR.Services.DocumentAPI.Models.Invoice.Dto;
+﻿using AxiteHR.Integration.Storage.Abstractions;
+using AxiteHR.Integration.Storage.Constants;
+using AxiteHR.Integration.Storage.Helpers;
+using AxiteHR.Services.DocumentAPI.Models.Invoice.Dto;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using RazorLight;
@@ -9,8 +12,9 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 	public class InvoiceGeneratorService : IInvoiceGeneratorService
 	{
 		private readonly string _chromiumExecutablePath;
+		private readonly IStorageFactory _storageFactory;
 
-		public InvoiceGeneratorService()
+		public InvoiceGeneratorService(IStorageFactory storageFactory)
 		{
 			_chromiumExecutablePath = Path.Combine(AppContext.BaseDirectory, "Chromium", "chrome-win", "chrome.exe");
 
@@ -19,6 +23,8 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 				Log.Error("Chromium not found in path: {0}", _chromiumExecutablePath);
 				throw new FileNotFoundException("Chromium not found in path: {0}", _chromiumExecutablePath);
 			}
+
+			_storageFactory = storageFactory;
 		}
 
 		public async Task<string> GenerateInvoiceAsync(InvoiceGeneratorDto model)
@@ -28,7 +34,7 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 				.UseMemoryCachingProvider()
 				.Build();
 
-			var html = await engine.CompileRenderAsync("", model);
+			var html = await engine.CompileRenderAsync("AxiteHR.Services.DocumentAPI.Templates.InvoiceTemplate", model);
 
 			var launchOptions = new LaunchOptions
 			{
@@ -44,17 +50,20 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 				WaitUntil = [WaitUntilNavigation.Load]
 			});
 
-			var randomFileName = Path.GetRandomFileName().Replace(".tmp", ".pdf");
-			var tempPath = Path.Combine(Path.GetTempPath(), randomFileName);
-			var pdfPath = Path.ChangeExtension(tempPath, ".pdf");
-
-			await page.PdfAsync(pdfPath, new PdfOptions
+			await using var pdfStream = await page.PdfStreamAsync(new PdfOptions
 			{
 				Format = PaperFormat.A4,
 				PrintBackground = true
 			});
 
-			return pdfPath!;
+			var minioService = _storageFactory.Get(ObjectStorageType.Minio);
+
+			return await minioService.UploadAsync(
+				pdfStream,
+				model.BlobFileName,
+				ContentTypeHelper.GetContentTypeFromExtension(model.BlobFileName),
+				MinioBuckets.Invoices
+			);
 		}
 	}
 }

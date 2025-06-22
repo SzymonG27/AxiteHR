@@ -10,29 +10,24 @@ using System.Text.Json;
 
 namespace AxiteHR.Services.DocumentAPI.Messaging
 {
-	public class RabbitMqInvoiceGeneratorConsumer : BackgroundService, IAsyncDisposable
+	public class RabbitMqInvoiceGeneratorConsumer(
+		IInvoiceGeneratorService invoiceGeneratorService,
+		IConfiguration configuration,
+		IOptions<RabbitMqMessageSenderConfig> rabbitMqMessageSenderConfigOptions) : BackgroundService, IAsyncDisposable
 	{
-		private readonly IInvoiceGeneratorService _invoiceGeneratorService;
-		private readonly IConfiguration _configuration;
-		private readonly RabbitMqMessageSenderConfig _rabbitMqConfig;
+		private readonly RabbitMqMessageSenderConfig _rabbitMqConfig = rabbitMqMessageSenderConfigOptions.Value;
 
 		private IConnection _connection = default!;
 		private IChannel _channel = default!;
 		private string _queueName = default!;
 		private bool _disposed;
-
-		public RabbitMqInvoiceGeneratorConsumer(
-			IInvoiceGeneratorService invoiceGeneratorService,
-			IConfiguration configuration,
-			IOptions<RabbitMqMessageSenderConfig> rabbitMqMessageSenderConfigOptions)
-		{
-			_invoiceGeneratorService = invoiceGeneratorService;
-			_configuration = configuration;
-			_rabbitMqConfig = rabbitMqMessageSenderConfigOptions.Value;
-		}
+		private bool _initialized;
 
 		public async Task InitializeAsync()
 		{
+			if (_initialized)
+				return;
+
 			if (_rabbitMqConfig == null)
 			{
 				Log.Error("RabbitMQ config section is not configured.");
@@ -56,11 +51,13 @@ namespace AxiteHR.Services.DocumentAPI.Messaging
 			_connection = await factory.CreateConnectionAsync();
 			_channel = await _connection.CreateChannelAsync();
 
-			_queueName = _configuration.GetValue<string>(ConfigurationHelper.InvoiceGeneratorQueue)!;
+			_queueName = configuration.GetValue<string>(ConfigurationHelper.InvoiceGeneratorQueue)!;
 
 			await _channel.QueueDeclareAsync(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-			await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false);
+			await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 5, global: false);
+
+			_initialized = true;
 		}
 
 		public async ValueTask DisposeAsync()
@@ -78,6 +75,8 @@ namespace AxiteHR.Services.DocumentAPI.Messaging
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
+			await InitializeAsync();
+
 			stoppingToken.ThrowIfCancellationRequested();
 
 			var consumer = new AsyncEventingBasicConsumer(_channel);
@@ -119,7 +118,7 @@ namespace AxiteHR.Services.DocumentAPI.Messaging
 
 		private async Task HandleMessageAsync(InvoiceGeneratorDto model)
 		{
-			await _invoiceGeneratorService.GenerateInvoiceAsync(model);
+			await invoiceGeneratorService.GenerateInvoiceAsync(model);
 		}
 
 		private static bool IsRabbitMqConfigCompletedCorrectly(RabbitMqMessageSenderConfig rabbitMqMessageSenderConfig)

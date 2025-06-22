@@ -1,3 +1,5 @@
+using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.Storage.Configuration;
 using AxiteHR.Services.DocumentAPI.Data;
 using AxiteHR.Services.DocumentAPI.Extensions;
 using AxiteHR.Services.DocumentAPI.Helpers;
@@ -7,6 +9,9 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddGlobalization();
+
+builder.Services.Configure<RabbitMqMessageSenderConfig>(builder.Configuration.GetSection(ConfigurationHelper.RabbitMqBrokerMessageSenderConfig));
+builder.Services.Configure<MinioConfig>(builder.Configuration.GetSection(ConfigurationHelper.MinioConfigSection));
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>

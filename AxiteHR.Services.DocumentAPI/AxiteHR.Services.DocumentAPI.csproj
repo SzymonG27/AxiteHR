@@ -33,6 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.GlobalClass\AxiteHR.Integration.GlobalClass.csproj" />
     <ProjectReference Include="..\AxiteHR.Integration.Storage\AxiteHR.Integration.Storage.csproj" />
     <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
     <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />

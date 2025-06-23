@@ -1,22 +1,26 @@
-﻿@using System.Globalization
+﻿@model AxiteHR.Services.DocumentAPI.Models.Invoice.Dto.InvoiceGeneratorDto
+@using System.Globalization
 
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
-    <head>
-        <title>Invoice template</title>
-        <meta charset="utf-8" />
-        <style>
-            .invoice-header {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                padding: 20px 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="invoice-header">
-
-        </div>
-    </body>
+<head>
+    <title>Invoice template</title>
+    <meta charset="utf-8" />
+    <style>
+        .invoice-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-header">
+        @if (!string.IsNullOrEmpty(Model.LogoBase64))
+        {
+            <img src="@Model.LogoBase64" alt="Company logo" style="margin-right: 20px;" />
+        }
+    </div>
+</body>
 </html>

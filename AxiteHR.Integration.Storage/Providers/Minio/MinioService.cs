@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace AxiteHR.Integration.Storage.Providers.Minio
 {
-    public class MinioService : IObjectStorageService
+	public class MinioService : IObjectStorageService
 	{
 		private readonly IAmazonS3 _s3Client;
 		private readonly MinioConfig _config;
@@ -28,6 +28,8 @@ namespace AxiteHR.Integration.Storage.Providers.Minio
 
 		public async Task<string> UploadAsync(Stream stream, string fileName, string contentType, string bucket, CancellationToken cancellationToken = default)
 		{
+			await _s3Client.EnsureBucketExistsAsync(bucket);
+
 			var putRequest = new PutObjectRequest
 			{
 				BucketName = bucket,
@@ -44,6 +46,8 @@ namespace AxiteHR.Integration.Storage.Providers.Minio
 
 		public async Task<Stream> DownloadAsync(string fileName, string bucket, CancellationToken cancellationToken = default)
 		{
+			await _s3Client.EnsureBucketExistsAsync(bucket);
+
 			var getRequest = new GetObjectRequest
 			{
 				BucketName = bucket,
@@ -61,6 +65,8 @@ namespace AxiteHR.Integration.Storage.Providers.Minio
 
 		public async Task DeleteAsync(string fileName, string bucket, CancellationToken cancellationToken = default)
 		{
+			await _s3Client.EnsureBucketExistsAsync(bucket);
+
 			var deleteRequest = new DeleteObjectRequest
 			{
 				BucketName = bucket,

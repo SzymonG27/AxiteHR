@@ -1,4 +1,5 @@
 ﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.Storage.Abstractions;
 using AxiteHR.Integration.Storage.Factory;
 using AxiteHR.Integration.Storage.Providers.Minio;
@@ -9,11 +10,12 @@ using AxiteHR.Services.DocumentAPI.Services.Invoice.Impl;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Serilog;
+using StackExchange.Redis;
 using System.Globalization;
 
 namespace AxiteHR.Services.DocumentAPI.Extensions
 {
-    public static class WebAppBuilderExtensions
+	public static class WebAppBuilderExtensions
 	{
 		public static WebApplicationBuilder AddGlobalization(this WebApplicationBuilder builder)
 		{
@@ -72,6 +74,10 @@ namespace AxiteHR.Services.DocumentAPI.Extensions
 			builder.Services.AddSingleton<IStringLocalizerFactory, ResourceManagerStringLocalizerFactory>();
 			builder.Services.AddSingleton<IStringLocalizer<SharedResources>, StringLocalizer<SharedResources>>();
 			builder.Services.AddSingleton<IStringLocalizer<DocumentResources>, StringLocalizer<DocumentResources>>();
+
+			var redisConnectionString = builder.Configuration.GetConnectionString("Redis")!;
+			builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+			builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
 			builder.Services.AddSingleton<MinioService>();
 			builder.Services.AddSingleton<IStorageFactory, StorageFactory>();

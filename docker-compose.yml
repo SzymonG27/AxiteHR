@@ -130,7 +130,7 @@ services:
       ASPNETCORE_URLS: "https://+:7003;http://+:5187"
       IsDbFromDocker: true
       ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Document;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
-      ConnectionStrings__ServiceBusConnectionString: ""
+      ConnectionStrings__Redis: "redis:6379"
       BrokerMessageSenderConfigs__RabbitMq__HostName: "rabbitmq"
       BrokerMessageSenderConfigs__RabbitMq__UserName: "guest"
       BrokerMessageSenderConfigs__RabbitMq__Password: "guest"

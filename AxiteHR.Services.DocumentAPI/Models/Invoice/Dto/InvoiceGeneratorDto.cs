@@ -6,7 +6,7 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 	{
 		public string BlobFileName { get; set; } = string.Empty;
 
-		public string LogoBase64 { get; set; } = string.Empty;
+		public LogoDto Logo { get; set; } = new();
 
 		public string ClientName { get; set; } = string.Empty;
 
@@ -37,6 +37,8 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 		public decimal NetAmount { get; set; }
 
 		public decimal GrossAmount { get; set; }
+
+		public string InvoiceNumber { get; set; } = string.Empty;
 
 		public IList<InvoicePositionGeneratorDto> InvoicePositions { get; set; } = [];
 	}

@@ -145,6 +145,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 			requestDto.NetAmount = invoice.NetAmount;
 			requestDto.GrossAmount = invoice.GrossAmount;
 			requestDto.BlobFileName = invoice.BlobFileName;
+			requestDto.InvoiceNumber = invoiceNumber;
 
 			return invoice;
 		}

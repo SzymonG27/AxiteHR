@@ -77,6 +77,11 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 		/// </summary>
 		public string BlobFileName { get; set; } = string.Empty;
 
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public string InvoiceNumber { get; set; } = string.Empty;
+
 		public IList<InvoicePositionGeneratorRequestDto> InvoicePositions { get; set; } = [];
 	}
 }

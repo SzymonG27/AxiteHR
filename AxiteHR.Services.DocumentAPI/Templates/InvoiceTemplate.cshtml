@@ -7,20 +7,85 @@
     <title>Invoice template</title>
     <meta charset="utf-8" />
     <style>
+        body {
+            margin: 10px;
+        }
+
         .invoice-header {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
+            padding: 10px 20px;
+            height: 80px;
+            box-sizing: border-box;
+        }
+
+        .invoice-logo {
+            flex: 1;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .invoice-logo img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .invoice-number {
+            font-size: 16px;
+            margin-top: 12px;
+            font-weight: 600;
+            color: #5d6989;
+        }
+
+        .invoice-title {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            align-self: flex-start;
+        }
+
+        .invoice-title-text {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            color: #5d6989;
+        }
+
+        .header-right {
+            flex: 1;
+        }
+
+        .content {
+            padding-left: 20px;
+            padding-right: 20px;
         }
     </style>
 </head>
 <body>
     <div class="invoice-header">
-        @if (!string.IsNullOrEmpty(Model.LogoBase64))
-        {
-            <img src="@Model.LogoBase64" alt="Company logo" style="margin-right: 20px;" />
-        }
+        <div class="invoice-logo">
+            @if (!string.IsNullOrEmpty(Model.Logo.Base64))
+            {
+                <img src="@Model.Logo.ViewDataUri" alt="Company logo" />
+            }
+            <div class="invoice-number">Numer: @Model.InvoiceNumber</div>
+        </div>
+
+        <div class="invoice-title">
+            <div class="invoice-title-text">Faktura</div>
+        </div>
+
+        <div class="header-right"></div>
+    </div>
+
+    <div class="content">
+
     </div>
 </body>
 </html>

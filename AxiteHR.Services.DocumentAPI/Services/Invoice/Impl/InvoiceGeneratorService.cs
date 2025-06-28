@@ -45,7 +45,7 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 
 			var minioService = _storageFactory.Get(ObjectStorageType.Minio);
 
-			model.LogoBase64 = await GetLogoBase64Async(minioService);
+			model.Logo.Base64 = await GetLogoBase64Async(minioService);
 
 			var html = await engine.CompileRenderAsync("AxiteHR.Services.DocumentAPI.Templates.InvoiceTemplate", model);
 

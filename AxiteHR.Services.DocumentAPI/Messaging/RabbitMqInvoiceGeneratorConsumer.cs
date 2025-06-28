@@ -5,7 +5,9 @@ using AxiteHR.Services.DocumentAPI.Services.Invoice;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RazorLight;
 using Serilog;
+using System.Text;
 using System.Text.Json;
 
 namespace AxiteHR.Services.DocumentAPI.Messaging
@@ -87,7 +89,7 @@ namespace AxiteHR.Services.DocumentAPI.Messaging
 
 				try
 				{
-					var content = JsonSerializer.Deserialize<InvoiceGeneratorDto>(ea.Body.ToString());
+					var content = JsonSerializer.Deserialize<InvoiceGeneratorDto>(ea.Body.ToArray(), JsonOptionsHelper.DefaultJsonSerializerOptions);
 					if (content == null)
 					{
 						Log.Warning("Message body was null, messageId: {MessageId}", messageId);

@@ -1,8 +1,8 @@
-﻿using AxiteHR.GlobalizationResources.Resources;
-using AxiteHR.GlobalizationResources;
-using System.ComponentModel.DataAnnotations;
-using AxiteHR.Services.InvoiceAPI.Models.Enums;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 using AxiteHR.Services.InvoiceAPI.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 {

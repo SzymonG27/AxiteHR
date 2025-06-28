@@ -1,6 +1,6 @@
 ﻿param(
     [string]$ChromiumVersion = "113.0.5672.63",
-    [string]$Platform        = "win64"  # możliwe: win64, linux64, mac-x64
+    [string]$Platform        = "linux64"  # możliwe: win64, linux64, mac-x64
 )
 
 $ErrorActionPreference = "Stop"
@@ -9,12 +9,14 @@ $ErrorActionPreference = "Stop"
 $BaseUrl   = "https://storage.googleapis.com/chrome-for-testing-public"
 $ZipName   = "chrome.zip"
 $OutDir    = Join-Path $PSScriptRoot "Chromium"
-$DestDir   = Join-Path $OutDir "chrome-win"
+$DestDir   = Join-Path $OutDir "chrome-linux"
 $TempExtractDir = Join-Path $OutDir "tmp-extract"
 $ZipPath   = Join-Path $PSScriptRoot $ZipName
 $Download  = "$BaseUrl/$ChromiumVersion/$Platform/chrome-$Platform.zip"
 
-if (-Not (Test-Path "$DestDir\chrome.exe")) {
+$ChromeBinary = Join-Path $DestDir "chrome"
+
+if (-Not (Test-Path $ChromeBinary)) {
     Write-Host "- Downloading Chrome for Testing $ChromiumVersion ($Platform)..."
     curl.exe -L $Download -o $ZipPath
 
@@ -30,7 +32,7 @@ if (-Not (Test-Path "$DestDir\chrome.exe")) {
     New-Item -ItemType Directory -Path $TempExtractDir | Out-Null
     Expand-Archive -Path $ZipPath -DestinationPath $TempExtractDir -Force
 
-    Move-Item -Path (Join-Path $TempExtractDir "chrome-win64\*") -Destination $DestDir -Force
+    Move-Item -Path (Join-Path $TempExtractDir "chrome-linux64\*") -Destination $DestDir -Force
 
     Remove-Item $TempExtractDir -Recurse -Force
     Remove-Item $ZipPath -Force

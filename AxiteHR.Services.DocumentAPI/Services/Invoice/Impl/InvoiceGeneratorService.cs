@@ -7,6 +7,7 @@ using AxiteHR.Services.DocumentAPI.Models.Invoice.Dto;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using RazorLight;
+using RazorLight.Razor;
 using Serilog;
 
 namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
@@ -19,7 +20,7 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 
 		public InvoiceGeneratorService(IStorageFactory storageFactory, IRedisCacheService redisCacheService)
 		{
-			_chromiumExecutablePath = Path.Combine(AppContext.BaseDirectory, "Chromium", "chrome-win", "chrome.exe");
+			_chromiumExecutablePath = Path.Combine(AppContext.BaseDirectory, "Chromium", "chrome-linux", "chrome");
 
 			if (!File.Exists(_chromiumExecutablePath))
 			{
@@ -33,9 +34,13 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 
 		public async Task<string> GenerateInvoiceAsync(InvoiceGeneratorDto model)
 		{
+			var embeddedProject = new EmbeddedRazorProject(typeof(InvoiceGeneratorService).Assembly);
+
 			var engine = new RazorLightEngineBuilder()
-				.UseEmbeddedResourcesProject(typeof(InvoiceGeneratorService))
+				.UseProject(embeddedProject)
+				.SetOperatingAssembly(typeof(InvoiceGeneratorService).Assembly)
 				.UseMemoryCachingProvider()
+				.EnableDebugMode()
 				.Build();
 
 			var minioService = _storageFactory.Get(ObjectStorageType.Minio);

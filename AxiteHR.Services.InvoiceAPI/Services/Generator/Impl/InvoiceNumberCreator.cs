@@ -1,5 +1,5 @@
-﻿using AxiteHR.Services.InvoiceAPI.Helpers;
-using AxiteHR.Services.InvoiceAPI.Models.Enums;
+﻿using AxiteHR.Integration.GlobalClass.Enums.Invoice;
+using AxiteHR.Services.InvoiceAPI.Helpers;
 
 namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 {

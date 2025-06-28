@@ -1,5 +1,6 @@
 ﻿using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 using AxiteHR.Services.InvoiceAPI.Data;
 using AxiteHR.Services.InvoiceAPI.Helpers;
 using AxiteHR.Services.InvoiceAPI.Models;

@@ -8,6 +8,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,7 +46,7 @@
   </Target>
 
   <ItemGroup>
-    <Content Include="Chromium\**\*" Exclude="Chromium\chrome-win\MEIPreload\manifest.json;Chromium\chrome-win\vk_swiftshader_icd.json">
+    <Content Include="Chromium\**\*" Exclude="Chromium\chrome-win\MEIPreload\manifest.json;Chromium\chrome-win\vk_swiftshader_icd.json;Chromium\chrome-linux\MEIPreload\manifest.json;Chromium\chrome-linux\vk_swiftshader_icd.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

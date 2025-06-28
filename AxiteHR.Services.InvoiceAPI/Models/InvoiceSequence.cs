@@ -1,4 +1,4 @@
-﻿using AxiteHR.Services.InvoiceAPI.Models.Enums;
+﻿using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 
 namespace AxiteHR.Services.InvoiceAPI.Models
 {

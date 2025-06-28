@@ -1,4 +1,5 @@
-﻿using AxiteHR.Services.InvoiceAPI.Models;
+﻿using AxiteHR.Integration.GlobalClass.Enums.Invoice;
+using AxiteHR.Services.InvoiceAPI.Models;
 using AxiteHR.Services.InvoiceAPI.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 

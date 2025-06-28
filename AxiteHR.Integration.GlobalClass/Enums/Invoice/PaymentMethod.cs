@@ -1,4 +1,4 @@
-﻿namespace AxiteHR.Services.InvoiceAPI.Models.Enums
+﻿namespace AxiteHR.Integration.GlobalClass.Enums.Invoice
 {
 	public enum PaymentMethod
 	{

@@ -1,5 +1,6 @@
 ﻿@model AxiteHR.Services.DocumentAPI.Models.Invoice.Dto.InvoiceGeneratorDto
 @using System.Globalization
+@using AxiteHR.GlobalizationResources
 
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
@@ -142,7 +143,7 @@
                     text-align: left;
                 }
 
-        .summary-section {
+        #summary-section {
             display: flex;
             justify-content: space-between;
             align-items: stretch;
@@ -151,7 +152,7 @@
             border: 1px solid #5d6989;
         }
 
-        .summary-left {
+        #summary-left {
             background-color: #5d6989;
             color: white;
             font-weight: bold;
@@ -162,13 +163,13 @@
             font-size: 14px;
         }
 
-        .summary-amount {
+        #summary-amount {
             font-size: 16px;
             margin-left: 10px;
             white-space: nowrap;
         }
 
-        .summary-right {
+        #summary-right {
             background-color: #eef0f3;
             flex: 1;
             padding: 10px 16px;
@@ -238,10 +239,10 @@
             {
                 <img alt="Company logo" />
             }
-            <div class="invoice-number">Numer: @Model.InvoiceNumber</div>
+            <div class="invoice-number">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Number]: @Model.InvoiceNumber</div>
         </div>
 
-        <div class="title">Faktura</div>
+        <div class="title">@Model.Translations[DocumentResourcesKeys.Document_Invoice]</div>
 
         <div class="header-right"></div>
     </div>
@@ -249,7 +250,7 @@
     <div class="double-flex-section margin-top-50">
         <table class="invoice-table">
             <tr>
-                <td class="invoice-label">Sprzedawca:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Seller]:</td>
                 <td>@Model.ClientName</td>
             </tr>
             <tr>
@@ -264,7 +265,7 @@
 
         <table class="invoice-table">
             <tr>
-                <td class="invoice-label">Nabywca:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Recipient]:</td>
                 <td>@Model.RecipientName</td>
             </tr>
             <tr>
@@ -343,13 +344,13 @@
         </tbody>
     </table>
 
-    <div class="summary-section">
-        <div class="summary-left">
+    <div id="summary-section">
+        <div id="summary-left">
             RAZEM DO ZAPŁATY:
-            <span class="summary-amount">@Model.GrossAmount @Model.CurrencyString</span>
+            <span id="summary-amount">@Model.GrossAmount @Model.Currency.ToString()</span>
         </div>
 
-        <div class="summary-right">
+        <div id="summary-right">
             <div class="summary-line">
                 <span><strong>Razem:</strong></span>
                 <span>@Model.NetAmount</span>

@@ -1,14 +1,19 @@
-﻿using AxiteHR.Integration.Cache.Redis;
+﻿using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.Cache.Redis;
 using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Integration.Storage.Abstractions;
 using AxiteHR.Integration.Storage.Constants;
 using AxiteHR.Integration.Storage.Helpers;
+using AxiteHR.Services.DocumentAPI.Extensions;
+using AxiteHR.Services.DocumentAPI.Helpers;
 using AxiteHR.Services.DocumentAPI.Models.Invoice.Dto;
+using Microsoft.Extensions.Localization;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using RazorLight;
 using RazorLight.Razor;
 using Serilog;
+using System.Globalization;
 
 namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 {
@@ -17,8 +22,11 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 		private readonly string _chromiumExecutablePath;
 		private readonly IStorageFactory _storageFactory;
 		private readonly IRedisCacheService _redisCacheService;
+		private readonly IStringLocalizerFactory _localizerFactory;
 
-		public InvoiceGeneratorService(IStorageFactory storageFactory, IRedisCacheService redisCacheService)
+		public InvoiceGeneratorService(IStorageFactory storageFactory,
+			IRedisCacheService redisCacheService,
+			IStringLocalizerFactory localizerFactory)
 		{
 			_chromiumExecutablePath = Path.Combine(AppContext.BaseDirectory, "Chromium", "chrome-linux", "chrome");
 
@@ -30,6 +38,7 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 
 			_storageFactory = storageFactory;
 			_redisCacheService = redisCacheService;
+			_localizerFactory = localizerFactory;
 		}
 
 		public async Task<string> GenerateInvoiceAsync(InvoiceGeneratorDto model)
@@ -44,6 +53,13 @@ namespace AxiteHR.Services.DocumentAPI.Services.Invoice.Impl
 				.Build();
 
 			var minioService = _storageFactory.Get(ObjectStorageType.Minio);
+
+			var culture = new CultureInfo(model.Language.ToString());
+			CultureInfo.CurrentCulture = culture;
+			CultureInfo.CurrentUICulture = culture;
+
+			var localizer = _localizerFactory.Create(typeof(DocumentResources));
+			model.Translations = localizer.GetTranslations(TranslationKeysHelper.InvoiceTranslationKeys);
 
 			model.Logo.Base64 = await GetLogoBase64Async(minioService);
 

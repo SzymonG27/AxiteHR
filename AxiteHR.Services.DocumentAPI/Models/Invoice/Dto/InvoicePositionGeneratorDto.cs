@@ -23,12 +23,12 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 
 		public string GetUnitString(Language language)
 		{
-            return Unit switch
-            {
-                Unit.Piece => "Piece",
-                Unit.Hour => "Hour",
-                _ => string.Empty,
-            };
-        }
+			return Unit switch
+			{
+				Unit.Piece => "Piece",
+				Unit.Hour => "Hour",
+				_ => string.Empty,
+			};
+		}
 	}
 }

@@ -51,8 +51,6 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 
 		public Currency Currency { get; set; }
 
-		public string CurrencyString => GetCurrencyString();
-
 		public bool IsSplitPayment { get; set; }
 
 		public decimal NetAmount { get; set; }
@@ -64,6 +62,8 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 		public string InvoiceNumber { get; set; } = string.Empty;
 
 		public Language Language { get; set; } = Language.pl;
+
+		public Dictionary<string, string> Translations { get; set; } = [];
 
 		public IList<InvoicePositionGeneratorDto> InvoicePositions { get; set; } = [];
 
@@ -92,16 +92,6 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 				PaymentMethod.Transfer => "Przelew",
 				PaymentMethod.Cash => "Gotówka",
 				PaymentMethod.Card => "Karta",
-				_ => string.Empty,
-			};
-		}
-
-		private string GetCurrencyString()
-		{
-			return Currency switch
-			{
-				Currency.PLN => "PLN",
-				Currency.USD => "USD",
 				_ => string.Empty,
 			};
 		}

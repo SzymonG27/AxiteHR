@@ -1,5 +1,6 @@
 ﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.GlobalClass.Enums;
 using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 using AxiteHR.Services.InvoiceAPI.Attributes;
 using System.ComponentModel.DataAnnotations;
@@ -39,6 +40,30 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 		public string ClientCity { get; set; } = string.Empty;
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[MaxLength(100, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_MaxLengthField)]
+		public string RecipientName { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[Nip(ErrorMessageResourceType = typeof(InvoiceResources), ErrorMessageResourceName = InvoiceResourcesKeys.Invoice_InvalidNip)]
+		public string RecipientNip { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[MaxLength(100, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_MaxLengthField)]
+		public string RecipientStreet { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[MaxLength(30, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_MaxLengthField)]
+		public string RecipientHouseNumber { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[PostalCode(ErrorMessageResourceType = typeof(InvoiceResources), ErrorMessageResourceName = InvoiceResourcesKeys.Invoice_InvalidPostalCode)]
+		public string RecipientPostalCode { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
+		[MaxLength(100, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_MaxLengthField)]
+		public string RecipientCity { get; set; } = string.Empty;
+
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
 		public DateTime IssueDate { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]
@@ -75,12 +100,22 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 		/// <summary>
 		/// Not send by request, completed in the service for message bus
 		/// </summary>
+		public decimal? VatAmount { get; set; }
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
 		public string BlobFileName { get; set; } = string.Empty;
 
 		/// <summary>
 		/// Not send by request, completed in the service for message bus
 		/// </summary>
 		public string InvoiceNumber { get; set; } = string.Empty;
+
+		/// <summary>
+		/// Not send by request, completed in the service for message bus
+		/// </summary>
+		public Language Language { get; set; } = Language.pl;
 
 		public IList<InvoicePositionGeneratorRequestDto> InvoicePositions { get; set; } = [];
 	}

@@ -1,4 +1,5 @@
-﻿using AxiteHR.Integration.GlobalClass.Enums.Invoice;
+﻿using AxiteHR.Integration.GlobalClass.Enums;
+using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 
 namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 {
@@ -19,5 +20,15 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 		public decimal NetAmount { get; set; }
 
 		public decimal GrossAmount { get; set; }
+
+		public string GetUnitString(Language language)
+		{
+            return Unit switch
+            {
+                Unit.Piece => "Piece",
+                Unit.Hour => "Hour",
+                _ => string.Empty,
+            };
+        }
 	}
 }

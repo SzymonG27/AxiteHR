@@ -9,49 +9,48 @@
     <style>
         body {
             margin: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            font-family: 'Lato', sans-serif;
         }
 
         .invoice-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px 0;
             height: 80px;
             box-sizing: border-box;
         }
 
-        .invoice-logo {
+        .logo {
             flex: 1;
-            margin-top: 10px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
         }
 
-        .invoice-logo img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
+            .logo img {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
+            }
 
         .invoice-number {
             font-size: 16px;
-            margin-top: 12px;
+            margin-top: 14px;
             font-weight: 600;
             color: #5d6989;
         }
 
-        .invoice-title {
+        .title {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             align-self: flex-start;
-        }
-
-        .invoice-title-text {
-            font-size: 32px;
+            font-size: 40px;
             font-weight: bold;
             text-align: center;
             color: #5d6989;
@@ -61,31 +60,344 @@
             flex: 1;
         }
 
-        .content {
-            padding-left: 20px;
-            padding-right: 20px;
+        .margin-top-10 {
+            margin-top: 10px;
+        }
+
+        .margin-top-20 {
+            margin-top: 20px;
+        }
+
+        .margin-top-50 {
+            margin-top: 50px;
+        }
+
+        .double-flex-section {
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .invoice-table {
+            width: 50%;
+            border-collapse: collapse;
+            border-collapse: collapse;
+        }
+
+            .invoice-table td {
+                padding: 4px 8px;
+                vertical-align: top;
+            }
+
+        .invoice-label {
+            font-weight: bold;
+            padding-right: 16px;
+            white-space: nowrap;
+            color: dimgray;
+            width: 130px;
+        }
+
+        .separator-light {
+            border: none;
+            border-top: 1px solid #5d6989;
+        }
+
+        .separator-bold {
+            border: none;
+            border-top: 2px solid #5d6989;
+        }
+
+        .invoice-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+            .invoice-items-table th {
+                background-color: #eef0f3;
+                text-align: center;
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #5d6989;
+                color: #5d6989;
+            }
+
+            .invoice-items-table td {
+                border: 1px solid #5d6989;
+                padding: 6px 8px;
+                vertical-align: top;
+                text-align: right;
+            }
+
+            .invoice-items-table tr:nth-child(even) td {
+                background-color: #f9f9f9;
+            }
+
+            .invoice-items-table tr:nth-child(odd) td {
+                background-color: #ffffff;
+            }
+
+                .invoice-items-table td.left {
+                    text-align: left;
+                }
+
+        .summary-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 0;
+            font-size: 12px;
+            border: 1px solid #5d6989;
+        }
+
+        .summary-left {
+            background-color: #5d6989;
+            color: white;
+            font-weight: bold;
+            padding: 12px 16px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .summary-amount {
+            font-size: 16px;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        .summary-right {
+            background-color: #eef0f3;
+            flex: 1;
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-sizing: border-box;
+            font-size: 12px;
+            color: #5d6989;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .summary-line strong {
+                font-weight: bold;
+            }
+
+        #points {
+            font-size: 12px;
+        }
+
+        .text-12-bold {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .gap-40 {
+            gap: 40px;
+        }
+
+        .signature-box {
+            flex: 1;
+            border: 1px solid #5d6989;
+            padding: 40px 20px 20px;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .signature-name {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .signature-label {
+            font-size: 11px;
+            color: #888;
         }
     </style>
 </head>
 <body>
     <div class="invoice-header">
-        <div class="invoice-logo">
+        <div class="logo margin-top-10">
             @if (!string.IsNullOrEmpty(Model.Logo.Base64))
             {
                 <img src="@Model.Logo.ViewDataUri" alt="Company logo" />
             }
+            else
+            {
+                <img alt="Company logo" />
+            }
             <div class="invoice-number">Numer: @Model.InvoiceNumber</div>
         </div>
 
-        <div class="invoice-title">
-            <div class="invoice-title-text">Faktura</div>
-        </div>
+        <div class="title">Faktura</div>
 
         <div class="header-right"></div>
     </div>
 
-    <div class="content">
+    <div class="double-flex-section margin-top-50">
+        <table class="invoice-table">
+            <tr>
+                <td class="invoice-label">Sprzedawca:</td>
+                <td>@Model.ClientName</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">NIP:</td>
+                <td>@Model.ClientNip</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Adres:</td>
+                <td>@Model.ClientAddress</td>
+            </tr>
+        </table>
 
+        <table class="invoice-table">
+            <tr>
+                <td class="invoice-label">Nabywca:</td>
+                <td>@Model.RecipientName</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">NIP:</td>
+                <td>@Model.RecipientNip</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Adres:</td>
+                <td>@Model.RecipientAddress</td>
+            </tr>
+        </table>
+    </div>
+
+    <hr class="separator-light margin-top-20" />
+
+    <div class="double-flex-section margin-top-20">
+        <table class="invoice-table">
+            <tr>
+                <td class="invoice-label">Data wystawienia:</td>
+                <td>@Model.IssueDate</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Data sprzedaży:</td>
+                <td>@Model.SaleDate</td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Data płatności:</td>
+                <td>@Model.PaymentDeadline</td>
+            </tr>
+        </table>
+
+        <table class="invoice-table">
+            <tr>
+                <td class="invoice-label">Sposób płatności:</td>
+                <td>@Model.PaymentMethodString</td>
+            </tr>
+            @if (Model.PaymentMethod == AxiteHR.Integration.GlobalClass.Enums.Invoice.PaymentMethod.Transfer)
+            {
+                <tr>
+                    <td class="invoice-label">Numer konta:</td>
+                    <td>@Model.BankAccountNumber</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <hr class="separator-light margin-top-20" />
+
+    <table class="invoice-items-table margin-top-20">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Ilość</th>
+                <th>Jm</th>
+                <th>Cena netto</th>
+                <th>Wartość netto</th>
+                <th>Stawka VAT</th>
+                <th>Kwota VAT</th>
+                <th>Wartość brutto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var position in Model.InvoicePositions)
+            {
+                <tr>
+                    <td class="left">@position.ProductName</td>
+                    <td>@position.Quantity</td>
+                    <td>@position.GetUnitString(Model.Language)</td>
+                    <td>@position.NetPrice</td>
+                    <td>@position.NetAmount</td>
+                    <td>@position.VatRate%</td>
+                    <td>@position.VatAmount</td>
+                    <td>@position.GrossAmount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="summary-section">
+        <div class="summary-left">
+            RAZEM DO ZAPŁATY:
+            <span class="summary-amount">@Model.GrossAmount @Model.CurrencyString</span>
+        </div>
+
+        <div class="summary-right">
+            <div class="summary-line">
+                <span><strong>Razem:</strong></span>
+                <span>@Model.NetAmount</span>
+            </div>
+            <div class="summary-line">
+                <span><strong>Stawka VAT:</strong></span>
+                <span>X</span>
+            </div>
+            <div class="summary-line">
+                <span><strong>Kwota VAT:</strong></span>
+                <span>@Model.VatAmount</span>
+            </div>
+            <div class="summary-line">
+                <span><strong>Wartość brutto:</strong></span>
+                <span>@Model.GrossAmount</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="separator-light margin-top-20" />
+    
+    <div id="points" class="margin-top-20">
+        <div class="text-12-bold">
+            Uwagi:
+        </div>
+
+        @if (Model.IsSplitPayment)
+        {
+            <div>Mechanizm podzielonej płatności</div>
+        }
+    </div>
+
+    <hr class="separator-bold margin-top-20" />
+
+    <div class="double-flex-section gap-40 margin-top-20">
+        <div class="signature-box">
+            <div class="signature-name">@Model.RecipientName</div>
+            <div class="signature-label">
+                Nazwa firmy i podpis osoby upoważnionej do wystawienia dokumentu
+            </div>
+        </div>
+
+        <div class="signature-box">
+            <div class="signature-name">@Model.ClientName</div>
+            <div class="signature-label">
+                Nazwa firmy i podpis osoby upoważnionej do odebrania dokumentu
+            </div>
+        </div>
     </div>
 </body>
 </html>

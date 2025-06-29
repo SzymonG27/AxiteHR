@@ -1,5 +1,6 @@
 ﻿using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Integration.BrokerMessageSender.Models;
+using AxiteHR.Integration.GlobalClass.Enums;
 using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 using AxiteHR.Services.InvoiceAPI.Data;
 using AxiteHR.Services.InvoiceAPI.Helpers;
@@ -37,7 +38,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 			await dbContext.SaveChangesAsync();
 			await transaction.CommitAsync();
 
-			await PublishGenerateInvoiceAsync(requestDto);
+			await PublishGenerateInvoiceAsync(requestDto, Language.pl);
 
 			return new InvoiceGeneratorResponseDto
 			{
@@ -96,6 +97,12 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 				ClientHouseNumber = requestDto.ClientHouseNumber,
 				ClientPostalCode = requestDto.ClientPostalCode,
 				ClientCity = requestDto.ClientCity,
+				RecipientName = requestDto.RecipientName,
+				RecipientNip = requestDto.RecipientNip,
+				RecipientStreet = requestDto.RecipientStreet,
+				RecipientHouseNumber = requestDto.RecipientHouseNumber,
+				RecipientPostalCode = requestDto.RecipientPostalCode,
+				RecipientCity = requestDto.RecipientCity,
 				IssueDate = requestDto.IssueDate,
 				SaleDate = requestDto.SaleDate,
 				PaymentMethod = requestDto.PaymentMethod,
@@ -112,6 +119,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			decimal netAmonut = 0;
 			decimal grossAmount = 0;
+			decimal vatAmount = 0;
 
 			foreach (var positionRequestDto in requestDto.InvoicePositions)
 			{
@@ -135,6 +143,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 				netAmonut += invoicePosition.NetAmount;
 				grossAmount += invoicePosition.GrossAmount;
+				vatAmount += invoicePosition.VatAmount;
 
 				invoice.InvoicePositions.Add(invoicePosition);
 			}
@@ -150,8 +159,10 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 			return invoice;
 		}
 
-		public async Task PublishGenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto)
+		public async Task PublishGenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto, Language language)
 		{
+			requestDto.Language = language;
+
 			MessageSenderModel<RabbitMqMessageSenderConfig, InvoiceGeneratorRequestDto> messageSenderModel = new()
 			{
 				Message = requestDto,

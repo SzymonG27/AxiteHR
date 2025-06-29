@@ -31,6 +31,18 @@ namespace AxiteHR.Services.InvoiceAPI.Models
 
 		public virtual string ClientCity { get; set; } = string.Empty;
 
+		public virtual string RecipientName { get; set; } = string.Empty;
+
+		public virtual string RecipientNip { get; set; } = string.Empty;
+
+		public virtual string RecipientStreet { get; set; } = string.Empty;
+
+		public virtual string RecipientHouseNumber { get; set; } = string.Empty;
+
+		public virtual string RecipientPostalCode { get; set; } = string.Empty;
+
+		public virtual string RecipientCity { get; set; } = string.Empty;
+
 		public virtual DateTime IssueDate { get; set; }
 
 		public virtual DateTime SaleDate { get; set; }

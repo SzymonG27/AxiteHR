@@ -78,6 +78,41 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 					.IsRequired()
 					.HasMaxLength(100);
 
+				entity.Property(e => e.RecipientName)
+					.IsRequired()
+					.HasMaxLength(100);
+
+				entity.Property(e => e.RecipientNip)
+					.IsRequired()
+					.HasMaxLength(10)
+					.IsUnicode(false);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_RecipientNip_NIP_Format", "LEN([RecipientNip]) = 10 AND [RecipientNip] NOT LIKE '%[^0-9]%'")
+				);
+
+				entity.Property(e => e.RecipientStreet)
+					.IsRequired()
+					.HasMaxLength(100);
+
+				entity.Property(e => e.RecipientHouseNumber)
+					.IsRequired()
+					.HasMaxLength(30)
+					.IsUnicode(false);
+
+				entity.Property(e => e.RecipientPostalCode)
+					.IsRequired()
+					.HasMaxLength(6)
+					.IsUnicode(false);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_RecipientPostalCode_PostalCode_Format", "[RecipientPostalCode] LIKE '[0-9][0-9]-[0-9][0-9][0-9]'")
+				);
+
+				entity.Property(e => e.RecipientCity)
+					.IsRequired()
+					.HasMaxLength(100);
+
 				entity.ToTable(t =>
 					t.HasCheckConstraint("CK_PaymentMethod_Enum", EnumCheckConstraint<PaymentMethod>(nameof(Invoice.PaymentMethod)))
 				);

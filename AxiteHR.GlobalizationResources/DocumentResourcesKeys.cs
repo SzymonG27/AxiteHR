@@ -28,5 +28,10 @@ namespace AxiteHR.GlobalizationResources
         public const string Document_Invoice_SplitPayment = "Document_Invoice_SplitPayment";
         public const string Document_Invoice_IssuerSignature = "Document_Invoice_IssuerSignature";
         public const string Document_Invoice_ReceiverSignature = "Document_Invoice_ReceiverSignature";
+        public const string Document_Invoice_PaymentMethod_Transfer = "Document_Invoice_PaymentMethod_Transfer";
+        public const string Document_Invoice_PaymentMethod_Cash = "Document_Invoice_PaymentMethod_Cash";
+        public const string Document_Invoice_PaymentMethod_Card = "Document_Invoice_PaymentMethod_Card";
+        public const string Document_InvoicePosition_Unit_Piece = "Document_InvoicePosition_Unit_Piece";
+        public const string Document_InvoicePosition_Unit_Hour = "Document_InvoicePosition_Unit_Hour";
     }
 }

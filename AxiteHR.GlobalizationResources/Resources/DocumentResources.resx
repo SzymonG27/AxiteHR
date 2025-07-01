@@ -192,4 +192,19 @@
   <data name="Document_Invoice_ReceiverSignature" xml:space="preserve">
     <value>Company name and signature of the person authorized to receive the document</value>
   </data>
+  <data name="Document_Invoice_PaymentMethod_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="Document_Invoice_PaymentMethod_Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="Document_Invoice_PaymentMethod_Card" xml:space="preserve">
+    <value>Card</value>
+  </data>
+  <data name="Document_InvoicePosition_Unit_Piece" xml:space="preserve">
+    <value>Piece</value>
+  </data>
+  <data name="Document_InvoicePosition_Unit_Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
 </root>

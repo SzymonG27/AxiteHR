@@ -1,4 +1,5 @@
-﻿using AxiteHR.Integration.GlobalClass.Enums;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.Integration.GlobalClass.Enums;
 using AxiteHR.Integration.GlobalClass.Enums.Invoice;
 
 namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
@@ -87,11 +88,14 @@ namespace AxiteHR.Services.DocumentAPI.Models.Invoice.Dto
 
 		private string GetPaymentMethodString()
 		{
+			if (Translations.Count == 0)
+				return string.Empty;
+
 			return PaymentMethod switch
 			{
-				PaymentMethod.Transfer => "Przelew",
-				PaymentMethod.Cash => "Gotówka",
-				PaymentMethod.Card => "Karta",
+				PaymentMethod.Transfer => Translations[DocumentResourcesKeys.Document_Invoice_PaymentMethod_Transfer],
+				PaymentMethod.Cash => Translations[DocumentResourcesKeys.Document_Invoice_PaymentMethod_Cash],
+				PaymentMethod.Card => Translations[DocumentResourcesKeys.Document_Invoice_PaymentMethod_Card],
 				_ => string.Empty,
 			};
 		}

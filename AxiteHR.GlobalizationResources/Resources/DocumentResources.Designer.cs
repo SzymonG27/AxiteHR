@@ -59,5 +59,275 @@ namespace AxiteHR.GlobalizationResources.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice.
+        /// </summary>
+        public static string Document_Invoice {
+            get {
+                return ResourceManager.GetString("Document_Invoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account number.
+        /// </summary>
+        public static string Document_Invoice_AccountNumber {
+            get {
+                return ResourceManager.GetString("Document_Invoice_AccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string Document_Invoice_Address {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Issue date.
+        /// </summary>
+        public static string Document_Invoice_IssueDate {
+            get {
+                return ResourceManager.GetString("Document_Invoice_IssueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company name and signature of the person authorized to issue the document.
+        /// </summary>
+        public static string Document_Invoice_IssuerSignature {
+            get {
+                return ResourceManager.GetString("Document_Invoice_IssuerSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NIP.
+        /// </summary>
+        public static string Document_Invoice_Nip {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Nip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string Document_Invoice_Number {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment date.
+        /// </summary>
+        public static string Document_Invoice_PaymentDate {
+            get {
+                return ResourceManager.GetString("Document_Invoice_PaymentDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment method.
+        /// </summary>
+        public static string Document_Invoice_PaymentMethod {
+            get {
+                return ResourceManager.GetString("Document_Invoice_PaymentMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Card.
+        /// </summary>
+        public static string Document_Invoice_PaymentMethod_Card {
+            get {
+                return ResourceManager.GetString("Document_Invoice_PaymentMethod_Card", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash.
+        /// </summary>
+        public static string Document_Invoice_PaymentMethod_Cash {
+            get {
+                return ResourceManager.GetString("Document_Invoice_PaymentMethod_Cash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer.
+        /// </summary>
+        public static string Document_Invoice_PaymentMethod_Transfer {
+            get {
+                return ResourceManager.GetString("Document_Invoice_PaymentMethod_Transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points.
+        /// </summary>
+        public static string Document_Invoice_Points {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company name and signature of the person authorized to receive the document.
+        /// </summary>
+        public static string Document_Invoice_ReceiverSignature {
+            get {
+                return ResourceManager.GetString("Document_Invoice_ReceiverSignature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipient.
+        /// </summary>
+        public static string Document_Invoice_Recipient {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Recipient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sale date.
+        /// </summary>
+        public static string Document_Invoice_SaleDate {
+            get {
+                return ResourceManager.GetString("Document_Invoice_SaleDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seller.
+        /// </summary>
+        public static string Document_Invoice_Seller {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Seller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Split payment mechanism.
+        /// </summary>
+        public static string Document_Invoice_SplitPayment {
+            get {
+                return ResourceManager.GetString("Document_Invoice_SplitPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Document_Invoice_Total {
+            get {
+                return ResourceManager.GetString("Document_Invoice_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total amount due.
+        /// </summary>
+        public static string Document_Invoice_TotalAmountDue {
+            get {
+                return ResourceManager.GetString("Document_Invoice_TotalAmountDue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gross amount.
+        /// </summary>
+        public static string Document_InvoicePosition_GrossAmount {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_GrossAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to i.u..
+        /// </summary>
+        public static string Document_InvoicePosition_InternationalUnitShort {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_InternationalUnitShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Document_InvoicePosition_Name {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net amount.
+        /// </summary>
+        public static string Document_InvoicePosition_NetAmount {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_NetAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net price.
+        /// </summary>
+        public static string Document_InvoicePosition_NetPrice {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_NetPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string Document_InvoicePosition_Quantity {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hour.
+        /// </summary>
+        public static string Document_InvoicePosition_Unit_Hour {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_Unit_Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Piece.
+        /// </summary>
+        public static string Document_InvoicePosition_Unit_Piece {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_Unit_Piece", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VAT amount.
+        /// </summary>
+        public static string Document_InvoicePosition_VatAmount {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_VatAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VAT rate.
+        /// </summary>
+        public static string Document_InvoicePosition_VatRate {
+            get {
+                return ResourceManager.GetString("Document_InvoicePosition_VatRate", resourceCulture);
+            }
+        }
     }
 }

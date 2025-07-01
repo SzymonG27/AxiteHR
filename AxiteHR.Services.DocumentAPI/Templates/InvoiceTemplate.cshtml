@@ -254,11 +254,11 @@
                 <td>@Model.ClientName</td>
             </tr>
             <tr>
-                <td class="invoice-label">NIP:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Nip]:</td>
                 <td>@Model.ClientNip</td>
             </tr>
             <tr>
-                <td class="invoice-label">Adres:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Address]:</td>
                 <td>@Model.ClientAddress</td>
             </tr>
         </table>
@@ -269,11 +269,11 @@
                 <td>@Model.RecipientName</td>
             </tr>
             <tr>
-                <td class="invoice-label">NIP:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Nip]:</td>
                 <td>@Model.RecipientNip</td>
             </tr>
             <tr>
-                <td class="invoice-label">Adres:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_Address]:</td>
                 <td>@Model.RecipientAddress</td>
             </tr>
         </table>
@@ -284,28 +284,28 @@
     <div class="double-flex-section margin-top-20">
         <table class="invoice-table">
             <tr>
-                <td class="invoice-label">Data wystawienia:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_IssueDate]:</td>
                 <td>@Model.IssueDate</td>
             </tr>
             <tr>
-                <td class="invoice-label">Data sprzedaży:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_SaleDate]:</td>
                 <td>@Model.SaleDate</td>
             </tr>
             <tr>
-                <td class="invoice-label">Data płatności:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_PaymentDate]:</td>
                 <td>@Model.PaymentDeadline</td>
             </tr>
         </table>
 
         <table class="invoice-table">
             <tr>
-                <td class="invoice-label">Sposób płatności:</td>
+                <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_PaymentMethod]:</td>
                 <td>@Model.PaymentMethodString</td>
             </tr>
             @if (Model.PaymentMethod == AxiteHR.Integration.GlobalClass.Enums.Invoice.PaymentMethod.Transfer)
             {
                 <tr>
-                    <td class="invoice-label">Numer konta:</td>
+                    <td class="invoice-label">@Model.Translations[DocumentResourcesKeys.Document_Invoice_AccountNumber]:</td>
                     <td>@Model.BankAccountNumber</td>
                 </tr>
             }
@@ -317,14 +317,14 @@
     <table class="invoice-items-table margin-top-20">
         <thead>
             <tr>
-                <th>Nazwa</th>
-                <th>Ilość</th>
-                <th>Jm</th>
-                <th>Cena netto</th>
-                <th>Wartość netto</th>
-                <th>Stawka VAT</th>
-                <th>Kwota VAT</th>
-                <th>Wartość brutto</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_Name]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_Quantity]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_InternationalUnitShort]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_NetPrice]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_NetAmount]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_VatRate]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_VatAmount]</th>
+                <th>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_GrossAmount]</th>
             </tr>
         </thead>
         <tbody>
@@ -333,7 +333,7 @@
                 <tr>
                     <td class="left">@position.ProductName</td>
                     <td>@position.Quantity</td>
-                    <td>@position.GetUnitString(Model.Language)</td>
+                    <td>@Model.Translations[@position.GetUnitTranslationPositionString()]</td>
                     <td>@position.NetPrice</td>
                     <td>@position.NetAmount</td>
                     <td>@position.VatRate%</td>
@@ -346,25 +346,25 @@
 
     <div id="summary-section">
         <div id="summary-left">
-            RAZEM DO ZAPŁATY:
+            @Model.Translations[DocumentResourcesKeys.Document_Invoice_TotalAmountDue]:
             <span id="summary-amount">@Model.GrossAmount @Model.Currency.ToString()</span>
         </div>
 
         <div id="summary-right">
             <div class="summary-line">
-                <span><strong>Razem:</strong></span>
+                <span><strong>@Model.Translations[DocumentResourcesKeys.Document_Invoice_Total]:</strong></span>
                 <span>@Model.NetAmount</span>
             </div>
             <div class="summary-line">
-                <span><strong>Stawka VAT:</strong></span>
+                <span><strong>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_VatRate]:</strong></span>
                 <span>X</span>
             </div>
             <div class="summary-line">
-                <span><strong>Kwota VAT:</strong></span>
+                <span><strong>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_VatAmount]:</strong></span>
                 <span>@Model.VatAmount</span>
             </div>
             <div class="summary-line">
-                <span><strong>Wartość brutto:</strong></span>
+                <span><strong>@Model.Translations[DocumentResourcesKeys.Document_InvoicePosition_GrossAmount]:</strong></span>
                 <span>@Model.GrossAmount</span>
             </div>
         </div>
@@ -379,7 +379,7 @@
 
         @if (Model.IsSplitPayment)
         {
-            <div>Mechanizm podzielonej płatności</div>
+            <div>@Model.Translations[DocumentResourcesKeys.Document_Invoice_SplitPayment]</div>
         }
     </div>
 
@@ -387,16 +387,16 @@
 
     <div class="double-flex-section gap-40 margin-top-20">
         <div class="signature-box">
-            <div class="signature-name">@Model.RecipientName</div>
+            <div class="signature-name">@Model.ClientName</div>
             <div class="signature-label">
-                Nazwa firmy i podpis osoby upoważnionej do wystawienia dokumentu
+                @Model.Translations[DocumentResourcesKeys.Document_Invoice_IssuerSignature]
             </div>
         </div>
 
         <div class="signature-box">
-            <div class="signature-name">@Model.ClientName</div>
+            <div class="signature-name">@Model.RecipientName</div>
             <div class="signature-label">
-                Nazwa firmy i podpis osoby upoważnionej do odebrania dokumentu
+                @Model.Translations[DocumentResourcesKeys.Document_Invoice_ReceiverSignature]
             </div>
         </div>
     </div>

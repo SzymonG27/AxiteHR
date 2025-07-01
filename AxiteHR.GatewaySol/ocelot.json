@@ -318,6 +318,22 @@
 				"AllowAutoRedirect": false,
 				"UseTracing": true
 			}
+		},
+		//InvoiceAPI: 7007
+		{
+			"DownstreamPathTemplate": "/api/Invoice/GenerateAsync",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "axitehr.services.invoiceapi",
+					"Port": 7007
+				}
+			],
+			"UpstreamPathTemplate": "/api/Invoice/GenerateAsync",
+			"UpstreamHttpMethod": [ "Post" ],
+			"AuthenticationOptions": {
+				"AuthenticationProviderKey": "Bearer"
+			}
 		}
 	],
 	"GlobalConfiguration": {

@@ -49,9 +49,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.GlobalC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.JwtTokenHandler", "AxiteHR.Integration.JwtTokenHandler\AxiteHR.Integration.JwtTokenHandler.csproj", "{C19DDC75-4BC0-4978-8157-C6599AF73DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Services.SignalRApi", "AxiteHR.Services.SignalRApi\AxiteHR.Services.SignalRApi.csproj", "{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Services.SignalRApi", "AxiteHR.Services.SignalRApi\AxiteHR.Services.SignalRApi.csproj", "{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxiteHR.Integration.Cache", "AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj", "{B158E609-879C-49DC-9A6F-BA9C4922468D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.Cache", "AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj", "{B158E609-879C-49DC-9A6F-BA9C4922468D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Services.InvoiceAPI", "AxiteHR.Services.InvoiceAPI\AxiteHR.Services.InvoiceAPI.csproj", "{A571BA62-069C-4CF7-B7A6-8DD9091698DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxiteHR.Integration.Storage", "AxiteHR.Integration.Storage\AxiteHR.Integration.Storage.csproj", "{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +137,14 @@ Global
 		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B158E609-879C-49DC-9A6F-BA9C4922468D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A571BA62-069C-4CF7-B7A6-8DD9091698DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A571BA62-069C-4CF7-B7A6-8DD9091698DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A571BA62-069C-4CF7-B7A6-8DD9091698DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A571BA62-069C-4CF7-B7A6-8DD9091698DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +166,8 @@ Global
 		{C19DDC75-4BC0-4978-8157-C6599AF73DCE} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
 		{B2B363E3-88C0-4F1D-86D4-8BB4DE03D87D} = {F0523BC7-A44A-41BD-B1D4-ECD75E9F2A50}
 		{B158E609-879C-49DC-9A6F-BA9C4922468D} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
+		{A571BA62-069C-4CF7-B7A6-8DD9091698DB} = {F0523BC7-A44A-41BD-B1D4-ECD75E9F2A50}
+		{D3047D2B-96D9-45E9-9BF8-0EF78AA15BE6} = {50C3EFAE-AD7E-478D-A136-A8185DD34688}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {339B3C41-1206-4D05-A93F-ECA428BBFD67}

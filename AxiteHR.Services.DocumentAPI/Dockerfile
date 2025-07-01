@@ -3,6 +3,29 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
+
+USER root
+
+RUN apt-get update && apt-get install -y \
+    libnss3 \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    fonts-liberation \
+    xdg-utils \
+    libgdk-pixbuf2.0-0 \
+    libglib2.0-0 \
+    wget \
+    unzip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+USER app
+
 EXPOSE 8080
 EXPOSE 8081
 

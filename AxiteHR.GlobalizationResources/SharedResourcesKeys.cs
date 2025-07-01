@@ -15,5 +15,6 @@ namespace AxiteHR.GlobalizationResources
         public const string Global_PeriodFrom = "Global_PeriodFrom";
         public const string Global_PeriodTo = "Global_PeriodTo";
         public const string Global_RequestedUserDoesNotExistsInDb = "Global_RequestedUserDoesNotExistsInDb";
+        public const string Global_MaxLengthField = "Global_MaxLengthField";
     }
 }

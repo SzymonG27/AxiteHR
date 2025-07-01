@@ -1,4 +1,5 @@
-﻿using AxiteHR.Services.InvoiceAPI.Models;
+﻿using AxiteHR.Integration.GlobalClass.Enums.Invoice;
+using AxiteHR.Services.InvoiceAPI.Models;
 using AxiteHR.Services.InvoiceAPI.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,8 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 		public DbSet<Invoice> Invoices { get; set; }
 
 		public DbSet<InvoicePosition> InvoicePositions { get; set; }
+
+		public DbSet<InvoiceSequence> InvoiceSequences { get; set; }
 
 		// Model configuration
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,10 +26,22 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 					t.HasCheckConstraint("CK_Status_Enum", EnumCheckConstraint<InvoiceStatus>(nameof(Invoice.Status)))
 				);
 
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Type_Enum", EnumCheckConstraint<InvoiceType>(nameof(Invoice.Type)))
+				);
+
+				entity.Property(e => e.Number)
+					.IsRequired()
+					.HasMaxLength(50)
+					.IsUnicode(false);
+
 				entity.Property(e => e.BlobFileName)
 					.IsRequired()
 					.HasMaxLength(100)
 					.IsUnicode(false);
+
+				entity.HasIndex(e => e.BlobFileName)
+					.IsUnique();
 
 				entity.Property(e => e.ClientName)
 					.IsRequired()
@@ -63,6 +78,41 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 					.IsRequired()
 					.HasMaxLength(100);
 
+				entity.Property(e => e.RecipientName)
+					.IsRequired()
+					.HasMaxLength(100);
+
+				entity.Property(e => e.RecipientNip)
+					.IsRequired()
+					.HasMaxLength(10)
+					.IsUnicode(false);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_RecipientNip_NIP_Format", "LEN([RecipientNip]) = 10 AND [RecipientNip] NOT LIKE '%[^0-9]%'")
+				);
+
+				entity.Property(e => e.RecipientStreet)
+					.IsRequired()
+					.HasMaxLength(100);
+
+				entity.Property(e => e.RecipientHouseNumber)
+					.IsRequired()
+					.HasMaxLength(30)
+					.IsUnicode(false);
+
+				entity.Property(e => e.RecipientPostalCode)
+					.IsRequired()
+					.HasMaxLength(6)
+					.IsUnicode(false);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_RecipientPostalCode_PostalCode_Format", "[RecipientPostalCode] LIKE '[0-9][0-9]-[0-9][0-9][0-9]'")
+				);
+
+				entity.Property(e => e.RecipientCity)
+					.IsRequired()
+					.HasMaxLength(100);
+
 				entity.ToTable(t =>
 					t.HasCheckConstraint("CK_PaymentMethod_Enum", EnumCheckConstraint<PaymentMethod>(nameof(Invoice.PaymentMethod)))
 				);
@@ -90,16 +140,16 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 				entity.Property(e => e.GrossAmount)
 					.IsRequired()
 					.HasColumnType("decimal(18,2)");
+
+				entity.HasMany(i => i.InvoicePositions)
+					.WithOne(p => p.Invoice)
+					.HasForeignKey(p => p.InvoiceId)
+					.OnDelete(DeleteBehavior.Cascade);
 			});
 
 			modelBuilder.Entity<InvoicePosition>(entity =>
 			{
 				entity.HasKey(e => e.Id);
-
-				entity.HasOne(e => e.Invoice)
-					.WithMany()
-					.HasForeignKey(e => e.InvoiceId)
-					.OnDelete(DeleteBehavior.Restrict);
 
 				entity.Property(e => e.ProductName)
 					.IsRequired()
@@ -135,6 +185,21 @@ namespace AxiteHR.Services.InvoiceAPI.Data
 				entity.Property(e => e.GrossAmount)
 					.IsRequired()
 					.HasColumnType("decimal(18,2)");
+			});
+
+			modelBuilder.Entity<InvoiceSequence>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+
+				entity.ToTable(t =>
+					t.HasCheckConstraint("CK_Type_Enum", EnumCheckConstraint<InvoiceType>(nameof(InvoiceSequence.Type)))
+				);
+
+				entity.HasIndex(e => new { e.CompanyUserId, e.Type, e.Year, e.Month })
+					.IsUnique();
+
+				entity.Property(e => e.CurrentNumber)
+					.IsRequired();
 			});
 		}
 

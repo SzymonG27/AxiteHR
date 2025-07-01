@@ -128,11 +128,24 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "https://+:7003;http://+:5187"
+      IsDbFromDocker: true
+      ConnectionStrings__DefaultConnection: "Server=AxiteHR_Sql;Database=AxiteHR_Document;User Id=sa;Password=Password123;MultipleActiveResultSets=true;Encrypt=False"
+      ConnectionStrings__Redis: "redis:6379"
+      BrokerMessageSenderConfigs__RabbitMq__HostName: "rabbitmq"
+      BrokerMessageSenderConfigs__RabbitMq__UserName: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Password: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Port: 5672
+      Minio__Endpoint: "http://minio:9000"
+      Minio__AccessKey: "admin123"
+      Minio__SecretKey: "admin123"
+      Minio__Bucket: "invoices"
     networks:
       - axitehr-network
     depends_on:
       - sqlserverdb
       - axitehr.gatewaysol
+      - logstash
+      - rabbitmq
 
   axitehr.services.emailapi:
     image: ${DOCKER_REGISTRY-}axitehrservicesemailapi
@@ -153,10 +166,10 @@ services:
       EmailSenderSettings__Port: 587
       EmailSenderSettings__Username: "joelle.howe@ethereal.email"
       EmailSenderSettings__Password: "6fZ5gyrjrDDURYv24p"
-      BrokerMessageSenderConfigs_RabbitMq_HostName: "rabbitmq"
-      BrokerMessageSenderConfigs_RabbitMq_UserName: "guest"
-      BrokerMessageSenderConfigs_RabbitMq_Password: "guest"
-      BrokerMessageSenderConfigs_RabbitMq_Port: 5672
+      BrokerMessageSenderConfigs__RabbitMq__HostName: "rabbitmq"
+      BrokerMessageSenderConfigs__RabbitMq__UserName: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Password: "guest"
+      BrokerMessageSenderConfigs__RabbitMq__Port: 5672
     networks:
       - axitehr-network
     depends_on:
@@ -190,7 +203,7 @@ services:
       context: .
       dockerfile: AxiteHR.Services.InvoiceAPI/Dockerfile
     ports:
-      - "5050:5050" # HTTP
+      - "5051:5050" # HTTP
       - "7007:7007" # HTTPS
     environment:
       ASPNETCORE_ENVIRONMENT: Development
@@ -260,30 +273,30 @@ services:
       - axitehr-network
   #END OF ELK STACK
 
-  kafka:
-    image: 'bitnami/kafka:latest'
-    container_name: kafka
-    environment:
-      - KAFKA_CFG_NODE_ID=1
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
-      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
-      - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=1
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    ports:
-      - '9092:9092'
-      - '9093:9093'
-    volumes:
-      - kafka_data:/bitnami/kafka/data
-      - kafka_logs:/bitnami/kafka/logs
-    networks:
-      - axitehr-network
+  # kafka:
+  #   image: 'bitnami/kafka:latest'
+  #   container_name: kafka
+  #   environment:
+  #     - KAFKA_CFG_NODE_ID=1
+  #     - KAFKA_CFG_PROCESS_ROLES=broker,controller
+  #     - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+  #     - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+  #     - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+  #     - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+  #     - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+  #     - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+  #     - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+  #     - KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+  #     - KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=1
+  #     - ALLOW_PLAINTEXT_LISTENER=yes
+  #   ports:
+  #     - '9092:9092'
+  #     - '9093:9093'
+  #   volumes:
+  #     - kafka_data:/bitnami/kafka/data
+  #     - kafka_logs:/bitnami/kafka/logs
+  #   networks:
+  #     - axitehr-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -307,6 +320,22 @@ services:
     networks:
       - axitehr-network
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000" #API S3
+      - "9001:9001" #Web UI
+    environment:
+      MINIO_ROOT_USER: admin123
+      MINIO_ROOT_PASSWORD: admin123
+    volumes:
+      - minio_data:/var/lib/minio
+    command: server /var/lib/minio --console-address ":9001"
+    restart: unless-stopped
+    networks:
+      - axitehr-network
+
 volumes:
   sqlserver_data:
   sqlserver_log:
@@ -317,6 +346,7 @@ volumes:
   rabbitmq_data:
   kafka_data:
   kafka_logs:
+  minio_data:
 
 networks:
   axitehr-network:

@@ -101,16 +101,58 @@ namespace AxiteHR.Services.InvoiceAPI.Migrations
                     b.Property<decimal>("NetAmount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<DateTime>("PaymentDeadline")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
+                    b.Property<string>("RecipientCity")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RecipientHouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("RecipientName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RecipientNip")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("RecipientPostalCode")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(6)");
+
+                    b.Property<string>("RecipientStreet")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdDate")
@@ -120,6 +162,9 @@ namespace AxiteHR.Services.InvoiceAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BlobFileName")
+                        .IsUnique();
 
                     b.ToTable("Invoices", t =>
                         {
@@ -135,7 +180,13 @@ namespace AxiteHR.Services.InvoiceAPI.Migrations
 
                             t.HasCheckConstraint("CK_PaymentMethod_Enum", "[PaymentMethod] IN (1, 2, 3)");
 
+                            t.HasCheckConstraint("CK_RecipientNip_NIP_Format", "LEN([RecipientNip]) = 10 AND [RecipientNip] NOT LIKE '%[^0-9]%'");
+
+                            t.HasCheckConstraint("CK_RecipientPostalCode_PostalCode_Format", "[RecipientPostalCode] LIKE '[0-9][0-9]-[0-9][0-9][0-9]'");
+
                             t.HasCheckConstraint("CK_Status_Enum", "[Status] IN (1, 2, 3)");
+
+                            t.HasCheckConstraint("CK_Type_Enum", "[Type] IN (1, 2)");
                         });
                 });
 
@@ -188,15 +239,55 @@ namespace AxiteHR.Services.InvoiceAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AxiteHR.Services.InvoiceAPI.Models.InvoiceSequence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurrentNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyUserId", "Type", "Year", "Month")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceSequences", t =>
+                        {
+                            t.HasCheckConstraint("CK_Type_Enum", "[Type] IN (1, 2)")
+                                .HasName("CK_Type_Enum1");
+                        });
+                });
+
             modelBuilder.Entity("AxiteHR.Services.InvoiceAPI.Models.InvoicePosition", b =>
                 {
                     b.HasOne("AxiteHR.Services.InvoiceAPI.Models.Invoice", "Invoice")
-                        .WithMany()
+                        .WithMany("InvoicePositions")
                         .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("AxiteHR.Services.InvoiceAPI.Models.Invoice", b =>
+                {
+                    b.Navigation("InvoicePositions");
                 });
 #pragma warning restore 612, 618
         }

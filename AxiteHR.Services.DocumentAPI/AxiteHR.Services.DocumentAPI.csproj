@@ -8,12 +8,51 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.18.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="PuppeteerSharp" Version="20.1.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+    <PackageReference Include="RazorLight" Version="2.3.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="9.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AxiteHR.Integration.Cache\AxiteHR.Integration.Cache.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.GlobalClass\AxiteHR.Integration.GlobalClass.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.Storage\AxiteHR.Integration.Storage.csproj" />
+    <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />
+  </ItemGroup>
+
+  <Target Name="DownloadChromium" BeforeTargets="Build">
+    <Exec Command="powershell -ExecutionPolicy Bypass -File $(ProjectDir)Chromium.ps1" />
+  </Target>
+
+  <ItemGroup>
+    <Content Include="Chromium\**\*" Exclude="Chromium\chrome-win\MEIPreload\manifest.json;Chromium\chrome-win\vk_swiftshader_icd.json;Chromium\chrome-linux\MEIPreload\manifest.json;Chromium\chrome-linux\vk_swiftshader_icd.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\**\*.cshtml" />
   </ItemGroup>
 
 </Project>

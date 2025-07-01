@@ -375,3 +375,6 @@ AxiteHR.Services.CompanyAPI/Certs/*.crt
 AxiteHR.Services.SignalRApi/Certs/*.key
 AxiteHR.Services.SignalRApi/Certs/*.pfx
 AxiteHR.Services.SignalRApi/Certs/*.crt
+
+#Chromium
+Chromium/

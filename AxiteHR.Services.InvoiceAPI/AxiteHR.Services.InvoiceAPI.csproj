@@ -28,8 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\Dto\" />
+    <ProjectReference Include="..\AxiteHR.GlobalizationResources\AxiteHR.GlobalizationResources.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.BrokerMessageSender\AxiteHR.Integration.BrokerMessageSender.csproj" />
+    <ProjectReference Include="..\AxiteHR.Integration.GlobalClass\AxiteHR.Integration.GlobalClass.csproj" />
   </ItemGroup>
 
 </Project>

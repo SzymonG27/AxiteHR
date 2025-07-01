@@ -23,6 +23,9 @@ namespace AxiteHR.Services.DocumentAPI.Helpers
 			DocumentResourcesKeys.Document_Invoice_SplitPayment,
 			DocumentResourcesKeys.Document_Invoice_Total,
 			DocumentResourcesKeys.Document_Invoice_TotalAmountDue,
+			DocumentResourcesKeys.Document_Invoice_PaymentMethod_Card,
+			DocumentResourcesKeys.Document_Invoice_PaymentMethod_Cash,
+			DocumentResourcesKeys.Document_Invoice_PaymentMethod_Transfer,
 			DocumentResourcesKeys.Document_InvoicePosition_GrossAmount,
 			DocumentResourcesKeys.Document_InvoicePosition_InternationalUnitShort,
 			DocumentResourcesKeys.Document_InvoicePosition_Name,
@@ -30,7 +33,9 @@ namespace AxiteHR.Services.DocumentAPI.Helpers
 			DocumentResourcesKeys.Document_InvoicePosition_NetPrice,
 			DocumentResourcesKeys.Document_InvoicePosition_Quantity,
 			DocumentResourcesKeys.Document_InvoicePosition_VatAmount,
-			DocumentResourcesKeys.Document_InvoicePosition_VatRate
+			DocumentResourcesKeys.Document_InvoicePosition_VatRate,
+			DocumentResourcesKeys.Document_InvoicePosition_Unit_Hour,
+			DocumentResourcesKeys.Document_InvoicePosition_Unit_Piece
 		};
 	}
 }

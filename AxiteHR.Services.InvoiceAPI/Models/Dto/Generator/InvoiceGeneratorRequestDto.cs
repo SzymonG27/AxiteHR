@@ -73,6 +73,8 @@ namespace AxiteHR.Services.InvoiceAPI.Models.Dto.Generator
 		public PaymentMethod PaymentMethod { get; set; }
 
 		[RequiredIf(nameof(PaymentMethod), PaymentMethod.Transfer, ErrorMessageResourceType = typeof(InvoiceResources), ErrorMessageResourceName = InvoiceResourcesKeys.Invoice_BankNumberRequiredPaymentMethod)]
+		[MinLength(26, ErrorMessageResourceType = typeof(InvoiceResources), ErrorMessageResourceName = InvoiceResourcesKeys.Invoice_InvalidBankAccountNumber)]
+		[MaxLength(26, ErrorMessageResourceType = typeof(InvoiceResources), ErrorMessageResourceName = InvoiceResourcesKeys.Invoice_InvalidBankAccountNumber)]
 		public string BankAccountNumber { get; set; } = string.Empty;
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = SharedResourcesKeys.Global_RequiredField)]

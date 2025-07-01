@@ -70,6 +70,24 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while creating a new invoice..
+        /// </summary>
+        public static string Invoice_Generator_Error {
+            get {
+                return ResourceManager.GetString("Invoice_Generator_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank account number is invalid..
+        /// </summary>
+        public static string Invoice_InvalidBankAccountNumber {
+            get {
+                return ResourceManager.GetString("Invoice_InvalidBankAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} must have no more than {1} decimal places..
         /// </summary>
         public static string Invoice_InvalidDecimalPrecision {

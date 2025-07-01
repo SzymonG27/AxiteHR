@@ -7,5 +7,6 @@
 		public const string DefaultConnectionString = "DefaultConnection";
 		public const string IsDbFromDocker = "IsDbFromDocker";
 		public const string InvoiceGeneratorQueue = "TopicsAndQueueNames:InvoiceGeneratorQueue";
+		public const string RabbitMqBrokerMessageSenderConfig = "BrokerMessageSenderConfigs:RabbitMq";
 	}
 }

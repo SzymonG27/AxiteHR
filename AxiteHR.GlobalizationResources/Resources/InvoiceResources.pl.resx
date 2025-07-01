@@ -129,4 +129,10 @@
   <data name="Invoice_InvalidDecimalPrecision" xml:space="preserve">
     <value>Pole {0} nie może zawierać więcej niż {1} miejsc po przecinku.</value>
   </data>
+  <data name="Invoice_InvalidBankAccountNumber" xml:space="preserve">
+    <value>Numer konta bankowego jest nieprawidłowy</value>
+  </data>
+  <data name="Invoice_Generator_Error" xml:space="preserve">
+    <value>Wystąpił problem podczas tworzenia nowej faktury.</value>
+  </data>
 </root>

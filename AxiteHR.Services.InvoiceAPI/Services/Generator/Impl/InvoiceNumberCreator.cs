@@ -9,7 +9,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 		{
 			var shortcut = GetInvoiceShortcut(type);
 
-			return $"{shortcut}/{year:D4}/{month:D2}/{currentNumber:D5}";
+			return $"{shortcut}/{year:D4}/{month:D2}/{currentNumber}";
 		}
 
 		private static string GetInvoiceShortcut(InvoiceType type)

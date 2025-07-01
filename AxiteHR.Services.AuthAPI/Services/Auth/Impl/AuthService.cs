@@ -207,7 +207,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 
 				if (isTempPassword)
 				{
-					await PublishTempPasswordMessage(user, password);
+					await PublishTempPasswordMessageAsync(user, password);
 				}
 
 				await dbContext.SaveChangesAsync();
@@ -234,7 +234,7 @@ namespace AxiteHR.Services.AuthAPI.Services.Auth.Impl
 			return result.Succeeded;
 		}
 
-		private async Task PublishTempPasswordMessage(AppUser user, string password)
+		private async Task PublishTempPasswordMessageAsync(AppUser user, string password)
 		{
 			var encryptionKey = configuration.GetValue<string>(ConfigurationHelper.TempPasswordEncryptionKey) ??
 				throw new ArgumentException($"Appsetting {ConfigurationHelper.TempPasswordEncryptionKey} isn't configured");

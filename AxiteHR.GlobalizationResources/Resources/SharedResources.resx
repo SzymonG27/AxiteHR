@@ -153,4 +153,7 @@
   <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
     <value>Requested user does not exist in application</value>
   </data>
+  <data name="Global_MaxLengthField" xml:space="preserve">
+    <value>The {0} field must be at most {1} characters long.</value>
+  </data>
 </root>

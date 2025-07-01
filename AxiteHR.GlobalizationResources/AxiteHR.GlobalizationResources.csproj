@@ -27,10 +27,20 @@
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>CompanyResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\DocumentResources.pl.resx" />
+		<EmbeddedResource Include="Resources\DocumentResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DocumentResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\EmailResources.pl.resx" />
 		<EmbeddedResource Include="Resources\EmailResources.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>EmailResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\InvoiceResources.pl.resx" />
+		<EmbeddedResource Include="Resources\InvoiceResources.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>InvoiceResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\SharedResources.pl.resx">
 		  <Generator></Generator>
@@ -61,10 +71,20 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>CompanyResources.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\DocumentResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>DocumentResources.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\EmailResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>EmailResources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\InvoiceResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>InvoiceResources.resx</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\SharedResources.Designer.cs">
 	    <DesignTime>True</DesignTime>

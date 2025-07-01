@@ -1,10 +1,10 @@
 ﻿namespace AxiteHR.Services.EmailAPI.Models
 {
-	public record EmailLogger
+	public class EmailLogger
 	{
-		public int Id { get; set; }
-		public string Email { get; set; } = string.Empty;
-		public string Message { get; set; } = string.Empty;
-		public DateTime? EmailSent { get; set; }
+		public virtual int Id { get; set; }
+		public virtual string Email { get; set; } = string.Empty;
+		public virtual string Message { get; set; } = string.Empty;
+		public virtual DateTime? EmailSent { get; set; }
 	}
 }

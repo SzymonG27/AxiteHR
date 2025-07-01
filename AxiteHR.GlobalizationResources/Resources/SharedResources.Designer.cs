@@ -88,6 +88,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} field must be at most {1} characters long..
+        /// </summary>
+        public static string Global_MaxLengthField {
+            get {
+                return ResourceManager.GetString("Global_MaxLengthField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field must be at least {1} characters long..
         /// </summary>
         public static string Global_MinLengthField {
@@ -129,6 +138,15 @@ namespace AxiteHR.GlobalizationResources.Resources {
         public static string Global_PeriodTo {
             get {
                 return ResourceManager.GetString("Global_PeriodTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested user does not exist in application.
+        /// </summary>
+        public static string Global_RequestedUserDoesNotExistsInDb {
+            get {
+                return ResourceManager.GetString("Global_RequestedUserDoesNotExistsInDb", resourceCulture);
             }
         }
         

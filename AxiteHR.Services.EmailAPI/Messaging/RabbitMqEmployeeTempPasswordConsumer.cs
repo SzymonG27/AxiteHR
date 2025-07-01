@@ -55,7 +55,7 @@ namespace AxiteHR.Services.EmailAPI.Messaging
 
 			_channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-			_channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+			_channel.BasicQos(prefetchSize: 0, prefetchCount: 5, global: false);
 		}
 
 		protected override Task ExecuteAsync(CancellationToken stoppingToken)

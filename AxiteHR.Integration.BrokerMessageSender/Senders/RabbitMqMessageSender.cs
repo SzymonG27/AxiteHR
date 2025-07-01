@@ -44,6 +44,7 @@ namespace AxiteHR.Integration.BrokerMessageSender.Senders
 			catch (Exception ex)
 			{
 				Log.Error(ex, "Error while create connection to RabbitMQ");
+				throw;
 			}
 		}
 	}

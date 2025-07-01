@@ -129,4 +129,10 @@
   <data name="Invoice_InvalidDecimalPrecision" xml:space="preserve">
     <value>{0} must have no more than {1} decimal places.</value>
   </data>
+  <data name="Invoice_InvalidBankAccountNumber" xml:space="preserve">
+    <value>Bank account number is invalid.</value>
+  </data>
+  <data name="Invoice_Generator_Error" xml:space="preserve">
+    <value>An error occurred while creating a new invoice.</value>
+  </data>
 </root>

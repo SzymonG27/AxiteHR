@@ -1,4 +1,6 @@
-﻿using AxiteHR.Integration.BrokerMessageSender;
+﻿using AxiteHR.GlobalizationResources;
+using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Integration.BrokerMessageSender;
 using AxiteHR.Integration.BrokerMessageSender.Models;
 using AxiteHR.Integration.GlobalClass.Enums;
 using AxiteHR.Integration.GlobalClass.Enums.Invoice;
@@ -8,7 +10,9 @@ using AxiteHR.Services.InvoiceAPI.Models;
 using AxiteHR.Services.InvoiceAPI.Models.Dto.Generator;
 using AxiteHR.Services.InvoiceAPI.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Serilog;
 using System.Data;
 
 namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
@@ -17,33 +21,55 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 		AppDbContext dbContext,
 		IConfiguration configuration,
 		IServiceProvider serviceProvider,
+		IStringLocalizer<InvoiceResources> invoiceLocalizer,
 		IOptions<RabbitMqMessageSenderConfig> rabbitMqMessageSenderConfig) : IInvoiceGenerator
 	{
 		private readonly RabbitMqMessageSenderConfig _rabbitMqMessageSenderConfig = rabbitMqMessageSenderConfig.Value;
 
 		public async Task<InvoiceGeneratorResponseDto> GenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto)
 		{
-			//New invoice is always Invoice type
-			const InvoiceType invoiceType = InvoiceType.Invoice;
-
-			var number = await ReserveNumberAsync(invoiceType, requestDto.CompanyUserId, requestDto.IssueDate.Year, requestDto.IssueDate.Month);
-			var invoiceNumber = InvoiceNumberCreator.GetInvoiceNumber(invoiceType, requestDto.IssueDate.Year, requestDto.IssueDate.Month, number);
-
-			await using var transaction = await dbContext.Database.BeginTransactionAsync();
-
-			var invoice = MapInvoiceFromRequest(ref requestDto, invoiceType, invoiceNumber);
-
-			dbContext.Invoices.Add(invoice);
-
-			await dbContext.SaveChangesAsync();
-			await transaction.CommitAsync();
-
-			await PublishGenerateInvoiceAsync(requestDto, Language.pl);
-
-			return new InvoiceGeneratorResponseDto
+			try
 			{
-				IsSucceeded = true
-			};
+				//New invoice is always Invoice type
+				const InvoiceType invoiceType = InvoiceType.Invoice;
+
+				var number = await ReserveNumberAsync(invoiceType, requestDto.CompanyUserId, requestDto.IssueDate.Year, requestDto.IssueDate.Month);
+				var invoiceNumber = InvoiceNumberCreator.GetInvoiceNumber(invoiceType, requestDto.IssueDate.Year, requestDto.IssueDate.Month, number);
+
+				await using var transaction = await dbContext.Database.BeginTransactionAsync();
+
+				var invoice = MapInvoiceFromRequest(ref requestDto, invoiceType, invoiceNumber);
+
+				dbContext.Invoices.Add(invoice);
+
+				await dbContext.SaveChangesAsync();
+				await transaction.CommitAsync();
+
+				await PublishGenerateInvoiceAsync(requestDto, Language.pl);
+				await PublishGenerateInvoiceAsync(requestDto, Language.en);
+
+				return new InvoiceGeneratorResponseDto
+				{
+					IsSucceeded = true
+				};
+			}
+			catch (Exception ex)
+			{
+				var param = new
+				{
+					requestDto.InsUserId,
+					requestDto.CompanyId,
+					requestDto.CompanyUserId,
+					DateOfIssue = DateTime.UtcNow
+				};
+				Log.Error(ex, "Error while generating invoice. Param: {Param}", param);
+
+				return new InvoiceGeneratorResponseDto
+				{
+					IsSucceeded = false,
+					ErrorMessage = invoiceLocalizer[InvoiceResourcesKeys.Invoice_Generator_Error]
+				};
+			}
 		}
 
 		private async Task<int> ReserveNumberAsync(InvoiceType type, int companyUserId, int year, int month)
@@ -133,9 +159,9 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 					VatRate = positionRequestDto.VatRate
 				};
 
-				invoicePosition.NetAmount = invoicePosition.NetPrice * invoicePosition.Quantity;
-				invoicePosition.VatAmount = invoicePosition.NetAmount * (invoicePosition.VatRate / 100m);
-				invoicePosition.GrossAmount = invoicePosition.NetAmount + invoicePosition.VatAmount;
+				invoicePosition.NetAmount = Math.Round(invoicePosition.NetPrice * invoicePosition.Quantity, 2, MidpointRounding.AwayFromZero);
+				invoicePosition.VatAmount = Math.Round(invoicePosition.NetAmount * (invoicePosition.VatRate / 100m), 2, MidpointRounding.AwayFromZero);
+				invoicePosition.GrossAmount = Math.Round(invoicePosition.NetAmount + invoicePosition.VatAmount, 2, MidpointRounding.AwayFromZero);
 
 				positionRequestDto.NetAmount = invoicePosition.NetAmount;
 				positionRequestDto.VatAmount = invoicePosition.VatAmount;
@@ -148,8 +174,8 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 				invoice.InvoicePositions.Add(invoicePosition);
 			}
 
-			invoice.NetAmount = netAmonut;
-			invoice.GrossAmount = grossAmount;
+			invoice.NetAmount = Math.Round(netAmonut, 2, MidpointRounding.AwayFromZero);
+			invoice.GrossAmount = Math.Round(grossAmount, 2, MidpointRounding.AwayFromZero);
 
 			requestDto.NetAmount = invoice.NetAmount;
 			requestDto.GrossAmount = invoice.GrossAmount;
@@ -162,6 +188,10 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 		public async Task PublishGenerateInvoiceAsync(InvoiceGeneratorRequestDto requestDto, Language language)
 		{
 			requestDto.Language = language;
+			var fileName = requestDto.BlobFileName;
+			var fileNameSplit = fileName.Split('.');
+
+			requestDto.BlobFileName = $"{fileNameSplit[0]}_{language.ToString().ToUpper()}.{fileNameSplit[1]}";
 
 			MessageSenderModel<RabbitMqMessageSenderConfig, InvoiceGeneratorRequestDto> messageSenderModel = new()
 			{
@@ -172,6 +202,8 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			var messagePublisher = serviceProvider.GetService<MessagePublisher>() ?? throw new NotSupportedException("No such service for MessagePublisher");
 			await messagePublisher.PublishMessageAsync(messageSenderModel);
+
+			requestDto.BlobFileName = fileName;
 		}
 	}
 }

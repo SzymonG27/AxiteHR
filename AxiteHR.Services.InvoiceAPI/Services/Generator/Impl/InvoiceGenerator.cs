@@ -176,6 +176,7 @@ namespace AxiteHR.Services.InvoiceAPI.Services.Generator.Impl
 
 			invoice.NetAmount = Math.Round(netAmonut, 2, MidpointRounding.AwayFromZero);
 			invoice.GrossAmount = Math.Round(grossAmount, 2, MidpointRounding.AwayFromZero);
+			invoice.VatAmount = Math.Round(vatAmount, 2, MidpointRounding.AwayFromZero);
 
 			requestDto.NetAmount = invoice.NetAmount;
 			requestDto.GrossAmount = invoice.GrossAmount;

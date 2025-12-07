@@ -43,7 +43,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 			var nameExists = await dbContext.CompanyPermissionGroups.AnyAsync(x => x.CompanyId == dto.CompanyId && x.Name == dto.Name);
 			if (nameExists)
 			{
-				var errorMessage = string.Format(companyLocalizer[CompanyResources.Permissions_CreateGroupAsync_PermissionNotExists], dto.Name);
+				var errorMessage = string.Format(companyLocalizer[CompanyResources.Permissions_NameAlreadyExists], dto.Name);
 				return Result<int>.Failure(errorMessage, HttpStatusCode.BadRequest);
 			}
 
@@ -57,7 +57,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 				var invalidIds = dto.PermissionIds.Except(validPermissionIds).ToList();
 				if (invalidIds.Count != 0)
 				{
-					return Result<int>.Failure(companyLocalizer[CompanyResources.Permissions_CreateGroupAsync_PermissionNotExists], HttpStatusCode.NotFound);
+					return Result<int>.Failure(companyLocalizer[CompanyResources.Permissions_PermissionNotExists], HttpStatusCode.NotFound);
 				}
 			}
 
@@ -97,7 +97,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 			if (group == null)
 			{
-				return Result<bool>.Failure("Permission group not found", HttpStatusCode.NotFound);
+				return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_GroupNotFound], HttpStatusCode.NotFound);
 			}
 
 			if (group.Name != dto.Name)
@@ -107,7 +107,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 				if (nameExists)
 				{
-					return Result<bool>.Failure($"Permission group with name '{dto.Name}' already exists in this company", HttpStatusCode.BadRequest);
+					return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_NameAlreadyExists], HttpStatusCode.BadRequest);
 				}
 			}
 
@@ -130,7 +130,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 			if (group == null)
 			{
-				return Result<bool>.Failure("Permission group not found", HttpStatusCode.NotFound);
+				return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_GroupNotFound], HttpStatusCode.NotFound);
 			}
 
 			var companyUserId = await companyUserService.GetIdAsync(group.CompanyId, userId);
@@ -159,7 +159,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 			var group = await dbContext.CompanyPermissionGroups.FindAsync(groupId);
 			if (group == null)
 			{
-				return Result<bool>.Failure("Permission group not found", HttpStatusCode.NotFound);
+				return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_GroupNotFound], HttpStatusCode.NotFound);
 			}
 
 			if (permissionIds.Count != 0)
@@ -173,7 +173,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 				if (invalidIds.Count != 0)
 				{
-					return Result<bool>.Failure($"Invalid permission IDs: {string.Join(", ", invalidIds)}", HttpStatusCode.BadRequest);
+					return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_PermissionNotExists], HttpStatusCode.BadRequest);
 				}
 			}
 
@@ -225,12 +225,13 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 
 			if (group == null)
 			{
-				return Result<bool>.Failure("Permission group not found", HttpStatusCode.NotFound);
+				return Result<bool>.Failure(companyLocalizer[CompanyResources.Permissions_GroupNotFound], HttpStatusCode.NotFound);
 			}
 
 			if (group.UserPermissions.Count != 0)
 			{
-				return Result<bool>.Failure($"Cannot delete group. It is assigned to {group.UserPermissions.Count} user(s). Please remove all assignments first or deactivate the group instead.", HttpStatusCode.BadRequest);
+				var errorMessage = string.Format(companyLocalizer[CompanyResources.Permissions_DeleteGroupAsync_UsersAttachedToGroup], group.UserPermissions.Count);
+				return Result<bool>.Failure(errorMessage, HttpStatusCode.BadRequest);
 			}
 
 			var companyUserId = await companyUserService.GetIdAsync(group.CompanyId, userId);

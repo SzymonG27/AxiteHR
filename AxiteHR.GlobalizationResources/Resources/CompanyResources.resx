@@ -168,7 +168,7 @@
   <data name="Permissions_CreateGroupAsync_CompanyNotFound" xml:space="preserve">
     <value>Company not found.</value>
   </data>
-  <data name="Permissions_CreateGroupAsync_NameAlreadyExists" xml:space="preserve">
+  <data name="Permissions_NameAlreadyExists" xml:space="preserve">
     <value>Permission group with name '{0}' already exists in this company.</value>
   </data>
   <data name="Permissions_NoPermissionsToManage" xml:space="preserve">
@@ -177,10 +177,16 @@
   <data name="Permissions_CompanyUserNotFound" xml:space="preserve">
     <value>Company user not found.</value>
   </data>
-  <data name="Permissions_CreateGroupAsync_PermissionNotExists" xml:space="preserve">
+  <data name="Permissions_PermissionNotExists" xml:space="preserve">
     <value>Not all selected permissions still exist. Please refresh the page.</value>
   </data>
   <data name="Permissions_DeleteGroupAsync_NoPermissionsToDelete" xml:space="preserve">
     <value>The user does not have permission to delete the group.</value>
+  </data>
+  <data name="Permissions_GroupNotFound" xml:space="preserve">
+    <value>Permission group not found.</value>
+  </data>
+  <data name="Permissions_DeleteGroupAsync_UsersAttachedToGroup" xml:space="preserve">
+    <value>Cannot delete group. It is assigned to {0} user(s). Please remove all assignments first or deactivate the group instead.</value>
   </data>
 </root>

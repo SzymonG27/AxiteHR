@@ -196,24 +196,6 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permission group with name &apos;{0}&apos; already exists in this company..
-        /// </summary>
-        public static string Permissions_CreateGroupAsync_NameAlreadyExists {
-            get {
-                return ResourceManager.GetString("Permissions_CreateGroupAsync_NameAlreadyExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not all selected permissions still exist. Please refresh the page..
-        /// </summary>
-        public static string Permissions_CreateGroupAsync_PermissionNotExists {
-            get {
-                return ResourceManager.GetString("Permissions_CreateGroupAsync_PermissionNotExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The user does not have permission to delete the group..
         /// </summary>
         public static string Permissions_DeleteGroupAsync_NoPermissionsToDelete {
@@ -223,11 +205,47 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete group. It is assigned to {0} user(s). Please remove all assignments first or deactivate the group instead..
+        /// </summary>
+        public static string Permissions_DeleteGroupAsync_UsersAttachedToGroup {
+            get {
+                return ResourceManager.GetString("Permissions_DeleteGroupAsync_UsersAttachedToGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission group not found..
+        /// </summary>
+        public static string Permissions_GroupNotFound {
+            get {
+                return ResourceManager.GetString("Permissions_GroupNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission group with name &apos;{0}&apos; already exists in this company..
+        /// </summary>
+        public static string Permissions_NameAlreadyExists {
+            get {
+                return ResourceManager.GetString("Permissions_NameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User don&apos;t have permissions to manage permission in company..
         /// </summary>
         public static string Permissions_NoPermissionsToManage {
             get {
                 return ResourceManager.GetString("Permissions_NoPermissionsToManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not all selected permissions still exist. Please refresh the page..
+        /// </summary>
+        public static string Permissions_PermissionNotExists {
+            get {
+                return ResourceManager.GetString("Permissions_PermissionNotExists", resourceCulture);
             }
         }
         

@@ -1,6 +1,4 @@
 ﻿using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
 using AxiteHR.Services.CompanyAPI.Services.Employee.Impl;
 using AxiteHR.GlobalizationResources;
@@ -13,12 +11,16 @@ using Moq.Protected;
 using System.Net;
 using System.Text.Json;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
+using AxiteHR.Services.CompanyAPI.Models.Permissions;
+using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.Employee;
 
 [TestFixture]
 public class EmployeeServiceTests
 {
+	private Mock<ICompanyPermissionService> _companyPermissionServiceMock;
 	private Mock<IHttpClientFactory> _httpClientFactoryMock;
 	private Mock<IStringLocalizer<CompanyResources>> _companyLocalizerMock;
 	private Mock<IStringLocalizer<SharedResources>> _sharedLocalizerMock;
@@ -30,6 +32,7 @@ public class EmployeeServiceTests
 	[SetUp]
 	public void SetUp()
 	{
+		_companyPermissionServiceMock = new Mock<ICompanyPermissionService>();
 		_httpClientFactoryMock = new Mock<IHttpClientFactory>();
 		_companyLocalizerMock = new Mock<IStringLocalizer<CompanyResources>>();
 		_sharedLocalizerMock = new Mock<IStringLocalizer<SharedResources>>();
@@ -46,6 +49,7 @@ public class EmployeeServiceTests
 		_dbContext.Database.EnsureCreated();
 
 		_employeeService = new EmployeeService(
+			_companyPermissionServiceMock.Object,
 			_httpClientFactoryMock.Object,
 			_companyLocalizerMock.Object,
 			_sharedLocalizerMock.Object,
@@ -69,6 +73,10 @@ public class EmployeeServiceTests
 
 		_sharedLocalizerMock.Setup(l => l[SharedResourcesKeys.Global_UserWithoutPermission])
 			.Returns(new LocalizedString(SharedResourcesKeys.Global_UserWithoutPermission, "User without permission"));
+
+		_companyPermissionServiceMock
+			.Setup(s => s.IsCompanyUserHasAnyPermissionAsync(It.IsAny<int>(), It.IsAny<List<int>>()))
+			.ReturnsAsync(false);
 
 		// Act
 		var result = await _employeeService.CreateNewEmployeeAsync(requestDto, token, AcceptLanguage);
@@ -134,6 +142,10 @@ public class EmployeeServiceTests
 			IsSucceeded = true,
 			EmployeeId = Guid.NewGuid().ToString()
 		};
+
+		_companyPermissionServiceMock
+			.Setup(s => s.IsCompanyUserHasAnyPermissionAsync(It.IsAny<int>(), It.IsAny<List<int>>()))
+			.ReturnsAsync(true);
 
 		var httpClientHandlerMock = new Mock<HttpMessageHandler>();
 		httpClientHandlerMock.Protected()
@@ -213,6 +225,10 @@ public class EmployeeServiceTests
 			InsUserId = insUserId.ToString()
 		};
 		const string token = "fakeToken";
+
+		_companyPermissionServiceMock
+			.Setup(s => s.IsCompanyUserHasAnyPermissionAsync(It.IsAny<int>(), It.IsAny<List<int>>()))
+			.ReturnsAsync(true);
 
 		_httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>()))
 			.Throws(new Exception("Some error"));

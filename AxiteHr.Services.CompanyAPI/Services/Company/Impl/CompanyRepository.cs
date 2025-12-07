@@ -1,6 +1,6 @@
 ﻿using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
 using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl

@@ -26,6 +26,7 @@ namespace AxiteHR.Services.ApplicationAPI.Infrastructure.CompanyApi
 
 		public async Task<bool> IsUserCanManageApplicationForCompanyUserAsync(string token, string acceptLanguage, int companyUserId, Guid insUserId)
 		{
+			//ToDo gateway middleware
 			var client = httpClientFactory.CreateClient(HttpClientNameHelper.Company);
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			client.DefaultRequestHeaders.Add("Accept-Language", acceptLanguage);

@@ -1,7 +1,7 @@
 ﻿using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
+using AxiteHR.Services.CompanyAPI.Models.Roles.Dto.Request;
+using AxiteHR.Services.CompanyAPI.Models.Roles.Dto.Response;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole
 {

@@ -1,4 +1,4 @@
-﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
+﻿using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
 
 namespace AxiteHR.Services.CompanyAPI.Helpers
 {

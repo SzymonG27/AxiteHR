@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response;
 using AxiteHR.GlobalizationResources;
@@ -9,6 +8,10 @@ using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
+using AxiteHR.Services.CompanyAPI.Models.Permissions;
+using AxiteHR.Services.CompanyAPI.Models.Roles;
+using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
+using AxiteHR.Services.CompanyAPI.Models.Roles.Const;
 
 namespace AxiteHR.Services.CompanyAPI.Services.Company.Impl
 {

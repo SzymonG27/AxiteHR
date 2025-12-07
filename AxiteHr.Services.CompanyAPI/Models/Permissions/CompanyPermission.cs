@@ -1,4 +1,4 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
+﻿namespace AxiteHR.Services.CompanyAPI.Models.Permissions
 {
 	public class CompanyPermission
 	{

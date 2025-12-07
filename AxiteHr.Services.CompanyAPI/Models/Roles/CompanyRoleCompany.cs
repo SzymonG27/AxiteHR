@@ -1,4 +1,6 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
+﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+
+namespace AxiteHR.Services.CompanyAPI.Models.Roles
 {
 	public class CompanyRoleCompany
 	{

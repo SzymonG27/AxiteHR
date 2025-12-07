@@ -41,16 +41,56 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 				return bool.Parse(valueFromRedis);
 			}
 
-			var isCompanyUserHasAnyPermission = await dbContext.CompanyUserPermissions
-				.Where(x => x.CompanyUserId == companyUserId && permissionIdList.Contains(x.CompanyPermissionId))
+			var hasPermission = await dbContext.CompanyUserPermissions
+				.Where(x => x.CompanyUserId == companyUserId)
+				.Where(x =>
+					(x.CompanyPermissionId.HasValue && permissionIdList.Contains(x.CompanyPermissionId.Value))
+					||
+					(x.CompanyPermissionGroupId.HasValue
+					 && x.CompanyPermissionGroup!.IsActive
+					 && x.CompanyPermissionGroup.Permissions.Any(p => permissionIdList.Contains(p.CompanyPermissionId)))
+				)
 				.AnyAsync();
 
 			await redisCacheService.SetObjectAsync(
 				CompanyRedisKeys.IsCompanyUserHasAnyPermission(companyUserId, permissionIdListOrderedString),
-				isCompanyUserHasAnyPermission ? "true" : "false",
+				hasPermission ? "true" : "false",
 				TimeSpan.FromMinutes(5));
 
-			return isCompanyUserHasAnyPermission;
+			return hasPermission;
+		}
+
+		public async Task<List<int>> GetAllUserPermissionIdsAsync(int companyUserId)
+		{
+			var cacheKey = CompanyRedisKeys.AllUserPermissions(companyUserId);
+			var valueFromRedis = await redisCacheService.GetObjectAsync<List<int>?>(cacheKey);
+
+			if (valueFromRedis is not null)
+			{
+				return valueFromRedis;
+			}
+
+			var permissions = await dbContext.CompanyUserPermissions
+				.Where(x => x.CompanyUserId == companyUserId)
+				.Select(x => new
+				{
+					DirectPermission = x.CompanyPermissionId,
+					GroupPermissions = x.CompanyPermissionGroupId.HasValue && x.CompanyPermissionGroup!.IsActive
+						? x.CompanyPermissionGroup.Permissions.Select(p => p.CompanyPermissionId).ToList()
+						: new List<int>()
+				})
+				.ToListAsync();
+
+			var allPermissions = permissions
+				.SelectMany(x => x.DirectPermission.HasValue
+					? x.GroupPermissions.Append(x.DirectPermission.Value)
+					: x.GroupPermissions)
+				.Distinct()
+				.ToList();
+
+			await redisCacheService.SetObjectAsync(cacheKey, allPermissions, TimeSpan.FromMinutes(5));
+
+			return allPermissions;
 		}
 	}
 }

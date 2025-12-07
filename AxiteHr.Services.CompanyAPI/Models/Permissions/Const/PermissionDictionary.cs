@@ -1,4 +1,4 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const
+﻿namespace AxiteHR.Services.CompanyAPI.Models.Permissions.Const
 {
 	public enum PermissionDictionary
 	{

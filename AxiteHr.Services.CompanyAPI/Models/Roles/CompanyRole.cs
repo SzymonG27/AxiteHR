@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
+﻿namespace AxiteHR.Services.CompanyAPI.Models.Roles
 {
 	public class CompanyRole
 	{

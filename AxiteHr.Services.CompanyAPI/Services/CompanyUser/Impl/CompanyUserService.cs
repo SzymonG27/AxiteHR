@@ -3,9 +3,9 @@ using AxiteHR.Integration.GlobalClass.Redis.Keys;
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto;
 using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.Roles;
 using Microsoft.EntityFrameworkCore;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 

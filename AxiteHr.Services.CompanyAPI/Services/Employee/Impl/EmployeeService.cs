@@ -1,10 +1,11 @@
-﻿using AxiteHR.Services.CompanyAPI.Data;
-using AxiteHR.Services.CompanyAPI.Helpers;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
-using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
-using AxiteHR.GlobalizationResources;
+﻿using AxiteHR.GlobalizationResources;
 using AxiteHR.GlobalizationResources.Resources;
+using AxiteHR.Services.CompanyAPI.Data;
+using AxiteHR.Services.CompanyAPI.Helpers;
+using AxiteHR.Services.CompanyAPI.Models.EmployeeModels.Dto;
+using AxiteHR.Services.CompanyAPI.Models.Permissions;
+using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
+using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Text.Json;
@@ -13,6 +14,7 @@ using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Compan
 namespace AxiteHR.Services.CompanyAPI.Services.Employee.Impl
 {
 	public class EmployeeService(
+		ICompanyPermissionService companyPermissionService,
 		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<CompanyResources> companyLocalizer,
 		IStringLocalizer<SharedResources> sharedLocalizer,
@@ -117,18 +119,17 @@ namespace AxiteHR.Services.CompanyAPI.Services.Employee.Impl
 
 		private async Task<bool> IsUserHasManagerPermissionAsync(int companyId, string insUserId)
 		{
-			return await dbContext.CompanyUsers
-				.Join(
-					dbContext.CompanyUserPermissions,
-					cu => cu.Id,
-					cup => cup.CompanyUserId,
-					(cu, cup) => new { cu, cup }
-				)
-				.Where(x => x.cu.CompanyId == companyId &&
-					x.cu.UserId == Guid.Parse(insUserId) &&
-					CompanyPermissionsHelper.ManagerPermissions.Contains(x.cup.CompanyPermissionId)
-				)
-				.AnyAsync();
+			var companyUser = await dbContext.CompanyUsers
+				.Where(x => x.CompanyId == companyId && x.UserId == Guid.Parse(insUserId))
+				.FirstOrDefaultAsync();
+
+			if (companyUser == null)
+				return false;
+
+			return await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(
+				companyUser.Id,
+				CompanyPermissionsHelper.ManagerPermissions
+			);
 		}
 		#endregion
 	}

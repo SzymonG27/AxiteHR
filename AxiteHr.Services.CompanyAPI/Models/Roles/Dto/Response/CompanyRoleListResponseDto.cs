@@ -1,4 +1,4 @@
-﻿namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Response
+﻿namespace AxiteHR.Services.CompanyAPI.Models.Roles.Dto.Response
 {
 	public record CompanyRoleListResponseDto
 	{

@@ -1,4 +1,6 @@
 ﻿using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
+using AxiteHR.Services.CompanyAPI.Models.Permissions;
+using AxiteHR.Services.CompanyAPI.Models.Roles;
 using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHR.Services.CompanyAPI.Data
@@ -91,17 +93,70 @@ namespace AxiteHR.Services.CompanyAPI.Data
 					.HasForeignKey(cu => cu.CompanyId);
 			});
 
+			modelBuilder.Entity<CompanyPermissionGroup>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+
+				entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+
+				entity.Property(e => e.Description).HasMaxLength(500);
+
+				entity.HasOne(e => e.Company)
+					.WithMany()
+					.HasForeignKey(e => e.CompanyId)
+					.OnDelete(DeleteBehavior.Restrict);
+
+				entity.HasIndex(e => new { e.CompanyId, e.Name }).IsUnique();
+			});
+
+			modelBuilder.Entity<CompanyPermissionGroupPermission>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+
+				entity.HasOne(e => e.CompanyPermissionGroup)
+					.WithMany(x => x.Permissions)
+					.HasForeignKey(e => e.CompanyPermissionGroupId)
+					.OnDelete(DeleteBehavior.Cascade);
+
+				entity.HasOne(e => e.CompanyPermission)
+					.WithMany()
+					.HasForeignKey(e => e.CompanyPermissionId)
+					.OnDelete(DeleteBehavior.Restrict);
+
+				entity.HasIndex(e => new { e.CompanyPermissionGroupId, e.CompanyPermissionId }).IsUnique();
+			});
+
 			modelBuilder.Entity<CompanyUserPermission>(entity =>
 			{
 				entity.HasKey(cup => cup.Id);
 
 				entity.HasOne(cup => cup.CompanyUser)
 					.WithMany()
-					.HasForeignKey(cup => cup.CompanyUserId);
+					.HasForeignKey(cup => cup.CompanyUserId)
+					.OnDelete(DeleteBehavior.Cascade);
 
 				entity.HasOne(cup => cup.CompanyPermission)
 					.WithMany()
-					.HasForeignKey(cup => cup.CompanyPermissionId);
+					.HasForeignKey(cup => cup.CompanyPermissionId)
+					.OnDelete(DeleteBehavior.Restrict);
+
+				entity.HasOne(e => e.CompanyPermissionGroup)
+					.WithMany()
+					.HasForeignKey(e => e.CompanyPermissionGroupId)
+					.OnDelete(DeleteBehavior.Restrict);
+
+				entity.ToTable(t => t.HasCheckConstraint(
+					"CK_CompanyUserPermission_OneRequired",
+					"(CompanyPermissionId IS NOT NULL AND CompanyPermissionGroupId IS NULL) OR (CompanyPermissionId IS NULL AND CompanyPermissionGroupId IS NOT NULL)"
+				));
+
+				entity.HasIndex(e => new { e.CompanyUserId, e.CompanyPermissionId })
+					.IsUnique()
+					.HasFilter("CompanyPermissionId IS NOT NULL");
+
+				entity.HasIndex(e => new { e.CompanyUserId, e.CompanyPermissionGroupId })
+					.IsUnique()
+					.HasFilter("CompanyPermissionGroupId IS NOT NULL");
 			});
 
 			modelBuilder.Entity<CompanyUserRole>(entity =>
@@ -141,7 +196,7 @@ namespace AxiteHR.Services.CompanyAPI.Data
 
 					entity.Property(cr => cr.RoleName)
 						.UseCollation("SQL_Latin1_General_CP1_CI_AS");
-					
+
 					entity.Property(cr => cr.RoleNameEng)
 						.UseCollation("SQL_Latin1_General_CP1_CI_AS");
 				});

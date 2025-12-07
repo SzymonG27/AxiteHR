@@ -4,12 +4,15 @@ using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Const;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
+using AxiteHR.Services.CompanyAPI.Models.Permissions;
+using AxiteHR.Services.CompanyAPI.Models.Permissions.Const;
+using AxiteHR.Services.CompanyAPI.Models.Roles.Const;
 using AxiteHR.Services.CompanyAPI.Services.Company.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Moq;
-using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole;
+using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.Roles.CompanyRole;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.Company;
 

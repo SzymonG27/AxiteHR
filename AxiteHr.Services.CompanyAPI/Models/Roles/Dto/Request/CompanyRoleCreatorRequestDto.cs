@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request
+namespace AxiteHR.Services.CompanyAPI.Models.Roles.Dto.Request
 {
 	public record CompanyRoleCreatorRequestDto
 	{

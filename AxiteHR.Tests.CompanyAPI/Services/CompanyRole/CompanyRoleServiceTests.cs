@@ -2,8 +2,9 @@
 using AxiteHR.Services.CompanyAPI.Data;
 using AxiteHR.Services.CompanyAPI.Infrastructure;
 using AxiteHR.Services.CompanyAPI.Infrastructure.AuthApi;
-using AxiteHR.Services.CompanyAPI.Models.CompanyModels;
 using AxiteHR.Services.CompanyAPI.Models.CompanyModels.Dto.Request;
+using AxiteHR.Services.CompanyAPI.Models.Roles;
+using AxiteHR.Services.CompanyAPI.Models.Roles.Dto.Request;
 using AxiteHR.Services.CompanyAPI.Services.CompanyPermission;
 using AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl;
 using AxiteHR.Services.CompanyAPI.Services.CompanyUser;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Moq;
 using CompanyModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Company;
-using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyRole;
+using CompanyRoleModel = AxiteHR.Services.CompanyAPI.Models.Roles.CompanyRole;
 using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.CompanyUser;
 
 namespace AxiteHR.Tests.CompanyAPI.Services.CompanyRole

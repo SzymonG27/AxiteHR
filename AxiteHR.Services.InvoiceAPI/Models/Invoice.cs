@@ -61,7 +61,7 @@ namespace AxiteHR.Services.InvoiceAPI.Models
 
 		public virtual decimal GrossAmount { get; set; }
 
-		public virtual ICollection<InvoicePosition> InvoicePositions { get; set; } = new List<InvoicePosition>();
+		public virtual ICollection<InvoicePosition> InvoicePositions { get; set; } = [];
 
 		public virtual Guid InsUserId { get; set; }
 

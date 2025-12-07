@@ -25,10 +25,97 @@ namespace AxiteHR.Services.CompanyAPI.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			// Configuration for CompanyPermission
-			modelBuilder.Entity<CompanyPermission>()
-				.Property(x => x.Id)
-				.ValueGeneratedNever();
+			modelBuilder.Entity<Company>(entity =>
+			{
+				entity.HasKey(c => c.Id);
+
+				entity.Property(c => c.CompanyName)
+					.HasMaxLength(100)
+					.IsRequired();
+
+				entity.HasOne(c => c.CompanyLevel)
+					.WithMany()
+					.HasForeignKey(c => c.CompanyLevelId);
+			});
+
+			modelBuilder.Entity<CompanyLevel>(entity => entity.HasKey(cl => cl.Id));
+
+			modelBuilder.Entity<CompanyPermission>(entity =>
+			{
+				entity.HasKey(cp => cp.Id);
+
+				entity.Property(cp => cp.Id)
+					.ValueGeneratedNever();
+
+				entity.Property(cp => cp.PermissionName)
+					.HasMaxLength(100)
+					.IsRequired();
+			});
+
+			modelBuilder.Entity<CompanyRole>(entity =>
+			{
+				entity.HasKey(cr => cr.Id);
+
+				entity.Property(cr => cr.RoleName)
+					.HasMaxLength(100);
+
+				entity.Property(cr => cr.RoleNameEng)
+					.HasMaxLength(100);
+
+				entity.HasIndex(cr => new { cr.RoleName, cr.RoleNameEng })
+					.IsUnique();
+			});
+
+			modelBuilder.Entity<CompanyRoleCompany>(entity =>
+			{
+				entity.HasKey(crc => crc.Id);
+
+				entity.HasOne(crc => crc.Company)
+					.WithMany()
+					.HasForeignKey(crc => crc.CompanyId);
+
+				entity.HasOne(crc => crc.CompanyRole)
+					.WithMany()
+					.HasForeignKey(crc => crc.CompanyRoleId);
+
+				entity.HasIndex(crc => new { crc.CompanyRoleId, crc.CompanyId })
+					.IsUnique();
+			});
+
+			modelBuilder.Entity<CompanyUser>(entity =>
+			{
+				entity.HasKey(cu => cu.Id);
+
+				entity.HasOne(cu => cu.Company)
+					.WithMany()
+					.HasForeignKey(cu => cu.CompanyId);
+			});
+
+			modelBuilder.Entity<CompanyUserPermission>(entity =>
+			{
+				entity.HasKey(cup => cup.Id);
+
+				entity.HasOne(cup => cup.CompanyUser)
+					.WithMany()
+					.HasForeignKey(cup => cup.CompanyUserId);
+
+				entity.HasOne(cup => cup.CompanyPermission)
+					.WithMany()
+					.HasForeignKey(cup => cup.CompanyPermissionId);
+			});
+
+			modelBuilder.Entity<CompanyUserRole>(entity =>
+			{
+				entity.HasKey(cup => cup.Id);
+
+				entity.HasOne(cup => cup.CompanyUser)
+					.WithMany()
+					.HasForeignKey(cup => cup.CompanyUserId);
+
+				entity.HasOne(cup => cup.CompanyRoleCompany)
+					.WithMany()
+					.HasForeignKey(cup => cup.CompanyRoleCompanyId);
+			});
 
 			if (!SkipSeedData)
 			{
@@ -44,40 +131,21 @@ namespace AxiteHR.Services.CompanyAPI.Data
 						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" },
 						new CompanyPermission { Id = 5, PermissionName = "CompanyRoleCreator" }
 					);
-			}
 
-			// Configuration for CompanyRole
-			if (!SkipSeedData)
-			{
-				modelBuilder.Entity<CompanyRole>()
-				.HasData(
-					new CompanyRole { Id = 1, RoleName = "Twórca firmy", RoleNameEng = "Company creator" },
-					new CompanyRole { Id = 2, RoleName = "Dział oprogramowania", RoleNameEng = "Software department" }
-				);
+				modelBuilder.Entity<CompanyRole>(entity =>
+				{
+					entity.HasData(
+						new CompanyRole { Id = 1, RoleName = "Twórca firmy", RoleNameEng = "Company creator" },
+						new CompanyRole { Id = 2, RoleName = "Dział oprogramowania", RoleNameEng = "Software department" }
+					);
 
-				modelBuilder.Entity<CompanyRole>()
-				.Property(x => x.RoleName)
-				.HasMaxLength(100)
-				.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+					entity.Property(cr => cr.RoleName)
+						.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+					
+					entity.Property(cr => cr.RoleNameEng)
+						.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+				});
 
-				modelBuilder.Entity<CompanyRole>()
-					.Property(x => x.RoleNameEng)
-					.HasMaxLength(100)
-					.UseCollation("SQL_Latin1_General_CP1_CI_AS");
-			}
-
-			modelBuilder.Entity<CompanyRole>()
-				.HasIndex(x => new { x.RoleName, x.RoleNameEng })
-				.IsUnique();
-
-			// Configuration for CompanyRoleCompany
-			modelBuilder.Entity<CompanyRoleCompany>()
-				.HasIndex(crc => new { crc.CompanyRoleId, crc.CompanyId })
-				.IsUnique();
-
-			// Configuration for CompanyLevel
-			if (!SkipSeedData)
-			{
 				modelBuilder.Entity<CompanyLevel>()
 					.HasData(
 						new CompanyLevel { Id = 1, MaxNumberOfWorkers = 10 },

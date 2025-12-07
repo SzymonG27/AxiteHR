@@ -5,10 +5,8 @@ namespace AxiteHR.Services.CompanyAPI.Models.CompanyModels
 {
 	public class CompanyUserRole
 	{
-		[Key]
 		public virtual int Id { get; set; }
 
-		[ForeignKey(nameof(CompanyUser))]
 		public virtual int CompanyUserId { get; set; }
 
 		public virtual CompanyUser CompanyUser { get; set; } = new();

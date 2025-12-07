@@ -1,14 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AxiteHR.Services.ApplicationAPI.Models.Application
+﻿namespace AxiteHR.Services.ApplicationAPI.Models.Application
 {
 	public class UserApplicationSupervisorAccepted
 	{
-		[Key]
 		public virtual int Id { get; set; }
 
-		[ForeignKey(nameof(UserApplication))]
 		public virtual int UserApplicationId { get; set; }
 
 		public virtual UserApplication UserApplication { get; set; } = new();

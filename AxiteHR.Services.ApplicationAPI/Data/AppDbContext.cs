@@ -15,21 +15,40 @@ namespace AxiteHR.Services.ApplicationAPI.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<UserCompanyDaysOff>()
-				.HasIndex(uc => uc.CompanyUserId)
-				.IsClustered(false);
+			modelBuilder.Entity<UserCompanyDaysOff>(entity =>
+			{
+				entity.HasKey(uc => uc.Id);
 
-			modelBuilder.Entity<UserApplication>()
-				.HasIndex(ua => ua.CompanyUserId)
-				.IsClustered(false);
+				entity.HasIndex(uc => uc.CompanyUserId)
+					.IsClustered(false);
+			});
 
-			modelBuilder.Entity<UserApplicationSupervisorAccepted>()
-				.HasIndex(uasa => uasa.UserApplicationId)
-				.IsClustered(false);
+			modelBuilder.Entity<UserApplication>(entity =>
+			{
+				entity.HasKey(ua => ua.Id);
 
-			modelBuilder.Entity<UserApplicationSupervisorAccepted>()
-				.HasIndex(uasa => uasa.SupervisorAcceptedId)
-				.IsClustered(false);
+				entity.HasIndex(ua => ua.CompanyUserId)
+					.IsClustered(false);
+
+				entity.Property(ua => ua.Reason)
+					.HasMaxLength(250);
+			});
+
+			modelBuilder.Entity<UserApplicationSupervisorAccepted>(entity =>
+			{
+				entity.HasKey(uasa => uasa.Id);
+
+				entity.HasIndex(uasa => uasa.UserApplicationId)
+					.IsClustered(false);
+
+				entity.HasIndex(uasa => uasa.SupervisorAcceptedId)
+					.IsClustered(false);
+
+				entity.HasOne(uasa => uasa.UserApplication)
+					.WithMany()
+					.HasForeignKey(uasa => uasa.UserApplicationId)
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 		}
 	}
 }

@@ -1,11 +1,9 @@
 ﻿using AxiteHR.Services.ApplicationAPI.Models.Application.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace AxiteHR.Services.ApplicationAPI.Models.Application
 {
 	public class UserApplication
 	{
-		[Key]
 		public virtual int Id { get; set; }
 
 		public virtual int CompanyUserId { get; set; }
@@ -18,7 +16,6 @@ namespace AxiteHR.Services.ApplicationAPI.Models.Application
 
 		public virtual DateTime DateTo { get; set; }
 
-		[MaxLength(250)]
 		public virtual string? Reason { get; set; }
 
 		public virtual Guid InsUserId { get; set; }

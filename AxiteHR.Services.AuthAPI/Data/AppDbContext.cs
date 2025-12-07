@@ -12,13 +12,28 @@ namespace AxiteHR.Services.AuthAPI.Data
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-			builder.Entity<AppUser>(b => b.Property(u => u.Email).IsRequired());
 
-			builder.Entity<IdentityRole>().HasData(
-				new IdentityRole { Id = "c6b3a381-6ffb-4b88-8aa8-877421f520c7", Name = "Admin", NormalizedName = "ADMIN" },
-				new IdentityRole { Id = "775da6ba-b138-4551-aa18-fb161e8ffbc9", Name = "User", NormalizedName = "USER" },
-				new IdentityRole { Id = "87ec7457-f89e-4c4b-940d-31ec35e51e3f", Name = "UserFromCompany", NormalizedName = "USERFROMCOMPANY" }
-			);
+			builder.Entity<AppUser>(entity =>
+			{
+				entity.Property(u => u.Email)
+					.HasMaxLength(100)
+					.IsRequired();
+
+				entity.Property(u => u.FirstName)
+					.HasMaxLength(100);
+
+				entity.Property(u => u.LastName)
+					.HasMaxLength(100);
+			});
+
+			builder.Entity<IdentityRole>(entity =>
+			{
+				entity.HasData(
+					new IdentityRole { Id = "c6b3a381-6ffb-4b88-8aa8-877421f520c7", Name = "Admin", NormalizedName = "ADMIN" },
+					new IdentityRole { Id = "775da6ba-b138-4551-aa18-fb161e8ffbc9", Name = "User", NormalizedName = "USER" },
+					new IdentityRole { Id = "87ec7457-f89e-4c4b-940d-31ec35e51e3f", Name = "UserFromCompany", NormalizedName = "USERFROMCOMPANY" }
+				);
+			});
 		}
 	}
 }

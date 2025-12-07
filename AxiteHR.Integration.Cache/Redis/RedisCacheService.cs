@@ -66,6 +66,25 @@ namespace AxiteHR.Integration.Cache.Redis
 			}
 		}
 
+		public async Task DeleteAsync(string key)
+		{
+			await _database.KeyDeleteAsync(key);
+		}
+
+		public async Task DeleteByPatternAsync(string pattern)
+		{
+			var endpoints = _database.Multiplexer.GetEndPoints();
+			foreach (var endpoint in endpoints)
+			{
+				var server = _database.Multiplexer.GetServer(endpoint);
+
+				await foreach (var key in server.KeysAsync(pattern: pattern))
+				{
+					await _database.KeyDeleteAsync(key);
+				}
+			}
+		}
+
 		private static bool IsPrimitiveOrString(Type type)
 		{
 			return type.IsPrimitive || type == typeof(string) || type == typeof(decimal);

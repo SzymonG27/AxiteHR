@@ -15,6 +15,8 @@ namespace AxiteHR.Services.CompanyAPI.Models.Permissions
 		public virtual Guid UpdUserId { get; set; }
 		public virtual DateTime UpdDate { get; set; }
 
+		public ICollection<CompanyUserPermission> UserPermissions { get; set; } = [];
+
 		public virtual ICollection<CompanyPermissionGroupPermission> Permissions { get; set; } = [];
 	}
 }

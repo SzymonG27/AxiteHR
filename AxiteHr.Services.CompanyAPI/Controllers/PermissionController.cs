@@ -70,5 +70,89 @@ namespace AxiteHR.Services.CompanyAPI.Controllers
 
 			return Ok(result.Value);
 		}
+
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[HttpPut("group/update")]
+		public async Task<IActionResult> UpdateGroupAsync([FromBody] UpdatePermissionGroupDto dto)
+		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (string.IsNullOrWhiteSpace(userId))
+			{
+				return Unauthorized();
+			}
+
+			var result = await companyPermissionGroupService.UpdateGroupAsync(dto, Guid.Parse(userId));
+
+			if (!result.IsSuccess)
+			{
+				return this.Error(result.StatusCode, result.Error);
+			}
+
+			return Ok(result.Value);
+		}
+
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[HttpPatch("group/{groupId}/permissions/update")]
+		public async Task<IActionResult> UpdateGroupPermissionsAsync(int groupId, [FromBody] List<int> permissionIds)
+		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (string.IsNullOrWhiteSpace(userId))
+			{
+				return Unauthorized();
+			}
+
+			var result = await companyPermissionGroupService.PatchGroupPermissionsAsync(groupId, permissionIds, Guid.Parse(userId));
+
+			if (!result.IsSuccess)
+			{
+				return this.Error(result.StatusCode, result.Error);
+			}
+
+			return Ok(result.Value);
+		}
+
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[HttpPatch("group/changeactivity")]
+		public async Task<IActionResult> ChangeGroupActivityAsync([FromBody] int groupId)
+		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (string.IsNullOrWhiteSpace(userId))
+			{
+				return Unauthorized();
+			}
+
+			var result = await companyPermissionGroupService.ChangeGroupActivityAsync(groupId, Guid.Parse(userId));
+
+			if (!result.IsSuccess)
+			{
+				return this.Error(result.StatusCode, result.Error);
+			}
+
+			return Ok(result.Value);
+		}
+
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[HttpDelete("group/delete")]
+		public async Task<IActionResult> DeleteGroupAsync([FromBody] int groupId)
+		{
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+			if (string.IsNullOrWhiteSpace(userId))
+			{
+				return Unauthorized();
+			}
+
+			var result = await companyPermissionGroupService.DeleteGroupAsync(groupId, Guid.Parse(userId));
+
+			if (!result.IsSuccess)
+			{
+				return this.Error(result.StatusCode, result.Error);
+			}
+
+			return Ok(result.Value);
+		}
 	}
 }

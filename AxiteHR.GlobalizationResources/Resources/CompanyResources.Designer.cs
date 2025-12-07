@@ -178,20 +178,20 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company user not found..
+        /// </summary>
+        public static string Permissions_CompanyUserNotFound {
+            get {
+                return ResourceManager.GetString("Permissions_CompanyUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company not found..
         /// </summary>
         public static string Permissions_CreateGroupAsync_CompanyNotFound {
             get {
                 return ResourceManager.GetString("Permissions_CreateGroupAsync_CompanyNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Company user not found..
-        /// </summary>
-        public static string Permissions_CreateGroupAsync_CompanyUserNotFound {
-            get {
-                return ResourceManager.GetString("Permissions_CreateGroupAsync_CompanyUserNotFound", resourceCulture);
             }
         }
         
@@ -205,20 +205,29 @@ namespace AxiteHR.GlobalizationResources.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User don&apos;t have permissions to manage permission in company..
-        /// </summary>
-        public static string Permissions_CreateGroupAsync_NoPermissionsToManage {
-            get {
-                return ResourceManager.GetString("Permissions_CreateGroupAsync_NoPermissionsToManage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Not all selected permissions still exist. Please refresh the page..
         /// </summary>
         public static string Permissions_CreateGroupAsync_PermissionNotExists {
             get {
                 return ResourceManager.GetString("Permissions_CreateGroupAsync_PermissionNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user does not have permission to delete the group..
+        /// </summary>
+        public static string Permissions_DeleteGroupAsync_NoPermissionsToDelete {
+            get {
+                return ResourceManager.GetString("Permissions_DeleteGroupAsync_NoPermissionsToDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User don&apos;t have permissions to manage permission in company..
+        /// </summary>
+        public static string Permissions_NoPermissionsToManage {
+            get {
+                return ResourceManager.GetString("Permissions_NoPermissionsToManage", resourceCulture);
             }
         }
         

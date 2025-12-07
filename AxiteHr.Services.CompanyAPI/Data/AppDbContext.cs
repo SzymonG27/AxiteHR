@@ -143,7 +143,7 @@ namespace AxiteHR.Services.CompanyAPI.Data
 					.OnDelete(DeleteBehavior.Restrict);
 
 				entity.HasOne(e => e.CompanyPermissionGroup)
-					.WithMany()
+					.WithMany(g => g.UserPermissions)
 					.HasForeignKey(e => e.CompanyPermissionGroupId)
 					.OnDelete(DeleteBehavior.Restrict);
 

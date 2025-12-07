@@ -21,8 +21,9 @@ namespace AxiteHR.GlobalizationResources
         public const string Global_RequestedUserDoesNotExistsInDb = "Global_RequestedUserDoesNotExistsInDb";
         public const string Permissions_CreateGroupAsync_CompanyNotFound = "Permissions_CreateGroupAsync_CompanyNotFound";
         public const string Permissions_CreateGroupAsync_NameAlreadyExists = "Permissions_CreateGroupAsync_NameAlreadyExists";
-        public const string Permissions_CreateGroupAsync_NoPermissionsToManage = "Permissions_CreateGroupAsync_NoPermissionsToManage";
-        public const string Permissions_CreateGroupAsync_CompanyUserNotFound = "Permissions_CreateGroupAsync_CompanyUserNotFound";
+        public const string Permissions_NoPermissionsToManage = "Permissions_NoPermissionsToManage";
+        public const string Permissions_CompanyUserNotFound = "Permissions_CompanyUserNotFound";
         public const string Permissions_CreateGroupAsync_PermissionNotExists = "Permissions_CreateGroupAsync_PermissionNotExists";
+        public const string Permissions_DeleteGroupAsync_NoPermissionsToDelete = "Permissions_DeleteGroupAsync_NoPermissionsToDelete";
     }
 }

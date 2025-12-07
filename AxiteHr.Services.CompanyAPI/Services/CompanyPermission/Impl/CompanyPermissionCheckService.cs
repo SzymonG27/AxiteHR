@@ -11,23 +11,30 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 	{
 		public async Task<bool> IsCompanyUserHasPermissionAsync(int companyUserId, int permissionId)
 		{
-			var valueFromRedis = await redisCacheService.GetObjectAsync<string?>(CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId));
+			var valueFromRedis = await redisCacheService.GetObjectAsync<string?>(CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId.ToString()));
 
 			if (valueFromRedis is not null)
 			{
 				return bool.Parse(valueFromRedis);
 			}
 
-			var isCompanyUserHasPermission = await dbContext.CompanyUserPermissions
-				.Where(x => x.CompanyUserId == companyUserId && x.CompanyPermissionId == permissionId)
+			var hasPermission = await dbContext.CompanyUserPermissions
+				.Where(x => x.CompanyUserId == companyUserId)
+				.Where(x =>
+					(x.CompanyPermissionId == permissionId)
+					||
+					(x.CompanyPermissionGroupId.HasValue
+					 && x.CompanyPermissionGroup!.IsActive
+					 && x.CompanyPermissionGroup.Permissions.Any(p => p.CompanyPermissionId == permissionId))
+				)
 				.AnyAsync();
 
 			await redisCacheService.SetObjectAsync(
-				CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId),
-				isCompanyUserHasPermission? "true" : "false",
+				CompanyRedisKeys.IsCompanyUserHasPermission(companyUserId, permissionId.ToString()),
+				hasPermission ? "true" : "false",
 				TimeSpan.FromMinutes(5));
 
-			return isCompanyUserHasPermission;
+			return hasPermission;
 		}
 
 		public async Task<bool> IsCompanyUserHasAnyPermissionAsync(int companyUserId, List<int> permissionIdList)

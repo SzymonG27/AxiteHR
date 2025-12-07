@@ -13,5 +13,9 @@ namespace AxiteHR.Integration.Cache.Redis
 		Task<List<T?>> GetObjectListAsync<T>(string key) where T : RedisObjectList;
 
 		Task RemoveFromObjectListAsync<T>(string key, string id) where T : RedisObjectList;
+
+		Task DeleteAsync(string key);
+
+		Task DeleteByPatternAsync(string pattern);
 	}
 }

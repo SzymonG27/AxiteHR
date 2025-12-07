@@ -172,13 +172,16 @@ innego użytkownika do roli.</value>
   <data name="Permissions_CreateGroupAsync_NameAlreadyExists" xml:space="preserve">
     <value>Grupa uprawnień o nazwie „{0}” już istnieje w tej firmie.</value>
   </data>
-  <data name="Permissions_CreateGroupAsync_NoPermissionsToManage" xml:space="preserve">
+  <data name="Permissions_NoPermissionsToManage" xml:space="preserve">
     <value>Użytkownik nie ma uprawnień do zarządzania uprawnieniami w firmie.</value>
   </data>
-  <data name="Permissions_CreateGroupAsync_CompanyUserNotFound" xml:space="preserve">
+  <data name="Permissions_CompanyUserNotFound" xml:space="preserve">
     <value>Nie znaleziono użytkownika w firmie.</value>
   </data>
   <data name="Permissions_CreateGroupAsync_PermissionNotExists" xml:space="preserve">
     <value>Nie wszystkie wybrane uprawnienia nadal istnieją. Proszę odśwież stronę.</value>
+  </data>
+  <data name="Permissions_DeleteGroupAsync_NoPermissionsToDelete" xml:space="preserve">
+    <value>Użytkownik nie posiada uprawnienia do usunięcia grupy.</value>
   </data>
 </root>

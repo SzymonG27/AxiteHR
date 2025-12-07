@@ -20,7 +20,7 @@ namespace AxiteHR.Tests.CompanyAPI.Services.Employee;
 [TestFixture]
 public class EmployeeServiceTests
 {
-	private Mock<ICompanyPermissionService> _companyPermissionServiceMock;
+	private Mock<ICompanyPermissionCheckService> _companyPermissionServiceMock;
 	private Mock<IHttpClientFactory> _httpClientFactoryMock;
 	private Mock<IStringLocalizer<CompanyResources>> _companyLocalizerMock;
 	private Mock<IStringLocalizer<SharedResources>> _sharedLocalizerMock;
@@ -32,7 +32,7 @@ public class EmployeeServiceTests
 	[SetUp]
 	public void SetUp()
 	{
-		_companyPermissionServiceMock = new Mock<ICompanyPermissionService>();
+		_companyPermissionServiceMock = new Mock<ICompanyPermissionCheckService>();
 		_httpClientFactoryMock = new Mock<IHttpClientFactory>();
 		_companyLocalizerMock = new Mock<IStringLocalizer<CompanyResources>>();
 		_sharedLocalizerMock = new Mock<IStringLocalizer<SharedResources>>();

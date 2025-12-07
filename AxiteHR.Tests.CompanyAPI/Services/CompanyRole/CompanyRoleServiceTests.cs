@@ -25,7 +25,7 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyRole
 		private AppDbContext _dbContext;
 		private CompanyRoleService _service;
 		private Mock<ICompanyUserService> _companyUserService;
-		private Mock<ICompanyPermissionService> _companyPermissionService;
+		private Mock<ICompanyPermissionCheckService> _companyPermissionService;
 		private Mock<IAuthApiClient> _authApiClient;
 		private Mock<IStringLocalizer<CompanyResources>> _companyLocalizer;
 		private Mock<ILogger<CompanyRoleService>> _logger;
@@ -48,7 +48,7 @@ namespace AxiteHR.Tests.CompanyAPI.Services.CompanyRole
 			await SeedDatabase();
 
 			_companyUserService = new Mock<ICompanyUserService>();
-			_companyPermissionService = new Mock<ICompanyPermissionService>();
+			_companyPermissionService = new Mock<ICompanyPermissionCheckService>();
 			_authApiClient = new Mock<IAuthApiClient>();
 			_companyLocalizer = new Mock<IStringLocalizer<CompanyResources>>();
 			_logger = new Mock<ILogger<CompanyRoleService>>();

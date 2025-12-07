@@ -21,7 +21,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.CompanyRole.Impl
 	public class CompanyRoleService(
 		AppDbContext dbContext,
 		ICompanyUserService companyUserService,
-		ICompanyPermissionService companyPermissionService,
+		ICompanyPermissionCheckService companyPermissionService,
 		IAuthApiClient authApiClient,
 		IStringLocalizer<CompanyResources> companyLocalizer,
 		ILogger<CompanyRoleService> logger) : ICompanyRoleService

@@ -118,7 +118,8 @@ namespace AxiteHR.Services.CompanyAPI.Extensions
 			builder.Services.AddScoped<ICompanyManagerService, CompanyManagerService>();
 			builder.Services.AddScoped<ICompanyUserService, CompanyUserService>();
 			builder.Services.AddScoped<ICompanyRoleService, CompanyRoleService>();
-			builder.Services.AddScoped<ICompanyPermissionService, CompanyPermissionService>();
+			builder.Services.AddScoped<ICompanyPermissionCheckService, CompanyPermissionCheckService>();
+			builder.Services.AddScoped<ICompanyPermissionGroupService, CompanyPermissionGroupService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 			builder.Services.AddScoped<IAuthApiClient, AuthApiClient>();
 

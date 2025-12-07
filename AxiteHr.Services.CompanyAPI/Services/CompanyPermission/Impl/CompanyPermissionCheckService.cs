@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AxiteHR.Services.CompanyAPI.Services.CompanyPermission.Impl
 {
-	public class CompanyPermissionService(
+	public class CompanyPermissionCheckService(
 		AppDbContext dbContext,
-		IRedisCacheService redisCacheService) : ICompanyPermissionService
+		IRedisCacheService redisCacheService) : ICompanyPermissionCheckService
 	{
 		public async Task<bool> IsCompanyUserHasPermissionAsync(int companyUserId, int permissionId)
 		{

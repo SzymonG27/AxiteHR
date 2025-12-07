@@ -14,7 +14,7 @@ using CompanyUserModel = AxiteHR.Services.CompanyAPI.Models.CompanyModels.Compan
 namespace AxiteHR.Services.CompanyAPI.Services.Employee.Impl
 {
 	public class EmployeeService(
-		ICompanyPermissionService companyPermissionService,
+		ICompanyPermissionCheckService companyPermissionService,
 		IHttpClientFactory httpClientFactory,
 		IStringLocalizer<CompanyResources> companyLocalizer,
 		IStringLocalizer<SharedResources> sharedLocalizer,
@@ -128,7 +128,7 @@ namespace AxiteHR.Services.CompanyAPI.Services.Employee.Impl
 
 			return await companyPermissionService.IsCompanyUserHasAnyPermissionAsync(
 				companyUser.Id,
-				CompanyPermissionsHelper.ManagerPermissions
+				CompanyPermissionsHelper.UserManagerPermissions
 			);
 		}
 		#endregion

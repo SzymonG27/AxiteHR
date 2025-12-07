@@ -166,4 +166,19 @@ innego użytkownika do roli.</value>
   <data name="Global_RequestedUserDoesNotExistsInDb" xml:space="preserve">
     <value>Żądany użytkownik nie istnieje w aplikacji.</value>
   </data>
+  <data name="Permissions_CreateGroupAsync_CompanyNotFound" xml:space="preserve">
+    <value>Nie znaleziono firmy.</value>
+  </data>
+  <data name="Permissions_CreateGroupAsync_NameAlreadyExists" xml:space="preserve">
+    <value>Grupa uprawnień o nazwie „{0}” już istnieje w tej firmie.</value>
+  </data>
+  <data name="Permissions_CreateGroupAsync_NoPermissionsToManage" xml:space="preserve">
+    <value>Użytkownik nie ma uprawnień do zarządzania uprawnieniami w firmie.</value>
+  </data>
+  <data name="Permissions_CreateGroupAsync_CompanyUserNotFound" xml:space="preserve">
+    <value>Nie znaleziono użytkownika w firmie.</value>
+  </data>
+  <data name="Permissions_CreateGroupAsync_PermissionNotExists" xml:space="preserve">
+    <value>Nie wszystkie wybrane uprawnienia nadal istnieją. Proszę odśwież stronę.</value>
+  </data>
 </root>

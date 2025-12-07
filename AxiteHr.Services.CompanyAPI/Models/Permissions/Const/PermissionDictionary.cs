@@ -6,6 +6,9 @@
 		Employee = 2,
 		CompanyRoleSeeEntireList = 3,
 		CompanyUserSeeEntireList = 4,
-		CompanyRoleCreator = 5
+		CompanyRoleCreator = 5,
+		CompanyPermissionManager = 6,
+		CompanyRoleManager = 7,
+		CompanyUserManager = 8,
 	}
 }

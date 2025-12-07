@@ -20,6 +20,8 @@ namespace AxiteHR.Services.CompanyAPI.Data
 		public DbSet<CompanyRoleCompany> CompanyRoleCompanies { get; set; }
 		public DbSet<CompanyUserRole> CompanyUserRoles { get; set; }
 		public DbSet<CompanyPermission> CompanyPermissions { get; set; }
+		public DbSet<CompanyPermissionGroup> CompanyPermissionGroups { get; set; }
+		public DbSet<CompanyPermissionGroupPermission> CompanyPermissionGroupPermissions { get; set; }
 		public DbSet<CompanyUserPermission> CompanyUserPermissions { get; set; }
 
 		// Model configuration
@@ -184,7 +186,10 @@ namespace AxiteHR.Services.CompanyAPI.Data
 						new CompanyPermission { Id = 2, PermissionName = "Employee" },
 						new CompanyPermission { Id = 3, PermissionName = "CompanyRoleSeeEntireList" },
 						new CompanyPermission { Id = 4, PermissionName = "CompanyUserSeeEntireList" },
-						new CompanyPermission { Id = 5, PermissionName = "CompanyRoleCreator" }
+						new CompanyPermission { Id = 5, PermissionName = "CompanyRoleCreator" },
+						new CompanyPermission { Id = 6, PermissionName = "CompanyPermissionManager" },
+						new CompanyPermission { Id = 7, PermissionName = "CompanyRoleManager" },
+						new CompanyPermission { Id = 8, PermissionName = "CompanyUserManager" }
 					);
 
 				modelBuilder.Entity<CompanyRole>(entity =>
